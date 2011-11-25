@@ -1,5 +1,6 @@
 <?php // $ php5 -f ~/WsWds/StationScript/VP2-IP.php
-	$ip_vp2 = "10.1.253.200";
+//	$ip_vp2 = "10.1.253.200";
+	$ip_vp2 = "nas-alban.no-ip.org";
 	$port_vp2 = 22222;
 	echo date('Y/m/d H:i:s u')."\t".'Tentative de connexion...'."\n";
 	$fp = fsockopen($ip_vp2, $port_vp2);
@@ -27,7 +28,14 @@
 			echo date('Y/m/d H:i:s u')."\t".'VP2 Disponible.'."\n";
 			echo date('Y/m/d H:i:s u')."\t".'Activation du retroeclairage.'."\n";
 		  	//on passe a la recuperation des données
-
+			echo date('Y/m/d H:i:s u')."\t".'Recuperation des valeurs Maxi et Mini.'."\n";
+			fwrite ($fp,"HILOWS\n");
+			$HILOWS=TelnetOutput($fp);
+			echo date('Y/m/d H:i:s u')."\t\n".$HILOWS."\n";
+			echo date('Y/m/d H:i:s u')."\t".'Recuperation des Archives.'."\n";
+			fwrite ($fp,"DMPAFT\n");
+			$DMPAFT=TelnetOutput($fp);
+			echo date('Y/m/d H:i:s u')."\t\n".$DMPAFT."\n";
 
 
 
