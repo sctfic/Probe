@@ -16,7 +16,7 @@
 	'CANCEL' => chr(0x18) // Bad CRC Code
 	);
 	
-		//def d'un timeout adapté a la VP2 pour toutes les recup. fgets();
+	//def d'un timeout adapté a la VP2 pour toutes les recup. fgets();
 	stream_set_timeout($fp, 0, 2500000);
 	
 	if ($fp)
@@ -29,26 +29,14 @@
 			//on allume l'ecran pour suivre la connexion
 		$LED=fread($fp,6);
 		if (strlen($LED) && $LED==$symbols['LFCR'].'OK'.$symbols['LFCR'])
-		{//si on a bien confirmé, la connexion avec la VP2 est disponible
+		{	//si on a bien confirmé, la connexion avec la VP2 est disponible
 			echo date('Y/m/d H:i:s u')."\t".'VP2 Disponible.'."\n";
 			echo date('Y/m/d H:i:s u')."\t".'Activation du retroeclairage.'."\n";
 		  	//on passe a la recuperation des données
-			echo date('Y/m/d H:i:s u')."\t".'Recuperation des valeurs Maxi et Mini.'."\n";
-			fwrite ($fp, "HILOWS\n");
-			usleep(100000);
-			$r = fread($fp, 1);
-			usleep(100000);
-			if ($r == $symbols['ACK'])
-			{
-				$HILOWS = fread($fp, 438);
+		  	if (GetMinMax ($fp))
 				echo date('Y/m/d H:i:s u')."\t".'Traitement des valeurs Maxi et Mini...'."\n";
-			}
-			else if ($r == $symbols['NAK'])
-				echo date('Y/m/d H:i:s u')."\t".'NAK'."\n";
-			else
-				echo date('Y/m/d H:i:s u')."\t".'NULL'."\n";
-//			$HILOWS = GetTelnetOutputData($fp,"HILOWS\n", 440);
-			echo date('Y/m/d H:i:s u')."\tReponce ".strlen($HILOWS)." Octes :\n".$HILOWS."\n";
+			
+			GetArchives ($fp);
 			echo date('Y/m/d H:i:s u')."\t".'Recuperation des Archives.'."\n";
 //			$DMPAFT=GetTelnetOutputData($fp,"DMPAFT");
 //			echo date('Y/m/d H:i:s u')."\t\n".$DMPAFT."\n";
@@ -69,7 +57,7 @@
 	}
 	else echo date('Y/m/d H:i:s u')."\t".'Echec de la connexion !';
 //	preg_split();
-function GetTelnetOutputData(&$fp, $cmd, $len)
+/*function GetTelnetOutputData(&$fp, $cmd, $len)
 {
 	$symb = $GLOBALS['symbols'];
 	fwrite ($fp, $cmd."\n");
@@ -89,6 +77,34 @@ function GetTelnetOutputData(&$fp, $cmd, $len)
 		echo 'NULL > '.strlen($str)."\n";
 		return null;
 	}
+}*/
+function GetMinMax (&$fp)
+{
+	$crc=false;
+	$symb = $GLOBALS['symbols'];
+	echo date('Y/m/d H:i:s u')."\t".'Recuperation des valeurs Maxi et Mini.'."\n";
+	for ($i=0;$i<5 && !$crc;$i++)
+	{
+		fwrite ($fp, "HILOWS\n");
+		usleep(100000);
+		$r = fread($fp, 1);
+		usleep(100000);
+		if ($r == $symb['ACK'])
+		{
+			$HILOWS = fread($fp, 436);
+			$CRC = fread($fp, 2);
+			$crc = true;//(genCRC(&$HILOWS, strlen($HILOWS))==$CRC)?true:false;
+			file_put_contents("./VP2-data.brut",$HILOWS);
+		}
+		else if ($r == $symb['NAK'])
+			echo date('Y/m/d H:i:s u')."\t".'NAK'."\n";
+		else
+			echo date('Y/m/d H:i:s u')."\t".'NULL'."\n";
+	}
+//	$HILOWS = GetTelnetOutputData($fp,"HILOWS\n", 440);
+//	echo date('Y/m/d H:i:s u')."\tReponce ".strlen($HILOWS)." Octes :\n".$HILOWS."\n";
+	return $crc;
 }
+
 ?>
 
