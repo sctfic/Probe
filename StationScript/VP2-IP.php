@@ -4,6 +4,7 @@
 //	$ip_vp2 = "nas-alban.no-ip.org";
 
 	$port_vp2 = 22222;
+	include ('./VP2-CRC.php');
 
 	echo date('Y/m/d H:i:s u')."\t".'Tentative de connexion...'."\n";
 	$fp = fsockopen($ip_vp2, $port_vp2);
