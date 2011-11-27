@@ -1,0 +1,14 @@
+<?php
+require_once 'Fields.phpc';
+
+// +++++++++++++++++++++++++++++++++++++++++++++++
+// +++++++++++++++ TEMPERATURE MANAGEMENT +++++++++++++
+class Temperature extends Fields
+{
+	function __construct() {
+
+	}
+
+}
+
+?>

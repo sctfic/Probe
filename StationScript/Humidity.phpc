@@ -1,0 +1,14 @@
+<?php
+require_once 'Fields.phpc';
+
+// +++++++++++++++++++++++++++++++++++++++++++++++
+// +++++++++++++++ PRESSURE MANAGEMENT +++++++++++++
+class Humidity extends Fields
+{
+	function __construct() {
+
+	}
+
+}
+
+?>

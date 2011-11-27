@@ -1,62 +1,161 @@
 <?php
+require_once "Fields.phpc";
+require_once "Humidity.phpc";
+require_once "Pressure.phpc";
+require_once "Radiation.phpc";
+require_once "Temperature.phpc";
+require_once "Wind.phpc"
+
 /*
 Script to read information from raw data return by the station
 */
 
-// This class define a generic structure for measurement management.
-class field
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++
+// ++++++++++++++++++++ VAR DEFINITION ++++++++++++++++++++++
+$measures = array(
+	'DailyLowBarometer' => new DailyLowBarometer();
+	'DailyHighBarometer' => new DailyHighBarometer();
+	'MonthLowBar' => new MonthLowBar();
+	'MonthHighBar' => new MonthHighBar();
+	'YearLowBarometer' => new YearLowBarometer();
+	'YearHighBarometer' => new YearHighBarometer();
+	'TimeofDayLowBar' => new TimeofDayLowBar();
+	'TimeofDayHighBar' => new TimeofDayHighBar();
+	'WindSpeedSection' => new WindSpeedSection();
+	'DailyHiWindSpeed' => new DailyHiWindSpeed();
+	'TimeofHiSpeed' => new TimeofHiSpeed();
+	'MonthHiWindSpeed' => new MonthHiWindSpeed();
+	'YearHiWindSpeed' => new YearHiWindSpeed();
+	'InsideTempSection' => new InsideTempSection();
+	'DayHiInsideTemp' => new DayHiInsideTemp();
+	'DayLowInsideTemp' => new DayLowInsideTemp();
+	'TimeDayHiInTemp' => new TimeDayHiInTemp();
+	'TimeDayLowInTemp' => new TimeDayLowInTemp();
+	'MonthLowInTemp' => new MonthLowInTemp();
+	'MonthHiInTemp' => new MonthHiInTemp();
+	'YearLowInTemp' => new YearLowInTemp();
+	'YearHiInTemp' => new YearHiInTemp();
+	'InsideHumiditySection' => new InsideHumiditySection();
+	'DayHiInHum' => new DayHiInHum();
+	'DayLowInHum' => new DayLowInHum();
+	'TimeDayHiInHum' => new TimeDayHiInHum();
+	'TimeDayLowInHum' => new TimeDayLowInHum();
+	'MonthHiInHum' => new MonthHiInHum();
+	'MonthLowInHum' => new MonthLowInHum();
+	'YearHiInHum' => new YearHiInHum();
+	'YearLowInHum' => new YearLowInHum();
+	'OutsideTempSection' => new OutsideTempSection();
+	'DayLowOutTemp' => new DayLowOutTemp();
+	'DayHiOutTemp' => new DayHiOutTemp();
+	'TimeDayLowOutTemp' => new TimeDayLowOutTemp();
+	'TimeDayHiOutTemp' => new TimeDayHiOutTemp();
+	'MonthHiOutTemp' => new MonthHiOutTemp();
+	'MonthLowOutTemp' => new MonthLowOutTemp();
+	'YearHiOutTemp' => new YearHiOutTemp();
+	'YearLowOutTemp' => new YearLowOutTemp();
+	//
+	'DewPointSection' => new DewPointSection();
+	'DayLowDewPoint' => new DayLowDewPoint();
+	'DayHiDewPoint' => new DayHiDewPoint();
+	'TimeDayLowDewPoint' => new TimeDayLowDewPoint();
+	'TimeDayHiDewPoint' => new TimeDayHiDewPoint();
+	'MonthHiDewPoint' => new MonthHiDewPoint();
+	'MonthLowDewPoint' => new MonthLowDewPoint();
+	'YearHiDewPoint' => new YearHiDewPoint();
+	'YearLowDewPoint' => new YearLowDewPoint();
+	'WindChillSection' => new WindChillSection();
+	'DayLowWindChill' => new DayLowWindChill();
+	'TimeDayLowChill' => new TimeDayLowChill();
+	'MonthLowWindChill' => new MonthLowWindChill();
+	'YearLowWindChill' => new YearLowWindChill();
+	'HeatIndexSection' => new HeatIndexSection();
+	'DayHighHeat' => new DayHighHeat();
+	'TimeofDayHighHeat' => new TimeofDayHighHeat();
+	'MonthHighHeat' => new MonthHighHeat();
+	'YearHighHeat' => new YearHighHeat();
+	'THSWIndexSection' => new THSWIndexSection();
+	'DayHighTHSW' => new DayHighTHSW();
+	'TimeofDayHighTHSW' => new TimeofDayHighTHSW();
+	'MonthHighTHSW' => new MonthHighTHSW();
+	'YearHighTHSW' => new YearHighTHSW();
+	'SolarRadiationSection' => new SolarRadiationSection();
+	'DayHighSolarRad' => new DayHighSolarRad();
+	'TimeofDayHighSolar' => new TimeofDayHighSolar();
+	'MonthHighSolarRad' => new MonthHighSolarRad();
+	'YearHighSolarRad' => new YearHighSolarRad();
+	'UVSection' => new UVSection();
+	'DayHighUV' => new DayHighUV();
+	'TimeofDayHighUV' => new TimeofDayHighUV();
+	'MonthHighUV' => new MonthHighUV();
+	'YearHighUV' => new YearHighUV();
+	'RainRateSection' => new RainRateSection();
+	'DayHighRainRate' => new DayHighRainRate();
+	'TimeofDayHighRainRate' => new TimeofDayHighRainRate();
+	'HourHighRainRate' => new HourHighRainRate();
+	'MonthHighRainRate' => new MonthHighRainRate();
+	'YearHighRainRate' => new YearHighRainRate();
+	'Extra_Leaf_SoilTemps' => new Extra_Leaf_SoilTemps();
+	//
+	'DayLowTemperature' => new DayLowTemperature();
+	'DayHiTemperature' => new DayHiTemperature();
+	'TimeDayLowTemperature' => new TimeDayLowTemperature();
+	'TimeDayHiTemperature' => new TimeDayHiTemperature();
+	'MonthHiTemperature' => new MonthHiTemperature();
+	'MonthLowTemperature' => new MonthLowTemperature();
+	'YearHiTemperature' => new YearHiTemperature();
+	'YearLowTemperature' => new YearLowTemperature();
+	'Outside_ExtraHums' => $Outside_ExtraHums();
+	'DayLowHumidity' => new DayLowHumidity();
+	'DayHiHumidity' => new DayHiHumidity();
+	'TimeDayLowHumidity' => new TimeDayLowHumidity();
+	'TimeDayHiHumidity' => new TimeDayHiHumidity();
+	'MonthHiHumidity' => new MonthHiHumidity();
+	'MonthLowHumidity' => new MonthLowHumidity();
+	'YearHiHumidity' => new YearHiHumidity();
+	'YearLowHumidity' => new YearLowHumidity();
+	'SoilMoistureSection' => new SoilMoistureSection();
+	'DayHiSoilMoisture' => new DayHiSoilMoisture();
+	'TimeDayHiSoilMoisture' => new TimeDayHiSoilMoisture();
+	'DayLowSoilMoisture' => new DayLowSoilMoisture();
+	'TimeDayLowSoilMoisture' => new TimeDayLowSoilMoisture();
+	'MonthLowSoilMoisture' => new MonthLowSoilMoisture();
+	'MonthHiSoilMoisture' => new MonthHiSoilMoisture();
+	'YearLowSoilMoisture' => new YearLowSoilMoisture();
+	'YearHiSoilMoisture' => new YearHiSoilMoisture();
+	'LeafWetnessSection' => new LeafWetnessSection();
+	'DayHiLeafWetness' => new DayHiLeafWetness();
+	'TimeDayHiLeafWetness' => new TimeDayHiLeafWetness();
+	'DayLowLeafWetness' => new DayLowLeafWetness();
+	'TimeDayLowLeafWetness' => new TimeDayLowLeafWetness();
+	'MonthLowLeafWetness' => new MonthLowLeafWetness();
+	'MonthHiLeafWetness' => new MonthHiLeafWetness();
+	'YearLowLeafWetness' => new YearLowLeafWetness();
+	'YearHiLeafWetness' => new YearHiLeafWetness();
+	'CRC' => new CRC();
+//
+
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++
+// ++++++++++++++++++++ VAR DEFINITION ++++++++++++++++++++++
+$rawDataFilePath = '../VP2-data.brut';
+$rawData = file_get_contents($rawDataFilePath);
+
+foreach ($measures as $measureKey => $measureObject)
 {
-  protected $fieldOffset=-1; // field offset (starting at 0)
-  protected $fieldlength=-1;   // field size/length
-  protected $fieldDescription=null; // description of the field
-
-
-// field offset
-  function setFieldOffset($value)
-  {
-    if ($value > 0)
-      { $this->fieldOffset = $value; }
-    else
-      { printf "Invalid `offset` value submitted (should be >0)."; }
-  }
-  function getFieldOffset()
-  { return $this->fieldOffset; }
-
-// field length
-  function setFieldLength($value)
-  {
-    if ($value > 0)
-      { $this->fieldLength = $value; }
-    else
-      { printf "Invalid `length` value submitted (should be >0)."; }
-  }
-  function getFieldLength()
-  { return $this->fieldLength; }
-
-// Explanation
-  function setFieldDescription($value)
-  {
-    $this->fieldDescription = $value;
-  }
-  function getFieldDescription()
-  { return $this->fieldDescription; }
-
-
-  function __construct()
-  {
-  }
+	printf("%s[%s]: from %s to %d",
+		$measureKey,
+		$measureObject->getFieldDescription(),
+		$measureObject->getFieldOffset,
+		$measureObject->getFieldLength()
+	);
 }
-
-
-
+echo strlen($raw);
 
 
 
 
 // +++++++++++++++++++++++++++++++++++++++++++++++
-// +++++++++++++++++HILOW Pac	++++++++++++++++++++
-// +++++++++++++++++++++++++++++++++++++++++++++++
-class BarometerSection
+// +++++++++++++++++ CLASS DEFINITION	 ++++++++++++++++++
+class BarometerSection extends Pressure
 {
 
   function __construct()
@@ -69,7 +168,7 @@ class BarometerSection
 
 
 // Object describing: DailyLowBarometer
-class DailyLowBarometer extends field
+class DailyLowBarometer extends Pressure
 {
 
   function __construct()
@@ -81,7 +180,7 @@ class DailyLowBarometer extends field
 
 
 // Object describing: DailyHighBarometer
-class DailyHighBarometer extends field
+class DailyHighBarometer extends Pressure
 {
 
   function __construct()
@@ -93,7 +192,7 @@ class DailyHighBarometer extends field
 
 
 // Object describing: MonthLowBar
-class MonthLowBar extends field
+class MonthLowBar extends Pressure
 {
 
   function __construct()
@@ -105,7 +204,7 @@ class MonthLowBar extends field
 
 
 // Object describing: MonthHighBar
-class MonthHighBar extends field
+class MonthHighBar extends Pressure
 {
 
   function __construct()
@@ -117,7 +216,7 @@ class MonthHighBar extends field
 
 
 // Object describing: YearLowBarometer
-class YearLowBarometer extends field
+class YearLowBarometer extends Pressure
 {
 
   function __construct()
@@ -129,7 +228,7 @@ class YearLowBarometer extends field
 
 
 // Object describing: YearHighBarometer
-class YearHighBarometer extends field
+class YearHighBarometer extends Pressure
 {
 
   function __construct()
@@ -141,7 +240,7 @@ class YearHighBarometer extends field
 
 
 // Object describing: TimeofDayLowBar
-class TimeofDayLowBar extends field
+class TimeofDayLowBar extends Pressure
 {
 
   function __construct()
@@ -153,7 +252,7 @@ class TimeofDayLowBar extends field
 
 
 // Object describing: TimeofDayHighBar
-class TimeofDayHighBar extends field
+class TimeofDayHighBar extends Pressure
 {
 
   function __construct()
@@ -165,7 +264,7 @@ class TimeofDayHighBar extends field
 
 
 // ################# WindSpeed Section #####################
-class WindSpeedSection extends field
+class WindSpeedSection extends Wind
 {
 
   function __construct()
@@ -177,7 +276,7 @@ class WindSpeedSection extends field
 
 
 // Object describing: DailyHiWindSpeed
-class DailyHiWindSpeed extends field
+class DailyHiWindSpeed extends Wind
 {
 
   function __construct()
@@ -189,7 +288,7 @@ class DailyHiWindSpeed extends field
 
 
 // Object describing: TimeofHiSpeed
-class TimeofHiSpeed extends field
+class TimeofHiSpeed extends Wind
 {
 
   function __construct()
@@ -201,7 +300,7 @@ class TimeofHiSpeed extends field
 
 
 // Object describing: MonthHiWindSpeed
-class MonthHiWindSpeed extends field
+class MonthHiWindSpeed extends Wind
 {
 
   function __construct()
@@ -213,7 +312,7 @@ class MonthHiWindSpeed extends field
 
 
 // Object describing: YearHiWindSpeed
-class YearHiWindSpeed extends field
+class YearHiWindSpeed extends Wind
 {
 
   function __construct()
@@ -225,7 +324,7 @@ class YearHiWindSpeed extends field
 
 
 // ################# InsideTemp Section #####################
-class InsideTempSection extends field
+class InsideTempSection extends Temperature
 {
 
   function __construct()
@@ -237,7 +336,7 @@ class InsideTempSection extends field
 
 
 // Object describing: DayHiInsideTemp
-class DayHiInsideTemp extends field
+class DayHiInsideTemp extends Temperature
 {
 
   function __construct()
@@ -249,7 +348,7 @@ class DayHiInsideTemp extends field
 
 
 // Object describing: DayLowInsideTemp
-class DayLowInsideTemp extends field
+class DayLowInsideTemp extends Temperature
 {
 
   function __construct()
@@ -261,7 +360,7 @@ class DayLowInsideTemp extends field
 
 
 // Object describing: TimeDayHiInTemp
-class TimeDayHiInTemp extends field
+class TimeDayHiInTemp extends Temperature
 {
 
   function __construct()
@@ -273,7 +372,7 @@ class TimeDayHiInTemp extends field
 
 
 // Object describing: TimeDayLowInTemp
-class TimeDayLowInTemp extends field
+class TimeDayLowInTemp extends Temperature
 {
 
   function __construct()
@@ -285,7 +384,7 @@ class TimeDayLowInTemp extends field
 
 
 // Object describing: MonthLowInTemp
-class MonthLowInTemp extends field
+class MonthLowInTemp extends Temperature
 {
 
   function __construct()
@@ -297,7 +396,7 @@ class MonthLowInTemp extends field
 
 
 // Object describing: MonthHiInTemp
-class MonthHiInTemp extends field
+class MonthHiInTemp extends Temperature
 {
 
   function __construct()
@@ -309,7 +408,7 @@ class MonthHiInTemp extends field
 
 
 // Object describing: YearLowInTemp
-class YearLowInTemp extends field
+class YearLowInTemp extends Temperature
 {
 
   function __construct()
@@ -321,7 +420,7 @@ class YearLowInTemp extends field
 
 
 // Object describing: YearHiInTemp
-class YearHiInTemp extends field
+class YearHiInTemp extends Temperature
 {
 
   function __construct()
@@ -333,7 +432,7 @@ class YearHiInTemp extends field
 
 
 // ################# InsideHumidity Section #####################
-class InsideHumiditySection extends field
+class InsideHumiditySection extends Humidity
 {
 
   function __construct()
@@ -345,7 +444,7 @@ class InsideHumiditySection extends field
 
 
 // Object describing: DayHiInHum
-class DayHiInHum extends field
+class DayHiInHum extends Humidity
 {
 
   function __construct()
@@ -357,7 +456,7 @@ class DayHiInHum extends field
 
 
 // Object describing: DayLowInHum
-class DayLowInHum extends field
+class DayLowInHum extends Humidity
 {
 
   function __construct()
@@ -369,7 +468,7 @@ class DayLowInHum extends field
 
 
 // Object describing: TimeDayHiInHum
-class TimeDayHiInHum extends field
+class TimeDayHiInHum extends Humidity
 {
 
   function __construct()
@@ -381,7 +480,7 @@ class TimeDayHiInHum extends field
 
 
 // Object describing: TimeDayLowInHum
-class TimeDayLowInHum extends field
+class TimeDayLowInHum extends Humidity
 {
 
   function __construct()
@@ -393,7 +492,7 @@ class TimeDayLowInHum extends field
 
 
 // Object describing: MonthHiInHum
-class MonthHiInHum extends field
+class MonthHiInHum extends Humidity
 {
 
   function __construct()
@@ -405,7 +504,7 @@ class MonthHiInHum extends field
 
 
 // Object describing: MonthLowInHum
-class MonthLowInHum extends field
+class MonthLowInHum extends Humidity
 {
 
   function __construct()
@@ -417,7 +516,7 @@ class MonthLowInHum extends field
 
 
 // Object describing: YearHiInHum
-class YearHiInHum extends field
+class YearHiInHum extends Humidity
 {
 
   function __construct()
@@ -429,7 +528,7 @@ class YearHiInHum extends field
 
 
 // Object describing: YearLowInHum
-class YearLowInHum extends field
+class YearLowInHum extends Humidity
 {
 
   function __construct()
@@ -441,7 +540,7 @@ class YearLowInHum extends field
 
 
 // ################# OutsideTemp Section #####################
-class OutsideTempSection extends field
+class OutsideTempSection extends Temperature
 {
 
   function __construct()
@@ -453,7 +552,7 @@ class OutsideTempSection extends field
 
 
 // Object describing: DayLowOutTemp
-class DayLowOutTemp extends field
+class DayLowOutTemp extends Temperature
 {
 
   function __construct()
@@ -465,7 +564,7 @@ class DayLowOutTemp extends field
 
 
 // Object describing: DayHiOutTemp
-class DayHiOutTemp extends field
+class DayHiOutTemp extends Temperature
 {
 
   function __construct()
@@ -477,7 +576,7 @@ class DayHiOutTemp extends field
 
 
 // Object describing: TimeDayLowOutTemp
-class TimeDayLowOutTemp extends field
+class TimeDayLowOutTemp extends Temperature
 {
 
   function __construct()
@@ -489,7 +588,7 @@ class TimeDayLowOutTemp extends field
 
 
 // Object describing: TimeDayHiOutTemp
-class TimeDayHiOutTemp extends field
+class TimeDayHiOutTemp extends Temperature
 {
 
   function __construct()
@@ -501,7 +600,7 @@ class TimeDayHiOutTemp extends field
 
 
 // Object describing: MonthHiOutTemp
-class MonthHiOutTemp extends field
+class MonthHiOutTemp extends Temperature
 {
 
   function __construct()
@@ -513,7 +612,7 @@ class MonthHiOutTemp extends field
 
 
 // Object describing: MonthLowOutTemp
-class MonthLowOutTemp extends field
+class MonthLowOutTemp extends Temperature
 {
 
   function __construct()
@@ -525,7 +624,7 @@ class MonthLowOutTemp extends field
 
 
 // Object describing: YearHiOutTemp
-class YearHiOutTemp extends field
+class YearHiOutTemp extends Temperature
 {
 
   function __construct()
@@ -537,7 +636,7 @@ class YearHiOutTemp extends field
 
 
 // Object describing: YearLowOutTemp
-class YearLowOutTemp extends field
+class YearLowOutTemp extends Temperature
 {
 
   function __construct()
@@ -550,1054 +649,970 @@ class YearLowOutTemp extends field
 //
 
 // ################# DewPoint Section #####################
-class DewPointSection extends field
+class DewPointSection extends Temperature
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(63);
+    $this->setFieldLength(16);
   }
 }
 
 
 // Object describing: DayLowDewPoint
-class DayLowDewPoint extends field
+class DayLowDewPoint extends Temperature
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(63);
+    $this->setFieldLength(2);
   }
 }
 
 
 // Object describing: DayHiDewPoint
-class DayHiDewPoint extends field
+class DayHiDewPoint extends Temperature
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(65);
+    $this->setFieldLength(2);
   }
 }
 
 
 // Object describing: TimeDayLowDewPoint
-class TimeDayLowDewPoint extends field
+class TimeDayLowDewPoint extends Temperature
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(67);
+    $this->setFieldLength(2);
   }
 }
 
 
 // Object describing: TimeDayHiDewPoint
-class TimeDayHiDewPoint extends field
+class TimeDayHiDewPoint extends Temperature
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(69);
+    $this->setFieldLength(2);
   }
 }
 
 
 // Object describing: MonthHiDewPoint
-class MonthHiDewPoint extends field
+class MonthHiDewPoint extends Temperature
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(71);
+    $this->setFieldLength(2);
   }
 }
 
 
 // Object describing: MonthLowDewPoint
-class MonthLowDewPoint extends field
+class MonthLowDewPoint extends Temperature
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(73);
+    $this->setFieldLength(2);
   }
 }
 
 
 // Object describing: YearHiDewPoint
-class YearHiDewPoint extends field
+class YearHiDewPoint extends Temperature
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(75);
+    $this->setFieldLength(2);
   }
 }
 
 
 // Object describing: YearLowDewPoint
-class YearLowDewPoint extends field
+class YearLowDewPoint extends Temperature
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(77);
+    $this->setFieldLength(2);
   }
 }
 
 
 // ################# WindChill Section #####################
-class WindChillSection extends field
+class WindChillSection extends Temperature
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(79);
+    $this->setFieldLength(8);
   }
 }
 
 
 // Object describing: DayLowWindChill
-class DayLowWindChill extends field
+class DayLowWindChill extends Temperature
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(79);
+    $this->setFieldLength(2);
   }
 }
 
 
 // Object describing: TimeDayLowChill
-class TimeDayLowChill extends field
+class TimeDayLowChill extends Temperature
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(81);
+    $this->setFieldLength(2);
   }
 }
 
 
 // Object describing: MonthLowWindChill
-class MonthLowWindChill extends field
+class MonthLowWindChill extends Temperature
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(83);
+    $this->setFieldLength(2);
   }
 }
 
 
 // Object describing: YearLowWindChill
-class YearLowWindChill extends field
+class YearLowWindChill extends Temperature
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(85);
+    $this->setFieldLength(2);
   }
 }
 
 
 // ################# HeatIndex Section #####################
-class HeatIndexSection extends field
+class HeatIndexSection extends Temperature
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(87);
+    $this->setFieldLength(8);
   }
 }
 
 
 // Object describing: DayHighHeat
-class DayHighHeat extends field
+class DayHighHeat extends Temperature
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(87);
+    $this->setFieldLength(2);
   }
 }
 
 
 // Object describing: TimeofDayHighHeat
-class TimeofDayHighHeat extends field
+class TimeofDayHighHeat extends Temperature
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(89);
+    $this->setFieldLength(2);
   }
 }
 
 
 // Object describing: MonthHighHeat
-class MonthHighHeat extends field
+class MonthHighHeat extends Temperature
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(91);
+    $this->setFieldLength(2);
   }
 }
 
 
 // Object describing: YearHighHeat
-class YearHighHeat extends field
+class YearHighHeat extends Temperature
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(93);
+    $this->setFieldLength(2);
   }
 }
 
 
 // ################# THSWIndex Section #####################
-class THSWIndexSection extends field
+class THSWIndexSection extends Temperature
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(95);
+    $this->setFieldLength(8);
   }
 }
 
 
 // Object describing: DayHighTHSW
-class DayHighTHSW extends field
+class DayHighTHSW extends Temperature
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(95);
+    $this->setFieldLength(2);
   }
 }
 
 
 // Object describing: TimeofDayHighTHSW
-class TimeofDayHighTHSW extends field
+class TimeofDayHighTHSW extends Temperature
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(97);
+    $this->setFieldLength(2);
   }
 }
 
 
 // Object describing: MonthHighTHSW
-class MonthHighTHSW extends field
+class MonthHighTHSW extends Temperature
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(99);
+    $this->setFieldLength(2);
   }
 }
 
 
 // Object describing: YearHighTHSW
-class YearHighTHSW extends field
+class YearHighTHSW extends Temperature
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(101);
+    $this->setFieldLength(2);
   }
 }
 
 
 // ################# SolarRadiation Section #####################
-class SolarRadiationSection extends field
+class SolarRadiationSection extends Radiation
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(103);
+    $this->setFieldLength(8);
   }
 }
 
 
 // Object describing: DayHighSolarRad
-class DayHighSolarRad extends field
+class DayHighSolarRad extends Radiation
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(103);
+    $this->setFieldLength(2);
   }
 }
 
 
 // Object describing: TimeofDayHighSolar
-class TimeofDayHighSolar extends field
+class TimeofDayHighSolar extends Radiation
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(105);
+    $this->setFieldLength(2);
   }
 }
 
 
 // Object describing: MonthHighSolarRad
-class MonthHighSolarRad extends field
+class MonthHighSolarRad extends Radiation
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(107);
+    $this->setFieldLength(2);
   }
 }
 
 
 // Object describing: YearHighSolarRad
-class YearHighSolarRad extends field
+class YearHighSolarRad extends Radiation
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(109);
+    $this->setFieldLength(2);
   }
 }
 
 
 // ################# UV Section #####################
-class UVSection extends field
+class UVSection extends Radiation
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(111);
+    $this->setFieldLength(5);
   }
 }
 
 
 // Object describing: DayHighUV
-class DayHighUV extends field
+class DayHighUV extends Radiation
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(111);
+    $this->setFieldLength(1);
   }
 }
 
 
 // Object describing: TimeofDayHighUV
-class TimeofDayHighUV extends field
+class TimeofDayHighUV extends Radiation
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(112);
+    $this->setFieldLength(2);
   }
 }
 
 
 // Object describing: MonthHighUV
-class MonthHighUV extends field
+class MonthHighUV extends Radiation
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(114);
+    $this->setFieldLength(1);
   }
 }
 
 
 // Object describing: YearHighUV
-class YearHighUV extends field
+class YearHighUV extends Radiation
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(115);
+    $this->setFieldLength(1);
   }
 }
 
 
 // ################# RainRate Section #####################
-class RainRateSection extends field
+class RainRateSection extends Humidity
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(116);
+    $this->setFieldLength(10);
   }
 }
 
 
 // Object describing: DayHighRainRate
-class DayHighRainRate extends field
+class DayHighRainRate extends Humidity
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(116);
+    $this->setFieldLength(2);
   }
 }
 
 
 // Object describing: TimeofDayHighRainRate
-class TimeofDayHighRainRate extends field
+class TimeofDayHighRainRate extends Humidity
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(118);
+    $this->setFieldLength(2);
   }
 }
 
 
 // Object describing: HourHighRainRate
-class HourHighRainRate extends field
+class HourHighRainRate extends Humidity
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(120);
+    $this->setFieldLength(2);
   }
 }
 
 
 // Object describing: MonthHighRainRate
-class MonthHighRainRate extends field
+class MonthHighRainRate extends Humidity
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(122);
+    $this->setFieldLength(2);
   }
 }
 
 
 // Object describing: YearHighRainRate
-class YearHighRainRate extends field
+class YearHighRainRate extends Humidity
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(124);
+    $this->setFieldLength(2);
   }
 }
 
 
-// Object describing: Extra/Leaf/SoilTemps
-class Extra_Leaf_SoilTemps extends field
+// ################# Extra/Leaf/Soil Temps #####################
+// Each field has 15 entries.
+// Indexes 0 – 6 = Extra Temperatures 2 – 8
+// Indexes 7 – 10 = Leaf Temperatures 1 – 4
+// Indexes 11 – 14 = Soil Temperatures 1 – 4
+class Extra_Leaf_SoilTemps extends Temperature
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(126);
+    $this->setFieldLength(150);
   }
 }
 
 
 // Object describing: DayLowTemperature
-class DayLowTemperature extends field
+// (15 * 1)
+class DayLowTemperature extends Temperature
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(126);
+    $this->setFieldLength(15);
   }
 }
 
 
 // Object describing: DayHiTemperature
-class DayHiTemperature extends field
+// (15 * 1)
+class DayHiTemperature extends Temperature
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(141);
+    $this->setFieldLength(15);
   }
 }
 
 
 // Object describing: TimeDayLowTemperature
-class TimeDayLowTemperature extends field
+// (15 * 2)
+class TimeDayLowTemperature extends Temperature
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(156);
+    $this->setFieldLength(30);
   }
 }
 
 
 // Object describing: TimeDayHiTemperature
-class TimeDayHiTemperature extends field
+// (15 * 2)
+class TimeDayHiTemperature extends Temperature
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(186);
+    $this->setFieldLength(30);
   }
 }
 
 
 // Object describing: MonthHiTemperature
-class MonthHiTemperature extends field
+// (15 * 1)
+class MonthHiTemperature extends Temperature
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(216);
+    $this->setFieldLength(15);
   }
 }
 
 
 // Object describing: MonthLowTemperature
-class MonthLowTemperature extends field
+// (15 * 1)
+class MonthLowTemperature extends Temperature
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(231);
+    $this->setFieldLength(15);
   }
 }
 
 
 // Object describing: YearHiTemperature
-class YearHiTemperature extends field
+// (15 * 1)
+class YearHiTemperature extends Temperature
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(246);
+    $this->setFieldLength(15);
   }
 }
 
 
 // Object describing: YearLowTemperature
-class YearLowTemperature extends field
+// (15 * 1)
+class YearLowTemperature extends Temperature
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(261);
+    $this->setFieldLength(15);
   }
 }
 
 
 // Object describing: Outside_ExtraHums
-class Outside_ExtraHums extends field
+// Each field has 8 entries
+// Index 0 = Outside Humidity
+// Index 1 – 7 = Extra Humidities 2 – 8
+class Outside_ExtraHums extends Humidity
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(276);
+    $this->setFieldLength(80);
   }
 }
 
 // Object describing: DayLowHumidity
-class DayLowHumidity extends field
+// (8 * 1)
+class DayLowHumidity extends Humidity
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(276);
+    $this->setFieldLength(8);
   }
 }
 
 
 // Object describing: DayHiHumidity
-class DayHiHumidity extends field
+// (8 * 1)
+class DayHiHumidity extends Humidity
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(284);
+    $this->setFieldLength(8);
   }
 }
 
 
 // Object describing: TimeDayLowHumidity
-class TimeDayLowHumidity extends field
+// (8 * 2)
+class TimeDayLowHumidity extends Humidity
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(292);
+    $this->setFieldLength(16);
   }
 }
 
 
 // Object describing: TimeDayHiHumidity
-class TimeDayHiHumidity extends field
+// (8 * 2)
+class TimeDayHiHumidity extends Humidity
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(308);
+    $this->setFieldLength(16);
   }
 }
 
 
 // Object describing: MonthHiHumidity
-class MonthHiHumidity extends field
+// (8 * 1)
+class MonthHiHumidity extends Humidity
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(324);
+    $this->setFieldLength(8);
   }
 }
 
 
 // Object describing: MonthLowHumidity
-class MonthLowHumidity extends field
+// (8 * 1)
+class MonthLowHumidity extends Humidity
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(332);
+    $this->setFieldLength(8);
   }
 }
 
 
 // Object describing: YearHiHumidity
-class YearHiHumidity extends field
+// (8 * 1)
+class YearHiHumidity extends Humidity
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(340);
+    $this->setFieldLength(8);
   }
 }
 
 
 // Object describing: YearLowHumidity
-class YearLowHumidity extends field
+// (8 * 1)
+class YearLowHumidity extends Humidity
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(348);
+    $this->setFieldLength(8);
   }
 }
 
 
 // ################# SoilMoisture Section #####################
-class SoilMoistureSection extends field
+// Each field has 4 entries.
+// Indexes 0 – 3 = Soil Moistures 1 – 4
+class SoilMoistureSection extends Humidity
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(356);
+    $this->setFieldLength(40);
   }
 }
 
 
 // Object describing: DayHiSoilMoisture
-class DayHiSoilMoisture extends field
+// (4 * 1)
+class DayHiSoilMoisture extends Humidity
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(356);
+    $this->setFieldLength(4);
   }
 }
 
 
 // Object describing: TimeDayHiSoilMoisture
-class TimeDayHiSoilMoisture extends field
+// (4 * 2)
+class TimeDayHiSoilMoisture extends Humidity
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(360);
+    $this->setFieldLength(8);
   }
 }
 
 
 // Object describing: DayLowSoilMoisture
-class DayLowSoilMoisture extends field
+// (4 * 1)
+class DayLowSoilMoisture extends Humidity
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(368);
+    $this->setFieldLength(4);
   }
 }
 
 
 // Object describing: TimeDayLowSoilMoisture
-class TimeDayLowSoilMoisture extends field
+// (4 * 2)
+class TimeDayLowSoilMoisture extends Humidity
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(372);
+    $this->setFieldLength(8);
   }
 }
 
 
 // Object describing: MonthLowSoilMoisture
-class MonthLowSoilMoisture extends field
+// (4 * 1)
+class MonthLowSoilMoisture extends Humidity
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(380);
+    $this->setFieldLength(4);
   }
 }
 
 
 // Object describing: MonthHiSoilMoisture
-class MonthHiSoilMoisture extends field
+// (4 * 1)
+class MonthHiSoilMoisture extends Humidity
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(384);
+    $this->setFieldLength(4);
   }
 }
 
 
 // Object describing: YearLowSoilMoisture
-class YearLowSoilMoisture extends field
+// (4 * 1)
+class YearLowSoilMoisture extends Humidity
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(388);
+    $this->setFieldLength(4);
   }
 }
 
 
 // Object describing: YearHiSoilMoisture
-class YearHiSoilMoisture extends field
+// (4 * 1)
+class YearHiSoilMoisture extends Humidity
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(392);
+    $this->setFieldLength(4);
   }
 }
 
 
 // ################# LeafWetness Section #####################
-class LeafWetnessSection extends field
+// Each field has 4 entries.
+// Indexes 0 – 3 = Leaf Wetness 1 – 4
+class LeafWetnessSection extends Humidity
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(396);
+    $this->setFieldLength(40);
   }
 }
 
 
 // Object describing: DayHiLeafWetness
-class DayHiLeafWetness extends field
+// (4 * 1)
+class DayHiLeafWetness extends Humidity
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(396);
+    $this->setFieldLength(4);
   }
 }
 
 
 // Object describing: TimeDayHiLeafWetness
-class TimeDayHiLeafWetness extends field
+// (4 * 2)
+class TimeDayHiLeafWetness extends Humidity
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(400);
+    $this->setFieldLength(8);
   }
 }
 
 
 // Object describing: DayLowLeafWetness
-class DayLowLeafWetness extends field
+// (4 * 1)
+class DayLowLeafWetness extends Humidity
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(408);
+    $this->setFieldLength(4);
   }
 }
 
 
 // Object describing: TimeDayLowLeafWetness
-class TimeDayLowLeafWetness extends field
+// (4 * 2)
+class TimeDayLowLeafWetness extends Humidity
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(412);
+    $this->setFieldLength(8);
   }
 }
 
 
 // Object describing: MonthLowLeafWetness
-class MonthLowLeafWetness extends field
+// (4 * 1)
+class MonthLowLeafWetness extends Humidity
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(420);
+    $this->setFieldLength(4);
   }
 }
 
 
 // Object describing: MonthHiLeafWetness
-class MonthHiLeafWetness extends field
+// (4 * 1)
+class MonthHiLeafWetness extends Humidity
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(424);
+    $this->setFieldLength(4);
   }
 }
 
 
 // Object describing: YearLowLeafWetness
-class YearLowLeafWetness extends field
+// (4 * 1)
+class YearLowLeafWetness extends Humidity
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(428);
+    $this->setFieldLength(4);
   }
 }
 
 
 // Object describing: YearHiLeafWetness
-class YearHiLeafWetness extends field
+// (4 * 1)
+class YearHiLeafWetness extends Humidity
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(432);
+    $this->setFieldLength(4);
   }
 }
 
 
 // Object describing: CRC
-class CRC extends field
+class CRC extends Fields
 {
 
   function __construct()
   {
-    $this->setFieldOffset();
-    $this->setFieldLength();
+    $this->setFieldOffset(436);
+    $this->setFieldLength(2);
   }
 }
 
 
 
-
-// +++++++++++++++++++++++++++++++++++++++++++++++++++++
-// +++++++++++++++++++ INSTANCAITION ++++++++++++++++++++++
-// +++++++++++++++++++++++++++++++++++++++++++++++++++++
-$DailyLowBarometer = new DailyLowBarometer();
-$DailyHighBarometer = new DailyHighBarometer();
-$MonthLowBar = new MonthLowBar();
-$MonthHighBar = new MonthHighBar();
-$YearLowBarometer = new YearLowBarometer();
-$YearHighBarometer = new YearHighBarometer();
-$TimeofDayLowBar = new TimeofDayLowBar();
-$TimeofDayHighBar = new TimeofDayHighBar();
-$WindSpeedSection = new WindSpeedSection();
-$DailyHiWindSpeed = new DailyHiWindSpeed();
-$TimeofHiSpeed = new TimeofHiSpeed();
-$MonthHiWindSpeed = new MonthHiWindSpeed();
-$YearHiWindSpeed = new YearHiWindSpeed();
-$InsideTempSection = new InsideTempSection();
-$DayHiInsideTemp = new DayHiInsideTemp();
-$DayLowInsideTemp = new DayLowInsideTemp();
-$TimeDayHiInTemp = new TimeDayHiInTemp();
-$TimeDayLowInTemp = new TimeDayLowInTemp();
-$MonthLowInTemp = new MonthLowInTemp();
-$MonthHiInTemp = new MonthHiInTemp();
-$YearLowInTemp = new YearLowInTemp();
-$YearHiInTemp = new YearHiInTemp();
-$InsideHumiditySection = new InsideHumiditySection();
-$DayHiInHum = new DayHiInHum();
-$DayLowInHum = new DayLowInHum();
-$TimeDayHiInHum = new TimeDayHiInHum();
-$TimeDayLowInHum = new TimeDayLowInHum();
-$MonthHiInHum = new MonthHiInHum();
-$MonthLowInHum = new MonthLowInHum();
-$YearHiInHum = new YearHiInHum();
-$YearLowInHum = new YearLowInHum();
-$OutsideTempSection = new OutsideTempSection();
-$DayLowOutTemp = new DayLowOutTemp();
-$DayHiOutTemp = new DayHiOutTemp();
-$TimeDayLowOutTemp = new TimeDayLowOutTemp();
-$TimeDayHiOutTemp = new TimeDayHiOutTemp();
-$MonthHiOutTemp = new MonthHiOutTemp();
-$MonthLowOutTemp = new MonthLowOutTemp();
-$YearHiOutTemp = new YearHiOutTemp();
-$YearLowOutTemp = new YearLowOutTemp();
-//
-$DewPointSection = new DewPointSection();
-$DayLowDewPoint = new DayLowDewPoint();
-$DayHiDewPoint = new DayHiDewPoint();
-$TimeDayLowDewPoint = new TimeDayLowDewPoint();
-$TimeDayHiDewPoint = new TimeDayHiDewPoint();
-$MonthHiDewPoint = new MonthHiDewPoint();
-$MonthLowDewPoint = new MonthLowDewPoint();
-$YearHiDewPoint = new YearHiDewPoint();
-$YearLowDewPoint = new YearLowDewPoint();
-$WindChillSection = new WindChillSection();
-$DayLowWindChill = new DayLowWindChill();
-$TimeDayLowChill = new TimeDayLowChill();
-$MonthLowWindChill = new MonthLowWindChill();
-$YearLowWindChill = new YearLowWindChill();
-$HeatIndexSection = new HeatIndexSection();
-$DayHighHeat = new DayHighHeat();
-$TimeofDayHighHeat = new TimeofDayHighHeat();
-$MonthHighHeat = new MonthHighHeat();
-$YearHighHeat = new YearHighHeat();
-$THSWIndexSection = new THSWIndexSection();
-$DayHighTHSW = new DayHighTHSW();
-$TimeofDayHighTHSW = new TimeofDayHighTHSW();
-$MonthHighTHSW = new MonthHighTHSW();
-$YearHighTHSW = new YearHighTHSW();
-$SolarRadiationSection = new SolarRadiationSection();
-$DayHighSolarRad = new DayHighSolarRad();
-$TimeofDayHighSolar = new TimeofDayHighSolar();
-$MonthHighSolarRad = new MonthHighSolarRad();
-$YearHighSolarRad = new YearHighSolarRad();
-$UVSection = new UVSection();
-$DayHighUV = new DayHighUV();
-$TimeofDayHighUV = new TimeofDayHighUV();
-$MonthHighUV = new MonthHighUV();
-$YearHighUV = new YearHighUV();
-$RainRateSection = new RainRateSection();
-$DayHighRainRate = new DayHighRainRate();
-$TimeofDayHighRainRate = new TimeofDayHighRainRate();
-$HourHighRainRate = new HourHighRainRate();
-$MonthHighRainRate = new MonthHighRainRate();
-$YearHighRainRate = new YearHighRainRate();
-$Extra_Leaf_SoilTemps = new Extra_Leaf_SoilTemps();
-//
-$DayLowTemperature = new DayLowTemperature();
-$DayHiTemperature = new DayHiTemperature();
-$TimeDayLowTemperature = new TimeDayLowTemperature();
-$TimeDayHiTemperature = new TimeDayHiTemperature();
-$MonthHiTemperature = new MonthHiTemperature();
-$MonthLowTemperature = new MonthLowTemperature();
-$YearHiTemperature = new YearHiTemperature();
-$YearLowTemperature = new YearLowTemperature();
-$Outside_ExtraHums = $Outside_ExtraHums();
-$DayLowHumidity = new DayLowHumidity();
-$DayHiHumidity = new DayHiHumidity();
-$TimeDayLowHumidity = new TimeDayLowHumidity();
-$TimeDayHiHumidity = new TimeDayHiHumidity();
-$MonthHiHumidity = new MonthHiHumidity();
-$MonthLowHumidity = new MonthLowHumidity();
-$YearHiHumidity = new YearHiHumidity();
-$YearLowHumidity = new YearLowHumidity();
-$SoilMoistureSection = new SoilMoistureSection();
-$DayHiSoilMoisture = new DayHiSoilMoisture();
-$TimeDayHiSoilMoisture = new TimeDayHiSoilMoisture();
-$DayLowSoilMoisture = new DayLowSoilMoisture();
-$TimeDayLowSoilMoisture = new TimeDayLowSoilMoisture();
-$MonthLowSoilMoisture = new MonthLowSoilMoisture();
-$MonthHiSoilMoisture = new MonthHiSoilMoisture();
-$YearLowSoilMoisture = new YearLowSoilMoisture();
-$YearHiSoilMoisture = new YearHiSoilMoisture();
-$LeafWetnessSection = new LeafWetnessSection();
-$DayHiLeafWetness = new DayHiLeafWetness();
-$TimeDayHiLeafWetness = new TimeDayHiLeafWetness();
-$DayLowLeafWetness = new DayLowLeafWetness();
-$TimeDayLowLeafWetness = new TimeDayLowLeafWetness();
-$MonthLowLeafWetness = new MonthLowLeafWetness();
-$MonthHiLeafWetness = new MonthHiLeafWetness();
-$YearLowLeafWetness = new YearLowLeafWetness();
-$YearHiLeafWetness = new YearHiLeafWetness();
-$CRC = new CRC();
-//
-$rawDataFilePath = '../VP2-data.brut';
-$rawData = file_get_contents($rawDataFilePath);
-echo strlen($raw);
 ?>
