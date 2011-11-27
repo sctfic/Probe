@@ -33,38 +33,16 @@ $crc_table = array(
         0xef1f,  0xff3e,  0xcf5d,  0xdf7c,  0xaf9b,  0xbfba,  0x8fd9,  0x9ff8,
         0x6e17,  0x7e36,  0x4e55,  0x5e74,  0x2e93,  0x3eb2,  0xed1,  0x1ef0);
 
-//	$test = array(0xC6, 0xCE, 0xA2, 0x03);
-//	$test = 0xC6CEA203;
-	$test = chr(0xC6).chr(0xCE).chr(0xA2).chr(0x03);
-	genCRC ($test, 4);
+
+//	$test = chr(0xC6).chr(0xCE).chr(0xA2).chr(0x03); // CRC16-CCITT = 0xE2B4
+//	genCRC ($test);
        
-function genCRC ($ptr, $length)
+function genCRC (&$ptr)
 {
-	$crc = 0;
+	$crc = 0x0000;
 	$crc_table = $GLOBALS['crc_table'];
-	for ($i = 0; $i < $length; $i++)
-	{
-		$crc =  $crc_table[($crc >> 8) ^ ord($ptr[$i])] ^ ($crc << 8);
-		echo "  \$ptr[$i]=0x".dechex(ord($ptr[$i])).'  >  0x'.dechex(ord($crc[0])).dechex(ord($crc[1]))."\n";
-	}
-//	$crc = (($crc >> 8) & 0xFF) | (($crc << 8) & 0xFF00);
-	echo '0x'.dechex(ord($crc[0])).dechex(ord($crc[1]))."\n";
+	for ($i = 0; $i < strlen($ptr); $i++)
+		$crc =  $crc_table[(($crc>>8) ^ ord($ptr[$i]))] ^ (($crc<<8) & 0x00FFFF);
 	return $crc;
 }
-echo "\n\n";
-
-	crc16($test);
-
-function crc16($data)
- {
-   $crc = 0xFFFF;
-   for ($i = 0; $i < strlen($data); $i++)
-   {
-     $x = (($crc >> 8) ^ ord($data[$i])) & 0xFF;
-     $x ^= $x >> 4;
-     $crc = (($crc << 8) ^ ($x << 12) ^ ($x << 5) ^ $x) & 0xFFFF;
- 	echo '0x'.dechex(ord($crc[0])).dechex(ord($crc[1]))."\n";
-  }
-   return $crc;
- }
 ?>
