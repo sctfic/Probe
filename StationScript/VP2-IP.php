@@ -108,6 +108,44 @@ function GetArchives (&$fp)
 	echo date('Y/m/d H:i:s u')."\t".'Recuperation des Archives.'."\n";
 //	fwrite($fp,"DMPAFT");
 }
+function GetArchives (&$fp)
+{
+	$crc=false;
+	$retry = 3;
+	$symb = $GLOBALS['symbols'];
+	fwrite($fp,"DMPAFT");
+	Waiting (4,'Recuperation des Archives.');
+	for ($i=0;$i<=$retry && !$crc;$i++)
+	{
+		
+	}
+}
+function DMPAFT_SetVP2Date ($StrDate)
+{// 06-06-2003 9:30  =  0x06 0xD3 0x03 0xA2
+	
+	return $VP2Date;
+}
+function DMPAFT_GetVP2Date ($VP2Date)
+{// 06-06-2003 9:30  =  0x06D3 0x03A2
+	$DateStamp = $VP2Date >> 16; // 0x06 0xD3
+		$y = (($DateStamp & 0xFE00)>>9)+2000;
+		$m = ($DateStamp & 0x01E0)>>5;
+		$d = $DateStamp & 0x1f;
+	$TimeStamp = $VP2Date & 0xFFFF; // 0x03 0xA2
+		$h = (int)($TimeStamp/100);
+		$min = $TimeStamp-$h*100;
+	return $y.'/'.$m.'/'.$d.' '.$h.':'.$min;
+}
+function SetVP2Date ($StrDate)
+{
+	
+	return $VP2Date;
+}
+function GetVP2Date ($VP2Date)
+{
+	
+	return $StrDate;
+}
 function Waiting ($s=10, $msg = 'Waiting and retry')
 {
 	$w = '-\|/';
