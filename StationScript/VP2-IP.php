@@ -50,7 +50,10 @@ stream_set_timeout($fp, 0, 2500000);
 
 if ($fp)
 {	
-	Avaible ($fp);
+	//Avaible ($fp);
+	echo TIME_GetVP2Date (0x01230f1f0c6f)."\n";
+	echo dechex(TIME_SetVP2Date(TIME_GetVP2Date (0x01230f1f0c6f)))."\n";
+//	echo dechex(DMPAFT_SetVP2Date (DMPAFT_GetVP2Date (0x06D303A2)))."\n";
 	// Termeture de la connexion Telnet
 	Waiting (12, 'Fermeture de la connexion');
 	fread($fp, 999); // vidange
@@ -113,36 +116,6 @@ function GetArchives (&$fp)
 		
 	}
 }
-function DMPAFT_SetVP2Date ($StrDate)
-{// 06-06-2003 9:30  =  0x06D3 0x03A2
-	$y = substr($StrDate, 0, 4);
-	$m = substr($StrDate, 5, 2);
-	$d = substr($StrDate, 8, 2);
-	$h = substr($StrDate, -5, 2);
-	$min = substr($StrDate, -2);
-	return (($y-2000)*512+$m*32+$d).($h*100+$min);
-}
-function DMPAFT_GetVP2Date ($VP2Date)
-{// 06-06-2003 9:30  =  0x06D3 0x03A2
-	$DateStamp = $VP2Date >> 16; // 0x06 0xD3
-		$y = (($DateStamp & 0xFE00)>>9)+2000;
-		$m = str_pad(($DateStamp & 0x01E0)>>5,2,'0',STR_PAD_LEFT);
-		$d = str_pad($DateStamp & 0x1f,2,'0',STR_PAD_LEFT);
-	$TimeStamp = $VP2Date & 0xFFFF; // 0x03 0xA2
-		$h = str_pad((int)($TimeStamp/100),2,'0',STR_PAD_LEFT);
-		$min = str_pad($TimeStamp-$h*100,2,'0',STR_PAD_LEFT);
-	return $y.'/'.$m.'/'.$d.' '.$h.':'.$min;
-}
-function SetVP2Date ($StrDate)
-{
-	
-	return $VP2Date;
-}
-function GetVP2Date ($VP2Date)
-{
-	
-	return $StrDate;
-}
 function Waiting ($s=10, $msg = 'Waiting and retry')
 {
 	$w = '-\|/';
@@ -183,7 +156,48 @@ function GetMinMax (&$fp)
 	}
 	return $crc;
 }
-
+function TIME_SetVP2Date ($StrDate)
+{//  2011/12/31 15:35:01 = 0x01230f1f0c6f
+	$y = substr($StrDate, 0, 4)-1900;
+	$m = (substr($StrDate, 5, 2))<<8;
+	$d = (substr($StrDate, 8, 2))<<16;
+	$h = (substr($StrDate, -8, 2))<<24;
+	$min = (substr($StrDate, -5, 2))<<32;
+	$s = (substr($StrDate, -2))<<40;
+	return $s+$min+$h+$d+$m+$y;
+}
+function TIME_GetVP2Date ($VP2Date)
+{// sur 6 Octes : sec min h  d m y
+//  2011/12/31 15:35:01 = 0x01230f1f0c6f
+	$y = ($VP2Date & 0xff) + 1900;
+	$m = str_pad(($VP2Date & 0xff00)>>8,2,'0',STR_PAD_LEFT);
+	$d = str_pad(($VP2Date & 0xff0000)>>16,2,'0',STR_PAD_LEFT);
+	$h = str_pad(($VP2Date & 0xff000000)>>24,2,'0',STR_PAD_LEFT);
+	$min = str_pad(($VP2Date & 0xff00000000)>>32,2,'0',STR_PAD_LEFT);
+	$s = str_pad(($VP2Date & 0xff0000000000)>>40,2,'0',STR_PAD_LEFT);
+	return $y.'/'.$m.'/'.$d.' '.$h.':'.$min.':'.$s;
+}
+function DMPAFT_SetVP2Date ($StrDate)
+{// 19-06-2003 9:30  =  0x06D3 0x03A2
+	$y = substr($StrDate, 0, 4);
+	$m = substr($StrDate, 5, 2);
+	$d = substr($StrDate, 8, 2);
+	$h = substr($StrDate, -8, 2);
+	$min = substr($StrDate, -5, 2);
+	$s = substr($StrDate, -2);
+	return ((($y-2000)*512+$m*32+$d)<<16) + ($h*100+$min);
+}
+function DMPAFT_GetVP2Date ($VP2Date)
+{// 19-06-2003 9:30  =  0x06D3 0x03A2
+	$DateStamp = $VP2Date >> 16; // 0x06 0xD3
+		$y = (($DateStamp & 0xFE00)>>9)+2000;
+		$m = str_pad(($DateStamp & 0x01E0)>>5,2,'0',STR_PAD_LEFT);
+		$d = str_pad($DateStamp & 0x1f,2,'0',STR_PAD_LEFT);
+	$TimeStamp = $VP2Date & 0xFFFF; // 0x03 0xA2
+		$h = str_pad((int)($TimeStamp/100),2,'0',STR_PAD_LEFT);
+		$min = str_pad($TimeStamp-$h*100,2,'0',STR_PAD_LEFT);
+	return $y.'/'.$m.'/'.$d.' '.$h.':'.$min.':00';
+}
 function CRC16_CCITT(&$ptr)
 {// le CRC16 d'ųne chaine + son CRC est toujours = a 0x0000
 	$crc = 0x0000;
