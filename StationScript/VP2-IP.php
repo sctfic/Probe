@@ -104,13 +104,6 @@ function Avaible (&$fp)
 function GetArchives (&$fp)
 {
 	$crc=false;
-	$symb = $GLOBALS['symbols'];
-	echo date('Y/m/d H:i:s u')."\t".'Recuperation des Archives.'."\n";
-//	fwrite($fp,"DMPAFT");
-}
-function GetArchives (&$fp)
-{
-	$crc=false;
 	$retry = 3;
 	$symb = $GLOBALS['symbols'];
 	fwrite($fp,"DMPAFT");
@@ -121,19 +114,23 @@ function GetArchives (&$fp)
 	}
 }
 function DMPAFT_SetVP2Date ($StrDate)
-{// 06-06-2003 9:30  =  0x06 0xD3 0x03 0xA2
-	
-	return $VP2Date;
+{// 06-06-2003 9:30  =  0x06D3 0x03A2
+	$y = substr($StrDate, 0, 4);
+	$m = substr($StrDate, 5, 2);
+	$d = substr($StrDate, 8, 2);
+	$h = substr($StrDate, -5, 2);
+	$min = substr($StrDate, -2);
+	return (($y-2000)*512+$m*32+$d).($h*100+$min);
 }
 function DMPAFT_GetVP2Date ($VP2Date)
 {// 06-06-2003 9:30  =  0x06D3 0x03A2
 	$DateStamp = $VP2Date >> 16; // 0x06 0xD3
 		$y = (($DateStamp & 0xFE00)>>9)+2000;
-		$m = ($DateStamp & 0x01E0)>>5;
-		$d = $DateStamp & 0x1f;
+		$m = str_pad(($DateStamp & 0x01E0)>>5,2,'0',STR_PAD_LEFT);
+		$d = str_pad($DateStamp & 0x1f,2,'0',STR_PAD_LEFT);
 	$TimeStamp = $VP2Date & 0xFFFF; // 0x03 0xA2
-		$h = (int)($TimeStamp/100);
-		$min = $TimeStamp-$h*100;
+		$h = str_pad((int)($TimeStamp/100),2,'0',STR_PAD_LEFT);
+		$min = str_pad($TimeStamp-$h*100,2,'0',STR_PAD_LEFT);
 	return $y.'/'.$m.'/'.$d.' '.$h.':'.$min;
 }
 function SetVP2Date ($StrDate)
