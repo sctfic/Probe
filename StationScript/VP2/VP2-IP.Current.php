@@ -12,7 +12,7 @@ if ($fp)
 	CurrentLoop ($fp);
 	// Termeture de la connexion Telnet
 	Waiting (4, 'Fermeture de la connexion');
-	fread($fp, 99); // vidange
+//	fread($fp, 99); // vidange
 	fclose($fp);
 }
 else echo date('Y/m/d H:i:s u')."\t".'Echec de la connexion !';
@@ -30,7 +30,7 @@ function CurrentLoop ($fp)
 		fwrite ($fp,$symb['LF']);
 		Waiting (1, 'Verification de la disponibilitée.');
 		//on allume l'ecran pour suivre la connexion
-		$ans=fread($fp,2);
+		$ans=fread($fp,6);
 		if ($ans==$symb['LFCR'])
 		{	//si on a bien confirmé, la connexion avec la VP2 est disponible
 			$av = true;
@@ -38,7 +38,7 @@ function CurrentLoop ($fp)
 			toggleLAMP($fp);
 		  	// on passe a la recuperation des données
 			echo date('Y/m/d H:i:s u')."\t".'Recuperation des valeurs Maxi et Mini.'."\n";
-			for ($i=0;$i<=$retry && !$crc[0];$i++)
+			for ($i=0;$i<=$retry && !$crc['Confirm'];$i++)
 			{
 				fwrite ($fp, 'LOOP 1'.$symb['LF']);
 				Waiting (8,'CURRENT VALUE : attente de la reponce.');
@@ -48,12 +48,12 @@ function CurrentLoop ($fp)
 					Waiting (8,'CURRENT VALUE : attente des donnees brutes.');
 					$CURRENT = fread($fp, 99);
 					$crc = CRC16_CCITT(&$CURRENT);
-					if ($crc[0])
+					if ($crc['Confirm'])
 					{
 						echo date('Y/m/d H:i:s u')."\t".'Traitement des valeurs Maxi et Mini...'."\n";
 						// fonction de conversion...
 					}
-			file_put_contents("./VP2-data.current.brut",$CURRENT);
+			file_put_contents($GLOBALS['_FOLDER']."VP2-data.current.brut",$CURRENT);
 		//	echo date('Y/m/d H:i:s u')."\tReponce ".strlen($CURRENT)." Octes :\n0x".dechex($crc0).' = 0x'.dechex($crc1)."\n";
 				}
 				else if ($r == $symb['NAK'])
@@ -70,24 +70,11 @@ function CurrentLoop ($fp)
 		else
 		{
 			echo date('Y/m/d H:i:s u')."\t".'VP2 N´est pas disponible !'."\n";
-			fread($fp, 99); // vidange
+			fread($fp, 999); // vidange
 			if ($i<$retry)	Waiting (30);
 		}
 	}
 	return $av;
 }
-function toggleLAMP($fp)
-{
-	$symb = $GLOBALS['symbols'];
-	fwrite ($fp,'LAMPS '.(($GLOBALS['lamp'])?'0':'1').$symb['LF']);
-	Waiting (4, 'Activation/Desactivation du retroeclairage.');
-	$ans = fread($fp,6);
-	if ($ans==$symb['_OK_'])
-	{
-		$GLOBALS['lamp'] = !$GLOBALS['lamp'];
-		return TRUE;
-	}
-//	else echo 'pas de reponce :'.$ans.' .';
-	return FALSE;
-}
+
 ?>

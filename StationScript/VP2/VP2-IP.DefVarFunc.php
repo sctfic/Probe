@@ -89,16 +89,16 @@ function DMPAFT_SetVP2Date ($StrDate)
 	$min = substr($StrDate, -5, 2);
 	$s = substr($StrDate, -2);
 	$d = ((($y-2000)*512+$m*32+$d)<<16) + ($h*100+$min);
-//	echo dechex($d).' = '.dechex(ord(chr(($d&0xff000000)>>24))).dechex(ord(chr(($d&0xff0000)>>16))).dechex(ord(chr(($d&0xff00)>>8))).dechex(ord(chr($d&0xff)))."\n";
-	return array( chr(($d&0xff000000)>>24), chr(($d&0xff0000)>>16), chr(($d&0xff00)>>8), chr($d&0xff) );
+	$d = array( chr(($d&0xff000000)>>24), chr(($d&0xff0000)>>16), chr(($d&0xff00)>>8), chr($d&0xff) );
+	return $d;
 }
 function DMPAFT_GetVP2Date ($VP2Date)
 {// 19-06-2003 9:30:00  <=  0x06D3 0x03A2
-	$DateStamp = $VP2Date >> 16; // 0x06 0xD3
+	$DateStamp = (ord($VP2Date[0])<<8)+ord($VP2Date[1]); // 0x06 0xD3
 		$y = (($DateStamp & 0xFE00)>>9)+2000;
 		$m = str_pad(($DateStamp & 0x01E0)>>5,2,'0',STR_PAD_LEFT);
 		$d = str_pad($DateStamp & 0x1f,2,'0',STR_PAD_LEFT);
-	$TimeStamp = $VP2Date & 0xFFFF; // 0x03 0xA2
+	$TimeStamp = (ord($VP2Date[2])<<8)+ord($VP2Date[3]); // 0x03 0xA2
 		$h = str_pad((int)($TimeStamp/100),2,'0',STR_PAD_LEFT);
 		$min = str_pad($TimeStamp-$h*100,2,'0',STR_PAD_LEFT);
 	return $y.'/'.$m.'/'.$d.' '.$h.':'.$min.':00';
@@ -112,7 +112,20 @@ function CRC16_CCITT($ptr)
 		$crc =  $crc_tb[(($crc>>8) ^ ord($ptr[$i]))] ^ (($crc<<8) & 0x00FFFF);
 //		echo strlen($ptr).' > 0x'.dechex($ptr).' 0x'.dechex($crc)."\n";
 	}
-	return array( !$crc, chr(($crc>>8)&0xff), chr($crc&0xff) );
+	return array( 'Confirm' => !$crc, 0 => chr(($crc>>8)&0xff), 1 => chr($crc&0xff) );
 }
-
+function toggleLAMP($fp)
+{
+	$symb = $GLOBALS['symbols'];
+	fwrite ($fp,'LAMPS '.(($GLOBALS['lamp'])?'0':'1').$symb['LF']);
+	Waiting (4, 'Activation/Desactivation du retroeclairage.');
+	$ans = fread($fp,6);
+	if ($ans==$symb['_OK_'])
+	{
+		$GLOBALS['lamp'] = !$GLOBALS['lamp'];
+		return TRUE;
+	}
+//	else echo 'pas de reponce :'.$ans.' .';
+	return FALSE;
+}
 ?>
