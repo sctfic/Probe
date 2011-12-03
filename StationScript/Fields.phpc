@@ -2,9 +2,9 @@
 // This class define a generic structure for measurement management.
 class Fields
 {
-  protected $fieldOffset=-1; // field offset (starting at 0)
-  protected $fieldlength=-1;   // field size/length
-  protected $fieldDescription=null; // description of the field
+  private $fieldOffset=-1; // field offset (starting at 0)
+  private $fieldLength=-1;   // field size/length
+  private $fieldDescription=null; // description of the field
 
 
 // field offset

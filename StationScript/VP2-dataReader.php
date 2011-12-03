@@ -104,7 +104,7 @@ $measures = array(
 	'MonthLowTemperature' => new MonthLowTemperature();
 	'YearHiTemperature' => new YearHiTemperature();
 	'YearLowTemperature' => new YearLowTemperature();
-	'Outside_ExtraHums' => $Outside_ExtraHums();
+	'Outside_ExtraHums' => new Outside_ExtraHums();
 	'DayLowHumidity' => new DayLowHumidity();
 	'DayHiHumidity' => new DayHiHumidity();
 	'TimeDayLowHumidity' => new TimeDayLowHumidity();
@@ -136,7 +136,7 @@ $measures = array(
 
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++
 // ++++++++++++++++++++ VAR DEFINITION ++++++++++++++++++++++
-$rawDataFilePath = '../VP2-data.brut';
+$rawDataFilePath = dirname(__FILE__).'../VP2-data.brut';
 $rawData = file_get_contents($rawDataFilePath);
 
 foreach ($measures as $measureKey => $measureObject)
@@ -144,7 +144,7 @@ foreach ($measures as $measureKey => $measureObject)
 	printf("%s[%s]: from %s to %d",
 		$measureKey,
 		$measureObject->getFieldDescription(),
-		$measureObject->getFieldOffset,
+		$measureObject->getFieldOffset(),
 		$measureObject->getFieldLength()
 	);
 }
