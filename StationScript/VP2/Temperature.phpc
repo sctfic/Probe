@@ -3,11 +3,31 @@ require_once 'Fields.phpc';
 
 // +++++++++++++++++++++++++++++++++++++++++++++++
 // +++++++++++++++ TEMPERATURE MANAGEMENT +++++++++++++
+
+//  SI unit
+// metre	m
+// kilogram [note 1]	kg
+// second	s
+// ampere	A
+// kelvin	K
+// candela	cd
+// mole	mole
+
+
 class Temperature extends Fields
 {
+
+	// Using SI unit: Kelvin (see: http://en.wikipedia.org/wiki/Kelvin)
+	// [K] = ([°F] + 459.67) × 5⁄9
+	public static function fahrenheitToKelvin($f)
+	{
+		return ($f+459.67)*5/9;
+	}
+
 	function __construct() {
 
 	}
+
 
 }
 
