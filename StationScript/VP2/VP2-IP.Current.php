@@ -28,7 +28,7 @@ function CurrentLoop ($fp)
 	{//on test si la vp2 est reveillée (conf chapitre IV. p.5)
 		//ici par l´allumage de l´ecran au lieu de la procedure conventionnelle
 		fwrite ($fp,$symb['LF']);
-		Waiting (1, 'Verification de la disponibilitée.');
+		Waiting (1, 'Verification de la disponibilite.');
 		//on allume l'ecran pour suivre la connexion
 		$ans=fread($fp,6);
 		if ($ans==$symb['LFCR'])
