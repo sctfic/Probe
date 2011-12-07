@@ -19,9 +19,13 @@ class Temperature extends Fields
 
 	// Using SI unit: Kelvin (see: http://en.wikipedia.org/wiki/Kelvin)
 	// [K] = ([°F] + 459.67) × 5⁄9
-	public static function fahrenheitToKelvin($f)
+	public static function fahrenheitToRealKelvin($f)
 	{
-		return ($f+459.67)*5/9;
+		return ($f/10+459.67)*5/9;
+	}
+	public static function fahrenheitToRealCelcius($f)
+	{
+		return ($f/10-32)*5/9;
 	}
 
 	function __construct() {

@@ -61,8 +61,8 @@ function Waiting ($s=10, $msg = 'Waiting and retry')
 }
 
 
-// Convert 6 bytes of VP2 Date (0x01 23 0f 1f 0c 6f) to human redable format ('2011/12/31 15:35:01')
-function TIME_To_HumanDate ($StrDate)
+// Convert human redable date ('2011/12/31 15:35:01') to 6 bytes of VP2 format (0x01 23 0f 1f 0c 6f)
+function HumanDate_To_TIME ($VP2Date)
 {
 	$y = substr($StrDate, 0, 4)-1900;
 	$m = (substr($StrDate, 5, 2))<<8;
@@ -73,8 +73,8 @@ function TIME_To_HumanDate ($StrDate)
 	return $s+$min+$h+$d+$m+$y;
 }
 
-// Convert human redable date ('2011/12/31 15:35:01') to 6 bytes of VP2 format (0x01 23 0f 1f 0c 6f)
-function HumanDate_To_TIME ($VP2Date)
+// Convert 6 bytes of VP2 Date (0x01 23 0f 1f 0c 6f) to human redable format ('2011/12/31 15:35:01')
+function TIME_To_HumanDate ($StrDate)
 {// sur 6 Octes : sec min h  d m y
 	$y = ($VP2Date & 0xff) + 1900;
 	$m = str_pad(($VP2Date & 0xff00)>>8,2,'0',STR_PAD_LEFT);

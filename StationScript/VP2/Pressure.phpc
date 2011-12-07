@@ -8,6 +8,52 @@ class Pressure extends Fields
 	function __construct() {
 
 	}
+	// Using SI unit: Pa (see: http://en.wikipedia.org/wiki/)
+	//
+	public static function inHgToRealPa($Pa)
+	{
+		return (($inHg/1000+20)*3376.85*$R+$BarCal/1000)*$GAIN+$OFFSET/1000;
+	}
 
+/*
+        // Calibrate archive record contents:
+        tempf                   = newRecord->barometer;
+        tempf                   /= 1000;
+        tempf                   *= work->calMBarometer;
+        tempf                   += work->calCBarometer;
+        tempf                   *= 1000;
+        newRecord->barometer    = (USHORT)floorf (tempf);
+
+EERD 01 02 = BAR_GAIN
+00
+00
+EERD 03 02 = BAR_OFFSET
+DC
+FF
+EERD 05 02 = BAR_CAL
+04
+00
+
+BAR 30002
+ELEVATION 240
+DEW POINT 50
+VIRTUAL TEMP 53
+C 23
+R 1009
+BARCAL 4
+GAIN 0
+OFFSET -36
+*/
+/*
+BAR 30270 = 1025.3hPa
+ELEVATION 240 = 8.79hPa
+DEW POINT 47
+VIRTUAL TEMP 49
+C 20
+R 1009
+BARCAL 4
+GAIN 0
+OFFSET -36
+*/
 }
 ?>
