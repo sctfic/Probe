@@ -1,4 +1,4 @@
-<?php // $ php5 -f ~/WsWds/StationScript/VP2-IP.php
+<?php // $ php5 -f ~/WsWds/StationScript/VP2-IP.Archives.php
 $_FOLDER = dirname(__FILE__).DIRECTORY_SEPARATOR;
 require_once $_FOLDER."VP2-IP.DefVarFunc.php";
 $retry = 2;
