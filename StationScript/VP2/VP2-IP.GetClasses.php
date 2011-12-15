@@ -46,7 +46,7 @@ class VP2
 	}
 	public static function HexToDec($hex)
 	{
-		return	hexdec(	bin2hex($hex));
+		return hexdec(bin2hex($hex));
 	}
 	
 }
@@ -57,29 +57,44 @@ class Connect extends VP2
 	function __construct(){}
 	public static function initConnection()
 	{
-		return true;
-	}
-	public static function CloseConnection()
-	{
-		return true;
-	}
-	public static function toggleBacklight($force=-1)
-	{
-		fwrite ($fp,'LAMPS '.(($this->lbs)?'0':'1').parent::$symb['LF']);
-		Waiting (4, 'Activation/Desactivation du retroeclairage.');
-		$ans = fread($fp,6);
-		if ($ans==$symb['_OK_'])
-		{
-			$GLOBALS['lamp'] = !$GLOBALS['lamp'];
-			return TRUE;
-		}
-	//	else echo 'pas de reponce :'.$ans.' .';
-		return FALSE;
-
-		return true;
+		parent::$fp = fsockopen(parent::$IP, parent::$Port);
+		stream_set_timeout(parent::$fp, 0, 2500000);
+		if (parent::$fp) return true;
+		return false;
 	}
 	public static function wakeUp()
 	{
+		for ($i=0;$i<=$this->retry;$i++)
+		{
+			fwrite (parent::$fp,parent::$symb['LF']);
+			if (fread(parent::$fp,6)==parent::$symb['LFCR'])
+				return true;
+			usleep(1200000);
+		}
+		return false;
+	}
+	public static function toggleBacklight($force=-1)
+	{
+		if ($force==-1)
+		{
+			fwrite (parent::$fp,'LAMPS '.(($this->lbs)?'0':'1').parent::$symb['LF']);
+		}
+		else
+		{
+			fwrite (parent::$fp,'LAMPS '.($force?'1':'0').parent::$symb['LF']);
+		}
+		if (fread(parent::$fp,6);==parent::$symb['_OK_'])
+		{
+			if ($force==-1)$this->lbs = !$this->lbs;
+			else $this->lbs = $force;
+			return TRUE;
+		}
+		return FALSE;
+	}
+	public static function CloseConnection()
+	{
+		$this->toggleBacklight(0);
+		fclose(parent::$fp);
 		return true;
 	}
 }
@@ -87,7 +102,7 @@ class _LOOP extends VP2
 {
 	private $retry=3; // number of attempts before aborting
 	function __construct(){}
-	 function Get()
+	function GetRaw()
 	{
 		return true;
 	}
