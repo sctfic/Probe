@@ -1,39 +1,60 @@
 <?php	//	clear;php5 -f ./VP2-IP.GetClasses.php
-//$_FOLDER = dirname(__FILE__).DIRECTORY_SEPARATOR;
-//	$obj = array('IP'=>'VP2', 'Port'=>22222, 'Last_DMPAFT'=>0);
-// 	$handle = fopen('./VP2-IP.conf', "wb");
-// 		fwrite($handle, serialize($obj));
-// 	fclose($handle);
-
 class VP2
 {
-	private $IP=NULL; //
-	private $Port=NULL;   //
-	$symb = array (
-		'CR' => "\r", // chr(0x0d),
-		'LF' => "\n", // chr(0x0A),
-		'LFCR' =>  "\n\r", // chr(0x0A).chr(0x0D),
-		'ESC' => "\ ", //  chr(0x1b), //  Echap
-		'ACK' => "\ ", //  chr(0x06), //  Compris
-		'NAK' => "\ ", //  chr(0x21), //  Pas Compris
-		'CANCEL' =>  "\ ", // chr(0x18), //  Bad CRC Code
-		'_OK_' => "\n\rOK\n\r" */);
+	public $IP=NULL; //
+	public $Port=NULL;   //
+	public $fp=NULL;
+	public $symb=NULL;
 
-	function setVP2_IP_Port()
+	function __construct()
 	{
-		$handle = fopen('./VP2-IP.conf', "rb");
-			$fdata = unserialize(fread($handle, filesize($filename)));
-		fclose($handle);
-		
+		setVP2_value();
+		$this->symb = array (
+		'CR' => chr(0x0D), // \r
+		'LF' => chr(0x0A), // \n
+		'LFCR' => chr(0x0A).chr(0x0D),
+		'ESC' => chr(0x1b), // Echap
+		'ACK' => chr(0x06), // Compris
+		'NAK' => chr(0x21), // Pas Compris
+		'CANCEL' => chr(0x18), // Bad CRC Code
+		'_OK_' => "\n\rOK\n\r");
 	}
+	function setVP2_value($i=0)
+	{
+		$filename='./VP2-IP.conf';
+		$handle = fopen($filename, "rb");
+			$conf = unserialize(fread($handle, filesize($filename)));
+		fclose($handle);
+		if ($i<=array_count_values($conf))
+		{
+			$this->IP=$conf[$i]['IP'];
+			$this->Port=$conf[$i]['Port'];
+		}
+		else return false;
+		return true;
+	}
+	public static function Waiting ($s=10, $msg = 'Waiting and retry')
+	{
+		$w = '-\|/';
+		if ($s==0) echo "\r".date('Y/m/d H:i:s u')."\t".$msg;
+		for ($j=0;$j<$s;$j++)
+		{
+			usleep(100000);
+			echo "\r".date('Y/m/d H:i:s u')."\t".$msg.' '.$w[$j%4];
+		}
+		echo "\n";
+	}
+	public static function HexToDec($hex)
+	{
+		return	hexdec(	bin2hex($hex));
+	}
+	
 }
 class Connect extends VP2
 {
 	private $retry=3; // number of attempts before aborting
-	function __construct()
-	{
-
-	}
+	private $bls=false; // actual state of backlight screen
+	function __construct(){}
 	public static function initConnection()
 	{
 		return true;
@@ -42,8 +63,18 @@ class Connect extends VP2
 	{
 		return true;
 	}
-	public static function toggleScreen($force=-1)
+	public static function toggleBacklight($force=-1)
 	{
+		fwrite ($fp,'LAMPS '.(($this->lbs)?'0':'1').parent::$symb['LF']);
+		Waiting (4, 'Activation/Desactivation du retroeclairage.');
+		$ans = fread($fp,6);
+		if ($ans==$symb['_OK_'])
+		{
+			$GLOBALS['lamp'] = !$GLOBALS['lamp'];
+			return TRUE;
+		}
+	//	else echo 'pas de reponce :'.$ans.' .';
+		return FALSE;
 
 		return true;
 	}
@@ -55,11 +86,8 @@ class Connect extends VP2
 class _LOOP extends VP2
 {
 	private $retry=3; // number of attempts before aborting
-	function __construct()
-	{
-
-	}
-	public static function Get()
+	function __construct(){}
+	 function Get()
 	{
 		return true;
 	}
@@ -67,11 +95,8 @@ class _LOOP extends VP2
 class _HIGHLOW extends VP2
 {
 	private $retry=3; // number of attempts before aborting
-	function __construct()
-	{
-
-	}
-	public static function GetRaw()
+	function __construct(){}
+	function GetRaw()
 	{
 		return true;
 	}
@@ -79,11 +104,8 @@ class _HIGHLOW extends VP2
 class _TIME extends VP2
 {
 	private $retry=3; // number of attempts before aborting
-	function __construct()
-	{
-
-	}
-	public static function GetRaw()
+	function __construct(){}
+	function GetRaw()
 	{
 		return true;
 	}
@@ -91,11 +113,8 @@ class _TIME extends VP2
 class _DMPAFT extends VP2
 {
 	private $retry=3; // number of attempts before aborting
-	function __construct()
-	{
-
-	}
-	public static function GetRaw()
+	function __construct(){}
+	function GetRaw()
 	{
 		return true;
 	}
@@ -144,22 +163,16 @@ class CRC16CCITT extends VP2
 	0x7c26,  0x6c07,  0x5c64,  0x4c45,  0x3ca2,  0x2c83,  0x1ce0,  0x0cc1,
 	0xef1f,  0xff3e,  0xcf5d,  0xdf7c,  0xaf9b,  0xbfba,  0x8fd9,  0x9ff8,
 	0x6e17,  0x7e36,  0x4e55,  0x5e74,  0x2e93,  0x3eb2,  0x0ed1,  0x1ef0);
-	function __construct()
-	{
-
-	}
-	public static function Calculate()
+	function __construct(){}
+	public static function Calculate($ptr)
 	{
 		$crc = 0x0000;
-		$crc_tb = $GLOBALS['crc_table'];
 		for ($i = 0; $i < strlen($ptr); $i++)
 		{
-			$crc =  $crc_tb[(($crc>>8) ^ ord($ptr[$i]))] ^ (($crc<<8) & 0x00FFFF);
-	//		echo strlen($ptr).' > 0x'.dechex($ptr).' 0x'.dechex($crc)."\n";
+			$crc =  $this->table[(($crc>>8) ^ ord($ptr[$i]))] ^ (($crc<<8) & 0x00FFFF);
 		}
-		return array( 'Confirm' => !$crc, 0 => chr(($crc>>8)&0xff), 1 => chr($crc&0xff), 'all' => $crc);
-		// WARNING if $ptr is string with only chr(0) like 0x000000000000... 'Confirm' was True !
-		return true;
+//		return array( 'Confirm' => !$crc, 0 => chr(($crc>>8)&0xff), 1 => chr($crc&0xff), 'all' => $crc);
+		return parent::HexToDec($crc);
 	}
 }
 ?>
