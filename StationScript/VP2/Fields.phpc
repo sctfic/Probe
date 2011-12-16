@@ -53,8 +53,18 @@ class Fields
 				$hex
 			)
 		);
-
 	}
+
+function timeOfDay_To_HumanDate ($StrDate)
+{// sur 6 Octes : sec min h  d m y
+	$y = 2011;
+	$m = 12;
+	$d = 24;
+	$h = str_pad(($StrDate & 0xff00)>>8,2,'0',STR_PAD_LEFT);
+	$min = str_pad(($StrDate & 0xff),2,'0',STR_PAD_LEFT);
+	$s = 00;
+	return $y.'/'.$m.'/'.$d.' '.$h.':'.$min.':'.$s;
+}
 
 
   function __construct()

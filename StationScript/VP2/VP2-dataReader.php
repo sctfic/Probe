@@ -1621,7 +1621,7 @@ foreach ($measures as $measureKey => $measureObject)
 		$measureObject->getFieldSize(),
 		$measureObject->extractRawField($rawDataString),
 		Fields::HexToDec($measureObject->extractRawField($rawDataString)), // get correct value
-		dechex($measureObject->extractRawField($rawDataString))
+		bin2hex($measureObject->extractRawField($rawDataString))
 	);
 
 }

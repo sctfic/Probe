@@ -1,4 +1,4 @@
-<?php // $ php5 -f ~/WsWds/StationScript/VP2-IP.php
+<?php // $ php5 -f ~/WsWds/StationScript/VP2-IP.Archives.php
 $_FOLDER = dirname(__FILE__).DIRECTORY_SEPARATOR;
 require_once $_FOLDER."VP2-IP.DefVarFunc.php";
 $retry = 2;
@@ -78,29 +78,39 @@ function GetArchives (&$fp)
 			if ($r == $symb['ACK'])
 			{
 				Waiting (1,'CRC Confirme, Recuperation des Archives');
-				$n = fread($fp, 2);
-				$p = fread($fp, 2);
-				$r = fread($fp, 2);
-//				echo strlen($r)."\n";
-				$crc = CRC16_CCITT($n.$p.$r);
+				$r = fread($fp, 6);
+//				echo strlen($r).' - '.$n.'  = '.bin2hex($n).' - '.$p.'  = '.bin2hex($p).' - ';
+				$crc = CRC16_CCITT($r);
+//				echo $r.'        = 0x'.bin2hex($r)."\n";
+//				echo $crc['all'].'        = 0x'.bin2hex($crc['all'])."\n";
+//				echo $crc[0].' '.$crc[1].'        = 0x'.dechex(ord($crc[0])).dechex(ord($crc[1]))."\n";
 				if ($crc['Confirm'])
 				{
-					// $n = $r >> 32 & 0xff;
-					// $p = $r >> 16 & 0xff;
+					$n = ($r >> 32) & 0xffff ;
+					$p = ($r >> 16) & 0xffff;
 					//$n = (ord($r[0])<<8)+ord($r[1]);
 					//$p = (ord($r[2])<<8)+ord($r[3]);
-					echo date('Y/m/d H:i:s u')."\t".'Nombre de Pages : '.pack("I",$n).'. debute aux data : '.((int)$p).".\n";
+					echo date('Y/m/d H:i:s u')."\t".'Nombre de Pages : '.$n.'. debute aux data : '.$p.".\n";
 					fwrite($fp, $symb['ACK']);
 					for ($j=0;$j<$n && $j<5;$j++)
 					{
 						$archives[$j] = fread($fp, 267);
+						Waiting (4,'Download ARCHIVE : '.$j);
 						if (CRC16_CCITT($archives[$j]))
 						{
+<<<<<<< HEAD
 							Waiting (4,'ARCHIVE : '.$j.' du '.DMPAFT_GetVP2Date(array($archives[$j][1],$archives[$j][2],$archives[$j][3],$archives[$j][4])).' valide');
 
+=======
+							Waiting (4,'ARCHIVE #'.$j.' du '.DMPAFT_GetVP2Date(array($archives[$j][1],$archives[$j][2],$archives[$j][3],$archives[$j][4])).' valide');
+>>>>>>> 547590bc1c1ed151d600406ab54e2c2f72ee85d8
 							fwrite($fp, $symb['ACK']);
 						}
-						else fwrite($fp, $symb['NAK']);
+						else
+						{
+							fwrite($fp, $symb['NAK']);
+							Waiting (4,'ARCHIVE #'.$j.' invalide, retry.');
+						}
 					}
 					fwrite($fp, $symb['ESC']);
 				}

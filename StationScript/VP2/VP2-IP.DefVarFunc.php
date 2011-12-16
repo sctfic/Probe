@@ -59,8 +59,11 @@ function Waiting ($s=10, $msg = 'Waiting and retry')
 	}
 	echo "\n";
 }
-function TIME_SetVP2Date ($StrDate)
-{//  2011/12/31 15:35:01 = 0x01230f1f0c6f
+
+
+// Convert human redable date ('2011/12/31 15:35:01') to 6 bytes of VP2 format (0x01 23 0f 1f 0c 6f)
+function HumanDate_To_TIME ($StrDate)
+{
 	$y = substr($StrDate, 0, 4)-1900;
 	$m = (substr($StrDate, 5, 2))<<8;
 	$d = (substr($StrDate, 8, 2))<<16;
@@ -69,9 +72,10 @@ function TIME_SetVP2Date ($StrDate)
 	$s = (substr($StrDate, -2))<<40;
 	return $s+$min+$h+$d+$m+$y;
 }
-function TIME_GetVP2Date ($VP2Date)
+
+// Convert 6 bytes of VP2 Date (0x01 23 0f 1f 0c 6f) to human redable format ('2011/12/31 15:35:01')
+function TIME_To_HumanDate ($VP2Date)
 {// sur 6 Octes : sec min h  d m y
-//  2011/12/31 15:35:01 = 0x01230f1f0c6f
 	$y = ($VP2Date & 0xff) + 1900;
 	$m = str_pad(($VP2Date & 0xff00)>>8,2,'0',STR_PAD_LEFT);
 	$d = str_pad(($VP2Date & 0xff0000)>>16,2,'0',STR_PAD_LEFT);
@@ -112,7 +116,8 @@ function CRC16_CCITT($ptr)
 		$crc =  $crc_tb[(($crc>>8) ^ ord($ptr[$i]))] ^ (($crc<<8) & 0x00FFFF);
 //		echo strlen($ptr).' > 0x'.dechex($ptr).' 0x'.dechex($crc)."\n";
 	}
-	return array( 'Confirm' => !$crc, 0 => chr(($crc>>8)&0xff), 1 => chr($crc&0xff) );
+	return array( 'Confirm' => !$crc, 0 => chr(($crc>>8)&0xff), 1 => chr($crc&0xff), 'all' => $crc);
+	// WARNING if $ptr is string with only chr(0) like 0x000000000000... 'Confirm' was True !
 }
 function toggleLAMP($fp)
 {

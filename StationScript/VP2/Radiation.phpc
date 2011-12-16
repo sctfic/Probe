@@ -8,7 +8,14 @@ class Radiation extends Fields
 	function __construct() {
 
 	}
+	public static function uvToRealUvIndex($uv)
+	{
+		return $uv/10;
+	}
+	public static function SolarToWm2($sr)
+	{
+		return $sr/100;
+	}
 
 }
-
 ?>
