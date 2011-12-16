@@ -18,7 +18,7 @@ if ($fp)
 	fclose($fp);
 }
 else echo date('Y/m/d H:i:s u')."\t".'Echec de la connexion !';
-	
+
 function Avaible ($fp)
 {	// la connection est faite reste a verifier si la VP2 repond
 	$av = false;
@@ -97,7 +97,7 @@ function GetArchives (&$fp)
 						if (CRC16_CCITT($archives[$j]))
 						{
 							Waiting (4,'ARCHIVE : '.$j.' du '.DMPAFT_GetVP2Date(array($archives[$j][1],$archives[$j][2],$archives[$j][3],$archives[$j][4])).' valide');
-							
+
 							fwrite($fp, $symb['ACK']);
 						}
 						else fwrite($fp, $symb['NAK']);

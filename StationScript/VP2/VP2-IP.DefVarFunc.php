@@ -1,8 +1,8 @@
 <?php
-	$ip_vp2 = "VP2";
-//	$ip_vp2 = "nas-alban.no-ip.org";
+//	$ip_vp2 = "VP2";
+	$ip_vp2 = "nas-alban.no-ip.org";
 	$port_vp2 = 22222;
-	
+
 	$symbols = array (
 	'CR' => chr(0x0D), // \r
 	'LF' => chr(0x0A), // \n
@@ -12,7 +12,7 @@
 	'NAK' => chr(0x21), // Pas Compris
 	'CANCEL' => chr(0x18), // Bad CRC Code
 	'_OK_' => "\n\rOK\n\r");
-	
+
 $crc_table = array(// CRC16-CCITT
 	0x0000,  0x1021,  0x2042,  0x3063,  0x4084,  0x50a5,  0x60c6,  0x70e7,
         0x8108,  0x9129,  0xa14a,  0xb16b,  0xc18c,  0xd1ad,  0xe1ce,  0xf1ef,
@@ -47,7 +47,7 @@ $crc_table = array(// CRC16-CCITT
         0xef1f,  0xff3e,  0xcf5d,  0xdf7c,  0xaf9b,  0xbfba,  0x8fd9,  0x9ff8,
         0x6e17,  0x7e36,  0x4e55,  0x5e74,  0x2e93,  0x3eb2,  0x0ed1,  0x1ef0);
 
-    	$lamp = false; // etat de la lampe	
+    	$lamp = false; // etat de la lampe
 
 function Waiting ($s=10, $msg = 'Waiting and retry')
 {

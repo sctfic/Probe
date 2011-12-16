@@ -1,4 +1,6 @@
 <?php
+// USAGE:
+// php -f ./VP2-dataReader.php
 require_once "Fields.phpc";
 require_once "Humidity.phpc";
 require_once "Pressure.phpc";
