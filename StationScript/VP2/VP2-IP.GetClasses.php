@@ -53,13 +53,20 @@ class VP2
 class Connect extends VP2
 {
 	private $retry=3; // number of attempts before aborting
-	private $bls=false; // actual state of backlight screen
+	private $backLightScreen=false; // actual state of backlight screen
 	function __construct(){}
 	public static function initConnection()
 	{
 		parent::$fp = fsockopen(parent::$IP, parent::$Port);
 		stream_set_timeout(parent::$fp, 0, 2500000);
-		if (parent::$fp) return true;
+		if (parent::$fp)
+		{
+			if ($this->wakeUp())
+			{
+				$this->toggleBacklight(1);
+				return true;
+			}
+		}
 		return false;
 	}
 	public static function wakeUp()
@@ -77,7 +84,7 @@ class Connect extends VP2
 	{
 		if ($force==-1)
 		{
-			fwrite (parent::$fp,'LAMPS '.(($this->lbs)?'0':'1').parent::$symb['LF']);
+			fwrite (parent::$fp,'LAMPS '.(($this->backLightScreen)?'0':'1').parent::$symb['LF']);
 		}
 		else
 		{
@@ -85,8 +92,8 @@ class Connect extends VP2
 		}
 		if (fread(parent::$fp,6);==parent::$symb['_OK_'])
 		{
-			if ($force==-1)$this->lbs = !$this->lbs;
-			else $this->lbs = $force;
+			if ($force==-1)$this->backLightScreen = !$this->backLightScreen;
+			else $this->backLightScreen = $force;
 			return TRUE;
 		}
 		return FALSE;
@@ -104,15 +111,46 @@ class _LOOP extends VP2
 	function __construct(){}
 	function GetRaw()
 	{
+		for ($i=0;$i<=$this->retry;$i++)
+		{}
 		return true;
 	}
 }
-class _HIGHLOW extends VP2
+class _HILOWS extends VP2
 {
 	private $retry=3; // number of attempts before aborting
 	function __construct(){}
 	function GetRaw()
 	{
+		for ($i=0;$i<=$this->retry;$i++)
+		{
+			fwrite (parent::$fp, "HILOWS\n");
+			parent::Waiting (8,'HILOWS : attente de la reponce.');
+			$r = fread(parent::$fp, 1);
+			if ($r == parent::$symb['ACK'])
+			{
+				parent::Waiting (8,'HILOWS : attente des donnees brutes.');
+				$HILOWS = fread(parent::$fp, 438);
+				$crc = CRC16_CCITT($HILOWS);
+				if ($crc==0x0000)
+				{
+					$HILOWS = substr($HILOWS,0,-2);
+					// echo date('Y/m/d H:i:s u')."\t".'Traitement des valeurs Maxi et Mini...'."\n";
+					// fonction de conversion...
+				}
+			//	file_put_contents("./VP2-data.brut",$HILOWS);
+			}
+			else if ($r == parent::$symb['NAK'])
+			{
+				// echo date('Y/m/d H:i:s u')."\t".'HILOWS NAK'."\n";
+			}
+			else
+			{
+				// echo date('Y/m/d H:i:s u')."\t".'HILOWS NULL  '.'$r = 0x'.dechex($r)."\n";
+				fread(parent::$fp, 999);
+				if ($i<$this->retry)	parent::Waiting (8);
+			}
+		}
 		return true;
 	}
 }
@@ -122,6 +160,8 @@ class _TIME extends VP2
 	function __construct(){}
 	function GetRaw()
 	{
+		for ($i=0;$i<=$this->retry;$i++)
+		{}
 		return true;
 	}
 }
@@ -131,6 +171,83 @@ class _DMPAFT extends VP2
 	function __construct(){}
 	function GetRaw()
 	{
+		for ($i=0;$i<=$this->retry;$i++)
+		{
+fwrite($fp,"DMPAFT\n");
+Waiting (4,'Recuperation des Archives.');
+$r = fread($fp, 1);
+if ($r == $symb['ACK'])
+{
+	$d = DMPAFT_SetVP2Date(date('Y/m/d H:00:00'));
+	fwrite($fp, $d[0].$d[1].$d[2].$d[3]);
+	Waiting (4,'Demande d archives');
+	$crc = CRC16_CCITT($d[0].$d[1].$d[2].$d[3]);
+	fwrite($fp, $crc[0].$crc[1]);
+	Waiting (12,'confirmation par CRC');
+	$r = fread($fp, 1);
+	if ($r == $symb['ACK'])
+	{
+		Waiting (1,'CRC Confirme, Recuperation des Archives');
+		$r = fread($fp, 6);
+//				echo strlen($r).' - '.$n.'  = '.bin2hex($n).' - '.$p.'  = '.bin2hex($p).' - ';
+		$crc = CRC16_CCITT($r);
+//				echo $r.'        = 0x'.bin2hex($r)."\n";
+//				echo $crc['all'].'        = 0x'.bin2hex($crc['all'])."\n";
+//				echo $crc[0].' '.$crc[1].'        = 0x'.dechex(ord($crc[0])).dechex(ord($crc[1]))."\n";
+		if ($crc['Confirm'])
+		{
+			$n = ($r >> 32) & 0xffff ;
+			$p = ($r >> 16) & 0xffff;
+			//$n = (ord($r[0])<<8)+ord($r[1]);
+			//$p = (ord($r[2])<<8)+ord($r[3]);
+			echo date('Y/m/d H:i:s u')."\t".'Nombre de Pages : '.$n.'. debute aux data : '.$p.".\n";
+			fwrite($fp, $symb['ACK']);
+			for ($j=0;$j<$n && $j<5;$j++)
+			{
+				$archives[$j] = fread($fp, 267);
+				Waiting (4,'Download ARCHIVE : '.$j);
+				if (CRC16_CCITT($archives[$j]))
+				{
+					Waiting (4,'ARCHIVE #'.$j.' du '.DMPAFT_GetVP2Date(array($archives[$j][1],$archives[$j][2],$archives[$j][3],$archives[$j][4])).' valide');
+					fwrite($fp, $symb['ACK']);
+				}
+				else
+				{
+					fwrite($fp, $symb['NAK']);
+					Waiting (4,'ARCHIVE #'.$j.' invalide, retry.');
+				}
+			}
+			fwrite($fp, $symb['ESC']);
+		}
+		else if ($r == $symb['NAK'])
+			echo date('Y/m/d H:i:s u')."\t".'DMPAFT Pages NAK'."\n";
+		else
+		{
+			echo date('Y/m/d H:i:s u')."\t".'DMPAFT Pages NULL  '.'$r = 0x'.dechex($r)."\n";
+			fread($fp, 999); // vidange
+			if ($i<$retry)	Waiting (8);
+		}
+	}
+	else if ($r == $symb['NAK'])
+		echo date('Y/m/d H:i:s u')."\t".'DMPAFT Date NAK'."\n";
+	else
+	{
+		echo date('Y/m/d H:i:s u')."\t".'DMPAFT Date NULL  '.'$r = 0x'.dechex($r)."\n";
+		fread($fp, 999); // vidange
+		if ($i<$retry)	Waiting (8);
+	}
+	$skip = true;
+}
+else if ($r == $symb['NAK'])
+	echo date('Y/m/d H:i:s u')."\t".'DMPAFT NAK'."\n";
+else
+{
+	echo date('Y/m/d H:i:s u')."\t".'DMPAFT NULL  '.'$r = 0x'.dechex($r)."\n";
+	fread($fp, 999); // vidange
+	if ($i<$retry)	Waiting (8);
+}
+
+		}
 		return true;
 	}
 	public static function Date2Human()
