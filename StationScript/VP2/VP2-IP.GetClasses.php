@@ -1,10 +1,10 @@
 <?php	//	clear;php5 -f ./VP2-IP.GetClasses.php
 class VP2
 {
-	public $IP=NULL; //
-	public $Port=NULL;   //
-	public $fp=NULL;
-	public $symb=NULL;
+	protected $IP=NULL; //
+	protected $Port=NULL;   //
+	protected $fp=NULL;
+	protected $symb=NULL;
 
 	function __construct()
 	{
@@ -21,18 +21,29 @@ class VP2
 	}
 	function setVP2_value($i=0)
 	{
-		$filename='./VP2-IP.conf';
+		$filename='./VP2-IP.conf';	
 		$handle = fopen($filename, "rb");
 			$conf = unserialize(fread($handle, filesize($filename)));
 		fclose($handle);
 		if ($i<=array_count_values($conf))
 		{
-			$this->IP=$conf[$i]['IP'];
-			$this->Port=$conf[$i]['Port'];
+			$this->setServerIP( $conf[$i]['IP'] );
+			$this->setServerPort( $conf[$i]['Port'] );
 		}
 		else return false;
 		return true;
 	}
+	
+	function setServerIP($value)
+	{
+		$this->IP=$value;
+	}
+	function setServerPort($value)
+	{
+		$this->Port=$value;
+	}
+	
+	
 	public static function Waiting ($s=10, $msg = 'Waiting and retry')
 	{
 		$w = '-\|/';
