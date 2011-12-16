@@ -1,5 +1,5 @@
 <?php	//	clear;php5 -f ./VP2-IP.GetClasses.php
-class VP2
+class station
 {
 	protected $IP=NULL; //
 	protected $Port=NULL;   //
@@ -8,7 +8,7 @@ class VP2
 
 	function __construct()
 	{
-		setVP2_value();
+		set_value();
 		$this->symb = array (
 		'CR' => chr(0x0D), // \r
 		'LF' => chr(0x0A), // \n
@@ -19,7 +19,7 @@ class VP2
 		'CANCEL' => chr(0x18), // Bad CRC Code
 		'_OK_' => "\n\rOK\n\r");
 	}
-	function setVP2_value($i=0)
+	function set_value($i=0)
 	{
 		$filename='./VP2-IP.conf';	
 		$handle = fopen($filename, "rb");
@@ -68,9 +68,9 @@ class Connect extends VP2
 	function __construct(){}
 	public static function initConnection()
 	{
-		parent::$fp = fsockopen(parent::$IP, parent::$Port);
-		stream_set_timeout(parent::$fp, 0, 2500000);
-		if (parent::$fp)
+		$this->fp = fsockopen($this->IP, $this->Port);
+		stream_set_timeout($this->fp, 0, 2500000);
+		if ($this->fp)
 		{
 			if ($this->wakeUp())
 			{
@@ -84,8 +84,8 @@ class Connect extends VP2
 	{
 		for ($i=0;$i<=$this->retry;$i++)
 		{
-			fwrite (parent::$fp,parent::$symb['LF']);
-			if (fread(parent::$fp,6)==parent::$symb['LFCR'])
+			fwrite ($this->fp,$this->symb['LF']);
+			if (fread($this->fp,6)==$this->symb['LFCR'])
 				return true;
 			usleep(1200000);
 		}
@@ -95,13 +95,13 @@ class Connect extends VP2
 	{
 		if ($force==-1)
 		{
-			fwrite (parent::$fp,'LAMPS '.(($this->backLightScreen)?'0':'1').parent::$symb['LF']);
+			fwrite ($this->fp,'LAMPS '.(($this->backLightScreen)?'0':'1').$this->symb['LF']);
 		}
 		else
 		{
-			fwrite (parent::$fp,'LAMPS '.($force?'1':'0').parent::$symb['LF']);
+			fwrite ($this->fp,'LAMPS '.($force?'1':'0').$this->symb['LF']);
 		}
-		if (fread(parent::$fp,6);==parent::$symb['_OK_'])
+		if (fread($this->fp,6);==$this->symb['_OK_'])
 		{
 			if ($force==-1)$this->backLightScreen = !$this->backLightScreen;
 			else $this->backLightScreen = $force;
@@ -112,7 +112,7 @@ class Connect extends VP2
 	public static function CloseConnection()
 	{
 		$this->toggleBacklight(0);
-		fclose(parent::$fp);
+		fclose($this->fp);
 		return true;
 	}
 }
@@ -135,13 +135,13 @@ class _HILOWS extends VP2
 	{
 		for ($i=0;$i<=$this->retry;$i++)
 		{
-			fwrite (parent::$fp, "HILOWS\n");
-			parent::Waiting (8,'HILOWS : attente de la reponce.');
-			$r = fread(parent::$fp, 1);
-			if ($r == parent::$symb['ACK'])
+			fwrite ($this->fp, "HILOWS\n");
+			$this->Waiting (8,'HILOWS : attente de la reponce.');
+			$r = fread($this->fp, 1);
+			if ($r == $this->symb['ACK'])
 			{
-				parent::Waiting (8,'HILOWS : attente des donnees brutes.');
-				$HILOWS = fread(parent::$fp, 438);
+				$this->Waiting (8,'HILOWS : attente des donnees brutes.');
+				$HILOWS = fread($this->fp, 438);
 				$crc = CRC16_CCITT($HILOWS);
 				if ($crc==0x0000)
 				{
@@ -151,15 +151,15 @@ class _HILOWS extends VP2
 				}
 			//	file_put_contents("./VP2-data.brut",$HILOWS);
 			}
-			else if ($r == parent::$symb['NAK'])
+			else if ($r == $this->symb['NAK'])
 			{
 				// echo date('Y/m/d H:i:s u')."\t".'HILOWS NAK'."\n";
 			}
 			else
 			{
 				// echo date('Y/m/d H:i:s u')."\t".'HILOWS NULL  '.'$r = 0x'.dechex($r)."\n";
-				fread(parent::$fp, 999);
-				if ($i<$this->retry)	parent::Waiting (8);
+				fread($this->fp, 999);
+				if ($i<$this->retry)	$this->Waiting (8);
 			}
 		}
 		return true;
@@ -315,7 +315,7 @@ class CRC16CCITT extends VP2
 			$crc =  $this->table[(($crc>>8) ^ ord($ptr[$i]))] ^ (($crc<<8) & 0x00FFFF);
 		}
 //		return array( 'Confirm' => !$crc, 0 => chr(($crc>>8)&0xff), 1 => chr($crc&0xff), 'all' => $crc);
-		return parent::HexToDec($crc);
+		return $this->HexToDec($crc);
 	}
 }
 ?>
