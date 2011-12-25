@@ -4,7 +4,9 @@
 $vp2_gtd = new station('VP2-Gtd');
 $vp2_gtd -> initConnection();
 $vp2_gtd -> Waiting (0, 'Initialisation de connexion : OK!');
-$vp2_gtd -> Get_HILOWS_Raw();
+// $vp2_gtd -> Get_HILOWS_Raw();
+// $vp2_gtd -> Get_LOOP_Raw(3);
+$vp2_gtd -> Get_DPMAFT_Raw();
 $vp2_gtd -> closeConnection();
 $vp2_gtd -> Waiting (0, 'Fermeture de connexion : OK!');
 
@@ -12,8 +14,8 @@ class station
 {
 	protected $IP=NULL; //
 	protected $Port=NULL;   //
-	protected $fp=NULL;
-	protected $symb=NULL;
+	protected $this->fp=NULL;
+	protected $this->symb=NULL;
 	protected $retry=3; // number of attempts before aborting
 	protected $backLightScreen=false; // actual state of backlight screen
 	protected $table = array(
@@ -77,17 +79,14 @@ class station
 	function CalculateCRC($ptr)
 	{
 		$crc = 0x0000;
+		settype($crc, "integer");
 		for ($i = 0; $i < strlen($ptr); $i++)
 		{
 			$crc =  $this->table[(($crc>>8) ^ ord($ptr[$i]))] ^ (($crc<<8) & 0x00FFFF);
 		}
-//		return array( 'Confirm' => !$crc, 0 => chr(($crc>>8)&0xff), 1 => chr($crc&0xff), 'all' => $crc);
-// 		return $this->HexToDec($crc);
 // settype($crc, "string");
 // echo $crc."\n";
-settype($crc, "integer");
-// echo $crc."\n";
-		return $crc;
+		return $crc; // 		return $this->HexToDec($crc);
 	}
 	function Waiting ($s=10, $msg = 'Waiting and retry')
 	{
@@ -154,10 +153,43 @@ settype($crc, "integer");
 		fclose($this->fp);
 		return true;
 	}
-	function Get_LOOP_Raw()
+	function Get_LOOP_Raw($nbr=1)
 	{
+		$_NBR = $nbr;
 		for ($i=0;$i<=$this->retry;$i++)
-		{}
+		{
+			fwrite ($this->fp, "LOOP $nbr\n");
+			$r = fread($this->fp, 1);
+			if ($r == $this->symb['ACK'])
+			{
+				while ($nbr-- > 0)
+				{
+					$LOOP = fread($this->fp, 99);
+					$crc = $this->CalculateCRC($LOOP);
+					if ($crc==0x0000)
+					{
+						$LOOP = substr($LOOP,0,-2);
+						// fonction de conversion...
+						$this->Waiting (0,'LOOP : Calcul de CRC confirme');
+						file_put_contents('./VP2-dataLOOP['.($_NBR-$nbr).'].brut',$LOOP);
+					}
+					else	$this->Waiting (0,'LOOP : Erreur de CRC : '.($crc));
+					if ($nbr > 0) sleep(1);
+				}
+				return true;
+			}
+			else if ($r == $this->symb['NAK'])
+			{
+				$this->Waiting (0,'LOOP : Erreur de NAK');
+			}
+			else
+			{
+				fwrite ($this->fp, $this->symb['CR']);
+				fread($this->fp, 999);
+				if ($i<$this->retry)
+					$this->Waiting (0,'LOOP : Erreur Autre');
+			}
+		}
 		return true;
 	}
 	function Get_HILOWS_Raw()
@@ -175,11 +207,12 @@ settype($crc, "integer");
 					$HILOWS = substr($HILOWS,0,-2);
 					// echo date('Y/m/d H:i:s u')."\t".'Traitement des valeurs Maxi et Mini...'."\n";
 					// fonction de conversion...
+					$this->Waiting (0,'HILOWS : Calcul de CRC confirme');
+					file_put_contents("./VP2-dataHILOWS.brut",$HILOWS);
 					return true;
 				}
 				else	$this->Waiting (0,'HILOWS : Erreur de CRC : '.($crc));
 //				$this->Waiting (0,($this->CalculateCRC(chr(0xC6).chr(0xCE).chr(0xA2).chr(0x03).chr(0xE2).chr(0xB4))));
-			//	file_put_contents("./VP2-data.brut",$HILOWS);
 			}
 			else if ($r == $this->symb['NAK'])
 			{
@@ -207,22 +240,22 @@ settype($crc, "integer");
 	{
 		for ($i=0;$i<=$this->retry;$i++)
 		{
-fwrite($fp,"DMPAFT\n");
+fwrite($this->fp,"DMPAFT\n");
 Waiting (4,'Recuperation des Archives.');
-$r = fread($fp, 1);
-if ($r == $symb['ACK'])
+$r = fread($this->fp, 1);
+if ($r == $this->symb['ACK'])
 {
 	$d = DMPAFT_SetVP2Date(date('Y/m/d H:00:00'));
-	fwrite($fp, $d[0].$d[1].$d[2].$d[3]);
+	fwrite($this->fp, $d[0].$d[1].$d[2].$d[3]);
 	Waiting (4,'Demande d archives');
 	$crc = $this->CalculateCRC($d[0].$d[1].$d[2].$d[3]);
-	fwrite($fp, $crc[0].$crc[1]);
+	fwrite($this->fp, $crc[0].$crc[1]);
 	Waiting (12,'confirmation par CRC');
-	$r = fread($fp, 1);
-	if ($r == $symb['ACK'])
+	$r = fread($this->fp, 1);
+	if ($r == $this->symb['ACK'])
 	{
 		Waiting (1,'CRC Confirme, Recuperation des Archives');
-		$r = fread($fp, 6);
+		$r = fread($this->fp, 6);
 //				echo strlen($r).' - '.$n.'  = '.bin2hex($n).' - '.$p.'  = '.bin2hex($p).' - ';
 		$crc = $this->CalculateCRC($r);
 //				echo $r.'        = 0x'.bin2hex($r)."\n";
@@ -235,49 +268,49 @@ if ($r == $symb['ACK'])
 			//$n = (ord($r[0])<<8)+ord($r[1]);
 			//$p = (ord($r[2])<<8)+ord($r[3]);
 			echo date('Y/m/d H:i:s u')."\t".'Nombre de Pages : '.$n.'. debute aux data : '.$p.".\n";
-			fwrite($fp, $symb['ACK']);
+			fwrite($this->fp, $this->symb['ACK']);
 			for ($j=0;$j<$n && $j<5;$j++)
 			{
-				$archives[$j] = fread($fp, 267);
+				$archives[$j] = fread($this->fp, 267);
 				Waiting (4,'Download ARCHIVE : '.$j);
 				if ($this->CalculateCRC($archives[$j]))
 				{
 					Waiting (4,'ARCHIVE #'.$j.' du '.DMPAFT_GetVP2Date(array($archives[$j][1],$archives[$j][2],$archives[$j][3],$archives[$j][4])).' valide');
-					fwrite($fp, $symb['ACK']);
+					fwrite($this->fp, $this->symb['ACK']);
 				}
 				else
 				{
-					fwrite($fp, $symb['NAK']);
+					fwrite($this->fp, $this->symb['NAK']);
 					Waiting (4,'ARCHIVE #'.$j.' invalide, retry.');
 				}
 			}
-			fwrite($fp, $symb['ESC']);
+			fwrite($this->fp, $this->symb['ESC']);
 		}
-		else if ($r == $symb['NAK'])
+		else if ($r == $this->symb['NAK'])
 			echo date('Y/m/d H:i:s u')."\t".'DMPAFT Pages NAK'."\n";
 		else
 		{
 			echo date('Y/m/d H:i:s u')."\t".'DMPAFT Pages NULL  '.'$r = 0x'.dechex($r)."\n";
-			fread($fp, 999); // vidange
+			fread($this->fp, 999); // vidange
 			if ($i<$retry)	Waiting (8);
 		}
 	}
-	else if ($r == $symb['NAK'])
+	else if ($r == $this->symb['NAK'])
 		echo date('Y/m/d H:i:s u')."\t".'DMPAFT Date NAK'."\n";
 	else
 	{
 		echo date('Y/m/d H:i:s u')."\t".'DMPAFT Date NULL  '.'$r = 0x'.dechex($r)."\n";
-		fread($fp, 999); // vidange
+		fread($this->fp, 999); // vidange
 		if ($i<$retry)	Waiting (8);
 	}
 	$skip = true;
 }
-else if ($r == $symb['NAK'])
+else if ($r == $this->symb['NAK'])
 	echo date('Y/m/d H:i:s u')."\t".'DMPAFT NAK'."\n";
 else
 {
 	echo date('Y/m/d H:i:s u')."\t".'DMPAFT NULL  '.'$r = 0x'.dechex($r)."\n";
-	fread($fp, 999); // vidange
+	fread($this->fp, 999); // vidange
 	if ($i<$retry)	Waiting (8);
 }
 
