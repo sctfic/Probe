@@ -1,22 +1,26 @@
 <?php	//	clear;php5 -f ./Station.phpc
-// file_put_contents ('../../WsWds.station.conf',var_export(array('VP2-Gtd'=>array('IP'=>'VP2','Port'=>22222,'type'=>'VP2-IP')), true));
+//file_put_contents ('../../WsWds.station.conf',var_export(array('VP2-Gtd'=>array('IP'=>'VP2','Port'=>22222,'type'=>'VP2-IP','Last_DMPAFT'=>'0')), true));
 
 $vp2_gtd = new station('VP2-Gtd');
-$vp2_gtd -> initConnection();
+// $vp2_gtd -> initConnection();
 $vp2_gtd -> Waiting (0, 'Initialisation de connexion : OK!');
-// $vp2_gtd -> Get_HILOWS_Raw();
-// $vp2_gtd -> Get_LOOP_Raw(3);
-$vp2_gtd -> Get_DPMAFT_Raw();
-$vp2_gtd -> closeConnection();
+
+	// $vp2_gtd -> Get_HILOWS_Raw();	// OK
+	// $vp2_gtd -> Get_LOOP_Raw(3);	// OK
+	$vp2_gtd -> Waiting (0, '0x'.bin2hex($vp2_gtd -> DMPAFT_SetVP2Date('2003/06/19 09:30:00')).' = 0x06D303A2 = '); // OK
+	$vp2_gtd -> Waiting (0, $vp2_gtd -> DMPAFT_GetVP2Date($vp2_gtd -> DMPAFT_SetVP2Date('2003/06/19 09:30:00')).' = 2003/06/19 09:30:00'); // OK
+	// $vp2_gtd -> Get_DPMAFT_Raw();
+
+// $vp2_gtd -> closeConnection();
 $vp2_gtd -> Waiting (0, 'Fermeture de connexion : OK!');
 
 class station
 {
-	protected $IP=NULL; //
-	protected $Port=NULL;   //
-	protected $this->fp=NULL;
-	protected $this->symb=NULL;
-	protected $retry=3; // number of attempts before aborting
+	protected $IP=NULL;	// IP of this Vantage Pro2
+	protected $Port=NULL;	// Connetion Port of this
+	protected $fp=NULL;	// Pointer of VP2 Connection
+	protected $symb=NULL;
+	protected $retry=3;	// number of attempts before aborting
 	protected $backLightScreen=false; // actual state of backlight screen
 	protected $table = array(
 	0x0,  0x1021,  0x2042,  0x3063,  0x4084,  0x50a5,  0x60c6,  0x70e7,
@@ -52,8 +56,7 @@ class station
 	0xef1f,  0xff3e,  0xcf5d,  0xdf7c,  0xaf9b,  0xbfba,  0x8fd9,  0x9ff8,
 	0x6e17,  0x7e36,  0x4e55,  0x5e74,  0x2e93,  0x3eb2,  0xed1,  0x1ef0);
 	
-	function __construct($name)
-	{
+	function __construct($name)	{
 		$this->set_value($name);
 		$this->symb = array (
 		'CR' => chr(0x0D), // \r
@@ -65,8 +68,7 @@ class station
 		'CANCEL' => chr(0x18), // Bad CRC Code
 		'_OK_' => "\n\rOK\n\r");
 	}
-	function set_value($name)
-	{
+	function set_value($name)	{
 		$arrayconf = eval('return '.file_get_contents('../../WsWds.station.conf').';');
 		if ($arrayconf[$name]['type']=='VP2-IP')
 		{
@@ -76,20 +78,16 @@ class station
 		}
 		return false;
 	}
-	function CalculateCRC($ptr)
-	{
+	function CalculateCRC($ptr)	{
 		$crc = 0x0000;
 		settype($crc, "integer");
 		for ($i = 0; $i < strlen($ptr); $i++)
 		{
 			$crc =  $this->table[(($crc>>8) ^ ord($ptr[$i]))] ^ (($crc<<8) & 0x00FFFF);
 		}
-// settype($crc, "string");
-// echo $crc."\n";
 		return $crc; // 		return $this->HexToDec($crc);
 	}
-	function Waiting ($s=10, $msg = 'Waiting and retry')
-	{
+	function Waiting ($s=10, $msg = 'Waiting and retry')	{
 		$w = '-\|/';
 		if ($s==0)
 			echo "\r".date('Y/m/d H:i:s u')."\t".$msg;
@@ -100,12 +98,10 @@ class station
 		}
 		echo "\n";
 	}
-	function HexToDec($hex)
-	{
+	function HexToDec($hex)	{
 		return hexdec(bin2hex($hex));
 	}
-	function initConnection()
-	{
+	function initConnection()	{
 		$this->fp = fsockopen($this->IP, $this->Port);
 		stream_set_timeout($this->fp, 0, 2500000);
 		if ($this->fp)
@@ -118,8 +114,7 @@ class station
 		}
 		return false;
 	}
-	protected function wakeUp()
-	{
+	protected function wakeUp()	{
 		for ($i=0;$i<=$this->retry;$i++)
 		{
 			fwrite ($this->fp,$this->symb['LF']);
@@ -129,8 +124,7 @@ class station
 		}
 		return false;
 	}
-	protected function toggleBacklight($force=-1)
-	{
+	protected function toggleBacklight($force=-1)	{
 		if ($force==-1)
 		{
 			fwrite ($this->fp,'LAMPS '.(($this->backLightScreen)?'0':'1').$this->symb['LF']);
@@ -147,14 +141,12 @@ class station
 		}
 		return FALSE;
 	}
-	function CloseConnection()
-	{
+	function CloseConnection()	{
 		$this->toggleBacklight(0);
 		fclose($this->fp);
 		return true;
 	}
-	function Get_LOOP_Raw($nbr=1)
-	{
+	function Get_LOOP_Raw($nbr=1)	{
 		$_NBR = $nbr;
 		for ($i=0;$i<=$this->retry;$i++)
 		{
@@ -173,7 +165,8 @@ class station
 						$this->Waiting (0,'LOOP : Calcul de CRC confirme');
 						file_put_contents('./VP2-dataLOOP['.($_NBR-$nbr).'].brut',$LOOP);
 					}
-					else	$this->Waiting (0,'LOOP : Erreur de CRC : '.($crc));
+					else
+						$this->Waiting (0,'LOOP : Erreur de CRC : '.($crc));
 					if ($nbr > 0) sleep(1);
 				}
 				return true;
@@ -192,8 +185,7 @@ class station
 		}
 		return true;
 	}
-	function Get_HILOWS_Raw()
-	{
+	function Get_HILOWS_Raw()	{
 		for ($i=0;$i<=$this->retry;$i++)
 		{
 			fwrite ($this->fp, "HILOWS\n");
@@ -211,7 +203,8 @@ class station
 					file_put_contents("./VP2-dataHILOWS.brut",$HILOWS);
 					return true;
 				}
-				else	$this->Waiting (0,'HILOWS : Erreur de CRC : '.($crc));
+				else
+					$this->Waiting (0,'HILOWS : Erreur de CRC : '.($crc));
 //				$this->Waiting (0,($this->CalculateCRC(chr(0xC6).chr(0xCE).chr(0xA2).chr(0x03).chr(0xE2).chr(0xB4))));
 			}
 			else if ($r == $this->symb['NAK'])
@@ -229,62 +222,81 @@ class station
 		}
 		return true;
 	}
-	
-	function Get_TIME_Raw()
-	{
+	function Get_TIME_Raw()	{
 		for ($i=0;$i<=$this->retry;$i++)
 		{}
 		return true;
 	}
-	function Get_DMPAFT_Raw()
-	{
+	function DMPAFT_SetVP2Date ($StrDate)	{
+	// 2003/06/19 09:30:00  =>  0x06D3 0x03A2
+		$y = substr($StrDate, 0, 4);
+		$m = substr($StrDate, 5, 2);
+		$d = substr($StrDate, 8, 2);
+		$h = substr($StrDate, -8, 2);
+		$min = substr($StrDate, -5, 2);
+		$s = substr($StrDate, -2);
+		$d = ((($y-2000)*512+$m*32+$d)<<16) + ($h*100+$min);							// settype($d, 'integer');
+		$d = chr(($d&0xff000000)>>24).chr(($d&0xff0000)>>16).chr(($d&0xff00)>>8).chr($d&0xff);	// settype($d, 'string');
+		return $d;
+	}
+	function DMPAFT_GetVP2Date ($VP2Date)	{
+	// 2003/06/19 09:30:00  <=  0x06D3 0x03A2
+// $this->waiting(0,bin2hex($VP2Date));
+		$DateStamp = $this->HexToDec(substr($VP2Date,0,2)); // 0x06d3 = 0000011011010011
+// $this->waiting(0,bin2hex($DateStamp).' = '.str_pad(decbin(hexdec(bin2hex($DateStamp))),16,'0',STR_PAD_LEFT));
+			$y = (($DateStamp & 0xFE00)>>9)+2000;
+			$m = str_pad(($DateStamp & 0x01E0)>>5,2,'0',STR_PAD_LEFT);
+			$d = str_pad($DateStamp & 0x1f,2,'0',STR_PAD_LEFT);
+// $this->waiting(0,$y.'/'.$m.'/'.$d);
+			
+		$TimeStamp = $this->HexToDec(substr($VP2Date,-2)); // 0x03a2 = 0000001110100010
+// $this->waiting(0,bin2hex($TimeStamp).' = '.str_pad(decbin(hexdec(bin2hex($TimeStamp))),16,'0',STR_PAD_LEFT));
+			$h = str_pad((int)($TimeStamp/100),2,'0',STR_PAD_LEFT);
+			$min = str_pad($TimeStamp-$h*100,2,'0',STR_PAD_LEFT);
+// $this->waiting(0,$h.':'.$min);
+		return $y.'/'.$m.'/'.$d.' '.$h.':'.$min.':00';
+	}
+	function Get_DMPAFT_Raw()	{
 		for ($i=0;$i<=$this->retry;$i++)
 		{
-fwrite($this->fp,"DMPAFT\n");
-Waiting (4,'Recuperation des Archives.');
-$r = fread($this->fp, 1);
-if ($r == $this->symb['ACK'])
-{
-	$d = DMPAFT_SetVP2Date(date('Y/m/d H:00:00'));
-	fwrite($this->fp, $d[0].$d[1].$d[2].$d[3]);
-	Waiting (4,'Demande d archives');
-	$crc = $this->CalculateCRC($d[0].$d[1].$d[2].$d[3]);
-	fwrite($this->fp, $crc[0].$crc[1]);
-	Waiting (12,'confirmation par CRC');
-	$r = fread($this->fp, 1);
-	if ($r == $this->symb['ACK'])
-	{
-		Waiting (1,'CRC Confirme, Recuperation des Archives');
-		$r = fread($this->fp, 6);
-//				echo strlen($r).' - '.$n.'  = '.bin2hex($n).' - '.$p.'  = '.bin2hex($p).' - ';
-		$crc = $this->CalculateCRC($r);
-//				echo $r.'        = 0x'.bin2hex($r)."\n";
-//				echo $crc['all'].'        = 0x'.bin2hex($crc['all'])."\n";
-//				echo $crc[0].' '.$crc[1].'        = 0x'.dechex(ord($crc[0])).dechex(ord($crc[1]))."\n";
-		if ($crc['Confirm'])
-		{
-			$n = ($r >> 32) & 0xffff ;
-			$p = ($r >> 16) & 0xffff;
-			//$n = (ord($r[0])<<8)+ord($r[1]);
-			//$p = (ord($r[2])<<8)+ord($r[3]);
-			echo date('Y/m/d H:i:s u')."\t".'Nombre de Pages : '.$n.'. debute aux data : '.$p.".\n";
-			fwrite($this->fp, $this->symb['ACK']);
-			for ($j=0;$j<$n && $j<5;$j++)
+			fwrite($this->fp,"DMPAFT\n");			// Send the command to VP2 : DumpAfter
+			$r = fread($this->fp, 1);			// Read the answer
+			if ($r == $this->symb['ACK'])			// ACK if VP2 understood
 			{
-				$archives[$j] = fread($this->fp, 267);
-				Waiting (4,'Download ARCHIVE : '.$j);
-				if ($this->CalculateCRC($archives[$j]))
+				$d = $this->DMPAFT_SetVP2Date(date('Y/m/d H:00:00')); // define date of first archives record
+				fwrite($this->fp, $d);				// Send this date
+				$crc = $this->CalculateCRC($d);		// define the CRC of my date
+				$this->Waiting (0,'DateCRC : '.($crc));
+				fwrite($this->fp, $crc);			// Send this CRC
+				$r = fread($this->fp, 1);			// Read the answer
+				if ($r == $this->symb['ACK'])			// ACK if VP2 confirm the CRC
 				{
-					Waiting (4,'ARCHIVE #'.$j.' du '.DMPAFT_GetVP2Date(array($archives[$j][1],$archives[$j][2],$archives[$j][3],$archives[$j][4])).' valide');
-					fwrite($this->fp, $this->symb['ACK']);
-				}
-				else
-				{
-					fwrite($this->fp, $this->symb['NAK']);
-					Waiting (4,'ARCHIVE #'.$j.' invalide, retry.');
-				}
-			}
-			fwrite($this->fp, $this->symb['ESC']);
+					$r = fread($this->fp, 6);			// Read the answer
+					$crc = $this->CalculateCRC($r);		// check CRC
+					if ($crc==0x0000)
+					{
+						$n = array_reverse(substr($r,0,2));		// Split Bytes in revers order : Nbr of page
+						$p = array_reverse(substr($r,2,2));		// Split Bytes in revers order : # of first archive
+echo date('Y/m/d H:i:s u')."\t".'Nombre de Pages : '.$n.'. debute aux data : '.$p.".\n";
+						fwrite($this->fp, $this->symb['ACK']);	// Send ACK to start 
+						for ($j=0;$j<$n && $j<5;$j++)
+						{
+							$retry = $this->retry + 1;
+							$archives[$j] = fread($this->fp, 267);
+							Waiting (4,'Download ARCHIVE : '.$j);
+							if ($this->CalculateCRC($archives[$j]))
+							{
+								Waiting (4,'ARCHIVE #'.$j.' du '.DMPAFT_GetVP2Date(substr($archives[$j],0,4)).' valide');
+								fwrite($this->fp, $this->symb['ACK']);
+							}
+							else
+							{
+								fwrite($this->fp, $this->symb['NAK']);
+								if (!(--$retry))
+									fwrite($this->fp, $this->symb['ESC']);
+								Waiting (4,'ARCHIVE #'.$j.' invalide, retry.');
+							}
+						}
 		}
 		else if ($r == $this->symb['NAK'])
 			echo date('Y/m/d H:i:s u')."\t".'DMPAFT Pages NAK'."\n";
