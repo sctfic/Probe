@@ -1,23 +1,30 @@
 <?php	//	clear;php5 -f ./Station.phpc
-// file_put_contents ('../../WsWds.station.conf',var_export(array('VP2-Gtd'=>array('IP'=>'VP2','Port'=>22222,'type'=>'VP2-IP','Last_DMPAFT'=>'0')), true));
+// file_put_contents ('./WsWds/WsWds.station.conf',
+// 	var_export(
+// 		array(
+// 			'VP2-Inside'=>array('IP'=>'VP2','Port'=>22222,'type'=>'VP2-IP','Last_DMPAFT'=>'0'),
+// 			'VP2-Gtd'=>array('IP'=>'nas-alban.no-ip.org','Port'=>22222,'type'=>'VP2-IP','Last_DMPAFT'=>'0'),
+// 		), true));
 
 $vp2_gtd = new station('VP2-Gtd');
-$vp2_gtd -> initConnection();
-$vp2_gtd -> Waiting (0, 'Initialisation de connexion : OK!');
+	// $vp2_gtd -> Waiting (0, '0x'.bin2hex($vp2_gtd -> DMPAFT_SetVP2Date('2003/06/19 09:30:00')).' = 0x06D303A2 = '); // OK
+	// $vp2_gtd -> Waiting (0, $vp2_gtd -> DMPAFT_GetVP2Date($vp2_gtd -> DMPAFT_SetVP2Date('2003/06/19 09:30:00')).' = 2003/06/19 09:30:00'); // OK
+	// $vp2_gtd -> Waiting (0, bin2hex($vp2_gtd -> CalculateCRC($vp2_gtd -> DMPAFT_SetVP2Date('2003/06/19 09:30:00')))); // OK
+	// $vp2_gtd -> Waiting (0, '0xE2B4 = 0x'.bin2hex($vp2_gtd -> CalculateCRC(chr(0xc6).chr(0xce).chr(0xa2).chr(0x03)))); // OK
+if ($vp2_gtd -> initConnection())
+{
+	$vp2_gtd -> Waiting (0, 'Initialisation de connexion : OK!');
 
 	// $vp2_gtd -> Get_HILOWS_Raw();	// OK
 	// $vp2_gtd -> Get_LOOP_Raw(3);	// OK
 	$vp2_gtd -> Get_DMPAFT_Raw();
-	// $vp2_gtd -> Waiting (0, '0x'.bin2hex($vp2_gtd -> DMPAFT_SetVP2Date('2003/06/19 09:30:00')).' = 0x06D303A2 = '); // OK
-	// $vp2_gtd -> Waiting (0, $vp2_gtd -> DMPAFT_GetVP2Date($vp2_gtd -> DMPAFT_SetVP2Date('2003/06/19 09:30:00')).' = 2003/06/19 09:30:00'); // OK
-//	$vp2_gtd -> Waiting (0, bin2hex($vp2_gtd -> CalculateCRC($vp2_gtd -> DMPAFT_SetVP2Date('2003/06/19 09:30:00')))); // OK
-//	$vp2_gtd -> Waiting (0, '0xE2B4 = 0x'.bin2hex($vp2_gtd -> CalculateCRC(chr(0xc6).chr(0xce).chr(0xa2).chr(0x03)))); // OK
 
-$vp2_gtd -> closeConnection();
-$vp2_gtd -> Waiting (0, 'Fermeture de connexion : OK!');
-
+	if ($vp2_gtd -> closeConnection())
+		$vp2_gtd -> Waiting (0, 'Fermeture de connexion : OK!');
+}
 class station
 {
+	protected $keyconf=NULL;	// FileConf of this Vantage Pro2
 	protected $conf=NULL;	// FileConf of this Vantage Pro2
 	protected $fp=NULL;	// Pointer of VP2 Connection
 	protected $symb=NULL;
@@ -60,6 +67,7 @@ class station
 	0x6e17,  0x7e36,  0x4e55,  0x5e74,  0x2e93,  0x3eb2,  0xed1,  0x1ef0);
 	
 	function __construct($name)	{
+		$this->keyconf=$name;
 		$this->set_value($name);
 		$this->symb = array (
 		'CR' => chr(0x0D), // \r
@@ -72,10 +80,10 @@ class station
 		'_OK_' => "\n\rOK\n\r");
 	}
 	function set_value($name)	{
-		$this->WsWdsConf = eval('return '.file_get_contents('../../WsWds.station.conf').';');
+		$this->WsWdsConf = eval('return '.file_get_contents('./WsWds/WsWds.station.conf').';');
 		if ($this->WsWdsConf[$name]['type']=='VP2-IP')
 		{
-			$this->conf=( $arrayconf[$name]);
+			$this->conf=($this->WsWdsConf[$name]);
 			return true;
 		}
 		return false;
@@ -241,7 +249,8 @@ class station
 		$min = substr($StrDate, -5, 2);
 		$s = substr($StrDate, -2);
 		$d = ((($y-2000)*512+$m*32+$d)<<16) + ($h*100+$min);							// settype($d, 'integer');
-		$d = chr(($d&0xff000000)>>24).chr(($d&0xff0000)>>16).chr(($d&0xff00)>>8).chr($d&0xff);	// settype($d, 'string');
+// 		$d = chr(($d&0xff000000)>>24).chr(($d&0xff0000)>>16).chr(($d&0xff00)>>8).chr($d&0xff);	// settype($d, 'string');
+		$d = chr(($d&0xff0000)>>16).chr(($d&0xff000000)>>24).chr($d&0xff).chr(($d&0xff00)>>8);	// Reverse version
 		return $d;
 	}
 	function DMPAFT_GetVP2Date ($VP2Date)	{
@@ -266,7 +275,7 @@ class station
 				$d = $this->DMPAFT_SetVP2Date($this->conf['Last_DMPAFT']); // define date of first archives record
 				fwrite($this->fp, $d);				// Send this date
 				$crc = $this->CalculateCRC($d);		// define the CRC of my date
-// 				$this->Waiting (0,'DateCRC : 0x'.bin2hex($crc));
+// $this->Waiting (0,$this->conf['Last_DMPAFT'].' = 0x'.bin2hex($d).' >> DateCRC : 0x'.bin2hex($crc));
 				fwrite($this->fp, $crc);			// Send this CRC
 				$r = fread($this->fp, 1);			// Read the answer
 				if ($r == $this->symb['ACK'])			// ACK if VP2 confirm the CRC
@@ -278,25 +287,27 @@ class station
 						$nbrArch=0;
 						$nbrPages = $this->HexToDec (strrev(substr($r,0,2)));		// Split Bytes in revers order : Nbr of page
 						$firstArch = $this->HexToDec (strrev(substr($r,2,2)));		// Split Bytes in revers order : # of first archive
-$this->Waiting (0,'Nombre de Pages : '.$nbrPages.'. debute aux data : '.$firstArch);
+						$this->Waiting (0,'There are '.$nbrPages.'p. in queue, from archive '.$firstArch.' on first page.');
 						fwrite($this->fp, $this->symb['ACK']);	// Send ACK to start 
-						for ($j=0;$j<$nbrPages && $j<5;$j++)
+						$retry = $this->retry + 1;
+						for ($j=0;$j<$nbrPages;$j++)
 						{
-							$retry = $this->retry + 1;
-							$this->Waiting (0,'Download Archive PAGE : '.$j);
-							$Pages[$j] = fread($this->fp, 267);
-							if (!$this->CalculateCRC($Pages[$j]))
+							$Page = fread($this->fp, 267);
+							$this->Waiting (0,'Download Archive PAGE #'.$j.' since : '.$this->DMPAFT_GetVP2Date(strrev(substr($Page,1,2)).strrev(substr($Page,3,2))));
+							if (strlen($Page)==267 && !$this->CalculateCRC($Page))
 							{
 								for($k=$firstArch;$k<=4;$k++)
 								{
-									$Archives[$nbrArch++]=substr($Pages[$j],1+52*$k,52);
-									file_put_contents('../../ExportedData/DMPAFT['.($nbrArch-1).'].brut',$Archives[$nbrArch-1]);
+									$Archives[$nbrArch++]=substr($Page,1+52*$k,52);
+									file_put_contents('./WsWds/ExportedData/DMPAFT['.($nbrArch-1).'].brut',$Archives[$nbrArch-1]);
 									$ArchDate = $this->DMPAFT_GetVP2Date(strrev(substr($Archives[$nbrArch-1],0,2)).strrev(substr($Archives[$nbrArch-1],2,2)));
 									$this->conf['Last_DMPAFT'] = $ArchDate;
-									file_put_contents ('../../WsWds.station.conf', var_export($this->conf,true));
 									$this->Waiting (0,'ARCHIVE #'.($nbrArch-1).' of '.$ArchDate.' saved.');
 								}
+								$this->WsWdsConf[$this->keyconf] = $this->conf;
+								file_put_contents ('./WsWds/WsWds.station.conf', var_export($this->WsWdsConf,true));
 								$firstArch=0;
+								$retry = $this->retry + 1;
 								fwrite($this->fp, $this->symb['ACK']);
 							}
 							else
@@ -305,16 +316,18 @@ $this->Waiting (0,'Nombre de Pages : '.$nbrPages.'. debute aux data : '.$firstAr
 								{
 									$this->Waiting (0,'Page #'.$j.' invalide, Aborting Download.');
 									fwrite($this->fp, $this->symb['ESC']);
+									fread($this->fp, 999); // vidange
+									return false;
 								}
 								else
 								{
-									$this->Waiting (0,'Page #'.$j.' invalide by wrong CRC, retry.');
+									$this->Waiting (10,'Page #'.$j.' invalide by wrong CRC, retry.');
 									fwrite($this->fp, $this->symb['NAK']);
+									fread($this->fp, 999); // vidange
 								}
+								$j--;
 							}
 						}
-fwrite($this->fp, $this->symb['ESC']);
-fread($this->fp, 999); // vidange
 						return true;
 					}
 					else if ($r == $this->symb['NAK'])
