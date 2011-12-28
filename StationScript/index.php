@@ -2,12 +2,12 @@
 // StationScript
 $_StationFOLDER = dirname(__FILE__).DIRECTORY_SEPARATOR;
 include_once($_StationFOLDER .'VP2/Station.phpc');
-file_put_contents ($_StationFOLDER.'Station.conf',
-	var_export(
-		array(
-			'VP2-Inside'=>array('IP'=>'VP2','Port'=>22222,'type'=>'VP2-IP','Last_DMPAFT'=>'0'),
-			'VP2-Gtd'=>array('IP'=>'nas-alban.no-ip.org','Port'=>22222,'type'=>'VP2-IP','Last_DMPAFT'=>'0'),
-		), true));
+// file_put_contents ($_StationFOLDER.'Station.conf',
+// 	var_export(
+// 		array(
+// 			'VP2-Inside'=>array('IP'=>'VP2','Port'=>22222,'type'=>'VP2-IP','Last_DMPAFT'=>'0'),
+// 			'VP2-Gtd'=>array('IP'=>'nas-alban.no-ip.org','Port'=>22222,'type'=>'VP2-IP','Last_DMPAFT'=>'0'),
+// 		), true));
 
 $SConfs = eval('return '.file_get_contents($_StationFOLDER.'Station.conf').';');
 
@@ -22,7 +22,10 @@ foreach($SConfs as $key=>$SConf)
 
 			// $Station -> Get_HILOWS_Raw();	// OK
 			// $Station -> Get_LOOP_Raw(3);	// OK
-			$Station -> Get_DMPAFT_Raw();
+			// $Station -> Get_DMPAFT_Raw();	// OK
+			$Station -> Get_TIME_Raw();
+			$Station -> Set_TIME_Raw();
+			$Station -> Get_TIME_Raw();
 
 			if ($Station -> closeConnection())
 				$Station -> Waiting (0, 'Fermeture de '.$key.' : OK!');
@@ -33,5 +36,4 @@ foreach($SConfs as $key=>$SConf)
 				$Station -> Waiting (0, 'Echec initialisation  de '.$key.' !');
 	}
 }
-
 ?>

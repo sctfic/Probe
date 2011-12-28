@@ -3,12 +3,10 @@
 class station
 {
 	protected $keyconf=NULL;	// FileConf of this Vantage Pro2
-	protected $conf=NULL;	// FileConf of this Vantage Pro2
 	protected $fp=NULL;	// Pointer of VP2 Connection
 	protected $symb=NULL;
-	protected $StationConf=NULL;
 	protected $VP2FOLDER=NULL;
-
+	protected $SConfs=NULL;
 	protected $retry=3;	// number of attempts before aborting
 	protected $backLightScreen=false; // actual state of backlight screen
 	protected $table = array(
@@ -89,9 +87,9 @@ class station
 	function initConnection()	{
 		$errno = 0;
 		$this->fp = @fsockopen($this->SConfs[$this->keyconf]['IP'], $this->SConfs[$this->keyconf]['Port'], &$errno);
-		stream_set_timeout($this->fp, 0, 2500000);
 		if ($this->fp && $errno==0)
 		{
+			stream_set_timeout($this->fp, 0, 2500000);
 			if ($this->wakeUp())
 			{
 				$this->toggleBacklight(1);
@@ -206,11 +204,57 @@ class station
 		}
 		return true;
 	}
-	function Get_TIME_Raw()	{
-		for ($i=0;$i<=$this->retry;$i++)
-		{}
-		return true;
+	function Get_TIME_Raw()	{// 0x35 16 00 1d 0c 6f  0x7c 44  ==  2011/12/29 00:22:53
+		fwrite ($this->fp, "GETTIME\n");
+		$r = fread($this->fp, 1);
+		if ($r == $this->symb['ACK'])
+		{
+			$GETTIME = fread($this->fp, 8);
+			$crc = $this->CalculateCRC($GETTIME);
+			if ($crc==0x0000)
+			{
+				$this->Waiting (0,bin2hex($GETTIME));
+				$GETTIME = (ord($GETTIME[5])+1900).'/'.str_pad(ord($GETTIME[4]),2,'0',STR_PAD_LEFT).'/'.str_pad(ord($GETTIME[3]),2,'0',STR_PAD_LEFT).' '.str_pad(ord($GETTIME[2]),2,'0',STR_PAD_LEFT).':'.str_pad(ord($GETTIME[1]),2,'0',STR_PAD_LEFT).':'.str_pad(ord($GETTIME[0]),2,'0',STR_PAD_LEFT);
+				$this->Waiting (0, 'Real Time : '.date('Y/m/d H:i:s').' vs GETTIME : '.$GETTIME);
+				return $GETTIME;
+			}
+			else
+				$this->Waiting (0,'GETTIME : Erreur de CRC : '.($crc));
+		}
+		else
+		{
+			fread($this->fp, 999);
+				$this->Waiting (0,'GETTIME : Erreur inconue');
+		}
+		return false;
 	}
+	function Set_TIME_Raw()	{// 0x35 16 00 1d 0c 6f  0x7c 44  ==  2011/12/29 00:22:53
+		fwrite ($this->fp, "SETTIME\n");
+		$r = fread($this->fp, 1);
+		if ($r == $this->symb['ACK'])
+		{
+			list($y,$m,$d,$h,$i,$s) = explode(';', date('Y;m;d;H;i;s'));
+			$SETTIME = chr($s).chr($i).chr($h).chr($d).chr($m).chr($y-1900);
+			$crc = $this->CalculateCRC($SETTIME);
+			fwrite ($this->fp, $SETTIME.$crc);
+			$this->Waiting (0,bin2hex($SETTIME.$crc));
+			$r = fread($this->fp, 1);
+			if ($r == $this->symb['ACK'])
+			{
+				$this->Waiting (0,'SETTIME OK : '.date('Y/m/d H:i:s'));
+				return true;
+			}
+			else
+				$this->Waiting (0,'SETTIME : Erreur de CRC : '.($crc));
+		}
+		else
+		{
+			fread($this->fp, 999);
+				$this->Waiting (0,'SETTIME : Erreur inconue');
+		}
+		return false;
+	}
+
 	function DMPAFT_SetVP2Date ($StrDate)	{
 	// 2003/06/19 09:30:00  =>  0x03A2 0x06D3
 		$y = substr($StrDate, 0, 4);
@@ -260,20 +304,20 @@ class station
 						$firstArch = $this->HexToDec (strrev(substr($r,2,2)));		// Split Bytes in revers order : # of first archive
 						$this->Waiting (0,'There are '.$nbrPages.'p. in queue, from archive '.$firstArch.' on first page.');
 						fwrite($this->fp, $this->symb['ACK']);	// Send ACK to start 
-						$retry = $this->retry + 1;
 						for ($j=0;$j<$nbrPages;$j++)
 						{
 							$Page = fread($this->fp, 267);
 							$this->Waiting (0,'Download Archive PAGE #'.$j.' since : '.$this->DMPAFT_GetVP2Date(substr($Page,1,4)));
 							if (strlen($Page)==267 && !$this->CalculateCRC($Page))
 							{
+								$retry = $this->retry;
 								for($k=$firstArch;$k<=4;$k++)
 								{
 									$Archives[$nbrArch++]=substr($Page,1+52*$k,52);
-									file_put_contents($this->VP2FOLDER.'../../ExportedData/DMPAFT['.($nbrArch-1).'].brut',$Archives[$nbrArch-1]);
+// file_put_contents($this->VP2FOLDER.'../../ExportedData/DMPAFT['.($nbrArch-1).'].brut',$Archives[$nbrArch-1]);
 									$ArchDate = $this->DMPAFT_GetVP2Date(substr($Archives[$nbrArch-1],0,4));
 									$this->SConfs[$this->keyconf]['Last_DMPAFT'] = $ArchDate;
-// 									$this->Waiting (0,"\n".'ARCHIVE #'.($nbrArch-1).' of '.$ArchDate.' saved.');
+// $this->Waiting (0,"\n".'ARCHIVE #'.($nbrArch-1).' of '.$ArchDate.' saved.');
 								}
 								file_put_contents ($this->VP2FOLDER.'../Station.conf', var_export($this->SConfs,true));
 								$firstArch=0;
@@ -282,7 +326,7 @@ class station
 							}
 							else
 							{
-								if (!(--$retry))
+								if (!$retry)
 								{
 									$this->Waiting (0,'Page #'.$j.' invalide, Aborting Download.');
 									fread($this->fp, 999); // vidange
@@ -295,6 +339,7 @@ class station
 									fread($this->fp, 999); // vidange
 									fwrite($this->fp, $this->symb['NAK']);
 								}
+								$retry=$retry--;
 								$j--;
 							}
 						}
@@ -330,16 +375,5 @@ class station
 		}
 		return true;
 	}
-	protected function Date2Human()
-	{
-		return true;
-	}
-	protected function Human2Date()
-	{
-		return true;
-	}
-	
 }
-
-
 ?>
