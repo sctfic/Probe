@@ -1,0 +1,76 @@
+<?php
+// This class define a generic structure for measurement management.
+class Fields
+{
+  private $fieldOffset=-1; // field offset (starting at 0)
+  private $fieldSize=-1;   // field size/length
+  private $fieldDescription=null; // description of the field
+
+
+// field offset
+  function setFieldOffset($value)
+  {
+    if ($value >= 0)
+      { $this->fieldOffset = $value; }
+    else
+      { printf(_("Invalid 'offset' value submitted (should be >0).\n")); }
+  }
+  function getFieldOffset()
+  { return $this->fieldOffset; }
+
+// field length
+  function setFieldSize($value)
+  {
+    if ($value > 0)
+      { $this->fieldSize = $value; }
+    else
+      { printf(_("Invalid 'length' value submitted (should be >0).\n")); }
+  }
+  function getFieldSize()
+  { return $this->fieldSize; }
+
+// Explanation
+  function setFieldDescription($value)
+  {
+    $this->fieldDescription = $value;
+  }
+  function getFieldDescription()
+  { return $this->fieldDescription; }
+
+
+// 	Extract raw data from a string ('str'), starting at 'offset' and 'size' characters
+  function extractRawField($str)
+  {
+// 		printf("%s\n%s-%s\n", $str, $this->getFieldOffset(), $this->getFieldSize());
+		return substr( $str, $this->getFieldOffset(), $this->getFieldSize());
+  }
+
+// Convert an hexadecimal string ('hex') to decimal
+	public static function HexToDec($hex)
+	{
+		return	hexdec(
+			bin2hex(
+				$hex
+			)
+		);
+	}
+
+function timeOfDay_To_HumanDate ($StrDate)
+{// sur 6 Octes : sec min h  d m y
+	$y = 2011;
+	$m = 12;
+	$d = 24;
+	$h = str_pad(($StrDate & 0xff00)>>8,2,'0',STR_PAD_LEFT);
+	$min = str_pad(($StrDate & 0xff),2,'0',STR_PAD_LEFT);
+	$s = 00;
+	return $y.'/'.$m.'/'.$d.' '.$h.':'.$min.':'.$s;
+}
+
+
+  function __construct()
+  {
+  }
+}
+
+
+?>

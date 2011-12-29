@@ -1,0 +1,27 @@
+<?php
+require_once 'Fields.phpc';
+
+// +++++++++++++++++++++++++++++++++++++++++++++++
+// +++++++++++++++ Wind MANAGEMENT +++++++++++++
+class Wind extends Fields
+{
+	function __construct() {
+
+	}
+	public static function mphToKmh($mph)
+	{
+		return $mph*1.609344;
+	}
+	public static function mphToMs($mph)
+	{
+		return $mph*0.44704;
+	}
+	public static function WindDir($teta)
+	{
+		return $teta?$teta:NULL;
+	}
+
+
+}
+
+?>

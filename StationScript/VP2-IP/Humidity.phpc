@@ -1,0 +1,20 @@
+<?php
+require_once 'Fields.phpc';
+
+// +++++++++++++++++++++++++++++++++++++++++++++++
+// +++++++++++++++ PRESSURE MANAGEMENT +++++++++++++
+class Humidity extends Fields
+{
+	function __construct() {
+
+	}
+	// Using SI unit: Pa (see: http://en.wikipedia.org/wiki/)
+	// 
+	public static function HumToRealHum($hum)
+	{
+		return $hum;
+	}
+
+}
+
+?>
