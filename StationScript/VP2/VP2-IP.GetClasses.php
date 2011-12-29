@@ -21,7 +21,7 @@ class station
 	}
 	function set_value($i=0)
 	{
-		$filename='./VP2-IP.conf';	
+		$filename='./VP2-IP.conf';
 		$handle = fopen($filename, "rb");
 			$conf = unserialize(fread($handle, filesize($filename)));
 		fclose($handle);
@@ -33,7 +33,7 @@ class station
 		else return false;
 		return true;
 	}
-	
+
 	function setServerIP($value)
 	{
 		$this->IP=$value;
@@ -42,8 +42,8 @@ class station
 	{
 		$this->Port=$value;
 	}
-	
-	
+
+
 	public static function Waiting ($s=10, $msg = 'Waiting and retry')
 	{
 		$w = '-\|/';
@@ -59,7 +59,7 @@ class station
 	{
 		return hexdec(bin2hex($hex));
 	}
-	
+
 }
 class Connect extends VP2
 {
@@ -269,7 +269,7 @@ else
 	{
 		return true;
 	}
-	
+
 }
 class CRC16CCITT extends VP2
 {

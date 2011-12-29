@@ -2,16 +2,25 @@
 class stationConfig extends serverConfig
 {
 // list of symbol used by this model
-  static private $CharCode = array(
-    'CR' => chr(0x0D), // \r
-    'LF' => chr(0x0A), // \n
-    'LFCR' => chr(0x0A).chr(0x0D),
-    'ESC' => chr(0x1b), // Escape
-    'ACK' => chr(0x06), // Acknowledge (query in process)
-    'NAK' => chr(0x21), // Not Acknowledge
-    'CANCEL' => chr(0x18), // Wrong CRC Code
-    '_OK_' => "\n\rOK\n\r" // FIX ME: should use hexadecimal
-  );
+	const CarriageReturn = 0x0D; // 'CR'
+	const LineFeed = 0x0A; // 'LF'
+	const NewLine = 0x0A 0x0D; // 'LFCR'
+	const Escape = 0x1B; // 'ESC'
+	const Acknowledge = 0x06; // 'ACK'
+	const NotAcknowledge = 0x21; // 'NAK'
+	const Cancel = 0x18; // 'CANCEL'
+	const Ok = 0x0A 0x0D 0x4F 0x4B 0x0A 0x0D; // '_OK_'
+
+//   static private $CharCode = array(
+//     'CR' => chr(0x0D), // \r
+//     'LF' => chr(0x0A), // \n
+//     'LFCR' => chr(0x0A).chr(0x0D),
+//     'ESC' => chr(0x1b), // Escape
+//     'ACK' => chr(0x06), // Acknowledge (query in process)
+//     'NAK' => chr(0x21), // Not Acknowledge
+//     'CANCEL' => chr(0x18), // Wrong CRC Code
+//     '_OK_' => "\n\rOK\n\r" // FIX ME: should use hexadecimal
+//   );
 // default model's lamp state
   static private $LightState; // lamp
 // FIX ME: if $CRCTable is common to all model, move this variable to config
@@ -54,6 +63,10 @@ class stationConfig extends serverConfig
 
 // ACCESSORS
 // group of accessors that add an abstraction layer so it become generic for all model and process
+function getCharFor( $charAsHex ) {
+	return $this->$charAsHex
+}
+
   function getCharCode_CarriageReturn()		{ return $this->CharCode['CR']; 				}
   function getCharCode_LineFeed()						{ return $this->CharCode['LF']; 				}
   function getCharCode_NewLine()						{ return $this->CharCode['LFCR'];			}
