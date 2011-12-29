@@ -9,12 +9,36 @@ class Pressure extends Fields
 
 	}
 	// Using SI unit: Pa (see: http://en.wikipedia.org/wiki/)
-	//
-	public static function inHgToRealPa($Pa)
+	public static function inHgToRealPa( $inHg )
 	{
-		return (($inHg/1000+20)*3376.85*$R+$BarCal/1000)*$GAIN+$OFFSET/1000;
+			self::inchesPerMercuryToPascal( $inHg );
+// 		return (($inHg/1000+20)*3376.85*$R+$BarCal/1000)*$GAIN+$OFFSET/1000;
 	}
 
+	// il manque des variables: $R, $BarCal, $GAIN, $OFFSET
+	// Convert from Inches Per Mercury into SI unit (Pascal)
+	public static function inchesPerMercuryToPascal( $inHg )
+	{
+		// use meaningful variable name, if some are constants, declare them as such!
+		$_a = 1000; // supposed to be different from the $_f and $_i
+		$_b = 20; // constant ??
+		$_c = 3376.85; // constant ??
+		$_d = $R; // use meaningful name
+		$_e = $BarCal; // use meaningful name
+		$_f = 1000; // supposed to be different from the $_a and $_i
+		$_g = $GAIN; // use meaningful name
+		$_h = $OFFSET; // use meaningful name
+		$_i = 1000; // supposed to be different from the $_a and $_f
+
+		return ( ( ( ( ( (
+							$inHg / $_a
+							) + $_b
+						) * $_c
+					) * $_d
+				) + ($_e / $_f)
+			) * $_g
+		) + ($_h / $_i);
+	}
 /*
  http://www.csgnetwork.com/barcorrecthcalc.html
         // Calibrate archive record contents:

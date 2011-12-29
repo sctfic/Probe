@@ -1,7 +1,0 @@
-Description du format des donnees  : fichier txt et base de donnée
-
-Data Txt File :
-===============
-
-lignes datées avec 1 relevé toute les 5min (388 / jour) le fichier couvre du 01/01/20xx au 31/12/20xx de la meme annee.
-les relevés abscent donnent lieux a des lignes datées sans aucune valeur, juste les separateurs \t
