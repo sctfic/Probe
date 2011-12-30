@@ -46,7 +46,7 @@ class Fields
   }
 
 // Convert an hexadecimal string ('hex') to decimal
-	public static function HexToDec($hex)
+	public static function hexToDec($hex)
 	{
 		return	hexdec(
 			bin2hex(
