@@ -2,13 +2,13 @@
 
 class station
 {
-	protected $keyconf=NULL;	// FileConf of this Vantage Pro2
+	protected $KeyConf=NULL;	// FileConf of this Vantage Pro2
 	protected $fp=NULL;	// Pointer of VP2 Connection
 	protected $symb=NULL;
-	protected $VP2FOLDER=NULL;
-	protected $SConfs=NULL;
+	protected $StationFolder=NULL;
+	protected $StationConfig=NULL;
 	protected $retry=3;	// number of attempts before aborting
-	protected $backLightScreen=false; // actual state of backlight screen
+	protected $backLightScreen=FALSE; // actual state of backlight screen
 	protected $table = array(
 	0x0,  0x1021,  0x2042,  0x3063,  0x4084,  0x50a5,  0x60c6,  0x70e7,
 	0x8108,  0x9129,  0xa14a,  0xb16b,  0xc18c,  0xd1ad,  0xe1ce,  0xf1ef,
@@ -42,22 +42,26 @@ class station
 	0x7c26,  0x6c07,  0x5c64,  0x4c45,  0x3ca2,  0x2c83,  0x1ce0,  0xcc1,
 	0xef1f,  0xff3e,  0xcf5d,  0xdf7c,  0xaf9b,  0xbfba,  0x8fd9,  0x9ff8,
 	0x6e17,  0x7e36,  0x4e55,  0x5e74,  0x2e93,  0x3eb2,  0xed1,  0x1ef0);
-	
-	function __construct($SConfs, $name)	{
-		$this->keyconf=$name;
-		$this->SConfs=$SConfs;
-		$this->VP2FOLDER = dirname(__FILE__).DIRECTORY_SEPARATOR;
+
+
+	function __construct($stationConfig, $name)
+	{
+		$this->setKeyConf($name);
+		$this->setStationConfig($stationConfig);
+		$this->setStationFolder( dirname(__FILE__).DIRECTORY_SEPARATOR );
 		$this->symb = array (
-		'CR' => chr(0x0D), // \r
-		'LF' => chr(0x0A), // \n
-		'LFCR' => chr(0x0A).chr(0x0D),
-		'ESC' => chr(0x1b), // Echap
-		'ACK' => chr(0x06), // Compris
-		'NAK' => chr(0x21), // Pas Compris
-		'CANCEL' => chr(0x18), // Bad CRC Code
-		'_OK_' => "\n\rOK\n\r");
-		
+						'CR' => chr(0x0D), // \r
+						'LF' => chr(0x0A), // \n
+						'LFCR' => chr(0x0A).chr(0x0D),
+						'ESC' => chr(0x1b), // Echap
+						'ACK' => chr(0x06), // Compris
+						'NAK' => chr(0x21), // Pas Compris
+						'CANCEL' => chr(0x18), // Bad CRC Code
+						'_OK_' => "\n\rOK\n\r"
+		);
 	}
+
+
 	function CalculateCRC($ptr)	{
 		$crc = 0x0000;
 		settype($crc, "integer");
@@ -68,8 +72,10 @@ class station
 			$crc =  $this->table[(($crc>>8) ^ ord($ptr[$i]))] ^ (($crc<<8) & 0x00FFFF);
 // 			$this->waiting(0,ord($ptr[$i]).' : '.dechex($this->table[(($crc>>8) ^ ord($ptr[$i]))]).' > '.dechex($crc>>8).' '.dechex($crc&0xff));
 		}
-		return !$crc?$crc:chr($crc>>8).chr($crc&0xff); // 		return $this->HexToDec($crc);
+		return !$crc?$crc:chr($crc>>8).chr($crc&0xff); // 		return $this->hexToDec($crc);
 	}
+
+
 	function Waiting ($s=10, $msg = 'Waiting and retry')	{
 		$w = '-\|/';
 		if ($s==0)
@@ -81,54 +87,77 @@ class station
 		}
 		echo "\n";
 	}
-	function HexToDec($hex)	{
+
+
+	function hexToDec($hex)
+	{
 		return hexdec(bin2hex($hex));
 	}
-	function initConnection()	{
+
+
+	public function initConnection()
+	{
 		$errno = 0;
-		$this->fp = @fsockopen($this->SConfs[$this->keyconf]['IP'], $this->SConfs[$this->keyconf]['Port'], &$errno);
+		$this->fp = @fsockopen(
+			$this->getStationIP(),
+			$this->getStationPort(),
+			&$errno
+		);
+
 		if ($this->fp && $errno==0)
 		{
 			stream_set_timeout($this->fp, 0, 2500000);
 			if ($this->wakeUp())
 			{
 				$this->toggleBacklight(1);
-				return true;
+				return TRUE;
 			}
 		}
-		return false;
+
+		return FALSE;
 	}
-	protected function wakeUp()	{
+
+
+	protected function wakeUp()
+	{
 		for ($i=0;$i<=$this->retry;$i++)
 		{
 			fwrite ($this->fp,$this->symb['LF']);
+
 			if (fread($this->fp,6)==$this->symb['LFCR'])
-				return true;
+				return TRUE;
 			usleep(1200000);
 		}
-		return false;
+
+		return FALSE;
 	}
-	protected function toggleBacklight($force=-1)	{
+
+
+	protected function toggleBacklight($force=-1)
+	{
 		if ($force==-1)
 		{
 			fwrite ($this->fp,'LAMPS '.(($this->backLightScreen)?'0':'1').$this->symb['LF']);
-		}
-		else
+		} else
 		{
 			fwrite ($this->fp,'LAMPS '.($force?'1':'0').$this->symb['LF']);
 		}
+
 		if (fread($this->fp,6)==$this->symb['_OK_'])
 		{
 			if ($force==-1)$this->backLightScreen = !$this->backLightScreen;
 			else $this->backLightScreen = $force;
 			return TRUE;
 		}
+
 		return FALSE;
 	}
+
+
 	function CloseConnection()	{
 		$this->toggleBacklight(0);
 		fclose($this->fp);
-		return true;
+		return TRUE;
 	}
 	function Get_LOOP_Raw($nbr=1)	{
 		$_NBR = $nbr;
@@ -147,13 +176,13 @@ class station
 						$LOOP = substr($LOOP,0,-2);
 						// fonction de conversion...
 						$this->Waiting (0,'LOOP : Calcul de CRC confirme');
-						file_put_contents($this->VP2FOLDER.'../../ExportedData/LOOP['.($_NBR-$nbr).'].brut',$LOOP);
+						file_put_contents($this->StationFolder.'../../ExportedData/LOOP['.($_NBR-$nbr).'].brut',$LOOP);
 					}
 					else
 						$this->Waiting (0,'LOOP : Erreur de CRC : '.($crc));
 					if ($nbr > 0) sleep(1);
 				}
-				return true;
+				return TRUE;
 			}
 			else if ($r == $this->symb['NAK'])
 			{
@@ -167,7 +196,7 @@ class station
 					$this->Waiting (0,'LOOP : Erreur Autre');
 			}
 		}
-		return true;
+		return TRUE;
 	}
 	function Get_HILOWS_Raw()	{
 		for ($i=0;$i<=$this->retry;$i++)
@@ -183,8 +212,8 @@ class station
 					$HILOWS = substr($HILOWS,0,-2);
 					// fonction de conversion...
 					$this->Waiting (0,'HILOWS : Calcul de CRC confirme');
-					file_put_contents($this->VP2FOLDER.'../../ExportedData/HILOWS.brut',$HILOWS);
-					return true;
+					file_put_contents($this->StationFolder.'../../ExportedData/HILOWS.brut',$HILOWS);
+					return TRUE;
 				}
 				else
 					$this->Waiting (0,'HILOWS : Erreur de CRC : '.($crc));
@@ -202,9 +231,9 @@ class station
 
 			}
 		}
-		return true;
+		return TRUE;
 	}
-	function Get_TIME_Raw()	{// 0x35 16 00 1d 0c 6f  0x7c 44  ==  2011/12/29 00:22:53
+	function fetchStationTime()	{// 0x35 16 00 1d 0c 6f  0x7c 44  ==  2011/12/29 00:22:53
 		fwrite ($this->fp, "GETTIME\n");
 		$r = fread($this->fp, 1);
 		if ($r == $this->symb['ACK'])
@@ -226,9 +255,9 @@ class station
 			fread($this->fp, 999);
 				$this->Waiting (0,'GETTIME : Erreur inconue');
 		}
-		return false;
+		return FALSE;
 	}
-	function Set_TIME_Raw()	{// 0x35 16 00 1d 0c 6f  0x7c 44  ==  2011/12/29 00:22:53
+	function updateStationTime()	{// 0x35 16 00 1d 0c 6f  0x7c 44  ==  2011/12/29 00:22:53
 		fwrite ($this->fp, "SETTIME\n");
 		$r = fread($this->fp, 1);
 		if ($r == $this->symb['ACK'])
@@ -242,7 +271,7 @@ class station
 			if ($r == $this->symb['ACK'])
 			{
 				$this->Waiting (0,'SETTIME OK : '.date('Y/m/d H:i:s'));
-				return true;
+				return TRUE;
 			}
 			else
 				$this->Waiting (0,'SETTIME : Erreur de CRC : '.($crc));
@@ -252,7 +281,7 @@ class station
 			fread($this->fp, 999);
 				$this->Waiting (0,'SETTIME : Erreur inconue');
 		}
-		return false;
+		return FALSE;
 	}
 
 	function DMPAFT_SetVP2Date ($StrDate)	{
@@ -270,12 +299,12 @@ class station
 	}
 	function DMPAFT_GetVP2Date ($VP2Date)	{
 	// 2003/06/19 09:30:00  <=  0x03A2 0x06D3
-		$DateStamp = $this->HexToDec(strrev(substr($VP2Date,0,2))); // 0x06d3 = 0000011011010011
+		$DateStamp = $this->hexToDec(strrev(substr($VP2Date,0,2))); // 0x06d3 = 0000011011010011
 			$y = (($DateStamp & 0xFE00)>>9)+2000;
 			$m = str_pad(($DateStamp & 0x01E0)>>5,2,'0',STR_PAD_LEFT);
 			$d = str_pad($DateStamp & 0x1f,2,'0',STR_PAD_LEFT);
-			
-		$TimeStamp = $this->HexToDec(strrev(substr($VP2Date,-2))); // 0x03a2 = 0000001110100010
+
+		$TimeStamp = $this->hexToDec(strrev(substr($VP2Date,-2))); // 0x03a2 = 0000001110100010
 			$h = str_pad((int)($TimeStamp/100),2,'0',STR_PAD_LEFT);
 			$min = str_pad($TimeStamp-$h*100,2,'0',STR_PAD_LEFT);
 		return $y.'/'.$m.'/'.$d.' '.$h.':'.$min.':00';
@@ -287,10 +316,10 @@ class station
 			$r = fread($this->fp, 1);			// Read the answer
 			if ($r == $this->symb['ACK'])			// ACK if VP2 understood
 			{
-				$d = $this->DMPAFT_SetVP2Date($this->SConfs[$this->keyconf]['Last_DMPAFT']); // define date of first archives record
+				$d = $this->DMPAFT_SetVP2Date($this->StationConfig[$this->getKeyConf()]['Last_DMPAFT']); // define date of first archives record
 				fwrite($this->fp, $d);				// Send this date
 				$crc = $this->CalculateCRC($d);		// define the CRC of my date
-// $this->Waiting (0,$this->SConfs[$this->keyconf]['Last_DMPAFT'].' = 0x'.bin2hex($d).' >> DateCRC : 0x'.bin2hex($crc));
+// $this->Waiting (0,$this->StationConfig[$this->getKeyConf()]['Last_DMPAFT'].' = 0x'.bin2hex($d).' >> DateCRC : 0x'.bin2hex($crc));
 				fwrite($this->fp, $crc);			// Send this CRC
 				$r = fread($this->fp, 1);			// Read the answer
 				if ($r == $this->symb['ACK'])			// ACK if VP2 confirm the CRC
@@ -300,10 +329,10 @@ class station
 					if ($crc==0x0000)
 					{
 						$nbrArch=0;
-						$nbrPages = $this->HexToDec (strrev(substr($r,0,2)));		// Split Bytes in revers order : Nbr of page
-						$firstArch = $this->HexToDec (strrev(substr($r,2,2)));		// Split Bytes in revers order : # of first archive
+						$nbrPages = $this->hexToDec (strrev(substr($r,0,2)));		// Split Bytes in revers order : Nbr of page
+						$firstArch = $this->hexToDec (strrev(substr($r,2,2)));		// Split Bytes in revers order : # of first archive
 						$this->Waiting (0,'There are '.$nbrPages.'p. in queue, from archive '.$firstArch.' on first page.');
-						fwrite($this->fp, $this->symb['ACK']);	// Send ACK to start 
+						fwrite($this->fp, $this->symb['ACK']);	// Send ACK to start
 						for ($j=0;$j<$nbrPages;$j++)
 						{
 							$Page = fread($this->fp, 267);
@@ -314,12 +343,12 @@ class station
 								for($k=$firstArch;$k<=4;$k++)
 								{
 									$Archives[$nbrArch++]=substr($Page,1+52*$k,52);
-// file_put_contents($this->VP2FOLDER.'../../ExportedData/DMPAFT['.($nbrArch-1).'].brut',$Archives[$nbrArch-1]);
+// file_put_contents($this->StationFolder.'../../ExportedData/DMPAFT['.($nbrArch-1).'].brut',$Archives[$nbrArch-1]);
 									$ArchDate = $this->DMPAFT_GetVP2Date(substr($Archives[$nbrArch-1],0,4));
-									$this->SConfs[$this->keyconf]['Last_DMPAFT'] = $ArchDate;
+									$this->StationConfig[$this->getKeyConf()]['Last_DMPAFT'] = $ArchDate;
 // $this->Waiting (0,"\n".'ARCHIVE #'.($nbrArch-1).' of '.$ArchDate.' saved.');
 								}
-								file_put_contents ($this->VP2FOLDER.'../Station.conf', var_export($this->SConfs,true));
+								file_put_contents ($this->StationFolder.'../Station.conf', var_export($this->StationConfig,TRUE));
 								$firstArch=0;
 								$retry = $this->retry + 1;
 								fwrite($this->fp, $this->symb['ACK']);
@@ -331,7 +360,7 @@ class station
 									$this->Waiting (0,'Page #'.$j.' invalide, Aborting Download.');
 									fread($this->fp, 999); // vidange
 									fwrite($this->fp, $this->symb['ESC']);
-									return false;
+									return FALSE;
 								}
 								else
 								{
@@ -343,7 +372,7 @@ class station
 								$j--;
 							}
 						}
-						return true;
+						return TRUE;
 					}
 					else if ($r == $this->symb['NAK'])
 						$this->Waiting (0,'DMPAFT Pages : NAK on first page, wrong Date or CRC!');
@@ -373,7 +402,30 @@ class station
 			}
 
 		}
-		return true;
+		return TRUE;
 	}
+
+
+	function setKeyConf($value)
+	{ $this->KeyConf = $value; }
+	function getKeyConf()
+	{ return $this->KeyConf; }
+
+	function setStationConfig($value)
+	{ $this->StationConfig = $value; }
+	function getStationConfig()
+	{ return $this->StationConfig; }
+
+	function setStationFolder($value)
+	{ $this->StationFolder = $value; }
+	function getStationFolder()
+	{ return $this->StationFolder; }
+
+
+	function getStationIP()
+	{ return $this->StationConfig[$this->getKeyConf()]['IP']; }
+	function getStationPort()
+	{ return $this->StationConfig[$this->getKeyConf()]['Port']; }
+
 }
 ?>
