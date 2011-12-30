@@ -1620,7 +1620,7 @@ foreach ($measures as $measureKey => $measureObject)
 		$measureObject->getFieldOffset(),
 		$measureObject->getFieldSize(),
 		$measureObject->extractRawField($rawDataString),
-		Fields::HexToDec($measureObject->extractRawField($rawDataString)), // get correct value
+		Fields::hexToDec($measureObject->extractRawField($rawDataString)), // get correct value
 		bin2hex($measureObject->extractRawField($rawDataString))
 	);
 
