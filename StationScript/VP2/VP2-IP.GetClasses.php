@@ -55,7 +55,7 @@ class station
 		}
 		echo "\n";
 	}
-	public static function HexToDec($hex)
+	public static function hexToDec($hex)
 	{
 		return hexdec(bin2hex($hex));
 	}
@@ -315,7 +315,7 @@ class CRC16CCITT extends VP2
 			$crc =  $this->table[(($crc>>8) ^ ord($ptr[$i]))] ^ (($crc<<8) & 0x00FFFF);
 		}
 //		return array( 'Confirm' => !$crc, 0 => chr(($crc>>8)&0xff), 1 => chr($crc&0xff), 'all' => $crc);
-		return $this->HexToDec($crc);
+		return $this->hexToDec($crc);
 	}
 }
 ?>
