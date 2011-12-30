@@ -72,7 +72,7 @@ class station
 			$crc =  $this->table[(($crc>>8) ^ ord($ptr[$i]))] ^ (($crc<<8) & 0x00FFFF);
 // 			$this->waiting(0,ord($ptr[$i]).' : '.dechex($this->table[(($crc>>8) ^ ord($ptr[$i]))]).' > '.dechex($crc>>8).' '.dechex($crc&0xff));
 		}
-		return !$crc?$crc:chr($crc>>8).chr($crc&0xff); // 		return $this->hexToDec($crc);
+		return !$crc?$crc:chr($crc>>8).chr($crc&0xff);
 	}
 
 
@@ -142,96 +142,102 @@ class station
 		{
 			fwrite ($this->fp,'LAMPS '.($force?'1':'0').$this->symb['LF']);
 		}
-
 		if (fread($this->fp,6)==$this->symb['_OK_'])
 		{
 			if ($force==-1)$this->backLightScreen = !$this->backLightScreen;
 			else $this->backLightScreen = $force;
 			return TRUE;
 		}
-
 		return FALSE;
 	}
-
-
 	function CloseConnection()	{
+		$this->StationConfig[$this->getKeyConf()]['Last_Connected'] = date('Y/m/d H:i:s');
+		$this->SaveConfs();
 		$this->toggleBacklight(0);
 		fclose($this->fp);
 		return TRUE;
 	}
 	function Get_LOOP_Raw($nbr=1)	{
 		$_NBR = $nbr;
-		for ($i=0;$i<=$this->retry;$i++)
+		fwrite ($this->fp, "LOOP $nbr\n");
+		$r = fread($this->fp, 1);
+		if ($r == $this->symb['ACK'])
 		{
-			fwrite ($this->fp, "LOOP $nbr\n");
-			$r = fread($this->fp, 1);
-			if ($r == $this->symb['ACK'])
+			while ($nbr-- > 0)
 			{
-				while ($nbr-- > 0)
+				$LOOP = fread($this->fp, 99);
+				if (strlen($LOOP)==99 && !$this->CalculateCRC($LOOP))
 				{
-					$LOOP = fread($this->fp, 99);
-					$crc = $this->CalculateCRC($LOOP);
-					if ($crc==0x0000)
-					{
-						$LOOP = substr($LOOP,0,-2);
-						// fonction de conversion...
-						$this->Waiting (0,'LOOP : Calcul de CRC confirme');
-						file_put_contents($this->StationFolder.'../../ExportedData/LOOP['.($_NBR-$nbr).'].brut',$LOOP);
-					}
-					else
-						$this->Waiting (0,'LOOP : Erreur de CRC : '.($crc));
-					if ($nbr > 0) sleep(1);
-				}
-				return TRUE;
-			}
-			else if ($r == $this->symb['NAK'])
-			{
-				$this->Waiting (0,'LOOP : Erreur de NAK');
-			}
-			else
-			{
-				fwrite ($this->fp, $this->symb['CR']);
-				fread($this->fp, 999);
-				if ($i<$this->retry)
-					$this->Waiting (0,'LOOP : Erreur Autre');
-			}
-		}
-		return TRUE;
-	}
-	function Get_HILOWS_Raw()	{
-		for ($i=0;$i<=$this->retry;$i++)
-		{
-			fwrite ($this->fp, "HILOWS\n");
-			$r = fread($this->fp, 1);
-			if ($r == $this->symb['ACK'])
-			{
-				$HILOWS = fread($this->fp, 438);
-				$crc = $this->CalculateCRC($HILOWS);
-				if ($crc==0x0000)
-				{
-					$HILOWS = substr($HILOWS,0,-2);
-					// fonction de conversion...
-					$this->Waiting (0,'HILOWS : Calcul de CRC confirme');
-					file_put_contents($this->StationFolder.'../../ExportedData/HILOWS.brut',$HILOWS);
-					return TRUE;
+					$LOOP = substr($LOOP,0,-2);
+					$this->Waiting (0,'LOOP : Download the current Values');
+// 					file_put_contents($this->StationFolder.'../../ExportedData/LOOP['.($_NBR-$nbr).'].brut',$LOOP);
+					$this->StationConfig[$this->getKeyConf()]['Last_LOOP'] = date('Y/m/d H:i:s');
+					$this->SaveConfs();
+/** ################################################################################################################################
+Ici on appelera succesivement 3 functions :
+- Convert to Human redable ();
+	prendra comme parametre : $LOOP , et me retourne un tableau avec les valeurs brutes dans leur unitée par defaut. (Edouard)
+- Convert to Unit of SystemInternational ();
+	prendra comme parametre le tableau precedant et converti et corrige chaque valeurs. (alban)
+- Write Values ();
+	prendra comme parametre le tabeau SI et l´enregistre dans un fichier qui sera repris par l´interface WEB. (alban)
+################################################################################################################################  **/
 				}
 				else
-					$this->Waiting (0,'HILOWS : Erreur de CRC : '.($crc));
+					$this->Waiting (0,'LOOP : Erreur de CRC');
+				if ($nbr > 0) sleep(1);
 			}
-			else if ($r == $this->symb['NAK'])
+			return true;
+		}
+		else if ($r == $this->symb['NAK'])
+		{
+			$this->Waiting (0,'LOOP : Erreur de NAK');
+		}
+		else
+		{
+			fwrite ($this->fp, $this->symb['CR']); // Cancel this command
+			fread($this->fp, 999);
+			$this->Waiting (0,'LOOP : unknown Error');
+		}
+		return true;
+	}
+	function Get_HILOWS_Raw()	{
+		fwrite ($this->fp, "HILOWS\n");
+		$r = fread($this->fp, 1);
+		if ($r == $this->symb['ACK'])
+		{
+			$HILOWS = fread($this->fp, 438);
+			if (strlen($HILOWS)==438 && ($this->CalculateCRC($HILOWS))==0x0000)
 			{
-				$this->Waiting (0,'HILOWS : Erreur de NAK');
+				$HILOWS = substr($HILOWS,0,-2);
+				$this->Waiting (0,'HILOWS : Download Mini and Maxi');
+// 				file_put_contents($this->StationFolder.'../../ExportedData/HILOWS.brut',$HILOWS);
+				$this->StationConfig[$this->getKeyConf()]['Last_HILOWS'] = date('Y/m/d H:i:s');
+				$this->SaveConfs();
+/** ################################################################################################################################
+Ici on appelera succesivement 3 functions :
+- Convert to Human redable ();
+	prendra comme parametre : $HILOWS , et me retourne un tableau avec les valeurs brutes dans leur unitée par defaut. (Edouard)
+- Convert to Unit of SystemInternational ();
+	prendra comme parametre le tableau precedant et converti et corrige chaque valeurs. (alban)
+- Write Values ();
+	prendra comme parametre le tabeau SI et l´enregistre dans un fichier et dans une base SQL. (Alban et edouard)
+################################################################################################################################  **/
+				return true;
 			}
 			else
-			{
-				// echo date('Y/m/d H:i:s u')."\t".'HILOWS NULL  '.'$r = 0x'.dechex($r)."\n";
-				fread($this->fp, 999);
-				if ($i<$this->retry)
-					$this->Waiting (0,'HILOWS : Erreur Autre');
-
-			}
+				$this->Waiting (0,'HILOWS : Erreur de CRC');
 		}
-		return TRUE;
+		else if ($r == $this->symb['NAK'])
+		{
+			$this->Waiting (0,'HILOWS : Erreur de NAK');
+		}
+		else
+		{
+			fread($this->fp, 999);
+				$this->Waiting (0,'HILOWS : unknown Error');
+		}
+		return true;
 	}
 	function fetchStationTime()	{// 0x35 16 00 1d 0c 6f  0x7c 44  ==  2011/12/29 00:22:53
 		fwrite ($this->fp, "GETTIME\n");
@@ -239,53 +245,52 @@ class station
 		if ($r == $this->symb['ACK'])
 		{
 			$GETTIME = fread($this->fp, 8);
-			$crc = $this->CalculateCRC($GETTIME);
-			if ($crc==0x0000)
+			if (strlen($GETTIME)==8 && $this->CalculateCRC($GETTIME)==0x0000)
 			{
-				$this->Waiting (0,bin2hex($GETTIME));
 				$GETTIME = (ord($GETTIME[5])+1900).'/'.str_pad(ord($GETTIME[4]),2,'0',STR_PAD_LEFT).'/'.str_pad(ord($GETTIME[3]),2,'0',STR_PAD_LEFT).' '.str_pad(ord($GETTIME[2]),2,'0',STR_PAD_LEFT).':'.str_pad(ord($GETTIME[1]),2,'0',STR_PAD_LEFT).':'.str_pad(ord($GETTIME[0]),2,'0',STR_PAD_LEFT);
 				$this->Waiting (0, 'Real Time : '.date('Y/m/d H:i:s').' vs GETTIME : '.$GETTIME);
 				return $GETTIME;
 			}
 			else
-				$this->Waiting (0,'GETTIME : Erreur de CRC : '.($crc));
+				$this->Waiting (0,'GETTIME : Erreur de CRC');
 		}
 		else
 		{
 			fread($this->fp, 999);
-				$this->Waiting (0,'GETTIME : Erreur inconue');
+				$this->Waiting (0,'GETTIME : unknown Error');
 		}
-		return FALSE;
+		return false;
 	}
 	function updateStationTime()	{// 0x35 16 00 1d 0c 6f  0x7c 44  ==  2011/12/29 00:22:53
 		fwrite ($this->fp, "SETTIME\n");
 		$r = fread($this->fp, 1);
 		if ($r == $this->symb['ACK'])
 		{
-			list($y,$m,$d,$h,$i,$s) = explode(';', date('Y;m;d;H;i;s'));
+			list($_date, $_clock) = explode(' ', date('Y/m/d H:i:s'));
+			list($y,$m,$d) = explode('/', $_date);
+			list($h,$i,$s) = explode(':', $_clock);
 			$SETTIME = chr($s).chr($i).chr($h).chr($d).chr($m).chr($y-1900);
 			$crc = $this->CalculateCRC($SETTIME);
 			fwrite ($this->fp, $SETTIME.$crc);
-			$this->Waiting (0,bin2hex($SETTIME.$crc));
 			$r = fread($this->fp, 1);
 			if ($r == $this->symb['ACK'])
 			{
-				$this->Waiting (0,'SETTIME OK : '.date('Y/m/d H:i:s'));
-				return TRUE;
+				$this->Waiting (0,'SETTIME : '.$_date.' '.$_clock);
+				$this->StationConfig[$this->getKeyConf()]['Last_SETTIME'] = $_date.' '.$_clock;
+				$this->SaveConfs();
+				return $_date.' '.$_clock;
 			}
 			else
-				$this->Waiting (0,'SETTIME : Erreur de CRC : '.($crc));
+				$this->Waiting (0,'SETTIME : invalid date.');
 		}
 		else
 		{
 			fread($this->fp, 999);
-				$this->Waiting (0,'SETTIME : Erreur inconue');
+				$this->Waiting (0,'SETTIME : unknown Error');
 		}
 		return FALSE;
 	}
-
-	function DMPAFT_SetVP2Date ($StrDate)	{
-	// 2003/06/19 09:30:00  =>  0x03A2 0x06D3
+	function DMPAFT_SetVP2Date ($StrDate)	{// 2003/06/19 09:30:00  =>  0x03A2 0x06D3
 		$y = substr($StrDate, 0, 4);
 		$m = substr($StrDate, 5, 2);
 		$d = substr($StrDate, 8, 2);
@@ -297,8 +302,7 @@ class station
 		$d = chr(($d&0xff0000)>>16).chr(($d&0xff000000)>>24).chr($d&0xff).chr(($d&0xff00)>>8);	// Reverse version
 		return $d;
 	}
-	function DMPAFT_GetVP2Date ($VP2Date)	{
-	// 2003/06/19 09:30:00  <=  0x03A2 0x06D3
+	function DMPAFT_GetVP2Date ($VP2Date)	{// 2003/06/19 09:30:00  <=  0x03A2 0x06D3
 		$DateStamp = $this->hexToDec(strrev(substr($VP2Date,0,2))); // 0x06d3 = 0000011011010011
 			$y = (($DateStamp & 0xFE00)>>9)+2000;
 			$m = str_pad(($DateStamp & 0x01E0)>>5,2,'0',STR_PAD_LEFT);
@@ -310,101 +314,117 @@ class station
 		return $y.'/'.$m.'/'.$d.' '.$h.':'.$min.':00';
 	}
 	function Get_DMPAFT_Raw()	{
-		for ($i=0;$i<=$this->retry;$i++)
+		fwrite($this->fp,"DMPAFT\n");			// Send the command to VP2 : DumpAfter
+		$r = fread($this->fp, 1);			// Read the answer
+		if ($r == $this->symb['ACK'])			// ACK if VP2 understood
 		{
-			fwrite($this->fp,"DMPAFT\n");			// Send the command to VP2 : DumpAfter
+			$d = $this->DMPAFT_SetVP2Date($this->StationConfig[$this->getKeyConf()]['Last_DMPAFT']); // define date of first archives record
+			fwrite($this->fp, $d);				// Send this date
+			$crc = $this->CalculateCRC($d);		// define the CRC of my date
+			fwrite($this->fp, $crc);			// Send this CRC
 			$r = fread($this->fp, 1);			// Read the answer
-			if ($r == $this->symb['ACK'])			// ACK if VP2 understood
+			if ($r == $this->symb['ACK'])			// ACK if VP2 confirm the CRC
 			{
-				$d = $this->DMPAFT_SetVP2Date($this->StationConfig[$this->getKeyConf()]['Last_DMPAFT']); // define date of first archives record
-				fwrite($this->fp, $d);				// Send this date
-				$crc = $this->CalculateCRC($d);		// define the CRC of my date
-// $this->Waiting (0,$this->StationConfig[$this->getKeyConf()]['Last_DMPAFT'].' = 0x'.bin2hex($d).' >> DateCRC : 0x'.bin2hex($crc));
-				fwrite($this->fp, $crc);			// Send this CRC
-				$r = fread($this->fp, 1);			// Read the answer
-				if ($r == $this->symb['ACK'])			// ACK if VP2 confirm the CRC
+				$r = fread($this->fp, 6);			// Read the answer
+				if (strlen($r)==6 && $this->CalculateCRC($r)==0x0000)
 				{
-					$r = fread($this->fp, 6);			// Read the answer
-					$crc = $this->CalculateCRC($r);		// check CRC
-					if ($crc==0x0000)
+					$nbrArch=0;
+					$retry = $this->retry;
+					$nbrPages = $this->hexToDec (strrev(substr($r,0,2)));		// Split Bytes in revers order : Nbr of page
+					$firstArch = $this->hexToDec (strrev(substr($r,2,2)));		// Split Bytes in revers order : # of first archive
+					$this->Waiting (0,'There are '.$nbrPages.'p. in queue, from archive '.$firstArch.' on first page.');
+					fwrite($this->fp, $this->symb['ACK']);	// Send ACK to start
+					for ($j=0;$j<$nbrPages;$j++)
 					{
-						$nbrArch=0;
-						$nbrPages = $this->hexToDec (strrev(substr($r,0,2)));		// Split Bytes in revers order : Nbr of page
-						$firstArch = $this->hexToDec (strrev(substr($r,2,2)));		// Split Bytes in revers order : # of first archive
-						$this->Waiting (0,'There are '.$nbrPages.'p. in queue, from archive '.$firstArch.' on first page.');
-						fwrite($this->fp, $this->symb['ACK']);	// Send ACK to start
-						for ($j=0;$j<$nbrPages;$j++)
+						$Page = fread($this->fp, 267);
+						$this->Waiting (0,'Download Archive PAGE #'.$j.' since : '.$this->DMPAFT_GetVP2Date(substr($Page,1,4)));
+						if (strlen($Page)==267 && $this->CalculateCRC($Page)==0x0000)
 						{
-							$Page = fread($this->fp, 267);
-							$this->Waiting (0,'Download Archive PAGE #'.$j.' since : '.$this->DMPAFT_GetVP2Date(substr($Page,1,4)));
-							if (strlen($Page)==267 && !$this->CalculateCRC($Page))
+							$retry = $this->retry;
+							for($k=$firstArch;$k<=4;$k++)
 							{
-								$retry = $this->retry;
-								for($k=$firstArch;$k<=4;$k++)
+								$ArchiveStrRaw=substr($Page,1+52*$k,52);
+								$ArchDate = $this->DMPAFT_GetVP2Date(substr($ArchiveStrRaw,0,4));
+								if (strtotime($ArchDate) > strtotime($this->StationConfig[$this->getKeyConf()]['Last_DMPAFT']))
 								{
-									$Archives[$nbrArch++]=substr($Page,1+52*$k,52);
-// file_put_contents($this->StationFolder.'../../ExportedData/DMPAFT['.($nbrArch-1).'].brut',$Archives[$nbrArch-1]);
-									$ArchDate = $this->DMPAFT_GetVP2Date(substr($Archives[$nbrArch-1],0,4));
+// 									$this->Waiting (0,"\t".'ARCHIVE #'.($nbrArch++).' of '.$ArchDate.' saved.');
 									$this->StationConfig[$this->getKeyConf()]['Last_DMPAFT'] = $ArchDate;
-// $this->Waiting (0,"\n".'ARCHIVE #'.($nbrArch-1).' of '.$ArchDate.' saved.');
+/** ################################################################################################################################
+Ici on appelera succesivement 3 functions :
+- Convert to Human redable ();
+	prendra comme parametre : $ArchiveStrRaw , et me retourne un tableau avec les valeurs brutes dans leur unitée par defaut. (Edouard)
+- Convert to Unit of SystemInternational ();
+	prendra comme parametre le tableau precedant et converti et corrige chaque valeurs. (alban)
+- Write Values ();
+	prendra comme parametre le tabeau SI et l´enregistre dans un fichier et dans une base SQL. (edouard)
+################################################################################################################################  **/
 								}
-								file_put_contents ($this->StationFolder.'../Station.conf', var_export($this->StationConfig,TRUE));
-								$firstArch=0;
-								$retry = $this->retry + 1;
-								fwrite($this->fp, $this->symb['ACK']);
+							}
+							$this->SaveConfs();
+							$firstArch=0;
+							fwrite($this->fp, $this->symb['ACK']);
+						}
+						else
+						{
+							if (!$retry)
+							{
+								$this->Waiting (0,'Page #'.$j.' invalide, Aborting Download.');
+								fread($this->fp, 999); // vidange
+								fwrite($this->fp, $this->symb['ESC']);
+								return false;
 							}
 							else
 							{
-								if (!$retry)
-								{
-									$this->Waiting (0,'Page #'.$j.' invalide, Aborting Download.');
-									fread($this->fp, 999); // vidange
-									fwrite($this->fp, $this->symb['ESC']);
-									return FALSE;
-								}
-								else
-								{
-									$this->Waiting (10,'Page #'.$j.' invalide by wrong CRC, retry.');
-									fread($this->fp, 999); // vidange
-									fwrite($this->fp, $this->symb['NAK']);
-								}
+								$this->Waiting (10,'Page #'.$j.' invalide by wrong CRC, retry.'.$retry);
+								fread($this->fp, 999); // vidange
+								fwrite($this->fp, $this->symb['NAK']);
 								$retry=$retry--;
 								$j--;
 							}
 						}
-						return TRUE;
 					}
-					else if ($r == $this->symb['NAK'])
-						$this->Waiting (0,'DMPAFT Pages : NAK on first page, wrong Date or CRC!');
-					else
-					{
-						$this->Waiting (0,'DMPAFT Pages : NULL!');
-						fread($this->fp, 999); // vidange
-						if ($i<$retry)	$this->Waiting (8);
-					}
+					return true;
 				}
 				else if ($r == $this->symb['NAK'])
-					$this->Waiting (0,'DMPAFT Date : NAK Bad CRC16!');
+					$this->Waiting (0,'DMPAFT Pages : NAK on first page, wrong Date or CRC!');
 				else
 				{
-					$this->Waiting (0,'DMPAFT Date : NULL!');
+					$this->Waiting (0,'DMPAFT Pages : NULL!');
 					fread($this->fp, 999); // vidange
-					if ($i<$this->retry)	$this->Waiting (8);
+					$this->Waiting (8);
 				}
 			}
 			else if ($r == $this->symb['NAK'])
-				$this->Waiting (0,'DMPAFT NAK : Bad Command!');
+				$this->Waiting (0,'DMPAFT Date : NAK Bad CRC16!');
 			else
 			{
-				$this->Waiting (0,'DMPAFT NULL!');
+				$this->Waiting (0,'DMPAFT Date : NULL!');
 				fread($this->fp, 999); // vidange
-				if ($i<$this->retry)	$this->Waiting (8);
+				$this->Waiting (8);
 			}
-
 		}
-		return TRUE;
+		else if ($r == $this->symb['NAK'])
+			$this->Waiting (0,'DMPAFT NAK : Bad Command!');
+		else
+		{
+			$this->Waiting (0,'DMPAFT NULL!');
+			fread($this->fp, 999); // vidange
+			$this->Waiting (8);
+		}
+		return true;
 	}
 
+private function SaveConfs ()
+	{
+		$confs = $this->getStationConfig();
+		$confs[$this->getKeyConf()] = $this->StationConfig[$this->getKeyConf()];
+		file_put_contents (dirname(__FILE__).DIRECTORY_SEPARATOR.'../../stations.conf', var_export($confs,true));
+		return true;
+	}
+	private function GetConf ()
+	{
+		return eval('return '.file_get_contents(dirname(__FILE__).DIRECTORY_SEPARATOR.'../../stations.conf').';');
+	}
 
 	function setKeyConf($value)
 	{ $this->KeyConf = $value; }
@@ -426,6 +446,5 @@ class station
 	{ return $this->StationConfig[$this->getKeyConf()]['IP']; }
 	function getStationPort()
 	{ return $this->StationConfig[$this->getKeyConf()]['Port']; }
-
 }
 ?>
