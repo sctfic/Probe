@@ -1,7 +1,7 @@
 <?php
 // StationScript
-$stationFolder = dirname(__FILE__).DIRECTORY_SEPARATOR;
-require_once $stationFolder .'VP2/Station.phpc';
+$workingFolder = dirname(__FILE__).DIRECTORY_SEPARATOR;
+$stationConfig = eval('return '.file_get_contents($workingFolder.'/../stations.conf').';');
 // file_put_contents ($stationFolder.'Station.conf',
 // 	var_export(
 // 		array(
@@ -9,31 +9,38 @@ require_once $stationFolder .'VP2/Station.phpc';
 // 			'VP2-Gtd'=>array('IP'=>'nas-alban.no-ip.org','Port'=>22222,'type'=>'VP2-IP','Last_DMPAFT'=>'0'),
 // 		), true));
 
-$SConfs = eval('return '.file_get_contents($stationFolder.'Station.conf').';');
 
-foreach($SConfs as $key=>$SConf)
+
+foreach($stationConfig as $configKey=>$configValue)
 {
-	if ($SConf['type']=='VP2-IP')
+	$stationFolder = $configValue['type']; // folder with class related to the given station model
+	require_once sprintf( "%s/%s/Station.phpc", $workingFolder, $stationFolder ); // load correct station class so it can be instantiated later
+
+	if ($configValue['type']=='VP2-IP')
 	{
-		$Station = new station($SConfs, $key);
-		if ($Station -> initConnection())
+// 		echo "\n++++++++++++++++++++++\t{$configKey}\t++++++++++++++++++++++++++++++++++++++++++++\n";
+		echo sprintf ("\n%'+40s %10s %'+40s\n", "", $configKey, "");
+
+		$station = new station($stationConfig, $configKey);
+		if ($station->initConnection())
 		{
-			$Station -> Waiting (0, 'Initialisation de '.$key.' : OK!');
+			$station->Waiting( 0, _( sprintf('[Succès] Ouverture de la connexion à %s', $configKey) ) );
 
-			// $Station -> Get_HILOWS_Raw();	// OK
-			// $Station -> Get_LOOP_Raw(3);	// OK
-			// $Station -> Get_DMPAFT_Raw();	// OK
-			$Station -> Get_TIME_Raw();
-			$Station -> Set_TIME_Raw();
-			$Station -> Get_TIME_Raw();
+			// $station->Get_HILOWS_Raw();	// OK
+			// $station->Get_LOOP_Raw(3);	// OK
+			// $station->Get_DMPAFT_Raw();	// OK
+			$station->fetchStationTime();
+			$station->updateStationTime();
+			$station->fetchStationTime();
 
-			if ($Station -> closeConnection())
-				$Station -> Waiting (0, 'Fermeture de '.$key.' : OK!');
+			if ($station->closeConnection())
+				$station->Waiting( 0, sprintf( _('[Succès] Fermeture de %s correcte.'), $configKey ) );
 			else
-				$Station -> Waiting (0, 'Echec fermeture de '.$key.' !');
+				$station->Waiting( 0, sprintf( _('[Échec] Fermeture de %s.'), $configKey ) );
 		}
 			else
-				$Station -> Waiting (0, 'Echec initialisation  de '.$key.' !');
+				$station->Waiting( 0, sprintf( _('[Échec] Impossible de se connecter à %s.'), $configKey ) );
 	}
 }
+
 ?>
