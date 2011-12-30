@@ -8,18 +8,33 @@ class Wind extends Fields
 	function __construct() {
 
 	}
-	public static function mphToKmh($mph)
+
+	// Miles per Hour (mph) -> Kilometer per Hour (km/h)
+	public static function milesPerHourToKilometerPerHour( $mph )
 	{
 		return $mph*1.609344;
 	}
-	public static function mphToMs($mph)
+	// alias
+	public static function mphToKmh( $mph ) { self::milesPerHourToKilometerPerHour( $mph ); }
+
+
+	// Miles per Hour (mph) -> Meter per Second (m/s)
+	public static function milesPerHourToMeterPerSecond($mph)
 	{
 		return $mph*0.44704;
 	}
-	public static function WindDir($teta)
+	// alias
+	public static function mphToMs( $mph ) { self::milesPerHourToMeterPerSecond( $mph ); }
+
+
+	// Wind direction as an angle
+	public static function windDirectionAngle($theta)
 	{
-		return $teta?$teta:NULL;
+		return $theta ? $theta : NULL;
 	}
+	// alias
+	public static function windDir( $theta ) { self::windDirection( $theta ); }
+	public static function WindDir( $theta ) { self::windDirection( $theta ); }
 
 
 }
