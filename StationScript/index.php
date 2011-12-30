@@ -24,10 +24,8 @@ foreach($SConfs as $key=>$SConf)
 			$Station -> Get_LOOP_Raw();	// OK
 			$Station -> Get_DMPAFT_Raw();	// OK
 			if (abs(strtotime($Station -> Get_TIME_Raw()) - strtotime(date('Y/m/d H:i:s'))) > 3)
-				if ($Station -> Set_TIME_Raw())
-					$Station->Waiting (0,'Clock synch.');
-;	// OK
-
+				if ($Station -> Set_TIME_Raw());
+// 					$Station->Waiting (0,'Clock synch.');
 			if ($Station -> closeConnection())
 				$Station -> Waiting (0, 'Close '.$key.'!');
 			else

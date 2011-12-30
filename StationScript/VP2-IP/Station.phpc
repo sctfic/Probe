@@ -61,14 +61,12 @@ class station
 	function CalculateCRC($ptr)	{
 		$crc = 0x0000;
 		settype($crc, "integer");
-// 		$ptr=decbin($ptr);
-// 		settype($ptr, "string");
 		for ($i = 0; $i < strlen($ptr); $i++)
 		{
 			$crc =  $this->table[(($crc>>8) ^ ord($ptr[$i]))] ^ (($crc<<8) & 0x00FFFF);
 // 			$this->waiting(0,ord($ptr[$i]).' : '.dechex($this->table[(($crc>>8) ^ ord($ptr[$i]))]).' > '.dechex($crc>>8).' '.dechex($crc&0xff));
 		}
-		return !$crc?$crc:chr($crc>>8).chr($crc&0xff); // 		return $this->HexToDec($crc);
+		return !$crc?$crc:chr($crc>>8).chr($crc&0xff);
 	}
 	function Waiting ($s=10, $msg = 'Waiting and retry')	{
 		$w = '-\|/';
@@ -134,22 +132,20 @@ class station
 	}
 	function Get_LOOP_Raw($nbr=1)	{
 		$_NBR = $nbr;
-		for ($i=0;$i<=$this->retry;$i++)
+		fwrite ($this->fp, "LOOP $nbr\n");
+		$r = fread($this->fp, 1);
+		if ($r == $this->symb['ACK'])
 		{
-			fwrite ($this->fp, "LOOP $nbr\n");
-			$r = fread($this->fp, 1);
-			if ($r == $this->symb['ACK'])
+			while ($nbr-- > 0)
 			{
-				while ($nbr-- > 0)
+				$LOOP = fread($this->fp, 99);
+				if (strlen($LOOP)==99 && !$this->CalculateCRC($LOOP))
 				{
-					$LOOP = fread($this->fp, 99);
-					if (strlen($LOOP)==99 && !$this->CalculateCRC($LOOP))
-					{
-						$LOOP = substr($LOOP,0,-2);
-						$this->Waiting (0,'LOOP : Download the current Values');
-// 						file_put_contents($this->VP2FOLDER.'../../ExportedData/LOOP['.($_NBR-$nbr).'].brut',$LOOP);
-						$this->Conf['Last_LOOP'] = date('Y/m/d H:i:s');
-						$this->SaveConfs();
+					$LOOP = substr($LOOP,0,-2);
+					$this->Waiting (0,'LOOP : Download the current Values');
+// 					file_put_contents($this->VP2FOLDER.'../../ExportedData/LOOP['.($_NBR-$nbr).'].brut',$LOOP);
+					$this->Conf['Last_LOOP'] = date('Y/m/d H:i:s');
+					$this->SaveConfs();
 /** ################################################################################################################################
 Ici on appelera succesivement 3 functions :
 - Convert to Human redable ();
@@ -159,43 +155,38 @@ Ici on appelera succesivement 3 functions :
 - Write Values ();
 	prendra comme parametre le tabeau SI et l´enregistre dans un fichier qui sera repris par l´interface WEB. (alban)
 ################################################################################################################################  **/
-
-					}
-					else
-						$this->Waiting (0,'LOOP : Erreur de CRC');
-					if ($nbr > 0) sleep(1);
 				}
-				return true;
+				else
+					$this->Waiting (0,'LOOP : Erreur de CRC');
+				if ($nbr > 0) sleep(1);
 			}
-			else if ($r == $this->symb['NAK'])
-			{
-				$this->Waiting (0,'LOOP : Erreur de NAK');
-			}
-			else
-			{
-				fwrite ($this->fp, $this->symb['CR']); // Cancel this command
-				fread($this->fp, 999);
-				if ($i<$this->retry)
-					$this->Waiting (0,'LOOP : Erreur Autre');
-			}
+			return true;
+		}
+		else if ($r == $this->symb['NAK'])
+		{
+			$this->Waiting (0,'LOOP : Erreur de NAK');
+		}
+		else
+		{
+			fwrite ($this->fp, $this->symb['CR']); // Cancel this command
+			fread($this->fp, 999);
+			$this->Waiting (0,'LOOP : unknown Error');
 		}
 		return true;
 	}
 	function Get_HILOWS_Raw()	{
-		for ($i=0;$i<=$this->retry;$i++)
+		fwrite ($this->fp, "HILOWS\n");
+		$r = fread($this->fp, 1);
+		if ($r == $this->symb['ACK'])
 		{
-			fwrite ($this->fp, "HILOWS\n");
-			$r = fread($this->fp, 1);
-			if ($r == $this->symb['ACK'])
+			$HILOWS = fread($this->fp, 438);
+			if (strlen($HILOWS)==438 && ($this->CalculateCRC($HILOWS))==0x0000)
 			{
-				$HILOWS = fread($this->fp, 438);
-				if (strlen($HILOWS)==438 && ($this->CalculateCRC($HILOWS))==0x0000)
-				{
-					$HILOWS = substr($HILOWS,0,-2);
-					$this->Waiting (0,'HILOWS : Download Mini and Maxi');
-// 					file_put_contents($this->VP2FOLDER.'../../ExportedData/HILOWS.brut',$HILOWS);
-					$this->Conf['Last_HILOWS'] = date('Y/m/d H:i:s');
-					$this->SaveConfs();
+				$HILOWS = substr($HILOWS,0,-2);
+				$this->Waiting (0,'HILOWS : Download Mini and Maxi');
+// 				file_put_contents($this->VP2FOLDER.'../../ExportedData/HILOWS.brut',$HILOWS);
+				$this->Conf['Last_HILOWS'] = date('Y/m/d H:i:s');
+				$this->SaveConfs();
 /** ################################################################################################################################
 Ici on appelera succesivement 3 functions :
 - Convert to Human redable ();
@@ -205,22 +196,19 @@ Ici on appelera succesivement 3 functions :
 - Write Values ();
 	prendra comme parametre le tabeau SI et l´enregistre dans un fichier et dans une base SQL. (Alban et edouard)
 ################################################################################################################################  **/
-					return true;
-				}
-				else
-					$this->Waiting (0,'HILOWS : Erreur de CRC');
-			}
-			else if ($r == $this->symb['NAK'])
-			{
-				$this->Waiting (0,'HILOWS : Erreur de NAK');
+				return true;
 			}
 			else
-			{
-				fread($this->fp, 999);
-				if ($i<$this->retry)
-					$this->Waiting (0,'HILOWS : Erreur Autre');
-
-			}
+				$this->Waiting (0,'HILOWS : Erreur de CRC');
+		}
+		else if ($r == $this->symb['NAK'])
+		{
+			$this->Waiting (0,'HILOWS : Erreur de NAK');
+		}
+		else
+		{
+			fread($this->fp, 999);
+				$this->Waiting (0,'HILOWS : unknown Error');
 		}
 		return true;
 	}
@@ -242,7 +230,7 @@ Ici on appelera succesivement 3 functions :
 		else
 		{
 			fread($this->fp, 999);
-				$this->Waiting (0,'GETTIME : Erreur inconue');
+				$this->Waiting (0,'GETTIME : unknown Error');
 		}
 		return false;
 	}
@@ -251,26 +239,27 @@ Ici on appelera succesivement 3 functions :
 		$r = fread($this->fp, 1);
 		if ($r == $this->symb['ACK'])
 		{
-			list($y,$m,$d,$h,$i,$s) = explode(';', date('Y;m;d;H;i;s'));
+			list($_date, $_clock) = explode(' ', date('Y/m/d H:i:s'));
+			list($y,$m,$d) = explode('/', $_date);
+			list($h,$i,$s) = explode(':', $_clock);
 			$SETTIME = chr($s).chr($i).chr($h).chr($d).chr($m).chr($y-1900);
 			$crc = $this->CalculateCRC($SETTIME);
 			fwrite ($this->fp, $SETTIME.$crc);
-			$this->Waiting (0,bin2hex($SETTIME.$crc));
 			$r = fread($this->fp, 1);
 			if ($r == $this->symb['ACK'])
 			{
-// 				$this->Waiting (0,'SETTIME OK : '.date('Y/m/d H:i:s'));
-				$this->Conf['Last_SETTIME'] = date('Y/m/d H:i:s');
+				$this->Waiting (0,'SETTIME : '.$_date.' '.$_clock);
+				$this->Conf['Last_SETTIME'] = $_date.' '.$_clock;
 				$this->SaveConfs();
-				return true;
+				return $_date.' '.$_clock;
 			}
 			else
-				$this->Waiting (0,'SETTIME : Erreur de CRC ');
+				$this->Waiting (0,'SETTIME : invalid date.');
 		}
 		else
 		{
 			fread($this->fp, 999);
-				$this->Waiting (0,'SETTIME : Erreur inconue');
+				$this->Waiting (0,'SETTIME : unknown Error');
 		}
 		return false;
 	}
@@ -298,43 +287,41 @@ Ici on appelera succesivement 3 functions :
 		return $y.'/'.$m.'/'.$d.' '.$h.':'.$min.':00';
 	}
 	function Get_DMPAFT_Raw()	{
-		for ($i=0;$i<=$this->retry;$i++)
+		fwrite($this->fp,"DMPAFT\n");			// Send the command to VP2 : DumpAfter
+		$r = fread($this->fp, 1);			// Read the answer
+		if ($r == $this->symb['ACK'])			// ACK if VP2 understood
 		{
-			fwrite($this->fp,"DMPAFT\n");			// Send the command to VP2 : DumpAfter
+			$d = $this->DMPAFT_SetVP2Date($this->Conf['Last_DMPAFT']); // define date of first archives record
+			fwrite($this->fp, $d);				// Send this date
+			$crc = $this->CalculateCRC($d);		// define the CRC of my date
+			fwrite($this->fp, $crc);			// Send this CRC
 			$r = fread($this->fp, 1);			// Read the answer
-			if ($r == $this->symb['ACK'])			// ACK if VP2 understood
+			if ($r == $this->symb['ACK'])			// ACK if VP2 confirm the CRC
 			{
-				$d = $this->DMPAFT_SetVP2Date($this->Conf['Last_DMPAFT']); // define date of first archives record
-				fwrite($this->fp, $d);				// Send this date
-				$crc = $this->CalculateCRC($d);		// define the CRC of my date
-				fwrite($this->fp, $crc);			// Send this CRC
-				$r = fread($this->fp, 1);			// Read the answer
-				if ($r == $this->symb['ACK'])			// ACK if VP2 confirm the CRC
+				$r = fread($this->fp, 6);			// Read the answer
+				if (strlen($r)==6 && $this->CalculateCRC($r)==0x0000)
 				{
-					$r = fread($this->fp, 6);			// Read the answer
-					if (strlen($r)==6 && $this->CalculateCRC($r)==0x0000)
+					$nbrArch=0;
+					$retry = $this->retry;
+					$nbrPages = $this->HexToDec (strrev(substr($r,0,2)));		// Split Bytes in revers order : Nbr of page
+					$firstArch = $this->HexToDec (strrev(substr($r,2,2)));		// Split Bytes in revers order : # of first archive
+					$this->Waiting (0,'There are '.$nbrPages.'p. in queue, from archive '.$firstArch.' on first page.');
+					fwrite($this->fp, $this->symb['ACK']);	// Send ACK to start
+					for ($j=0;$j<$nbrPages;$j++)
 					{
-						$nbrArch=0;
-						$retry = $this->retry;
-						$nbrPages = $this->HexToDec (strrev(substr($r,0,2)));		// Split Bytes in revers order : Nbr of page
-						$firstArch = $this->HexToDec (strrev(substr($r,2,2)));		// Split Bytes in revers order : # of first archive
-						$this->Waiting (0,'There are '.$nbrPages.'p. in queue, from archive '.$firstArch.' on first page.');
-						fwrite($this->fp, $this->symb['ACK']);	// Send ACK to start 
-						for ($j=0;$j<$nbrPages;$j++)
+						$Page = fread($this->fp, 267);
+						$this->Waiting (0,'Download Archive PAGE #'.$j.' since : '.$this->DMPAFT_GetVP2Date(substr($Page,1,4)));
+						if (strlen($Page)==267 && $this->CalculateCRC($Page)==0x0000)
 						{
-							$Page = fread($this->fp, 267);
-							$this->Waiting (0,'Download Archive PAGE #'.$j.' since : '.$this->DMPAFT_GetVP2Date(substr($Page,1,4)));
-							if (strlen($Page)==267 && $this->CalculateCRC($Page)==0x0000)
+							$retry = $this->retry;
+							for($k=$firstArch;$k<=4;$k++)
 							{
-								$retry = $this->retry;
-								for($k=$firstArch;$k<=4;$k++)
+								$ArchiveStrRaw=substr($Page,1+52*$k,52);
+								$ArchDate = $this->DMPAFT_GetVP2Date(substr($ArchiveStrRaw,0,4));
+								if (strtotime($ArchDate) > strtotime($this->Conf['Last_DMPAFT']))
 								{
-									$ArchiveStrRaw=substr($Page,1+52*$k,52);
-									$ArchDate = $this->DMPAFT_GetVP2Date(substr($ArchiveStrRaw,0,4));
-									if (strtotime($ArchDate) > strtotime($this->Conf['Last_DMPAFT']))
-									{
-										$this->Waiting (0,"\t".'ARCHIVE #'.($nbrArch++).' of '.$ArchDate.' saved.');
-										$this->Conf['Last_DMPAFT'] = $ArchDate;
+// 									$this->Waiting (0,"\t".'ARCHIVE #'.($nbrArch++).' of '.$ArchDate.' saved.');
+									$this->Conf['Last_DMPAFT'] = $ArchDate;
 /** ################################################################################################################################
 Ici on appelera succesivement 3 functions :
 - Convert to Human redable ();
@@ -344,60 +331,58 @@ Ici on appelera succesivement 3 functions :
 - Write Values ();
 	prendra comme parametre le tabeau SI et l´enregistre dans un fichier et dans une base SQL. (edouard)
 ################################################################################################################################  **/
-									}
 								}
-								$this->SaveConfs();
-								$firstArch=0;
-								fwrite($this->fp, $this->symb['ACK']);
+							}
+							$this->SaveConfs();
+							$firstArch=0;
+							fwrite($this->fp, $this->symb['ACK']);
+						}
+						else
+						{
+							if (!$retry)
+							{
+								$this->Waiting (0,'Page #'.$j.' invalide, Aborting Download.');
+								fread($this->fp, 999); // vidange
+								fwrite($this->fp, $this->symb['ESC']);
+								return false;
 							}
 							else
 							{
-								if (!$retry)
-								{
-									$this->Waiting (0,'Page #'.$j.' invalide, Aborting Download.');
-									fread($this->fp, 999); // vidange
-									fwrite($this->fp, $this->symb['ESC']);
-									return false;
-								}
-								else
-								{
-									$this->Waiting (10,'Page #'.$j.' invalide by wrong CRC, retry.'.$retry);
-									fread($this->fp, 999); // vidange
-									fwrite($this->fp, $this->symb['NAK']);
-									$retry=$retry--;
-									$j--;
-								}
+								$this->Waiting (10,'Page #'.$j.' invalide by wrong CRC, retry.'.$retry);
+								fread($this->fp, 999); // vidange
+								fwrite($this->fp, $this->symb['NAK']);
+								$retry=$retry--;
+								$j--;
 							}
 						}
-						return true;
 					}
-					else if ($r == $this->symb['NAK'])
-						$this->Waiting (0,'DMPAFT Pages : NAK on first page, wrong Date or CRC!');
-					else
-					{
-						$this->Waiting (0,'DMPAFT Pages : NULL!');
-						fread($this->fp, 999); // vidange
-						if ($i<$retry)	$this->Waiting (8);
-					}
+					return true;
 				}
 				else if ($r == $this->symb['NAK'])
-					$this->Waiting (0,'DMPAFT Date : NAK Bad CRC16!');
+					$this->Waiting (0,'DMPAFT Pages : NAK on first page, wrong Date or CRC!');
 				else
 				{
-					$this->Waiting (0,'DMPAFT Date : NULL!');
+					$this->Waiting (0,'DMPAFT Pages : NULL!');
 					fread($this->fp, 999); // vidange
-					if ($i<$this->retry)	$this->Waiting (8);
+					$this->Waiting (8);
 				}
 			}
 			else if ($r == $this->symb['NAK'])
-				$this->Waiting (0,'DMPAFT NAK : Bad Command!');
+				$this->Waiting (0,'DMPAFT Date : NAK Bad CRC16!');
 			else
 			{
-				$this->Waiting (0,'DMPAFT NULL!');
+				$this->Waiting (0,'DMPAFT Date : NULL!');
 				fread($this->fp, 999); // vidange
-				if ($i<$this->retry)	$this->Waiting (8);
+				$this->Waiting (8);
 			}
-
+		}
+		else if ($r == $this->symb['NAK'])
+			$this->Waiting (0,'DMPAFT NAK : Bad Command!');
+		else
+		{
+			$this->Waiting (0,'DMPAFT NULL!');
+			fread($this->fp, 999); // vidange
+			$this->Waiting (8);
 		}
 		return true;
 	}
