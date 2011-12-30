@@ -10,7 +10,7 @@ class Humidity extends Fields
 	}
 	// Using SI unit: Pa (see: http://en.wikipedia.org/wiki/)
 	//
-	public static function HumToRealHum($hum)
+	public static function HumToRealHum( $hum )
 	{
 		return $hum;
 	}

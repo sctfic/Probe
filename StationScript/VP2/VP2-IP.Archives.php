@@ -98,12 +98,7 @@ function GetArchives (&$fp)
 						Waiting (4,'Download ARCHIVE : '.$j);
 						if (CRC16_CCITT($archives[$j]))
 						{
-<<<<<<< HEAD
 							Waiting (4,'ARCHIVE : '.$j.' du '.DMPAFT_GetVP2Date(array($archives[$j][1],$archives[$j][2],$archives[$j][3],$archives[$j][4])).' valide');
-
-=======
-							Waiting (4,'ARCHIVE #'.$j.' du '.DMPAFT_GetVP2Date(array($archives[$j][1],$archives[$j][2],$archives[$j][3],$archives[$j][4])).' valide');
->>>>>>> 547590bc1c1ed151d600406ab54e2c2f72ee85d8
 							fwrite($fp, $symb['ACK']);
 						}
 						else
