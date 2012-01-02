@@ -44,8 +44,7 @@ class station
 	0x6e17,  0x7e36,  0x4e55,  0x5e74,  0x2e93,  0x3eb2,  0xed1,  0x1ef0);
 
 
-	function __construct($stationConfig, $name)
-	{
+	function __construct($stationConfig, $name)	{
 		$this->setKeyConf($name);
 		$this->setStationConfig($stationConfig);
 		$this->setStationFolder( dirname(__FILE__).DIRECTORY_SEPARATOR );
@@ -95,8 +94,7 @@ class station
 	}
 
 
-	public function initConnection()
-	{
+	public function initConnection()	{
 		$errno = 0;
 		$this->fp = @fsockopen(
 			$this->getStationIP(),
@@ -113,13 +111,9 @@ class station
 				return TRUE;
 			}
 		}
-
 		return FALSE;
 	}
-
-
-	protected function wakeUp()
-	{
+	protected function wakeUp()	{
 		for ($i=0;$i<=$this->retry;$i++)
 		{
 			fwrite ($this->fp,$this->symb['LF']);
@@ -128,13 +122,9 @@ class station
 				return TRUE;
 			usleep(1200000);
 		}
-
 		return FALSE;
 	}
-
-
-	protected function toggleBacklight($force=-1)
-	{
+	protected function toggleBacklight($force=-1) {
 		if ($force==-1)
 		{
 			fwrite ($this->fp,'LAMPS '.(($this->backLightScreen)?'0':'1').$this->symb['LF']);
@@ -147,6 +137,23 @@ class station
 			if ($force==-1)$this->backLightScreen = !$this->backLightScreen;
 			else $this->backLightScreen = $force;
 			return TRUE;
+		}
+		return FALSE;
+	}
+	private function Get_infos($cmd) { // VER, NVER, RXCHECK, BARDATA
+		fwrite ($this->fp, strtoupper($cmd)."\n");
+		if (fread($this->fp,6)==$this->symb['_OK_'])
+		{
+			return fread($this->fp,99);
+		}
+		return FALSE;
+	}
+	private function PUT_infos($cmd) { // PUTRAIN, PUTET, BAR=P H, SETPER
+		fwrite ($this->fp, strtoupper($cmd)."\n");
+		$r = fread($this->fp, 1);
+		if ($r == $this->symb['ACK'])
+		{
+			return true;
 		}
 		return FALSE;
 	}
@@ -414,37 +421,26 @@ Ici on appelera succesivement 3 functions :
 		return true;
 	}
 
-private function SaveConfs ()
-	{
+	private function SaveConfs ()	{
 		$confs = $this->getStationConfig();
 		$confs[$this->getKeyConf()] = $this->StationConfig[$this->getKeyConf()];
 		file_put_contents (dirname(__FILE__).DIRECTORY_SEPARATOR.'../../stations.conf', var_export($confs,true));
 		return true;
 	}
-	private function GetConf ()
-	{
+	private function GetConf ()	{
 		return eval('return '.file_get_contents(dirname(__FILE__).DIRECTORY_SEPARATOR.'../../stations.conf').';');
 	}
 
-	function setKeyConf($value)
-	{ $this->KeyConf = $value; }
-	function getKeyConf()
-	{ return $this->KeyConf; }
+	function setKeyConf($value)	{ $this->KeyConf = $value; }
+	function getKeyConf()	{ return $this->KeyConf; }
 
-	function setStationConfig($value)
-	{ $this->StationConfig = $value; }
-	function getStationConfig()
-	{ return $this->StationConfig; }
+	function setStationConfig($value)	{ $this->StationConfig = $value; }
+	function getStationConfig()	{ return $this->StationConfig; }
 
-	function setStationFolder($value)
-	{ $this->StationFolder = $value; }
-	function getStationFolder()
-	{ return $this->StationFolder; }
+	function setStationFolder($value)	{ $this->StationFolder = $value; }
+	function getStationFolder()	{ return $this->StationFolder; }
 
-
-	function getStationIP()
-	{ return $this->StationConfig[$this->getKeyConf()]['IP']; }
-	function getStationPort()
-	{ return $this->StationConfig[$this->getKeyConf()]['Port']; }
+	function getStationIP()	{ return $this->StationConfig[$this->getKeyConf()]['IP']; }
+	function getStationPort()	{ return $this->StationConfig[$this->getKeyConf()]['Port']; }
 }
 ?>
