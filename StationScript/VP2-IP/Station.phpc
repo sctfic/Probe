@@ -140,7 +140,25 @@ class station
 		}
 		return FALSE;
 	}
-	private function Get_infos($cmd) { // VER, NVER, RXCHECK, BARDATA
+	function GET_infos() {
+		$cmd = array('VER'=>false, 'NVER'=>false, 'RXCHECK'=>false, 'BARDATA'=>false, 'Latitude'=>true);
+		foreach($cmd as $key=>$val)
+		{
+			if (!$cmd[$key])
+				$cmd[$key] = $this->GET_info($key);
+			else
+				$cmd[$key] = $this->GET_EEPROM($key);
+		}
+		return $cmd;
+	}
+	function PUT_infos($cmd) { // $cmd = array('PUTRAIN'=>'', 'PUTET'=>'', 'BAR'=>'', 'SETPER'=>'');
+		foreach($cmd as $key=>$val)
+		{
+			$cmd[$key] = $this-PUT_info($key);
+		}
+		return $cmd;
+	}
+	private function GET_info($cmd) { // VER, NVER, RXCHECK, BARDATA
 		fwrite ($this->fp, strtoupper($cmd)."\n");
 		if (fread($this->fp,6)==$this->symb['_OK_'])
 		{
@@ -148,7 +166,30 @@ class station
 		}
 		return FALSE;
 	}
-	private function PUT_infos($cmd) { // PUTRAIN, PUTET, BAR=P H, SETPER
+	private function GET_EEPROM($cmd) {
+		$cmds = array( // Docs pages 35 to 38
+		'LATITUDE'	=>	array('pos' => '0B','len' => 2),
+		'LONGITUDE'	=>	array('pos' => '0D','len' => 2),
+		'ELEVATION'	=>	array('pos' => '0F','len' => 2),
+		'TIME_ZONE'	=>	array('pos' => '11','len' => 2),
+		'UNIT_BITS'	=>	array('pos' => '29','len' => 1),
+		'SETUP_BITS'=>	array('pos' => '2B','len' => 1),
+		'RAIN_SEASON_START'=>	array('pos' => '2C','len' => 1),
+		'ARCHIVE_PERIOD'	=>	array('pos' => '2D','len' => 1),
+		);
+		fwrite ($this->fp, strtoupper('EEBRD '.$cmds[$cmd][$pos]).' '.$cmds[$cmd][$len]."\n");
+		$r = fread($this->fp, 1);
+		if ($r == $this->symb['ACK'])
+		{
+			$EEBRD = fread($this->fp, $cmds[$cmd][$len]+2);
+			if (strlen($EEBRD)==$cmds[$cmd][$len]+2 && !$this->CalculateCRC($EEBRD))
+			{
+				return substr($EEBRD, 0,-2);
+			}
+		}
+		return FALSE;
+	}
+	private function PUT_info($cmd) { // PUTRAIN, PUTET, BAR=P H, SETPER
 		fwrite ($this->fp, strtoupper($cmd)."\n");
 		$r = fread($this->fp, 1);
 		if ($r == $this->symb['ACK'])
