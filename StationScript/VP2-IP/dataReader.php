@@ -1623,9 +1623,7 @@ foreach ($measures as $measureKey => $measureObject)
 		Fields::hexToDec($measureObject->extractRawField($rawDataString)), // get correct value
 		bin2hex($measureObject->extractRawField($rawDataString))
 	);
-
 }
-"\x0a"
 
 
 
