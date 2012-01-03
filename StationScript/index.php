@@ -26,12 +26,13 @@ foreach($stationConfig as $configKey=>$configValue)
 		{
 			$station->Waiting( 0, _( sprintf('[Succès] Ouverture de la connexion à %s', $configKey) ) );
 
-			$station->Get_HILOWS_Raw();	// OK
-			$station->Get_LOOP_Raw();	// OK
-			$station->Get_DMPAFT_Raw();	// OK
-			if (abs(strtotime($station->fetchStationTime()) - strtotime(date('Y/m/d H:i:s'))) > 3)
-			  if ($station->updateStationTime())
-// 					$Station->Waiting (0,'Clock synch.');
+			var_export ($station->GET_infos());	// OK
+/// 			$station->Get_HILOWS_Raw();	// OK
+/// 			$station->Get_LOOP_Raw();	// OK
+/// 			$station->Get_DMPAFT_Raw();	// OK
+/// 			if (abs(strtotime($station->fetchStationTime()) - strtotime(date('Y/m/d H:i:s'))) > 3)
+/// 			  if ($station->updateStationTime())
+/// 					$Station->Waiting (0,'Clock synch.');
 
 			if ($station->closeConnection())
 				$station->Waiting( 0, sprintf( _('[Succès] Fermeture de %s correcte.'), $configKey ) );
