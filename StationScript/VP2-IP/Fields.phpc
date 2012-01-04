@@ -2,61 +2,40 @@
 // This class define a generic structure for measurement management.
 class Fields
 {
-  private $FieldOffset=-1; // field offset (starting at 0)
-  private $FieldSize=-1;   // field size/length
-  private $FieldDescription=null; // description of the field
+  private $fieldOffset=-1; // field offset (starting at 0)
+  private $fieldSize=-1;   // field size/length
+  private $fieldDescription=null; // description of the field
 
-  private $FieldRawValue = null; // binary string directly from the station
-  private $FieldParsedValue = null; // from binary to parsed value: 225 -> 22.5°C
-  private $FieldSiValue = null; // from parsed to SI (with measure correction)
 
 // field offset
   function setFieldOffset($value)
   {
     if ($value >= 0)
-      { $this->FieldOffset = $value; }
+      { $this->fieldOffset = $value; }
     else
       { printf(_("Invalid 'offset' value submitted (should be >0).\n")); }
   }
   function getFieldOffset()
-  { return $this->FieldOffset; }
+  { return $this->fieldOffset; }
 
 // field length
   function setFieldSize($value)
   {
     if ($value > 0)
-      { $this->FieldSize = $value; }
+      { $this->fieldSize = $value; }
     else
       { printf(_("Invalid 'length' value submitted (should be >0).\n")); }
   }
   function getFieldSize()
-  { return $this->FieldSize; }
+  { return $this->fieldSize; }
 
 // Explanation
   function setFieldDescription($value)
   {
-    $this->FieldDescription = $value;
+    $this->fieldDescription = $value;
   }
   function getFieldDescription()
-  { return $this->FieldDescription; }
-
-  // default setter, it SHOULD BE override on children class
-  function setFieldRawValue($value)
-  { $this->FieldRawValue = $value; }
-  function getFieldRawValue()
-  { return $this->FieldRawValue; }
-
-  // default setter, it SHOULD BE override on children class
-  function setFieldParsedValue($value)
-  { $this->FieldParsedValue = $value; }
-  function getFieldParsedValue()
-  { return $this->FieldParsedValue; }
-
-  // default setter, it SHOULD BE override on children class
-  function setFieldSiValue($value)
-  { $this->FieldSiValue = $value; }
-  function getFieldSiValue()
-  { return $this->FieldSiValue; }
+  { return $this->fieldDescription; }
 
 
 // 	Extract raw data from a string ('str'), starting at 'offset' and 'size' characters
@@ -75,8 +54,6 @@ class Fields
 			)
 		);
 	}
-
-
 
 // 	function getTimeOfDay( $str , $format = 'Y-m-d h:m:s')
 // 	{

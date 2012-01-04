@@ -223,9 +223,7 @@ class station
 					$this->SaveConfs();
 /** ################################################################################################################################
 Ici on appelera succesivement 3 functions :
-$LOOP = chaine de 97 caractères de long.
 - Convert to Human redable ();
-
 	prendra comme parametre : $LOOP , et me retourne un tableau avec les valeurs brutes dans leur unitée par defaut. (Edouard)
 - Convert to Unit of SystemInternational ();
 	prendra comme parametre le tableau precedant et converti et corrige chaque valeurs. (alban)
