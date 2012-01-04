@@ -1,0 +1,519 @@
+<?php
+// USAGE:
+// php -f ./VP2-dataReader.php
+require_once "Fields.phpc";
+require_once "Humidity.phpc";
+require_once "Pressure.phpc";
+require_once "Radiation.phpc";
+require_once "Temperature.phpc";
+require_once "Wind.phpc";
+
+
+
+// Spells out "LOO" for Rev B packets and "LOOP" for Rev A
+// packets. Identifies a LOOP packet
+// "L" 0 1
+// "O" 1 1
+// "O" 2 1
+
+
+// Value depends on 'Rev' !!!
+// "P" (Rev A) 3 1
+// Bar Trend (Rev B)
+// Signed byte that indicates the current 3-hour barometer trend. It
+// is one of these values:
+//   -60 = Falling Rapidly = 196 (as an unsigned byte)
+//   -20 = Falling Slowly = 236 (as an unsigned byte)
+//   0 = Steady
+//   20 = Rising Slowly
+//   60 = Rising Rapidly
+//   80 = ASCII "P" = Rev A firmware, no trend info is available
+// Any other value means that the Vantage does not have the 3
+// hours of bar data needed to determine the bar trend.
+class BarTrend extends Pressure
+{
+  function __construct($offset, $size)
+  {
+    $this->setFieldOffset($offset);
+    $this->setFieldSize($size);
+  }
+}
+
+
+// Packet Type 4 1
+// Has the value zero. In the future we may define new LOOP
+// packet formats and assign a different value to this field.
+class PacketType extends Fields
+{
+  function __construct($offset, $size)
+  {
+    $this->setFieldOffset($offset);
+    $this->setFieldSize($size);
+  }
+}
+
+
+// Next Record 5 2
+// Location in the archive memory where the next data packet will
+// be written. This can be monitored to detect when a new record is
+// created.
+class NextRecord  extends Fields
+{
+  function __construct($offset, $size)
+  {
+    $this->setFieldOffset($offset);
+    $this->setFieldSize($size);
+  }
+}
+
+
+// Barometer 7 2
+// Current Barometer. Units are (in Hg / 1000). The barometric
+// value should be between 20 inches and 32.5 inches in Vantage
+// Pro and between 20 inches and 32.5 inches in both Vantatge Pro
+// Vantage Pro2. Values outside these ranges will not be logged.
+class Barometer extends Pressure
+{
+  function __construct($offset, $size)
+  {
+    $this->setFieldOffset($offset);
+    $this->setFieldSize($size);
+  }
+}
+
+
+// Inside Temperature 9 2
+// The value is sent as 10th of a degree in F. For example, 795 is
+// returned for 79.5°F.
+class InsideTemperature extends Temperature
+{
+  function __construct($offset, $size)
+  {
+    $this->setFieldOffset($offset);
+    $this->setFieldSize($size);
+  }
+}
+
+
+// Inside Humidity 11 1
+// This is the relative humidity in %, such as 50 is returned for 50%.
+class InsideHumidity  extends Humidity
+{
+  function __construct($offset, $size)
+  {
+    $this->setFieldOffset($offset);
+    $this->setFieldSize($size);
+  }
+}
+
+
+// Outside Temperature 12 2
+// The value is sent as 10of a degree in F. For example, 795 is
+// returned for 79.5°F.
+class OutsideTemperature extends Temperature
+{
+  function __construct($offset, $size)
+  {
+    $this->setFieldOffset($offset);
+    $this->setFieldSize($size);
+  }
+}
+
+
+// Wind Speed 14 1
+// It is a byte unsigned value in mph. If the wind speed is dashed
+// because it lost synchronization with the radio or due to some
+// other reason, the wind speed is forced to be 0.
+class WindSpeed extends Wind
+{
+  function __construct($offset, $size)
+  {
+    $this->setFieldOffset($offset);
+    $this->setFieldSize($size);
+  }
+}
+
+
+// 10 Min Avg Wind Speed 15 1
+// It is a byte unsigned value in mph.
+class TenMinAvgWindSpeed extends Wind
+{
+  function __construct($offset, $size)
+  {
+    $this->setFieldOffset($offset);
+    $this->setFieldSize($size);
+  }
+}
+
+
+// Wind Direction 16 2
+// It is a two byte unsigned value from 1 to 360 degrees. (0° is no
+// wind data, 90° is East, 180° is South, 270° is West and 360° is
+// north)
+class WindDirection extends Wind
+{
+  function __construct($offset, $size)
+  {
+    $this->setFieldOffset($offset);
+    $this->setFieldSize($size);
+  }
+}
+
+
+// Extra Temperatures 18 7
+// This field supports seven extra temperature stations.
+// Each byte is one extra temperature value in whole degrees F with
+// an offset of 90 degrees. For example, a value of 0 = -90°F ; a
+// value of 100 = 10°F ; and a value of 169 = 79°F.
+class ExtraTemperatures extends Wind
+{
+  function __construct($offset, $size)
+  {
+    $this->setFieldOffset($offset);
+    $this->setFieldSize($size);
+  }
+}
+
+
+// Soil Temperatures 25 4
+// This field supports four soil temperature sensors, in the same
+// format as the Extra Temperature field above
+class SoilTemperatures extends Temperature
+{
+  function __construct($offset, $size)
+  {
+    $this->setFieldOffset($offset);
+    $this->setFieldSize($size);
+  }
+}
+
+
+// Leaf Temperatures 29 4
+// This field supports four leaf temperature sensors, in the same
+// format as the Extra Temperature field above
+class LeafTemperatures extends Temperature
+{
+  function __construct($offset, $size)
+  {
+    $this->setFieldOffset($offset);
+    $this->setFieldSize($size);
+  }
+}
+
+
+// Outside Humidity 33 1
+// This is the relative humitiy in %.
+class OutsideHumidity extends Humidity
+{
+  function __construct($offset, $size)
+  {
+    $this->setFieldOffset($offset);
+    $this->setFieldSize($size);
+  }
+}
+
+
+// Extra Humidties 34 7
+// Relative humidity in % for extra seven humidity stations.
+class ExtraHumidties extends Humidity
+{
+  function __construct($offset, $size)
+  {
+    $this->setFieldOffset($offset);
+    $this->setFieldSize($size);
+  }
+}
+
+
+// Rain Rate 41 2
+// This value is sent as number of rain clicks (0.2mm or 0.01in).
+// For example, 256 can represent 2.56 inches/hour.
+class RainRate extends Humidity
+{
+  function __construct($offset, $size)
+  {
+    $this->setFieldOffset($offset);
+    $this->setFieldSize($size);
+  }
+}
+
+
+// UV 43 1
+// The unit is in UV index.
+class UV extends Radiation
+{
+  function __construct($offset, $size)
+  {
+    $this->setFieldOffset($offset);
+    $this->setFieldSize($size);
+  }
+}
+
+
+// Solar Radiation 44 2
+// The unit is in watt/meter2.
+class SolarRadiation extends Radiation
+{
+  function __construct($offset, $size)
+  {
+    $this->setFieldOffset($offset);
+    $this->setFieldSize($size);
+  }
+}
+
+
+// Storm Rain 46 2
+// The storm is stored as 100th of an inch.
+class StormRain extends Humidity
+{
+  function __construct($offset, $size)
+  {
+    $this->setFieldOffset($offset);
+    $this->setFieldSize($size);
+  }
+}
+
+
+// Start Date of current Storm 48 2
+// Bit 15 to bit 12 is the month, bit 11 to bit 7 is the day and bit 6 to
+// bit 0 is the year offseted by 2000.
+class StartDateOfCurrentStorm extends Fields
+{
+  function __construct($offset, $size)
+  {
+    $this->setFieldOffset($offset);
+    $this->setFieldSize($size);
+  }
+}
+
+
+// Day Rain 50 2
+// This value is sent as number of rain clicks. (0.2mm or 0.01in)
+class DayRain extends Humidity
+{
+  function __construct($offset, $size)
+  {
+    $this->setFieldOffset($offset);
+    $this->setFieldSize($size);
+  }
+}
+
+
+// Month Rain 52 2
+// This value is sent as number of rain clicks. (0.2mm or 0.01in)
+class MonthRain  extends Humidity
+{
+  function __construct($offset, $size)
+  {
+    $this->setFieldOffset($offset);
+    $this->setFieldSize($size);
+  }
+}
+
+
+// Year Rain 54 2
+// This value is sent as number of rain clicks. (0.2mm or 0.01in)
+class YearRain extends Humidity
+{
+  function __construct($offset, $size)
+  {
+    $this->setFieldOffset($offset);
+    $this->setFieldSize($size);
+  }
+}
+
+
+// Day ET 56 2
+// This value is sent as the 1000th of an inch.
+class DayET extends Fields
+{
+  function __construct($offset, $size)
+  {
+    $this->setFieldOffset($offset);
+    $this->setFieldSize($size);
+  }
+}
+
+
+// Month ET 58 2
+// This value is sent as the 100th of an inch.
+class MonthET extends Fields
+{
+  function __construct($offset, $size)
+  {
+    $this->setFieldOffset($offset);
+    $this->setFieldSize($size);
+  }
+}
+
+
+// Year ET 60 2
+// This value is setnt as the 100th of an inch.
+class YearET extends Fields
+{
+  function __construct($offset, $size)
+  {
+    $this->setFieldOffset($offset);
+    $this->setFieldSize($size);
+  }
+}
+
+
+
+// Soil Moistures 62 4
+// The unit is in centibar. It supports four soil sensors.
+class SoilMoistures extends Humidity
+{
+  function __construct($offset, $size)
+  {
+    $this->setFieldOffset($offset);
+    $this->setFieldSize($size);
+  }
+}
+
+
+// Leaf Wetnesses 66 4
+// This is a scale number from 0 to 15 with 0 meaning very dry and
+// 15 meaning very wet. It supports four leaf sensors.
+class LeafWetnesses extends Humidity
+{
+  function __construct($offset, $size)
+  {
+    $this->setFieldOffset($offset);
+    $this->setFieldSize($size);
+  }
+}
+
+
+// Inside Alarms 70 1
+// Currently active inside alarms. See the table below
+class InsideAlarms extends Fields
+{
+  function __construct($offset, $size)
+  {
+    $this->setFieldOffset($offset);
+    $this->setFieldSize($size);
+  }
+}
+
+
+
+// Rain Alarms 71 1
+// Currently active rain alarms. See the table below
+class RainAlarms extends Fields
+{
+  function __construct($offset, $size)
+  {
+    $this->setFieldOffset($offset);
+    $this->setFieldSize($size);
+  }
+}
+
+
+// Outside Alarms 72 2
+// Currently active outside alarms. See the table below
+class OutsideAlarms extends Fields
+{
+  function __construct($offset, $size)
+  {
+    $this->setFieldOffset($offset);
+    $this->setFieldSize($size);
+  }
+}
+
+
+// Extra Temp/Hum Alarms 74 8
+// Currently active extra temp/hum alarms. See the table below
+class ExtraTempHumAlarms extends Fields
+{
+  function __construct($offset, $size)
+  {
+    $this->setFieldOffset($offset);
+    $this->setFieldSize($size);
+  }
+}
+
+
+// Soil & Leaf Alarms 82 4
+// Currently active soil/leaf alarms. See the table below
+class SoilLeafAlarms extends Fields
+{
+  function __construct($offset, $size)
+  {
+    $this->setFieldOffset($offset);
+    $this->setFieldSize($size);
+  }
+}
+
+
+// Transmitter Battery Status 86 1
+class TransmitterBatteryStatus extends Fields
+{
+  function __construct($offset, $size)
+  {
+    $this->setFieldOffset($offset);
+    $this->setFieldSize($size);
+  }
+}
+
+
+// Console Battery Voltage 87 2
+// Voltage = ((Data * 300)/512)/100.0
+class ConsoleBatteryVoltage extends Fields
+{
+  function __construct($offset, $size)
+  {
+    $this->setFieldOffset($offset);
+    $this->setFieldSize($size);
+  }
+}
+
+
+// Forecast Rule number 90 1
+class ForecastRulenumber extends Fields
+{
+  function __construct($offset, $size)
+  {
+    $this->setFieldOffset($offset);
+    $this->setFieldSize($size);
+  }
+}
+
+
+// Time of Sunrise 91 2
+// The time is stored as hour * 100 + min.
+class TimeOfSunrise extends Fields
+{
+  function __construct($offset, $size)
+  {
+    $this->setFieldOffset($offset);
+    $this->setFieldSize($size);
+  }
+}
+
+
+// Time of Sunset 93 2
+// The time is stored as hour * 100 + min.
+class TimeOfSunset extends Fields
+{
+  function __construct($offset, $size)
+  {
+    $this->setFieldOffset($offset);
+    $this->setFieldSize($size);
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+?>
