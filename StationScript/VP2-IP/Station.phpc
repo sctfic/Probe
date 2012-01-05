@@ -42,13 +42,13 @@ class station
 	0x7c26,  0x6c07,  0x5c64,  0x4c45,  0x3ca2,  0x2c83,  0x1ce0,  0xcc1,
 	0xef1f,  0xff3e,  0xcf5d,  0xdf7c,  0xaf9b,  0xbfba,  0x8fd9,  0x9ff8,
 	0x6e17,  0x7e36,  0x4e55,  0x5e74,  0x2e93,  0x3eb2,  0xed1,  0x1ef0);
-	$EEPROM = array( // Docs pages 35 to 38
-	'LATITUDE'	=>		array('pos' => '0B','len' => 2, 'eval'=>'(($val>>15)?($val & 0x7FFF)*(-1):$val)/10',	'unit'=>''),
-	'LONGITUDE'	=>		array('pos' => '0D','len' => 2, 'eval'=>'(($val>>15)?($val & 0x7FFF)*(-1):$val)/10',	'unit'=>''),
-	'ELEVATION'	=>		array('pos' => '0F','len' => 2, 'eval'=>'(($val>>15)?($val & 0x7FFF)*(-1):$val)/10',	'unit'=>'ft'),
-	'TIME_ZONE'	=>		array('pos' => '11','len' => 2, 'eval'=>'($val)',	'unit'=>''),
-	'UNIT_BITS'	=>		array('pos' => '29','len' => 1, 'eval'=>'decbin($val)',	'unit'=>''),
-	'SETUP_BITS'=>		array('pos' => '2B','len' => 1, 'eval'=>'decbin($val)',	'unit'=>''),
+	public $EEPROM = array( // Docs pages 35 to 38
+	'LATITUDE'	=>		array('pos' => '0B','len' => 2, 'eval'=>'(($val>>15)?($val & 0x7FFF)*(-1):$val)/10',	'unit'=>'degrees'),
+	'LONGITUDE'	=>		array('pos' => '0D','len' => 2, 'eval'=>'(($val>>15)?($val & 0x7FFF)*(-1):$val)/10',	'unit'=>'degrees'),
+	'ELEVATION'	=>		array('pos' => '0F','len' => 2, 'eval'=>'(($val>>15)?($val & 0x7FFF)*(-1):$val)',	'unit'=>'feet'),
+	'TIME_ZONE'	=>		array('pos' => '11','len' => 1, 'eval'=>'(($val>>7)?($val & 0x7F)*(-1):$val)',	'unit'=>''),
+	'UNIT_BITS'	=>		array('pos' => '29','len' => 1, 'eval'=>'var_export(array_combine(array(\'Wind\',\'Rain\',\'Elev\',\'Temp\',\'Barom\'), array(($val&0xC0)>>6, ($val&0x20)>>5, ($val&0x10)>>4, ($val&0x0C)>>2, $val&0x03)),true)',	'unit'=>''),
+	'SETUP_BITS'=>		array('pos' => '2B','len' => 1, 'eval'=>'var_export(array_combine(array(\'12/24\',\'AM/PM\',\'DayMonth\',\'WinCupSize\',\'RainCupSize\',\'Latitude:N/S\',\'Longitude:W/E\'), array($val&0x80, $val&0x40, $val&0x20, $val&0x10, $val&0x0C, $val&0x02, $val&0x01)),true)',	'unit'=>''),
 	'RAIN_SEASON_START'=>	array('pos' => '2C','len' => 1, 'eval'=>'$val',	'unit'=>''),
 	'ARCHIVE_PERIOD'	=>	array('pos' => '2D','len' => 1, 'eval'=>'$val',	'unit'=>''),
 	);
@@ -170,7 +170,7 @@ class station
 		}
 		return FALSE;
 	}
-	private function GET_EEPROM($cmd) {
+	function GET_EEPROM($cmd) {
 		fwrite ($this->fp, strtoupper('EEBRD '.$this->EEPROM[$cmd]['pos']).' '.$this->EEPROM[$cmd]['len']."\n");
 		$r = fread($this->fp, 1);
 		if ($r == $this->symb['ACK'])
@@ -179,7 +179,8 @@ class station
 			if (strlen($EEBRD)==$this->EEPROM[$cmd]['len']+2 && !$this->CalculateCRC($EEBRD))
 			{
 				$val = $this->hexToDec(strrev(substr($EEBRD, 0,-2)));
-				return eval('return '.$this->EEPROM[$cmd]['eval'].';');
+			$this->Waiting (0, decbin($val));
+			return eval('return '.$this->EEPROM[$cmd]['eval'].';');
 			}
 		}
 		return FALSE;

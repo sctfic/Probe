@@ -26,7 +26,9 @@ foreach($stationConfig as $configKey=>$configValue)
 		{
 			$station->Waiting( 0, _( sprintf('[Succès] Ouverture de la connexion à %s', $configKey) ) );
 
-			var_export ($station->GET_infos());	// OK
+///			var_export ($station->GET_infos());
+			foreach($station->EEPROM as $key=>$value)
+				$station->Waiting( 0, $key.' = '.$station->GET_EEPROM($key));
 /// 			$station->Get_HILOWS_Raw();	// OK
 /// 			$station->Get_LOOP_Raw();	// OK
 /// 			$station->Get_DMPAFT_Raw();	// OK
