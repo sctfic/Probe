@@ -33,8 +33,7 @@ class Wind extends Fields
 		return $theta ? $theta : NULL;
 	}
 	// alias
-	public static function windDir( $theta ) { self::windDirection( $theta ); }
-	public static function WindDir( $theta ) { self::windDirection( $theta ); }
+	public static function windDirection( $theta ) { self::windDirectionAngle( $theta ); }
 
 
 }
