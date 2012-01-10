@@ -9,8 +9,6 @@ $stationConfig = eval('return '.file_get_contents($workingFolder.'/../stations.c
 // 			'VP2-Gtd'=>array('IP'=>'nas-alban.no-ip.org','Port'=>22222,'type'=>'VP2-IP','Last_DMPAFT'=>'0'),
 // 		), true));
 
-
-
 foreach($stationConfig as $configKey=>$configValue)
 {
 	$stationFolder = $configValue['type']; // folder with class related to the given station model
@@ -26,9 +24,7 @@ foreach($stationConfig as $configKey=>$configValue)
 		{
 			$station->Waiting( 0, _( sprintf('[Succès] Ouverture de la connexion à %s', $configKey) ) );
 
-// 			var_export ($station->GET_infos());
-			foreach($station->EEPROM as $key=>$value)
-				$station->Waiting( 0, $key.' = '.$station->GET_EEPROM($key));
+			var_export ($station->Read_Configs());
 /// 			$station->Get_HILOWS_Raw();	// OK
 /// 			$station->Get_LOOP_Raw();	// OK
 /// 			$station->Get_DMPAFT_Raw();	// OK

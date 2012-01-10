@@ -50,33 +50,27 @@ class station
 	'LONGITUDE'	=>		array('pos' => '0D','len' => 2, 'eval'=>'(($val>>15)?(($val ^ 0xFFFF)+1)*(-1):$val)/10',	'unit'=>'°'),
 	'ELEVATION'	=>		array('pos' => '0F','len' => 2, 'eval'=>'(($val>>15)?(($val ^ 0xFFFF)+1)*(-1):$val)',	'unit'=>'feet'),
 	'TIME_ZONE'	=>		array('pos' => '11','len' => 1, 'eval'=>'(($val>>7)?(($val ^ 0xFF)+1)*(-1):$val)',	'unit'=>''),
-	'GTM_OFFSET'	=>	array('pos' => '14','len' => 2, 'eval'=>'(int)($val/100).\':\'.str_pad(($val%100),2,\'0\',STR_PAD_LEFT)',	'unit'=>''),
-	'GTM_OR_ZONE'	=>	array('pos' => '16','len' => 1, 'eval'=>'$val?\'GTM\':\'ZONE\'',	'unit'=>''),
+	'GTM_OFFSET'	=>	array('pos' => '14','len' => 2, 'eval'=>'(int)($val/100).":".str_pad(($val%100),2,"0",STR_PAD_LEFT)',	'unit'=>'h:mm'),
+	'GTM_OR_ZONE'	=>	array('pos' => '16','len' => 1, 'eval'=>'$val?"GTM":"ZONE"',	'unit'=>''),
 	'UNIT_BITS'	=>		array('pos' => '29','len' => 1, 'eval'=>'var_export(array_combine(
-											array(\'Wind\',\'Rain\',\'Elev\',\'Temp\',\'Barom\'),
+											array("Wind","Rain","Elev","Temp","Barom"),
 											array(($val&0xC0)>>6, ($val&0x20)>>5, ($val&0x10)>>4, ($val&0x0C)>>2, $val&0x03)),true)',	'unit'=>''),
 	'SETUP_BITS'=>		array('pos' => '2B','len' => 1, 'eval'=>'var_export(array_combine(
-											array(\'Longitude:W/E\',\'Latitude:N/S\',\'RainCupSize\',\'WinCupSize\',\'DayMonth\',\'AM/PM\',\'12/24\'),
+											array("Longitude:W/E","Latitude:N/S","RainCupSize","WinCupSize","DayMonth","AM/PM","12/24"),
 											array(($val&0x80)>>7, ($val&0x40)>>6, ($val&30)>>4, ($val&0x08)>>3, ($val&0x04)>>2, ($val&0x02)>>1, ($val&0x01))),true)',	'unit'=>''),
 	'RAIN_SEASON_START'=>	array('pos' => '2C','len' => 1, 'eval'=>'$val',	'unit'=>'month'),
 	'ARCHIVE_PERIOD'	=>	array('pos' => '2D','len' => 1, 'eval'=>'$val',	'unit'=>'min'),
 	'TEMP_IN_CAL'	=>	array('pos' => '32','len' => 1, 'eval'=>'(($val>>7)?(($val ^ 0xFF)+1)*(-1):$val)/10',	'unit'=>'°F'),
 	'TEMP_OUT_CAL'	=>	array('pos' => '34','len' => 1, 'eval'=>'(($val>>7)?(($val ^ 0xFF)+1)*(-1):$val)/10',	'unit'=>'°F'),
-	'HUM_IN_CAL'	=>	Array('pos' => '44','len' => 1, 'eval'=>'$val',	'unit'=>'%'),
+	'HUM_IN_CAL'	=>	array('pos' => '44','len' => 1, 'eval'=>'$val',	'unit'=>'%'),
 	'WIND_DIR_CAL'	=>	array('pos' => '4D','len' => 2, 'eval'=>'(($val>>15)?(($val ^ 0xFFFF)+1)*(-1):$val)',	'unit'=>'degrees'),
-	'AVERAGE_TEMP'	=>	array('pos' => '0FFC','len' => 1, 'eval'=>'$val?\'false\':\'true\'',	'unit'=>''),
+	'AVERAGE_TEMP'	=>	array('pos' => '0FFC','len' => 1, 'eval'=>'$val?"false":"true"',	'unit'=>' '),
+	'VER'			=>	'substr($val,0,-2)',
+	'NVER'		=>	'substr($val,0,-2)',
+	'RXCHECK'		=>	'array_combine(array("Received","Missed","Resync","LargestReceived","CRC-Error"),explode(" ",substr($val,0,-2)))',
+	'BARDATA'		=>	'explode(chr(0x0A).chr(0x0D),$val)',
 // 	''	=>		array('pos' => '','len' => 1, 'eval'=>'',	'unit'=>''),
 	);
-// BARDATA
-// 	BAR 30476
-// 	ELEVATION 240
-// 	DEW POINT 41
-// 	VIRTUAL TEMP 48
-// 	C 18
-// 	R 1009
-// 	BARCAL 4
-// 	GAIN 0
-// 	OFFSET -36
 
 	function __construct($stationConfig, $name)	{
 		$this->setKeyConf($name);
@@ -93,12 +87,9 @@ class station
 						'_OK_' => "\n\rOK\n\r"
 		);
 	}
-
 	function CalculateCRC($ptr)	{
 		$crc = 0x0000;
 		settype($crc, "integer");
-// 		$ptr=decbin($ptr);
-// 		settype($ptr, "string");
 		for ($i = 0; $i < strlen($ptr); $i++)
 		{
 			$crc =  $this->table[(($crc>>8) ^ ord($ptr[$i]))] ^ (($crc<<8) & 0x00FFFF);
@@ -106,7 +97,6 @@ class station
 		}
 		return !$crc?$crc:chr($crc>>8).chr($crc&0xff);
 	}
-
 	function Waiting ($s=10, $msg = 'Waiting and retry')	{
 		$w = '-\|/';
 		if ($s==0)
@@ -118,11 +108,9 @@ class station
 		}
 		echo "\n";
 	}
-
 	function hexToDec($hex)	{
 		return hexdec(bin2hex($hex));
 	}
-
 	public function initConnection()	{
 		$errno = 0;
 		$this->fp = @fsockopen(
@@ -169,14 +157,20 @@ class station
 		}
 		return FALSE;
 	}
-	function GET_infos() {
-		$cmd = array('VER'=>false, 'NVER'=>false, 'RXCHECK'=>false, 'BARDATA'=>false);
-		foreach($cmd as $key=>$val)
+	function Read_Configs() {
+		$cmd = array();
+		foreach($this->EEPROM as $key=>$val)
 		{
-			if ($cmd[$key])
+			if (is_array($val))
 				$cmd[$key] = $this->GET_EEPROM($key);
 			else
 				$cmd[$key] = $this->GET_info($key);
+			if ($cmd[$key]!='')
+			{
+				$this->StationConfig[$this->getKeyConf()]['Last_Read_Config'] = date('Y/m/d H:i:s');
+				$this->StationConfig[$this->getKeyConf()][$key] = $cmd[$key];
+				$this->SaveConfs();
+			}
 		}
 		return $cmd;
 	}
@@ -191,7 +185,8 @@ class station
 		fwrite ($this->fp, strtoupper($cmd)."\n");
 		if (fread($this->fp,6)==$this->symb['_OK_'])
 		{
-			return fread($this->fp,99);
+			$val = fread($this->fp,99);
+			return eval('return '.$this->EEPROM[$cmd].';');
 		}
 		return FALSE;
 	}
@@ -484,7 +479,6 @@ Ici on appelera succesivement 3 functions :
 		}
 		return true;
 	}
-
 	private function SaveConfs ()	{
 		$confs = $this->getStationConfig();
 		$confs[$this->getKeyConf()] = $this->StationConfig[$this->getKeyConf()];
