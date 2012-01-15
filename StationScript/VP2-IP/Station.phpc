@@ -52,19 +52,31 @@ class station
 	'TIME_ZONE'	=>		array('pos' => '11','len' => 1, 'eval'=>'(($val>>7)?(($val ^ 0xFF)+1)*(-1):$val)',	'unit'=>''),
 	'GTM_OFFSET'	=>	array('pos' => '14','len' => 2, 'eval'=>'(int)($val/100).":".str_pad(($val%100),2,"0",STR_PAD_LEFT)',	'unit'=>'h:mm'),
 	'GTM_OR_ZONE'	=>	array('pos' => '16','len' => 1, 'eval'=>'$val?"GTM":"ZONE"',	'unit'=>''),
-	'UNIT_BITS'	=>		array('pos' => '29','len' => 1, 'eval'=>'var_export(array_combine(
-											array("Wind","Rain","Elev","Temp","Barom"),
-											array(($val&0xC0)>>6, ($val&0x20)>>5, ($val&0x10)>>4, ($val&0x0C)>>2, $val&0x03)),true)',	'unit'=>''),
-	'SETUP_BITS'=>		array('pos' => '2B','len' => 1, 'eval'=>'var_export(array_combine(
-											array("Longitude:W/E","Latitude:N/S","RainCupSize","WinCupSize","DayMonth","AM/PM","12/24"),
-											array(($val&0x80)>>7, ($val&0x40)>>6, ($val&30)>>4, ($val&0x08)>>3, ($val&0x04)>>2, ($val&0x02)>>1, ($val&0x01))),true)',	'unit'=>''),
+	'UNIT_BITS'	=>		array('pos' => '29','len' => 1, 'eval'=>'array_combine(array("Wind","Rain","Elev","Temp","Barom"),
+											array(
+												!(($val&0xC0)>>6)?"mph":(((($val&0xC0)>>6)==1)?"m/s":(((($val&0xC0)>>6)==2)?"Km/h":"Knots")),
+												(($val&0x20)>>5)?"mm":"in",
+												(($val&0x10)>>4)?"m":"ft",
+												!(($val&0x0C)>>2)?"1 °F":(((($val&0x0C)>>2)==1)?"0.1 °F":(((($val&0x0C)>>2)==2)?"1 °C":"0.1 °C")),
+												!($val&0x03)?"0.01 in":((($val&0x03)==1)?"0.1 mm":((($val&0x03)==2)?"0.1 hpa":"0.1 mB")),
+											))',	'unit'=>'Bits'),
+	'SETUP_BITS'=>		array('pos' => '2B','len' => 1, 'eval'=>'array_combine(array("Longitude:","Latitude:","RainCupSize","WinCupSize","DayMonth","AM/PM","12/24"),
+											array(
+												(($val&0x80)>>7)?"East":"West",
+												(($val&0x40)>>6)?"Nord":"South",
+												!(($val&30)>>4)?"0.01 in":(((($val&30)>>4)==1)?"0.2 mm":"0.1 mm"),
+												(($val&0x08)>>3)?"Large":"Small",
+												(($val&0x04)>>2)?"Day/Month":"Month/Day",
+												(($val&0x02)>>1)?"AM":"PM",
+												($val&0x01)?"24h":"AM/PM",
+											))',	'unit'=>'Bits'),
 	'RAIN_SEASON_START'=>	array('pos' => '2C','len' => 1, 'eval'=>'$val',	'unit'=>'month'),
 	'ARCHIVE_PERIOD'	=>	array('pos' => '2D','len' => 1, 'eval'=>'$val',	'unit'=>'min'),
 	'TEMP_IN_CAL'	=>	array('pos' => '32','len' => 1, 'eval'=>'(($val>>7)?(($val ^ 0xFF)+1)*(-1):$val)/10',	'unit'=>'°F'),
 	'TEMP_OUT_CAL'	=>	array('pos' => '34','len' => 1, 'eval'=>'(($val>>7)?(($val ^ 0xFF)+1)*(-1):$val)/10',	'unit'=>'°F'),
 	'HUM_IN_CAL'	=>	array('pos' => '44','len' => 1, 'eval'=>'$val',	'unit'=>'%'),
 	'WIND_DIR_CAL'	=>	array('pos' => '4D','len' => 2, 'eval'=>'(($val>>15)?(($val ^ 0xFFFF)+1)*(-1):$val)',	'unit'=>'degrees'),
-	'AVERAGE_TEMP'	=>	array('pos' => '0FFC','len' => 1, 'eval'=>'$val?"false":"true"',	'unit'=>' '),
+	'AVERAGE_TEMP'	=>	array('pos' => '0FFC','len' => 1, 'eval'=>'$val?false:true',	'unit'=>' '),
 	'VER'			=>	'substr($val,0,-2)',
 	'NVER'		=>	'substr($val,0,-2)',
 	'RXCHECK'		=>	'array_combine(array("Received","Missed","Resync","LargestReceived","CRC-Error"),explode(" ",substr($val,0,-2)))',
@@ -165,7 +177,7 @@ class station
 				$cmd[$key] = $this->GET_EEPROM($key);
 			else
 				$cmd[$key] = $this->GET_info($key);
-			if ($cmd[$key]!='')
+			if ($cmd[$key])
 			{
 				$this->StationConfig[$this->getKeyConf()]['Last_Read_Config'] = date('Y/m/d H:i:s');
 				$this->StationConfig[$this->getKeyConf()][$key] = $cmd[$key];
@@ -199,8 +211,8 @@ class station
 			if (strlen($EEBRD)==$this->EEPROM[$cmd]['len']+2 && !$this->CalculateCRC($EEBRD))
 			{
 				$val = $this->hexToDec(strrev(substr($EEBRD, 0,-2)));
-// 			$this->Waiting (0, decbin($val));
-			return eval('return '.$this->EEPROM[$cmd]['eval'].';');
+// 				$this->Waiting (0, decbin($val));
+				return eval('return '.$this->EEPROM[$cmd]['eval'].';');
 			}
 		}
 		return FALSE;
