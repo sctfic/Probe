@@ -1,48 +1,17 @@
 <?php
 // WebAdmin
 $workingFolder = dirname(__FILE__).DIRECTORY_SEPARATOR;
-if (is_file($workingFolder.'/../stations.conf'))
-	$stationConfig = eval('return '.file_get_contents($workingFolder.'/../stations.conf').';');
-else
-	file_put_contents ($workingFolder.'/../stations.conf',
-		var_export( array ( 'VP2-Inside' =>
-			array (
-				'IP' => 'VP2',
-				'Port' => 22222,
-				'type' => 'VP2-IP',
-				'Last_DMPAFT' => '',
-				'Last_Connected' => '',
-				'Last_Read_Config' => '',
-				'Last_SETTIME' => '',
-				'AVERAGE_TEMP' => '',
-				'VER' => '',
-				'NVER' => '',
-				'RXCHECK' =>   array ( ),
-				'BARDATA' =>   array ( ),
-				'BAR_OFFSET' => 0,
-				'BAR_CAL' => 0,
-				'LATITUDE' => 0,
-				'LONGITUDE' => 0,
-				'ELEVATION' => 0,
-				'TIME_ZONE' => 0,
-				'GTM_OFFSET' => '',
-				'GTM_OR_ZONE' => '',
-				'UNIT_BITS' =>  array ( ),
-				'SETUP_BITS' => array ( ),
-				'RAIN_SEASON_START' => 0,
-				'ARCHIVE_PERIOD' => 0,
-				'TEMP_IN_CAL' => 0,
-				'WIND_DIR_CAL' => 0,
-				'TEMP_OUT_CAL' => 0,
-			),), true));
-if (is_file($workingFolder.'/../WsWds.conf'))
-	$WsWdsConfig = eval('return '.file_get_contents($workingFolder.'/../WsWds.conf').';');
-else
-	file_put_contents ($workingFolder.'/../stations.conf',
-		var_export( array (
+// define ('CRYPT_BLOWFISH', true);
+$salt = '$2a$07$WsWds.0cEzRZZaN/PX8M0w';
+
+if (session_start()) {
+	if (is_file($workingFolder.'/../WsWds.conf'))
+		$WsWdsConfig = eval('return '.file_get_contents($workingFolder.'/../WsWds.conf').';');
+	else {
+		$WsWdsConfig = array (
 			'AdminInterface' =>
 			array (
-				'Username' => 'WsWds',
+				'Username' => '',
 				'Password' => '',
 			),
 			'DataBase' =>
@@ -96,6 +65,42 @@ else
 				'useIt' => True,
 				'Serveur' => '127.0.0.1',
 				'Port' => 80,
-			),
-			), true));
+			),);
+	}
+
+	if (isset($_GET['login']) && $WsWdsConfig['AdminInterface']['Username']=='' && $WsWdsConfig['AdminInterface']['Password']=='' && strlen($_GET['login'])>2 && $_GET['code']==$_GET['confirm'])
+	{ // Si le compte admin n´as jamais était definie alors c'est le moment
+		$_SESSION['login'] = $WsWdsConfig['AdminInterface']['Username'] = $_GET['login'];
+		$WsWdsConfig['AdminInterface']['Password'] = crypt($_GET['code'], $salt);
+		require_once $workingFolder.'Admin.php?page=0';
+		echo 'ici';
+	}
+	elseif (isset($_GET['login']) && ($_GET['login']==$WsWdsConfig['AdminInterface']['Username'] && crypt($_GET['code'], $salt)==$WsWdsConfig['AdminInterface']['Password']))
+	{ // si le code de connexion est le bon
+		$_SESSION['login'] = $_GET['login'];
+		require_once $workingFolder.'Admin.php?page=0';
+		echo 'la';
+	}
+	elseif (!empty($_SESSION['login']))
+	{
+		require_once $workingFolder.'Admin.php?page=0';
+		echo 'truc';
+	}
+	else
+		require_once $workingFolder.'login.php';
+	file_put_contents ($workingFolder.'/../WsWds.conf', var_export( $WsWdsConfig, true ));
+}
+
+
+
+
+
+
+
+// <p>
+//  Pour continuer, <a href="nextpage.php?<?php echo htmlspecialchars(SID); ? >">cliquez ici</a>.
+// </p>
+
+
+
 ?>
