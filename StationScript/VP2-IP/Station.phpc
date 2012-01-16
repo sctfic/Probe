@@ -76,7 +76,7 @@ class station
 	'TEMP_OUT_CAL'	=>	array('pos' => '34','len' => 1, 'eval'=>'(($val>>7)?(($val ^ 0xFF)+1)*(-1):$val)/10',	'unit'=>'°F'),
 	'HUM_IN_CAL'	=>	array('pos' => '44','len' => 1, 'eval'=>'$val',	'unit'=>'%'),
 	'WIND_DIR_CAL'	=>	array('pos' => '4D','len' => 2, 'eval'=>'(($val>>15)?(($val ^ 0xFFFF)+1)*(-1):$val)',	'unit'=>'degrees'),
-	'AVERAGE_TEMP'	=>	array('pos' => '0FFC','len' => 1, 'eval'=>'$val?false:true',	'unit'=>' '),
+	'AVERAGE_TEMP'	=>	array('pos' => '0FFC','len' => 1, 'eval'=>'$val?"Last":"Average"',	'unit'=>' '),
 	'VER'			=>	'substr($val,0,-2)',
 	'NVER'		=>	'substr($val,0,-2)',
 	'RXCHECK'		=>	'array_combine(array("Received","Missed","Resync","LargestReceived","CRC-Error"),explode(" ",substr($val,0,-2)))',
@@ -214,6 +214,7 @@ class station
 // 				$this->Waiting (0, decbin($val));
 				return eval('return '.$this->EEPROM[$cmd]['eval'].';');
 			}
+			return null;
 		}
 		return FALSE;
 	}
