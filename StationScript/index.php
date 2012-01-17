@@ -1,7 +1,7 @@
 <?php // clear;php5 -f WsWds/index.php
 // StationScript
 $workingFolder = dirname(__FILE__).DIRECTORY_SEPARATOR;
-$stationConfig = eval('return '.file_get_contents($workingFolder.'/../stations.conf').';');
+$stationConfig = eval('return '.file_get_contents($workingFolder.'../stations.conf').';');
 
 foreach($stationConfig as $configKey=>$configValue)
 {
@@ -17,7 +17,7 @@ foreach($stationConfig as $configKey=>$configValue)
 		{
 			$station->Waiting( 0, _( sprintf('[Succès] Ouverture de la connexion à %s', $configKey) ) );
 
-///			var_export ($station->Read_Configs());
+			var_export ($station->Read_Configs());
 /// 			$station->Get_HILOWS_Raw();	// OK
 /// 			$station->Get_LOOP_Raw();	// OK
 /// 			$station->Get_DMPAFT_Raw();	// OK
