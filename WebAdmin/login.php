@@ -15,6 +15,7 @@
 		echo '			<input type="password" name="confirm" id="confirm" />'."\n";
 ?>
 		<input type="submit" value="login" />
+		<!--keygen name="security" /-->
 		</form>
 		<span id="erreur" style="color:red"></span>
 		</div>

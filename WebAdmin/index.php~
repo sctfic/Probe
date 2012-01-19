@@ -111,7 +111,7 @@ if (session_start()) {
 	}
 	elseif (!empty($_SESSION['WsWds']['login']))
 	{ // l´identification a deja été faites avec succé
-		if (isset($_POST['query']))
+		if (isset($_POST))
 			include ($workingFolder.'AJAX.php');
 		else
 			include ($workingFolder.'Admin.php');

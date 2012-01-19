@@ -1,0 +1,1 @@
+<footer>Copyright 2012.</footer>

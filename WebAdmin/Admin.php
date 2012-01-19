@@ -1,46 +1,53 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr" dir="ltr">
+	<head>
+	<!-- En-tête du document  -->
+	<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+
+	<!-- Balise meta  -->
+	<meta name="title" content="WsWds : Config Pages" />
+	<meta name="description" content="Weather Station Web Data Share : Admin page" />
+	<meta name="keywords" content="Weather Station, Web Data Share, Station meteo" />
+
+	<!-- Indexer et suivre -->
+	<meta name="robots" content="index" />
+
 <?php
 	if (is_file($workingFolder.'../stations.conf'))
 		$stationConfig = eval('return '.file_get_contents($workingFolder.'../stations.conf').';');
 	else {
-		$stationConfig = array ( 'VP2-Inside' =>
-			array (
-				'IP' => 'VP2',
-				'Port' => 22222,
-				'type' => 'VP2-IP',
-				'Last_DMPAFT' => '',
-				'Last_Connected' => '',
-				'Last_Read_Config' => '',
-				'Last_SETTIME' => '',
-				'AVERAGE_TEMP' => '',
-				'VER' => '',
-				'NVER' => '',
-				'RXCHECK' =>   array ( ),
-				'BARDATA' =>   array ( ),
-				'BAR_OFFSET' => 0,
-				'BAR_CAL' => 0,
-				'LATITUDE' => 0,
-				'LONGITUDE' => 0,
-				'ELEVATION' => 0,
-				'TIME_ZONE' => 0,
-				'GTM_OFFSET' => '',
-				'GTM_OR_ZONE' => '',
-				'UNIT_BITS' =>  array ( ),
-				'SETUP_BITS' => array ( ),
-				'RAIN_SEASON_START' => 0,
-				'ARCHIVE_PERIOD' => 0,
-				'TEMP_IN_CAL' => 0,
-				'WIND_DIR_CAL' => 0,
-				'TEMP_OUT_CAL' => 0,
-			),), true));
+		$stationConfig = array ();
 	}
-
-
-
-
-
-
-
-	file_put_contents ($workingFolder.'../stations.conf', var_export($stationConfig, true ));
-
 ?>
-admin.php
+	<!--  Relier une feuille CSS externe  -->
+	<link rel='stylesheet' href='votre-fichier.css' type='text/css' />
+
+	<!-- Incorporez du CSS dans la page  -->
+	<style type="text/css" media="screen">
+		p { color:red; }
+	</style>
+
+	<!-- fichier JavaScript  -->
+	<script type="text/javascript" src="votre-script.js"></script>
+
+	<!-- JavaScript dans la page  -->
+	<script type="text/javascript">
+		
+	</script>
+
+	<noscript><?echo _('echec de chargement des scripte *.JS');?></noscript>
+
+	</head>
+	<body>
+	<!-- CORPS DE LA PAGE  -->
+<?php
+	include ($workingFolder.'banner.php');
+	include ($workingFolder.'header.php');
+	include ($workingFolder.'home.php');
+	include ($workingFolder.'footer.php');
+?>
+	</body>
+</html>
+<?
+	file_put_contents ($workingFolder.'../stations.conf', var_export($stationConfig, true ));
+?>
