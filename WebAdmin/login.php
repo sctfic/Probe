@@ -17,7 +17,10 @@
 		<input type="submit" value="login" />
 		<!--keygen name="security" /-->
 		</form>
-		<span id="erreur" style="color:red"></span>
+<?php
+	if ($_GET['code'] || $_GET['login'])
+		echo '		<span id="erreur" style="color:red">'._('Wrong login or password!').'</span>'."\n";
+?>
 		</div>
 	</body>
 </html>

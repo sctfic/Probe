@@ -1,6 +1,34 @@
 <?php
 
-
-
-
+$DumpAfter = array (
+	'DateStamp'		=>	array( 'pos' => 0, 'len' => 2, 'function'=>, 'min'=>, 'max'=>, 'error'=>, 'unit'=>, ''),
+	'TimeStamp'		=>	array( 'pos' => 2, 'len' => 2, 'function'=>, 'min'=>, 'max'=>, 'error'=>, 'unit'=>, ''),
+	'OutsideTemperature'	=>	array( 'pos' => 4, 'len' => 2, 'function'=>, 'min'=>, 'max'=>, 'error'=>, 'unit'=>, ''),
+	'HighOutTemperature'	=>	array( 'pos' => 6, 'len' => 2, 'function'=>, 'min'=>, 'max'=>, 'error'=>, 'unit'=>, ''),
+	'LowOuttemperature'	=>	array( 'pos' => 8, 'len' => 2, 'function'=>, 'min'=>, 'max'=>, 'error'=>, 'unit'=>, ''),
+	'Rainfall'		=>	array( 'pos' => 10, 'len' => 2, 'function'=>, 'min'=>, 'max'=>, 'error'=>, 'unit'=>, ''),
+	'HighRainRate'		=>	array( 'pos' => 12, 'len' => 2, 'function'=>, 'min'=>, 'max'=>, 'error'=>, 'unit'=>, ''),
+	'Barometer'		=>	array( 'pos' => 14, 'len' => 2, 'function'=>, 'min'=>, 'max'=>, 'error'=>, 'unit'=>, ''),
+	'SolarRadiation'	=>	array( 'pos' => 16, 'len' => 2, 'function'=>, 'min'=>, 'max'=>, 'error'=>, 'unit'=>, ''),
+	'NumberofWindSamples'	=>	array( 'pos' => 18, 'len' => 2, 'function'=>, 'min'=>, 'max'=>, 'error'=>, 'unit'=>, ''),
+	'InsideTemperature'	=>	array( 'pos' => 20, 'len' => 2, 'function'=>, 'min'=>, 'max'=>, 'error'=>, 'unit'=>, ''),
+	'IndideHumidity'	=>	array( 'pos' => 22, 'len' => 1, 'function'=>, 'min'=>, 'max'=>, 'error'=>, 'unit'=>, ''),
+	'OutsideHumidity'	=>	array( 'pos' => 23, 'len' => 1, 'function'=>, 'min'=>, 'max'=>, 'error'=>, 'unit'=>, ''),
+	'AverageWindSpeed'	=>	array( 'pos' => 24, 'len' => 1, 'function'=>, 'min'=>, 'max'=>, 'error'=>, 'unit'=>, ''),
+	'HighWindSpeed'		=>	array( 'pos' => 25, 'len' => 1, 'function'=>, 'min'=>, 'max'=>, 'error'=>, 'unit'=>, ''),
+	'DirectionofHiWindSpeed'=>	array( 'pos' => 26, 'len' => 1, 'function'=>, 'min'=>, 'max'=>, 'error'=>, 'unit'=>, ''),
+	'PrevailingWindDirection'=>	array( 'pos' => 27, 'len' => 1, 'function'=>, 'min'=>, 'max'=>, 'error'=>, 'unit'=>, ''),
+	'AverageUCIndex'	=>	array( 'pos' => 28, 'len' => 1, 'function'=>, 'min'=>, 'max'=>, 'error'=>, 'unit'=>, ''),
+	'ET'			=>	array( 'pos' => 29, 'len' => 1, 'function'=>, 'min'=>, 'max'=>, 'error'=>, 'unit'=>, ''),
+	'HighSolarRadiation'	=>	array( 'pos' => 30, 'len' => 2, 'function'=>, 'min'=>, 'max'=>, 'error'=>, 'unit'=>, ''),
+	'HighUVIndex'		=>	array( 'pos' => 32, 'len' => 1, 'function'=>, 'min'=>, 'max'=>, 'error'=>, 'unit'=>, ''),
+	'ForecastRule'		=>	array( 'pos' => 33, 'len' => 1, 'function'=>, 'min'=>, 'max'=>, 'error'=>, 'unit'=>, ''),
+	'LeafTemperature'	=>	array( 'pos' => 34, 'len' => 2, 'function'=>, 'min'=>, 'max'=>, 'error'=>, 'unit'=>, ''),
+	'LeafWetnesses'		=>	array( 'pos' => 36, 'len' => 2, 'function'=>, 'min'=>, 'max'=>, 'error'=>, 'unit'=>, ''),
+	'SoilTemperature'	=>	array( 'pos' => 38, 'len' => 4, 'function'=>, 'min'=>, 'max'=>, 'error'=>, 'unit'=>, ''),
+	'DownloadRecordType'	=>	array( 'pos' => 42, 'len' => 1, 'function'=>, 'min'=>, 'max'=>, 'error'=>, 'unit'=>, ''),
+	'ExtraHumidities'	=>	array( 'pos' => 43, 'len' => 2, 'function'=>, 'min'=>, 'max'=>, 'error'=>, 'unit'=>, ''),
+	'ExtraTemperatures'	=>	array( 'pos' => 45, 'len' => 3, 'function'=>, 'min'=>, 'max'=>, 'error'=>, 'unit'=>, ''),
+	'SoilMoistures'		=>	array( 'pos' => 48, 'len' => 4, 'function'=>, 'min'=>, 'max'=>, 'error'=>, 'unit'=>, ''),
+);
 ?>

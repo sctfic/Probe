@@ -127,8 +127,6 @@ if (session_start()) {
 		echo _('Impossible d´enregistrer les changements, Merci de verifier les droits.');
 }
 
-
-
 // <p>
 //  Pour continuer, <a href="nextpage.php?<?php echo htmlspecialchars(SID); ? >">cliquez ici</a>.
 // </p>
