@@ -389,15 +389,27 @@ Ici on appelera succesivement 3 functions :
 		return $d;
 	}
 	function DMPAFT_GetVP2Date ($VP2Date)	{// 2003/06/19 09:30:00  <=  0x03A2 0x06D3
-		$DateStamp = $this->hexToDec(strrev(substr($VP2Date,0,2))); // 0x06d3 = 0000011011010011
-			$y = (($DateStamp & 0xFE00)>>9)+2000;
-			$m = str_pad(($DateStamp & 0x01E0)>>5,2,'0',STR_PAD_LEFT);
-			$d = str_pad($DateStamp & 0x1f,2,'0',STR_PAD_LEFT);
-
-		$TimeStamp = $this->hexToDec(strrev(substr($VP2Date,-2))); // 0x03a2 = 0000001110100010
-			$h = str_pad((int)($TimeStamp/100),2,'0',STR_PAD_LEFT);
-			$min = str_pad($TimeStamp-$h*100,2,'0',STR_PAD_LEFT);
-		return $y.'/'.$m.'/'.$d.' '.$h.':'.$min.':00';
+// 		$DateStamp = $this->hexToDec(strrev(substr($VP2Date,0,2))); // 0x06d3 = 0000011011010011
+// 			$y = (($DateStamp & 0xFE00)>>9)+2000;
+// 			$m = str_pad(($DateStamp & 0x01E0)>>5,2,'0',STR_PAD_LEFT);
+// 			$d = str_pad($DateStamp & 0x1f,2,'0',STR_PAD_LEFT);
+// 
+// 		$TimeStamp = $this->hexToDec(strrev(substr($VP2Date,-2))); // 0x03a2 = 0000001110100010
+// 			$h = str_pad((int)($TimeStamp/100),2,'0',STR_PAD_LEFT);
+// 			$min = str_pad($TimeStamp-$h*100,2,'0',STR_PAD_LEFT);
+// 		return $y.'/'.$m.'/'.$d.' '.$h.':'.$min.':00';
+		return Raw2Date($this->hexToDec(strrev(substr($VP2Date,0,2)))).' '.Raw2Time($this->hexToDec(strrev(substr($VP2Date,-2))));
+	}
+	function Raw2Date ($DateStamp){
+		$y = (($DateStamp & 0xFE00)>>9)+2000;
+		$m = str_pad(($DateStamp & 0x01E0)>>5,2,'0',STR_PAD_LEFT);
+		$d = str_pad($DateStamp & 0x1f,2,'0',STR_PAD_LEFT);
+		return $y.'/'.$m.'/'.$d;
+	}
+	function Raw2Time ($TimeStamp){
+		$h = str_pad((int)($TimeStamp/100),2,'0',STR_PAD_LEFT);
+		$min = str_pad($TimeStamp-$h*100,2,'0',STR_PAD_LEFT);
+		return $h.':'.$min.':00';
 	}
 	function Get_DMPAFT_Raw()	{
 		fwrite($this->fp,"DMPAFT\n");			// Send the command to VP2 : DumpAfter
