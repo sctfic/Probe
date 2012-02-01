@@ -6,7 +6,7 @@ $stationConfig = eval('return '.file_get_contents($workingFolder.'../stations.co
 foreach($stationConfig as $configKey=>$configValue)
 {
 	$stationFolder = $configValue['type']; // folder with class related to the given station model
-	require_once sprintf( "%s/%s/Station.phpc", $workingFolder, $stationFolder ); // load correct station class so it can be instantiated later
+	require_once sprintf( "%s/%s/Station.c.php", $workingFolder, $stationFolder ); // load correct station class so it can be instantiated later
 
 	if ($configValue['type']=='VP2-IP')
 	{
@@ -17,11 +17,12 @@ foreach($stationConfig as $configKey=>$configValue)
 		{
 			$station->Waiting( 0, _( sprintf('[Succès] Ouverture de la connexion à %s', $configKey) ) );
 
-			var_export ($station->Read_Configs());
+//			var_export ($station->Read_Configs());
 /// 			$station->Get_HILOWS_Raw();	// OK
 /// 			$station->Get_LOOP_Raw();	// OK
-/// 			$station->Get_DMPAFT_Raw();	// OK
-
+			$station->Get_DMPAFT_Raw();	// OK
+			$station->fetchStationTime();
+			
 // 			if (abs(strtotime($station->fetchStationTime()) - strtotime(date('Y/m/d H:i:s'))) > 3)	// OK
 // 			  if ($station->updateStationTime())									// OK
 // 					$station->Waiting (0,'Clock synch.');							// OK

@@ -11,6 +11,8 @@ class station
 	protected $backLightScreen=FALSE; // actual state of backlight screen
 	protected $table = null;
 	public $DumpAfter = null;
+	public $Loop = null;
+	public $HiLow = null;
 	protected $EEPROM = null;
 
 	function __construct($stationConfig, $name)	{
@@ -53,7 +55,7 @@ class station
 
 		if ($this->fp && $errno==0)
 		{
-			stream_set_timeout($this->fp, 0, 2500000);
+			stream_set_timeout($this->fp, 0, 4000000);
 			if ($this->wakeUp())
 			{
 				$this->toggleBacklight(1);
@@ -351,6 +353,7 @@ Ici on appelera succesivement 3 functions :
 						$this->Waiting (0,'Download Archive PAGE #'.$j.' since : '.$this->DMPAFT_GetVP2Date(substr($Page,1,4)));
 						if (strlen($Page)==267 && $this->CalculateCRC($Page)==0x0000)
 						{
+							fwrite($this->fp, $this->symb['ACK']);
 							for($k=$firstArch;$k<=4;$k++)
 							{
 								$ArchiveStrRaw=substr($Page,1+52*$k,52);
@@ -365,7 +368,6 @@ Ici on appelera succesivement 3 functions :
 							$this->SaveConfs();
 							$retry = $this->retry;
 							$firstArch=0;
-							fwrite($this->fp, $this->symb['ACK']);
 						}
 						else
 						{
