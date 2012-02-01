@@ -47,7 +47,7 @@ class station
 	}
 	public function initConnection()	{
 		$errno = 0;
-		$this->fp = @fsockopen(
+		$this->fp = fsockopen(
 			$this->getStationIP(),
 			$this->getStationPort(),
 			&$errno
@@ -55,7 +55,7 @@ class station
 
 		if ($this->fp && $errno==0)
 		{
-			stream_set_timeout($this->fp, 0, 4000000);
+			stream_set_timeout($this->fp, 0, 2500000);
 			if ($this->wakeUp())
 			{
 				$this->toggleBacklight(1);
@@ -361,7 +361,8 @@ Ici on appelera succesivement 3 functions :
 								if (strtotime($ArchDate) > strtotime($this->StationConfig[$this->getKeyConf()]['Last_DMPAFT']))
 								{
 // 									$this->Waiting (0,"\t".'ARCHIVE #'.($nbrArch++).' of '.$ArchDate.' saved.');
-									var_export ($this->ConvertStrRaw($ArchiveStrRaw));
+// 									var_export ($this->ConvertStrRaw($ArchiveStrRaw));
+									echo implode("\t",$this->ConvertStrRaw($ArchiveStrRaw));
 									$this->StationConfig[$this->getKeyConf()]['Last_DMPAFT'] = $ArchDate;
 								}
 							}
