@@ -43,8 +43,155 @@
 	0xef1f,  0xff3e,  0xcf5d,  0xdf7c,  0xaf9b,  0xbfba,  0x8fd9,  0x9ff8,
 	0x6e17,  0x7e36,  0x4e55,  0x5e74,  0x2e93,  0x3eb2,  0xed1,  0x1ef0);
 
-	$this->Loop = array ();
-	$this->HiLow = array ();
+	$this->Loop = array (
+	'L'			=>	array( 'pos' => 0,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'O'			=>	array( 'pos' => 1,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'O'			=>	array( 'pos' => 2,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'BarTrend'		=>	array( 'pos' => 3,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'PacketType'		=>	array( 'pos' => 4,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'Nextrecord'		=>	array( 'pos' => 5,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'Barometer'		=>	array( 'pos' => 7,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'InsideTemperature'	=>	array( 'pos' => 9,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'InsideHumidity'	=>	array( 'pos' => 11,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'OutsideTemperature'	=>	array( 'pos' => 12,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'WindSpeed'		=>	array( 'pos' => 14,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'10MinAvgWindSpeed'	=>	array( 'pos' => 15,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'WindDirection'		=>	array( 'pos' => 16,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'ExtraTemperatures'	=>	array( 'pos' => 18,	'len' => 7,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'SoilTemperatures'	=>	array( 'pos' => 25,	'len' => 4,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'LeafTemperatures'	=>	array( 'pos' => 29,	'len' => 4,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'OutsideHumidity'	=>	array( 'pos' => 33,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'ExtraHumidities'	=>	array( 'pos' => 34,	'len' => 7,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'RainRate'		=>	array( 'pos' => 41,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'UV'			=>	array( 'pos' => 43,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'SolarRadiation'	=>	array( 'pos' => 44,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'StormRain'		=>	array( 'pos' => 46,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'StartDateofcurrentStorm'=>	array( 'pos' => 48,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'DayRain'		=>	array( 'pos' => 50,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'MonthRain'		=>	array( 'pos' => 52,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'YearRain'		=>	array( 'pos' => 54,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'DayET'			=>	array( 'pos' => 56,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'MonthET'		=>	array( 'pos' => 58,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'YearET'		=>	array( 'pos' => 60,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'SoilMoistures'		=>	array( 'pos' => 62,	'len' => 4,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'LeafWetnesses'		=>	array( 'pos' => 66,	'len' => 4,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'InsideAlarms'		=>	array( 'pos' => 70,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'RainAlarms'		=>	array( 'pos' => 71,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'OutsideAlarms'		=>	array( 'pos' => 72,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'ExtraTemp/HumAlarms'	=>	array( 'pos' => 74,	'len' => 8,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'Soil&LeafAlarms'	=>	array( 'pos' => 82,	'len' => 4,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'TransmitterBatteryStatus'=>	array( 'pos' => 86,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'ConsoleBatteryVoltage'	=>	array( 'pos' => 87,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'ForecastIcons'		=>	array( 'pos' => 89,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'ForecastRuleNumber'	=>	array( 'pos' => 90,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'TimeOfSunrise'		=>	array( 'pos' => 91,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'TimeOfSunset'		=>	array( 'pos' => 93,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	);
+	
+	$this->HiLow = array (
+	'DailyLowBarometer'	=>	array( 'pos' => 0,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'DailyHighBarometer'	=>	array( 'pos' => 2,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'MonthLowBar'		=>	array( 'pos' => 4,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'MonthHighBar'		=>	array( 'pos' => 6,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'YearLowBarometer'	=>	array( 'pos' => 8,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'YearHighBarometer'	=>	array( 'pos' => 10,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'TimeOfDayLowBar'	=>	array( 'pos' => 12,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'TimeOfDayHighBar'	=>	array( 'pos' => 14,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'DailyHiWindSpeed'	=>	array( 'pos' => 16,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'TimeOfHiSpeed'		=>	array( 'pos' => 17,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'MonthHiWindSpeed'	=>	array( 'pos' => 19,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'YearHiWindSpeed'	=>	array( 'pos' => 20,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'DayHiInsideTemp'	=>	array( 'pos' => 21,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'DayLowInsideTemp'	=>	array( 'pos' => 23,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'TimeDayHiInTemp'	=>	array( 'pos' => 25,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'TimeDayLowInTemps'	=>	array( 'pos' => 27,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'MonthLowInTemp'	=>	array( 'pos' => 29,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'MonthHiInTemp'		=>	array( 'pos' => 31,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'YearLowInTemp'		=>	array( 'pos' => 33,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'YearHiInTemp'		=>	array( 'pos' => 35,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'DayHiInHum'		=>	array( 'pos' => 37,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'DayLowInHum'		=>	array( 'pos' => 38,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'TimeDayHiInHum'	=>	array( 'pos' => 39,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'TimeDayLowInHum'	=>	array( 'pos' => 41,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'MonthHiInHum'		=>	array( 'pos' => 43,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'MonthLowInHum'		=>	array( 'pos' => 44,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'YearHiInHum'		=>	array( 'pos' => 45,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'YearLowInHum'		=>	array( 'pos' => 46,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'DayLowOutTemp'		=>	array( 'pos' => 47,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'DayHiOutTemp'		=>	array( 'pos' => 49,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'TimeDayLowOutTemp'	=>	array( 'pos' => 51,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'TimeDayHiOutTemp'	=>	array( 'pos' => 53,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'MonthHiOutTemp'	=>	array( 'pos' => 55,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'MonthLowOutTemp'	=>	array( 'pos' => 57,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'YeahHiOutTemp'		=>	array( 'pos' => 59,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'YearLowOutTemp'	=>	array( 'pos' => 61,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'DayLowDewPoint'	=>	array( 'pos' => 63,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'DayHiDewPoint'		=>	array( 'pos' => 65,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'TimeDayLowDewPoint'	=>	array( 'pos' => 67,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'TimeDayHiDewPoint'	=>	array( 'pos' => 69,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'MonthHiDewPoint'	=>	array( 'pos' => 71,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'MonthLowDewPoint'	=>	array( 'pos' => 73,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'YearHiDewPoint'	=>	array( 'pos' => 75,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'YearLowDewPoint'	=>	array( 'pos' => 77,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'DayLowWindChill'	=>	array( 'pos' => 79,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'TimeDayLowChill'	=>	array( 'pos' => 81,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'MonthLowWindChill'	=>	array( 'pos' => 83,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'YearLowWindChill'	=>	array( 'pos' => 85,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'DayHighHeat'		=>	array( 'pos' => 87,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'TimeOfDayHighHeat'	=>	array( 'pos' => 89,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'MonthHighHeat'		=>	array( 'pos' => 91,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'YearHighHeat'		=>	array( 'pos' => 93,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'DayHighTHSW'		=>	array( 'pos' => 95,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'TimeOfDayHighTHSW'	=>	array( 'pos' => 97,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'MonthHighTHSW'		=>	array( 'pos' => 99,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'YearHighTHSW'		=>	array( 'pos' => 101,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'DayHighSolarRad'	=>	array( 'pos' => 103,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'TimeOfDayHighSolar'	=>	array( 'pos' => 105,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'MonthHighSolarRad'	=>	array( 'pos' => 107,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'YearHighSolarRad'	=>	array( 'pos' => 109,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'DayHighUV'		=>	array( 'pos' => 111,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'TimeOfDayHighUV'	=>	array( 'pos' => 112,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'MonthHighUV'		=>	array( 'pos' => 114,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'YearHighUV'		=>	array( 'pos' => 115,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'DayHighRainRate'	=>	array( 'pos' => 116,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'TimeOfDayHighRainRate'	=>	array( 'pos' => 118,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'HourHighRainRate'	=>	array( 'pos' => 120,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'MonthHighRainRate'	=>	array( 'pos' => 122,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'YearHighRainRate'	=>	array( 'pos' => 124,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'DayLowTemperature'	=>	array( 'pos' => 126,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'DayHighTemperature'	=>	array( 'pos' => 141,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'TimeDayLowTemperature'	=>	array( 'pos' => 156,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'TimeDayHiTemperature'	=>	array( 'pos' => 186,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'MonthHiTemperature'	=>	array( 'pos' => 216,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'MonthLowTemperature'	=>	array( 'pos' => 231,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'YearHiTemperature'	=>	array( 'pos' => 246,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'YearLowTemperature'	=>	array( 'pos' => 261,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'DayLowHumidity'	=>	array( 'pos' => 276,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'DayHiHumidity'		=>	array( 'pos' => 284,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'TimeDayLowHumidity'	=>	array( 'pos' => 300,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'TimeDayHiHumidity'	=>	array( 'pos' => 316,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'MonthHiHumidity'	=>	array( 'pos' => 324,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'MonthLowHumidity'	=>	array( 'pos' => 332,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'YearHiHumidity'	=>	array( 'pos' => 340,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'YearLowHumidity'	=>	array( 'pos' => 348,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'DayHiSoilMoisture'	=>	array( 'pos' => 356,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'TimeDayHiSoilMoisture'	=>	array( 'pos' => 360,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'DayLowSoilMoisture'	=>	array( 'pos' => 368,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'TimeDayLowSoilMoisture'=>	array( 'pos' => 372,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'MonthLowSoilMoisture'	=>	array( 'pos' => 380,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'MonthHiSoilMoisture'	=>	array( 'pos' => 384,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'YearLowSoilMoisture'	=>	array( 'pos' => 388,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'YearHiSoilMoisture'	=>	array( 'pos' => 392,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'DayHiLeafWetness'	=>	array( 'pos' => 496,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'TimeDayHiLeafWetness'	=>	array( 'pos' => 500,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'DayLowLeafWetness'	=>	array( 'pos' => 508,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'TimeDayLowLeafWetness'	=>	array( 'pos' => 512,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'MonthLowLeafWetness'	=>	array( 'pos' => 520,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'MonthHiLeafWetness'	=>	array( 'pos' => 524,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'YearLowLeafWetness'	=>	array( 'pos' => 528,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'YearHiLeafWetness'	=>	array( 'pos' => 532,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	);
+	
 	$this->DumpAfter = array (
 	'DateStamp'		=>	array( 'pos' => 0,	'len' => 2,	'fn'=>'Raw2Date',	'min'=>0,	'max'=>0xFFFF,	'err'=>0,	'unit'=> 'Date'	),
 	'TimeStamp'		=>	array( 'pos' => 2,	'len' => 2,	'fn'=>'Raw2Time',	'min'=>0,	'max'=>0xFFFF,	'err'=>0,	'unit'=> 'Time'	),
@@ -131,4 +278,154 @@
 	'BARDATA'	=>	'explode(chr(0x0A).chr(0x0D),$val)',
 // 	''	=>		array('pos' => '','len' => 1, 'eval'=>'',	'unit'=>''),
 	);
+LOOP
+L=0,1
+O=1,1
+O=2,1
+BarTrend=3,1
+PacketType=4,1
+Nextrecord=5,2
+Barometer=7,2
+InsideTemperature=9,2
+InsideHumidity=11,1
+OutsideTemperature=12,2
+WindSpeed=14,1
+10MinAvgWindSpeed=15,1
+WindDirection=16,2
+ExtraTemperatures=18,7
+SoilTemperatures=25,4
+LeafTemperatures=29,4
+OutsideHumidity=33,1
+ExtraHumidities=34,7
+RainRate=41,2
+UV=43,1
+SolarRadiation=44,2
+StormRain=46,2
+StartDateofcurrentStorm=48,2
+DayRain=50,2
+MonthRain=52,2
+YearRain=54,2
+DayET=56,2
+MonthET=58,2
+YearET=60,2
+SoilMoistures=62,4
+LeafWetnesses=66,4
+InsideAlarms=70,1
+RainAlarms=71,1
+OutsideAlarms=72,2
+ExtraTemp/HumAlarms=74,8
+Soil&LeafAlarms=82,4
+TransmitterBatteryStatus=86,1
+ConsoleBatteryVoltage=87,2
+ForecastIcons=89,1
+ForecastRuleNumber=90,1
+TimeOfSunrise=91,2
+TimeOfSunset=93,2
+
+
+
+
+
+HILOW
+DailyLowBarometer=0,2
+DailyHighBarometer=2,2
+MonthLowBar=4,2
+MonthHighBar=6,2
+YearLowBarometer=8,2
+YearHighBarometer=10,2
+TimeOfDayLowBar=12,2
+TimeOfDayHighBar=14,2
+DailyHiWindSpeed=16,1
+TimeOfHiSpeed=17,2
+MonthHiWindSpeed=19,1
+YearHiWindSpeed=20,1
+DayHiInsideTemp=21,2
+DayLowInsideTemp=23,2
+TimeDayHiInTemp=25,2
+TimeDayLowInTemps=27,2
+MonthLowInTemp=29,2
+MonthHiInTemp=31,2
+YearLowInTemp=33,2
+YearHiInTemp=35,2
+DayHiInHum=37,1
+DayLowInHum=38,1
+TimeDayHiInHum=39,2
+TimeDayLowInHum=41,2
+MonthHiInHum=43,1
+MonthLowInHum=44,1
+YearHiInHum=45,1
+YearLowInHum=46,1
+DayLowOutTemp=47,2
+DayHiOutTemp=49,2
+TimeDayLowOutTemp=51,2
+TimeDayHiOutTemp=53,2
+MonthHiOutTemp=55,2
+MonthLowOutTemp=57,2
+YeahHiOutTemp=59,2
+YearLowOutTemp=61,2
+DayLowDewPoint=63,2
+DayHiDewPoint=65,2
+TimeDayLowDewPoint=67,2
+TimeDayHiDewPoint=69,2
+MonthHiDewPoint=71,2
+MonthLowDewPoint=73,2
+YearHiDewPoint=75,2
+YearLowDewPoint=77,2
+DayLowWindChill=79,2
+TimeDayLowChill=81,2
+MonthLowWindChill=83,2
+YearLowWindChill=85,2
+DayHighHeat=87,2
+TimeOfDayHighHeat=89,2
+MonthHighHeat=91,2
+YearHighHeat=93,2
+DayHighTHSW=95,2
+TimeOfDayHighTHSW=97,2
+MonthHighTHSW=99,2
+YearHighTHSW=101,2
+DayHighSolarRad=103,2
+TimeOfDayHighSolar=105,2
+MonthHighSolarRad=107,2
+YearHighSolarRad=109,2
+DayHighUV=111,1
+TimeOfDayHighUV=112,2
+MonthHighUV=114,1
+YearHighUV=115,1
+DayHighRainRate=116,2
+TimeOfDayHighRainRate=118,2
+HourHighRainRate=120,2
+MonthHighRainRate=122,2
+YearHighRainRate=124,2
+DayLowTemperature=126,1
+DayHighTemperature=141,1
+TimeDayLowTemperature=156,2
+TimeDayHiTemperature=186,2
+MonthHiTemperature=216,1
+MonthLowTemperature=231,1
+YearHiTemperature=246,1
+YearLowTemperature=261,1
+DayLowHumidity=276,1
+DayHiHumidity=284,1
+TimeDayLowHumidity=300,2
+TimeDayHiHumidity=316,2
+MonthHiHumidity=324,1
+MonthLowHumidity=332,1
+YearHiHumidity=340,1
+YearLowHumidity=348,1
+DayHiSoilMoisture=356,1
+TimeDayHiSoilMoisture=360,2
+DayLowSoilMoisture=368,1
+TimeDayLowSoilMoisture=372,2
+MonthLowSoilMoisture=380,1
+MonthHiSoilMoisture=384,1
+YearLowSoilMoisture=388,1
+YearHiSoilMoisture=392,1
+DayHiLeafWetness=496,1
+TimeDayHiLeafWetness=500,2
+DayLowLeafWetness=508,1
+TimeDayLowLeafWetness=512,2
+MonthLowLeafWetness=520,1
+MonthHiLeafWetness=524,1
+YearLowLeafWetness=528,1
+YearHiLeafWetness=532,1
 ?>
