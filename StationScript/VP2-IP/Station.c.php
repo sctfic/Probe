@@ -174,22 +174,12 @@ class station
 				$LOOP = fread($this->fp, 99);
 				if (strlen($LOOP)==99 && !$this->CalculateCRC($LOOP))
 				{
-					$LOOP = substr($LOOP,0,-2);
+// 					$LOOP = substr($LOOP,0,-2);
 					$this->Waiting (0,'LOOP : Download the current Values');
 // 					file_put_contents($this->StationFolder.'../../ExportedData/LOOP['.($_NBR-$nbr).'].brut',$LOOP);
 					$this->StationConfig[$this->getKeyConf()]['Last_LOOP'] = date('Y/m/d H:i:s');
 					$this->SaveConfs();
-/** ################################################################################################################################
-Ici on appelera succesivement 3 functions :
-$LOOP = chaine de 97 caractères de long.
-- Convert to Human redable ();
-
-	prendra comme parametre : $LOOP , et me retourne un tableau avec les valeurs brutes dans leur unitée par defaut. (Edouard)
-- Convert to Unit of SystemInternational ();
-	prendra comme parametre le tableau precedant et converti et corrige chaque valeurs. (alban)
-- Write Values ();
-	prendra comme parametre le tabeau SI et l´enregistre dans un fichier qui sera repris par l´interface WEB. (alban)
-################################################################################################################################  **/
+					echo implode("\t",$this->ConvertStrRaw($LOOP))."\n";
 				}
 				else
 					$this->Waiting (0,'LOOP : Erreur de CRC');
@@ -217,20 +207,12 @@ $LOOP = chaine de 97 caractères de long.
 			$HILOWS = fread($this->fp, 438);
 			if (strlen($HILOWS)==438 && ($this->CalculateCRC($HILOWS))==0x0000)
 			{
-				$HILOWS = substr($HILOWS,0,-2);
+// 				$HILOWS = substr($HILOWS,0,-2);
 				$this->Waiting (0,'HILOWS : Download Mini and Maxi');
 // 				file_put_contents($this->StationFolder.'../../ExportedData/HILOWS.brut',$HILOWS);
 				$this->StationConfig[$this->getKeyConf()]['Last_HILOWS'] = date('Y/m/d H:i:s');
 				$this->SaveConfs();
-/** ################################################################################################################################
-Ici on appelera succesivement 3 functions :
-- Convert to Human redable ();
-	prendra comme parametre : $HILOWS , et me retourne un tableau avec les valeurs brutes dans leur unitée par defaut. (Edouard)
-- Convert to Unit of SystemInternational ();
-	prendra comme parametre le tableau precedant et converti et corrige chaque valeurs. (alban)
-- Write Values ();
-	prendra comme parametre le tabeau SI et l´enregistre dans un fichier et dans une base SQL. (Alban et edouard)
-################################################################################################################################  **/
+				echo implode("\t",$this->ConvertStrRaw($HILOWS))."\n";
 				return true;
 			}
 			else
@@ -362,7 +344,7 @@ Ici on appelera succesivement 3 functions :
 								{
 // 									$this->Waiting (0,"\t".'ARCHIVE #'.($nbrArch++).' of '.$ArchDate.' saved.');
 // 									var_export ($this->ConvertStrRaw($ArchiveStrRaw));
-									echo implode("\t",$this->ConvertStrRaw($ArchiveStrRaw));
+									echo implode("\t",$this->ConvertStrRaw($ArchiveStrRaw))."\n";
 									$this->StationConfig[$this->getKeyConf()]['Last_DMPAFT'] = $ArchDate;
 								}
 							}
@@ -431,12 +413,15 @@ Ici on appelera succesivement 3 functions :
 
 	function ConvertStrRaw($Str) {// ConvertStrRaw return les donnees RAW au format Numerique dans un tableau...
 		switch (strlen($Str)) {
+			case 50:
 			case 52:
 				$modele = $this->DumpAfter;
 				break;
+			case 97:
 			case 99:
 				$modele = $this->Loop;
 				break;
+			case 436:
 			case 438:
 				$modele = $this->HiLow;
 				break;
@@ -484,16 +469,22 @@ function Rate($str) {// Percentage...
 function Radiation($str) {// Solar Radiation...
 	return $this->hexToDec(strrev($str));
 }
-function ET($str) {// Evapotranspiration...
+function ET1000($str) {// Evapotranspiration...
 	return $this->hexToDec($str)/1000;
+}
+function ET100($str) {// Evapotranspiration...
+	return $this->hexToDec($str)/100;
 }
 function RainClic($str) {// Count rain clic...
 	return $this->hexToDec($str);
 }
-function Angle($str) {// Wind Direction...
+function Angle16($str) {// Wind Direction...
 	if ($this->hexToDec($str)<=15)
 		return $this->WinDir[$this->hexToDec($str)];
 	return false;
+}
+function Angle360($str) {// Wind Direction...
+	return $this->WinDir[$this->hexToDec($str)];
 }
 function SpRev($str) {// Special revision...
 	return $this->hexToDec($str)==255?'Rev A':'Rev B';
@@ -503,6 +494,30 @@ function SmallTemp($str) {// Temperature...
 }
 function Moistures ($str){ // Humidite du sol
 	return $this->hexToDec($str)==255?false:$this->hexToDec($str);
+}
+function BTrend($str) {// ...
+	return $this->hexToDec($str);
+}
+function In_RainAlarms($str) {// ...
+	return $this->hexToDec($str);
+}
+function OutAlarms($str) {// ...
+	return $this->hexToDec($str);
+}
+function HumidityAlarms($str) {// ...
+	return $this->hexToDec($str);
+}
+function Temp_HumAlarms($str) {// ...
+	return $this->hexToDec($str);
+}
+function Soil_LeafAlarms($str) {// ...
+	return $this->hexToDec($str);
+}
+function Voltage($str) {// ...
+	return $this->hexToDec($str);
+}
+function Icons($str) {// ...
+	return $this->hexToDec($str);
 }
 
 	function setKeyConf($value)	{ $this->KeyConf = $value; }
