@@ -14,6 +14,7 @@ class station
 	public $Loop = null;
 	public $HiLow = null;
 	protected $EEPROM = null;
+	protected $Trend = null;
 
 	function __construct($stationConfig, $name)	{
 		$this->setKeyConf($name);
@@ -47,7 +48,7 @@ class station
 	}
 	public function initConnection()	{
 		$errno = 0;
-		$this->fp = fsockopen(
+		$this->fp = @fsockopen(
 			$this->getStationIP(),
 			$this->getStationPort(),
 			&$errno
@@ -401,16 +402,12 @@ class station
 		}
 		return true;
 	}
-	private function SaveConfs ()	{
-		$confs = $this->getStationConfig();
-		$confs[$this->getKeyConf()] = $this->StationConfig[$this->getKeyConf()];
-		file_put_contents (dirname(__FILE__).DIRECTORY_SEPARATOR.'../../stations.conf', var_export($confs,true));
-		return true;
-	}
-	private function GetConf ()	{
-		return eval('return '.file_get_contents(dirname(__FILE__).DIRECTORY_SEPARATOR.'../../stations.conf').';');
-	}
 
+/**
+		#################################################################################
+		################	Function for RAW data convertion	#################
+		#################################################################################
+**/
 	function ConvertStrRaw($Str) {// ConvertStrRaw return les donnees RAW au format Numerique dans un tableau...
 		switch (strlen($Str)) {
 			case 50:
@@ -426,12 +423,13 @@ class station
 				$modele = $this->HiLow;
 				break;
 		}
+		$x = array();
 		foreach($modele as $key=>$val)
 		{
 			$val['str'] = substr ($Str, $val['pos'], $val['len']);
-			$modele[$key] = $this->$val['fn']($val['str']);
+			$x[$key] = $this->$val['fn']($val['str']);
 		}
-		return $modele;
+		return $x;
 	}
 	function Char2Signed($val) {
 	// Short2Signed return value between 0 - 255 into signed -127 - +128...Two's complement
@@ -442,94 +440,129 @@ class station
 		return (($val>>15)?(($val ^ 0xFFFF)+1)*(-1):$val);
 	}
 
-function Pressure($str) {// Pressure...
-	return $this->hexToDec(strrev($str))/1000;
-}
-function Temp($str) {// Temperature...
-	return $this->Short2Signed($this->hexToDec(strrev($str)))/10;
-}
-function Wetnesses($str) {// Humectometre...
-	return $this->hexToDec($str)==255?false:$this->hexToDec($str);
-}
-function Speed($str) {// Wind Speed...
-	return $this->hexToDec($str);
-}
-function Samples($str) {// number of clic...
-	return !$this->hexToDec($str)?false:$this->hexToDec(strrev($str));
-}
-function UV($str) {// UV level...
-	return $this->hexToDec($str)==255?false:$this->hexToDec($str)/10;
-}
-function Forecast($str) {// Forecast for next day...
-	return $this->hexToDec($str);
-}
-function Rate($str) {// Percentage...
-	return $this->hexToDec($str)==255?false:$this->hexToDec($str);
-}
-function Radiation($str) {// Solar Radiation...
-	return $this->hexToDec(strrev($str));
-}
-function ET1000($str) {// Evapotranspiration...
-	return $this->hexToDec($str)/1000;
-}
-function ET100($str) {// Evapotranspiration...
-	return $this->hexToDec($str)/100;
-}
-function RainClic($str) {// Count rain clic...
-	return $this->hexToDec($str);
-}
-function Angle16($str) {// Wind Direction...
-	if ($this->hexToDec($str)<=15)
-		return $this->WinDir[$this->hexToDec($str)];
-	return false;
-}
-function Angle360($str) {// Wind Direction...
-	return $this->WinDir[$this->hexToDec($str)];
-}
-function SpRev($str) {// Special revision...
-	return $this->hexToDec($str)==255?'Rev A':'Rev B';
-}
-function SmallTemp($str) {// Temperature...
-	return $this->hexToDec($str)==255?false:$this->hexToDec($str)-90;
-}
-function Moistures ($str){ // Humidite du sol
-	return $this->hexToDec($str)==255?false:$this->hexToDec($str);
-}
-function BTrend($str) {// ...
-	return $this->hexToDec($str);
-}
-function In_RainAlarms($str) {// ...
-	return $this->hexToDec($str);
-}
-function OutAlarms($str) {// ...
-	return $this->hexToDec($str);
-}
-function HumidityAlarms($str) {// ...
-	return $this->hexToDec($str);
-}
-function Temp_HumAlarms($str) {// ...
-	return $this->hexToDec($str);
-}
-function Soil_LeafAlarms($str) {// ...
-	return $this->hexToDec($str);
-}
-function Voltage($str) {// ...
-	return $this->hexToDec($str);
-}
-function Icons($str) {// ...
-	return $this->hexToDec($str);
-}
+	function Pressure($str) {// Pressure...
+		$val = $this->hexToDec(strrev($str));
+		return $val/1000;
+	}
+	function Temp($str) {// Temperature...
+		$val = $this->hexToDec(strrev($str));
+		return $this->Short2Signed($val)/10;
+	}
+	function Wetnesses($str) {// Humectometre...
+		return $this->hexToDec($str)==255?false:$this->hexToDec($str);
+	}
+	function Speed($str) {// Wind Speed...
+		return $this->hexToDec($str);
+	}
+	function Samples($str) {// number of clic...
+		$val = $this->hexToDec(strrev($str));
+		return $val ? $val : false;
+	}
+	function UV($str) {// UV level...
+		$val = $this->hexToDec($str);
+		return $val==255 ? false : $val/10;
+	}
+	function Forecast($str) {// Forecast for next day...
+		$val = $this->hexToDec($str);
+		return $val;
+	}
+	function Rate($str) {// Percentage...
+		$val = $this->hexToDec($str);
+		return $val==255 ? false : $val;
+	}
+	function Radiation($str) {// Solar Radiation...
+		$val = $this->hexToDec(strrev($str));
+		return $val;
+	}
+	function ET1000($str) {// Evapotranspiration...
+		return $this->hexToDec(strrev($str))/1000;
+	}
+	function ET100($str) {// Evapotranspiration...
+		return $this->hexToDec(strrev($str))/100;
+	}
+	function Angle16($str) {// Wind Direction...
+		$val = $this->hexToDec($str);
+		if ($val<=15 && $val>=0)
+			return $val*22.5; // $this->WinDir[$val];
+		return false;
+	}
+	function Angle360($str) {// Wind Direction...
+		$val = $this->hexToDec(strrev($str));
+		if ($val==0)
+			return null;
+		elseif ($val>0 && $val<=360)
+			return $val;
+		return false;
+	}
+	function SpRev($str) {// Special revision...
+		$val = $this->hexToDec($str);
+		if ($val==255)
+			return 'Rev A';
+		return 'Rev B';
+	}
+	function SmallTemp($str) {// Temperature...
+		$val = $this->hexToDec($str);
+		return $val==255 ? false : $val-90;
+	}
+	function Moistures ($str){ // Humidite du sol
+		$val = $this->hexToDec($str);
+		return $val==255 ? false : $val;
+	}
+	function BTrend($str) {// ...
+		$val = $this->hexToDec($str);
+		return $this->Trend[$val];
+	}
+	function In_RainAlarms($str) {// ...
+		$val = $this->hexToDec($str);
+		return $val;
+	}
+	function OutAlarms($str) {// ...
+		$val = $this->hexToDec($str);
+		return $val;
+	}
+	function HumidityAlarms($str) {// ...
+		$val = $this->hexToDec($str);
+		return $val;
+	}
+	function Temp_HumAlarms($str) {// ...
+		$val = $this->hexToDec($str);
+		return $val;
+	}
+	function Soil_LeafAlarms($str) {// ...
+		$val = $this->hexToDec($str);
+		return $val;
+	}
+	function Voltage($str) {// ...
+		return (($this->hexToDec(strrev($str))*300)/512)/100.0;
+	}
+	function Icons($str) {// ...
+		return $this->hexToDec($str);
+	}
 
+/**
+	#########################################################################################
+	#########		Function for manage Variable and Conf-File		#########
+	#########################################################################################
+**/
+	private function SaveConfs ()	{
+		$confs = $this->getStationConfig();
+		$confs[$this->getKeyConf()] = $this->StationConfig[$this->getKeyConf()];
+		file_put_contents (dirname(__FILE__).DIRECTORY_SEPARATOR.'../../stations.conf', var_export($confs,true));
+		return true;
+	}
+	private function GetConf ()	{
+		return eval('return '.file_get_contents(dirname(__FILE__).DIRECTORY_SEPARATOR.'../../stations.conf').';');
+	}
 	function setKeyConf($value)	{ $this->KeyConf = $value; }
-	function getKeyConf()	{ return $this->KeyConf; }
+	function getKeyConf()		{ return $this->KeyConf; }
 
 	function setStationConfig($value)	{ $this->StationConfig = $value; }
-	function getStationConfig()	{ return $this->StationConfig; }
+	function getStationConfig()		{ return $this->StationConfig; }
 
 	function setStationFolder($value)	{ $this->StationFolder = $value; }
-	function getStationFolder()	{ return $this->StationFolder; }
+	function getStationFolder()		{ return $this->StationFolder; }
 
-	function getStationIP()	{ return $this->StationConfig[$this->getKeyConf()]['IP']; }
+	function getStationIP()		{ return $this->StationConfig[$this->getKeyConf()]['IP']; }
 	function getStationPort()	{ return $this->StationConfig[$this->getKeyConf()]['Port']; }
 }
 ?>
