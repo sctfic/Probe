@@ -1,0 +1,5 @@
+[Dolphin]
+AdditionalInfoV2=CustomizedDetails,Details_Size,Details_Date,Details_Permissions,Details_Owner,Details_Group,Details_Type
+ShowPreview=true
+Timestamp=2012,2,22,10,22,14
+Version=2
