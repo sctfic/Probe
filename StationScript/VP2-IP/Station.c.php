@@ -15,36 +15,13 @@ class station
 	public $HiLow = null;
 	protected $EEPROM = null;
 	protected $Trend = null;
+	public $_version = 0.09;
 
 	function __construct($stationConfig, $name)	{
 		$this->setKeyConf($name);
 		$this->setStationConfig($stationConfig);
 		$this->setStationFolder( dirname(__FILE__).DIRECTORY_SEPARATOR );
 		require ($this->StationFolder.'Station.h.php');
-	}
-	function CalculateCRC($ptr)	{
-		$crc = 0x0000;
-		settype($crc, "integer");
-		for ($i = 0; $i < strlen($ptr); $i++)
-		{
-			$crc =  $this->table[(($crc>>8) ^ ord($ptr[$i]))] ^ (($crc<<8) & 0x00FFFF);
-// 			$this->waiting(0,ord($ptr[$i]).' : '.dechex($this->table[(($crc>>8) ^ ord($ptr[$i]))]).' > '.dechex($crc>>8).' '.dechex($crc&0xff));
-		}
-		return !$crc?$crc:chr($crc>>8).chr($crc&0xff);
-	}
-	function Waiting ($s=10, $msg = 'Waiting and retry')	{
-		$w = '-\|/';
-		if ($s==0)
-			echo "\r".date('Y/m/d H:i:s u')."\t".$msg;
-		for ($j=0;$j<$s;$j++)
-		{
-			usleep(100000);
-			echo "\r".date('Y/m/d H:i:s u')."\t".$msg.' '.$w[$j%4];
-		}
-		echo "\n";
-	}
-	function hexToDec($hex)	{
-		return hexdec(bin2hex($hex));
 	}
 	public function initConnection()	{
 		$errno = 0;
@@ -127,18 +104,39 @@ class station
 		$this->Waiting (0,'GET_info : Answer Error');
 		return FALSE;
 	}
-	function GET_EEPROM($cmd) {
-		fwrite ($this->fp, strtoupper('EEBRD '.$this->EEPROM[$cmd]['pos']).' '.$this->EEPROM[$cmd]['len']."\n");
+	function GET_EEPROM_4K() {
+		fwrite ($this->fp, strtoupper('GETEE'."\n");
 		$r = fread($this->fp, 1);
 		if ($r == $this->symb['ACK'])
 		{
-			$EEBRD = fread($this->fp, $this->EEPROM[$cmd]['len']+2);
-			if (strlen($EEBRD)==$this->EEPROM[$cmd]['len']+2 && !$this->CalculateCRC($EEBRD))
+			$EE = fread($this->fp, 4096);
+			$CRC = fread($this->fp, 2);
+			if (strlen($EE)==4096 && $CRC==$this->CalculateCRC($EE))
+			{
+				$this->Waiting (0,'GET_EEPROM_4K : OK');
+				$this->StationConfig[$this->getKeyConf()]['Last_GET_EEPROM_4K'] = date('Y/m/d H:i:s');
+				$this->SaveConfs();
+				echo implode("\t",$this->ConvertStrRaw($EE))."\n";
+				return $this->EE;
+			}
+			$this->Waiting (0,'GET_EEPROM_4K : CRC Error');
+			return False;
+		}
+		$this->Waiting (0,'GET_EEPROM_4K : Answer Error');
+		return FALSE;
+	}
+	function GET_EEPROM($cmd) {
+		fwrite ($this->fp, strtoupper('EEBRD '.$this->_EEPROM[$cmd]['pos']).' '.$this->_EEPROM[$cmd]['len']."\n");
+		$r = fread($this->fp, 1);
+		if ($r == $this->symb['ACK'])
+		{
+			$EEBRD = fread($this->fp, $this->_EEPROM[$cmd]['len']+2);
+			if (strlen($EEBRD)==$this->_EEPROM[$cmd]['len']+2 && !$this->CalculateCRC($EEBRD))
 			{
 				$val = $this->hexToDec(strrev(substr($EEBRD, 0,-2)));
 // 				$this->Waiting (0, decbin($val));
 				$this->Waiting (0,'GET_EEPROM '.$cmd.' : OK');
-				return eval('return '.$this->EEPROM[$cmd]['eval'].';');
+				return eval('return '.$this->_EEPROM[$cmd]['eval'].';');
 			}
 			$this->Waiting (0,'GET_EEPROM : CRC Error');
 			return False;
@@ -281,34 +279,6 @@ class station
 		}
 		return FALSE;
 	}
-	function DMPAFT_SetVP2Date ($StrDate)	{// 2003/06/19 09:30:00  =>  0x03A2 0x06D3
-		$y = substr($StrDate, 0, 4);
-		$m = substr($StrDate, 5, 2);
-		$d = substr($StrDate, 8, 2);
-		$h = substr($StrDate, -8, 2);
-		$min = substr($StrDate, -5, 2);
-		$s = substr($StrDate, -2);
-		$d = ((($y-2000)*512+$m*32+$d)<<16) + ($h*100+$min);							// settype($d, 'integer');
-// 		$d = chr(($d&0xff000000)>>24).chr(($d&0xff0000)>>16).chr(($d&0xff00)>>8).chr($d&0xff);	// settype($d, 'string');
-		$d = chr(($d&0xff0000)>>16).chr(($d&0xff000000)>>24).chr($d&0xff).chr(($d&0xff00)>>8);	// Reverse version
-		return $d;
-	}
-	function Raw2Date ($DateStamp){
-		$DateStamp = $this->hexToDec(strrev($DateStamp));
-		$y = (($DateStamp & 0xFE00)>>9)+2000;
-		$m = str_pad(($DateStamp & 0x01E0)>>5,2,'0',STR_PAD_LEFT);
-		$d = str_pad($DateStamp & 0x1f,2,'0',STR_PAD_LEFT);
-		return $y.'/'.$m.'/'.$d;
-	}
-	function Raw2Time ($TimeStamp){
-		$TimeStamp = $this->hexToDec(strrev($TimeStamp));
-		$h = str_pad((int)($TimeStamp/100),2,'0',STR_PAD_LEFT);
-		$min = str_pad($TimeStamp-$h*100,2,'0',STR_PAD_LEFT);
-		return $h.':'.$min.':00';
-	}
-	function DMPAFT_GetVP2Date ($VP2Date)	{// 2003/06/19 09:30:00  <=  0x03A2 0x06D3
-		return $this->Raw2Date(substr($VP2Date,0,2)).' '.$this->Raw2Time(substr($VP2Date,-2));
-	}
 	function Get_DMPAFT_Raw()	{
 		fwrite($this->fp,"DMPAFT\n");			// Send the command to VP2 : DumpAfter
 		$r = fread($this->fp, 1);			// Read the answer
@@ -408,6 +378,58 @@ class station
 	#########		Function for manage Variable and Conf-File		#########
 	#########################################################################################
 **/
+	function DMPAFT_SetVP2Date ($StrDate)	{// 2003/06/19 09:30:00  =>  0x03A2 0x06D3
+		$y = substr($StrDate, 0, 4);
+		$m = substr($StrDate, 5, 2);
+		$d = substr($StrDate, 8, 2);
+		$h = substr($StrDate, -8, 2);
+		$min = substr($StrDate, -5, 2);
+		$s = substr($StrDate, -2);
+		$d = ((($y-2000)*512+$m*32+$d)<<16) + ($h*100+$min);							// settype($d, 'integer');
+// 		$d = chr(($d&0xff000000)>>24).chr(($d&0xff0000)>>16).chr(($d&0xff00)>>8).chr($d&0xff);	// settype($d, 'string');
+		$d = chr(($d&0xff0000)>>16).chr(($d&0xff000000)>>24).chr($d&0xff).chr(($d&0xff00)>>8);	// Reverse version
+		return $d;
+	}
+	function Raw2Date ($DateStamp){
+		$DateStamp = $this->hexToDec(strrev($DateStamp));
+		$y = (($DateStamp & 0xFE00)>>9)+2000;
+		$m = str_pad(($DateStamp & 0x01E0)>>5,2,'0',STR_PAD_LEFT);
+		$d = str_pad($DateStamp & 0x1f,2,'0',STR_PAD_LEFT);
+		return $y.'/'.$m.'/'.$d;
+	}
+	function Raw2Time ($TimeStamp){
+		$TimeStamp = $this->hexToDec(strrev($TimeStamp));
+		$h = str_pad((int)($TimeStamp/100),2,'0',STR_PAD_LEFT);
+		$min = str_pad($TimeStamp-$h*100,2,'0',STR_PAD_LEFT);
+		return $h.':'.$min.':00';
+	}
+	function DMPAFT_GetVP2Date ($VP2Date)	{// 2003/06/19 09:30:00  <=  0x03A2 0x06D3
+		return $this->Raw2Date(substr($VP2Date,0,2)).' '.$this->Raw2Time(substr($VP2Date,-2));
+	}
+	function CalculateCRC($ptr)	{
+		$crc = 0x0000;
+		settype($crc, "integer");
+		for ($i = 0; $i < strlen($ptr); $i++)
+		{
+			$crc =  $this->table[(($crc>>8) ^ ord($ptr[$i]))] ^ (($crc<<8) & 0x00FFFF);
+// 			$this->waiting(0,ord($ptr[$i]).' : '.dechex($this->table[(($crc>>8) ^ ord($ptr[$i]))]).' > '.dechex($crc>>8).' '.dechex($crc&0xff));
+		}
+		return !$crc?$crc:chr($crc>>8).chr($crc&0xff);
+	}
+	function Waiting ($s=10, $msg = 'Waiting and retry')	{
+		$w = '-\|/';
+		if ($s==0)
+			echo "\r".date('Y/m/d H:i:s u')."\t".$msg;
+		for ($j=0;$j<$s;$j++)
+		{
+			usleep(100000);
+			echo "\r".date('Y/m/d H:i:s u')."\t".$msg.' '.$w[$j%4];
+		}
+		echo "\n";
+	}
+	function hexToDec($hex)	{
+		return hexdec(bin2hex($hex));
+	}
 	private function SaveConfs ()	{
 		$confs = $this->getStationConfig();
 		$confs[$this->getKeyConf()] = $this->StationConfig[$this->getKeyConf()];

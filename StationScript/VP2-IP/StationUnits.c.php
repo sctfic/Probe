@@ -18,6 +18,9 @@
 			case 438:
 				$modele = $this->HiLow;
 				break;
+			case 4096:
+				$modele = $this->EEPROM;
+				break;
 		}
 		$x = array();
 		foreach($modele as $key=>$val)
@@ -29,14 +32,84 @@
 	}
 		require ($this->StationFolder.'StationUnits.c.php');
 
+	function Bool($str) {// 
+		return $this->hexToDec($str) ? true :false;
+	}
+
 	function Char2Signed($val) {
-	// Short2Signed return value between 0 - 255 into signed -127 - +128...Two's complement
+	// Char2Signed http://en.wikipedia.org/wiki/Two%27s_complement
+	// return value between 0 - 255 into signed -128 - +127...Two's complement
 		return (($val>>7)?(($val ^ 0xFF)+1)*(-1):$val);
 	}
+	function s2sc($str) {// String to Signed Char
+		return Char2Signed($this->hexToDec(strrev($str)));
+	}
+	function s2c($str) {// String to Signed Char
+		return ($this->hexToDec(strrev($str)));
+	}
+
 	function Short2Signed($val) {
-	// Short2Signed return value between 0 - 65532 into signed -32000 - +32000...Two's complement
+	// Char2Signed http://en.wikipedia.org/wiki/Two%27s_complement
+	// return value between 0 - 65532 into signed -32768 - +32767...Two's complement
 		return (($val>>15)?(($val ^ 0xFFFF)+1)*(-1):$val);
 	}
+	function s2sSh($str) {// String to Signed Short
+		return Short2Signed($this->hexToDec(strrev($str)));
+	}
+	function s2Sh($str) {// String to Signed Short
+		return ($this->hexToDec(strrev($str)));
+	}
+
+	
+	function Gain($str) {// ...
+		return $this->hexToDec(strrev($str))/1000;
+	}
+	function Cal($str) {// ...
+		return $this->hexToDec(strrev($str))/1000;
+	}
+	function Offset($str) {// ...
+		return Short2Signed($this->hexToDec(strrev($str)));
+	}
+	function Alt($str) {// ...
+		return Short2Signed($this->hexToDec(strrev($str)));
+	}
+	function GPS($str) {// ...
+		return Short2Signed($this->hexToDec(strrev($str)))/10;
+	}
+	function Char($str) {// 
+		return Char2Signed($this->hexToDec(strrev($str)));
+	}
+	function GMT($str) {// ...
+		$val = Short2Signed($this->hexToDec(strrev($str)))/10
+		return (int)($val/100).":".str_pad((abs($val)%100),2,"0",STR_PAD_LEFT));
+	}
+	function Station($str) {// ...
+		return null;
+	}
+	function UnitBits($str) {// ...
+		return array_combine(array("Wind","Rain","Elev","Temp","Barom"),
+			array(
+				!(($val&0xC0)>>6)?"mph":(((($val&0xC0)>>6)==1)?"m/s":(((($val&0xC0)>>6)==2)?"Km/h":"Knots")),
+				(($val&0x20)>>5)?"mm":"in",
+				(($val&0x10)>>4)?"m":"ft",
+				!(($val&0x0C)>>2)?"1 °F":(((($val&0x0C)>>2)==1)?"0.1 °F":(((($val&0x0C)>>2)==2)?"1 °C":"0.1 °C")),
+				!($val&0x03)?"0.01 in":((($val&0x03)==1)?"0.1 mm":((($val&0x03)==2)?"0.1 hpa":"0.1 mB")),
+		));
+	}
+	function SetupBits($str) {// ...
+		return array_combine(array("Longitude:","Latitude:","RainCupSize","WinCupSize","DayMonth","AM/PM","12/24"),
+			array(
+				(($val&0x80)>>7)?"East":"West",
+				(($val&0x40)>>6)?"Nord":"South",
+				!(($val&30)>>4)?"0.01 in":(((($val&30)>>4)==1)?"0.2 mm":"0.1 mm"),
+				(($val&0x08)>>3)?"Large":"Small",
+				(($val&0x04)>>2)?"Day/Month":"Month/Day",
+				(($val&0x02)>>1)?"AM?":"PM?",
+				($val&0x01)?"24h?":"AM/PM?",
+			));
+	}
+
+
 
 	function Pressure($str) {// Pressure...
 		$val = $this->hexToDec(strrev($str));
