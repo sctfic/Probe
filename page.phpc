@@ -1,0 +1,48 @@
+<?php
+class page
+{
+  private $Title = null;
+  private $Url = null;
+  private $Page = null;
+  private $PathToWorkingDir = null;
+
+
+  function View() {
+    switch ($this->getPage()) {
+      case 'admin':
+        $view = $this->getPathToWorkingDir().'Admin.php';
+        break;
+      case 'login':
+        $this->setTitle(_('Authentification page'));
+        $view = $this->getPathToWorkingDir().'login.php';
+        break;
+      default:
+          $view = 'Home.php';
+    }
+
+    require_once $view;
+  }
+
+  function setPage($value)
+  { $this->Page = $value; }
+  function getPage()
+  { return $this->Page; }
+
+
+  function setTitle($value)
+  { $this->Title = $value; }
+  function getTitle()
+  { return $this->Title; }
+
+  function setPathToWorkingDir($value)
+  { $this->PathToWorkingDir = $value; }
+  function getPathToWorkingDir()
+  { return $this->PathToWorkingDir; }
+
+  function __construct($pwd = './')
+  {
+    $this->setPathToWorkingDir($pwd);
+  }
+
+}
+?>
