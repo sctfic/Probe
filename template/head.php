@@ -8,8 +8,8 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
 	<title><?php $page->getTitle(); ?></title>
-	<meta name="description" content="">
-	<meta name="author" content="">
+	<meta name="description" content="<?php $page->getDescription(); ?>">
+	<meta name="author" content="<?php $page->getAuthor(); ?>">
 
 	<meta name="viewport" content="width=device-width">
 

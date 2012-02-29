@@ -1,19 +1,25 @@
 <?php
 class page
 {
-  private $Title = null;
-  private $Url = null;
-  private $Page = null;
-  private $PathToWorkingDir = null;
+  private $_title = null;
+  private $_url = null;
+  private $_page = null;
+  private $_pathToWorkingDir = null;
+  private $_author = 'WsWds Team';
 
-
+// Check the request page
   function View() {
     switch ($this->getPage()) {
       case 'admin':
+        $this->setTitle(_('Admin page'));
+        $this->setDescription(_('WsWds: Admin'));
+        $this->setKeywords(_('admin'));
         $view = $this->getPathToWorkingDir().'Admin.php';
         break;
       case 'login':
         $this->setTitle(_('Authentification page'));
+        $this->setDescription(_('WsWds: Admin'));
+        $this->setKeywords(array(_('admin')));
         $view = $this->getPathToWorkingDir().'login.php';
         break;
       default:
@@ -23,24 +29,59 @@ class page
     require_once $view;
   }
 
-  function setPage($value)
-  { $this->Page = $value; }
-  function getPage()
-  { return $this->Page; }
+// @description: Page to display
+    function setPage($value)
+    { $this->_page = $value; }
+    function getPage()
+    { return $this->_page; }
+
+// @description: Page's title
+    function setTitle($value) {
+        $this->_title = $value;
+    }
+    function getTitle() {
+        return $this->_title ;
+    }
+
+// @description: Path to the current Working Directory
+    function setPathToWorkingDir($value) {
+        $this->_pathToWorkingDir = $value;
+    }
+    function getPathToWorkingDir() {
+        return $this->_pathToWorkingDir;
+    }
+
+// @description: page description for crawler
+    function setDescription($value) {
+        $this->_description = $value;
+    }
+    function getDescription() {
+        return $this->_description;
+    }
+
+// Getter for _author name
+    function getAuthor() {
+        return $this->_author;
+    }
+
+// @description: page's keywords management
+    function setKeywords($value) {
+        if (is_array($value)) {
+            $this->_keywords = $value;
+        } else {
+            $this->_keywords = array($value);
+        }
+    }
+    function getKeywords() {
+        return $this->_keywords;
+    }
+    // @description: add keywords
+    function addKeywords($value) {
+        $this->_keywords = $value;
+    }
 
 
-  function setTitle($value)
-  { $this->Title = $value; }
-  function getTitle()
-  { return $this->Title; }
-
-  function setPathToWorkingDir($value)
-  { $this->PathToWorkingDir = $value; }
-  function getPathToWorkingDir()
-  { return $this->PathToWorkingDir; }
-
-  function __construct($pwd = './')
-  {
+  function __construct($pwd = './') {
     $this->setPathToWorkingDir($pwd);
   }
 
