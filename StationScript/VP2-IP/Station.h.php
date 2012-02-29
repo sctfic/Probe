@@ -324,30 +324,55 @@
 	'MonthLowTemperature'	=>	array( 'pos' => 231,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
 	
 	'YearHiTemperature'	=>	array( 'pos' => 246,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+
 	'YearLowTemperature'	=>	array( 'pos' => 261,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+
 	'DayLowHumidity'	=>	array( 'pos' => 276,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+
 	'DayHiHumidity'		=>	array( 'pos' => 284,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+
 	'TimeDayLowHumidity'	=>	array( 'pos' => 300,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+
 	'TimeDayHiHumidity'	=>	array( 'pos' => 316,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+
 	'MonthHiHumidity'	=>	array( 'pos' => 324,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+
 	'MonthLowHumidity'	=>	array( 'pos' => 332,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+
 	'YearHiHumidity'	=>	array( 'pos' => 340,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+
 	'YearLowHumidity'	=>	array( 'pos' => 348,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+
 	'DayHiSoilMoisture'	=>	array( 'pos' => 356,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+
 	'TimeDayHiSoilMoisture'	=>	array( 'pos' => 360,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+
 	'DayLowSoilMoisture'	=>	array( 'pos' => 368,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+
 	'TimeDayLowSoilMoisture'=>	array( 'pos' => 372,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+
 	'MonthLowSoilMoisture'	=>	array( 'pos' => 380,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+
 	'MonthHiSoilMoisture'	=>	array( 'pos' => 384,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+
 	'YearLowSoilMoisture'	=>	array( 'pos' => 388,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+
 	'YearHiSoilMoisture'	=>	array( 'pos' => 392,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+
 	'DayHiLeafWetness'	=>	array( 'pos' => 496,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+
 	'TimeDayHiLeafWetness'	=>	array( 'pos' => 500,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+
 	'DayLowLeafWetness'	=>	array( 'pos' => 508,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+
 	'TimeDayLowLeafWetness'	=>	array( 'pos' => 512,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+
 	'MonthLowLeafWetness'	=>	array( 'pos' => 520,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+
 	'MonthHiLeafWetness'	=>	array( 'pos' => 524,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+
 	'YearLowLeafWetness'	=>	array( 'pos' => 528,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+
 	'YearHiLeafWetness'	=>	array( 'pos' => 532,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
 	);
 
