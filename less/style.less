@@ -1,5 +1,8 @@
 @import "bootstrap/bootstrap.less";
 
+@smallPadding: .25em;
+
+
 body {
   padding-top: 60px;
   padding-bottom: 40px;
@@ -15,8 +18,11 @@ body {
 .login {
     .modal;
     .modal-body;
-    margin: -150px 0 0 -280px;
+    margin: -200px 0 0 -280px;
     background-image: url("icons/weather-clear.png");
+    > form {
+        width: inherit;
+    }
 }
 
 footer {
@@ -24,7 +30,11 @@ footer {
     text-align: center;
 }
 
-
+.form-errors {
+    padding: @smallPadding;
+    color: @errorText;
+    background-color: @errorBackground;
+}
 
 
 
