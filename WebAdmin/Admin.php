@@ -1,6 +1,6 @@
 <?php
-	if (is_file($workingFolder.'../stations.conf'))
-		$stationConfig = eval('return '.file_get_contents($workingFolder.'../stations.conf').';');
+	if (is_file($GLOBALS['WsWdsConfig']['path']['root'].'stations.conf'))
+		$stationConfig = eval('return '.file_get_contents($GLOBALS['WsWdsConfig']['path']['root'].'stations.conf').';');
 	else {
 		$stationConfig = array ();
 	}
@@ -27,13 +27,10 @@
 	<body>
 	<!-- CORPS DE LA PAGE  -->
 <?php
-	include ($workingFolder.'banner.php');
-	include ($workingFolder.'header.php');
-	include ($workingFolder.'home.php');
-	include ($workingFolder.'footer.php');
+	include ($GLOBALS['WsWdsConfig']['path']['root'].'WebAdmin/home.php');
 ?>
 	</body>
 </html>
 <?
-	file_put_contents ($workingFolder.'../stations.conf', var_export($stationConfig, true ));
+	file_put_contents ($GLOBALS['WsWdsConfig']['path']['root'].'stations.conf', var_export($stationConfig, true ));
 ?>

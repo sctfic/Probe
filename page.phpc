@@ -14,18 +14,20 @@ class page
         $this->setTitle(_('Admin page'));
         $this->setDescription(_('WsWds: Admin'));
         $this->setKeywords(_('admin'));
-        $view = $this->getPathToWorkingDir().'Admin.php';
+        $workingFolder = $this->getPathToWorkingDir();
+        $view = $this->getPathToWorkingDir().'WebAdmin/Admin.php';
         break;
       case 'login':
         $this->setTitle(_('Authentification page'));
         $this->setDescription(_('WsWds: Admin'));
         $this->setKeywords(array(_('admin')));
-        $view = $this->getPathToWorkingDir().'login.php';
+        $view = $this->getPathToWorkingDir().'WebAdmin/login.php';
         break;
       default:
           $view = 'Home.php';
     }
 
+//     echo $view;
     require_once $view;
   }
 
@@ -81,8 +83,8 @@ class page
     }
 
 
-  function __construct($pwd = './') {
-    $this->setPathToWorkingDir($pwd);
+  function __construct() {
+    $this->setPathToWorkingDir($GLOBALS['WsWdsConfig']['path']['root']);
   }
 
 }
