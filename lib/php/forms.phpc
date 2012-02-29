@@ -1,0 +1,50 @@
+<?php
+CONST FORM_FIELD_VALID = 0;
+CONST FORM_FIELD_WARNING = 1;
+CONST FORM_FIELD_ERROR = 2;
+
+class Form
+{
+    private $_fields = array(
+//         'name' => FORM_FIELD_* // field's status
+    );
+
+// add a field for further test and manipulation
+    function add($value) {
+        $this->_field[$value] = ;
+        $this->control($value);
+    }
+
+
+    function control($value) {
+        if (isset($_GET[$value])) {
+            $this->_field[$value] = sprintf(_('The %s you used is incorrect.'), _($value));
+        }
+    }
+
+    function setStatusOf($value) {
+    }
+    function getStatusOf()
+    { return $this->Status; }
+
+
+    function __construct()
+    {
+
+    }
+
+}
+
+class Form_Control extends Form
+{
+    function valid($value) {
+
+    }
+
+    function __construct()
+    {
+
+    }
+
+}
+?>
