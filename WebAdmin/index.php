@@ -85,7 +85,7 @@ if (session_start()) {
 // </p>
 
 require_once './template/head.php';
-$page->View();
+    $page->View();
 require_once './template/js-libs.html';
 require_once './template/footer.php';
 ?>

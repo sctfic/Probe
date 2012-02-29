@@ -1,1 +1,1 @@
-<footer>© <abbr title="<?php _('Weather data visualization tool') ?>">WsWds</abbr> <?php echo date('Y'); ?>.</footer>
+<footer class="test">© <abbr title="<?php _('Weather data visualization tool') ?>">WsWds</abbr> <?php echo date('Y'); ?>.</footer>
