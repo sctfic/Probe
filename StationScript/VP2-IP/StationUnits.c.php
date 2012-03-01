@@ -119,9 +119,6 @@
 		$val = $this->hexToDec(strrev($str));
 		return $this->Short2Signed($val)/10;
 	}
-	function Wetnesses($str) {// Humectometre...
-		return $this->hexToDec($str)==255?false:$this->hexToDec($str);
-	}
 	function Speed($str) {// Wind Speed...
 		return $this->hexToDec($str);
 	}
@@ -137,10 +134,18 @@
 		$val = $this->hexToDec($str);
 		return $val;
 	}
+
 	function Rate($str) {// Percentage...
 		$val = $this->hexToDec($str);
 		return $val==255 ? false : $val;
 	}
+	function Moistures ($str){ // Humidite du sol
+		return $this->Rate($str);
+	}
+	function Wetnesses($str) {// Humectometre...
+		return $this->Rate($str);
+	}
+
 	function Radiation($str) {// Solar Radiation...
 		$val = $this->hexToDec(strrev($str));
 		return $val;
@@ -174,10 +179,6 @@
 	function SmallTemp($str) {// Temperature...
 		$val = $this->hexToDec($str);
 		return $val==255 ? false : $val-90;
-	}
-	function Moistures ($str){ // Humidite du sol
-		$val = $this->hexToDec($str);
-		return $val==255 ? false : $val;
 	}
 	function BTrend($str) {// ...
 		$val = $this->hexToDec($str);

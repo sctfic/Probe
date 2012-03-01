@@ -35,7 +35,10 @@ if (session_start()) {
 			session_destroy();						// on detruit la session sur le serveur
 		}
 		echo _('loged out !');
-		exit();
+//////////////////////////////////////////
+/// remplacer le exit par une redirection
+//////////////////////////////////////////
+//		exit();
 	} elseif (isset($_GET['username'])
             && empty($GLOBALS['WsWdsConfig']['AdminInterface']['Username'])
             && empty($GLOBALS['WsWdsConfig']['AdminInterface']['Password'])
