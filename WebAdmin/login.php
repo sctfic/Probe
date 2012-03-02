@@ -42,9 +42,8 @@
                 <label for='confirm'><?php echo _('password confirmation')._('&nbsp;'); ?>:</label>
                 <input type="password" name="confirm" id="confirm" <?php echo getStatus('username'); ?>/>
         <?php } ?>
-        </fieldset>
         <input type="submit" class='btn' value="<?php echo _('login'); ?>" />
                 <!--keygen name="security" /-->
-
+        </fieldset>
     </form>
 </body>
