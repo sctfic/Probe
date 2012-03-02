@@ -23,5 +23,8 @@
 	 -->
 
     <!-- modernizr/HTML5shiv must be in the head as the create HTML5 tag when non exixtent -->
-	<script src="js/libs/modernizr-2.5.3-respond-1.1.0.min.js"></script>
+    <script src="js/libs/modernizr-2.5.3-respond-1.1.0.min.js"></script>
+    <link type="text/css" href="css/ui-lightness/jquery-ui-1.8.17.custom.css" rel="Stylesheet" />
+    <script type="text/javascript" src="js/libs/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="js/libs/jquery-ui-1.8.17.custom.min.js"></script>
 </head>
