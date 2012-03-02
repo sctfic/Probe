@@ -1,7 +1,7 @@
 <?php
 require_once 'page.phpc';
 
-// $GLOBALS['WsWdsConfig']['path']['root'] = dirname(__FILE__).DIRECTORY_SEPARATOR;
+// $GLOBALS['WsWdsConfig']['path']['root'] = dirname(__FILE__).DIRECTORY_SEPARATOR.'../';
 $page = new page();
 
 // WebAdmin
@@ -39,6 +39,7 @@ if (session_start()) {
 /// remplacer le exit par une redirection
 //////////////////////////////////////////
 //		exit();
+		echo '0 : '.$_GET['username'].' : '.$_GET['password'];
 	} elseif (isset($_GET['username'])
             && empty($GLOBALS['WsWdsConfig']['AdminInterface']['Username'])
             && empty($GLOBALS['WsWdsConfig']['AdminInterface']['Password'])
@@ -49,7 +50,7 @@ if (session_start()) {
 		$GLOBALS['WsWdsConfig']['AdminInterface']['Password'] = crypt($_GET['password'], $salt);
 		$page->setPage('admin');
 // 		include ($GLOBALS['WsWdsConfig']['path']['root'].'Admin.php');
-		echo 'ici : '.$_GET['username'];
+		echo '1 : '.$_GET['username'].' : '.$_GET['password'];
 	} elseif (isset($_GET['username'])
             && ($_GET['username']==$GLOBALS['WsWdsConfig']['AdminInterface']['Username']
             && crypt($_GET['password'], $salt)==$GLOBALS['WsWdsConfig']['AdminInterface']['Password'])
@@ -57,12 +58,14 @@ if (session_start()) {
 		$_SESSION['WsWds']['login'] = $_GET['username'];
 		$page->setPage('admin');
 // 		include ($GLOBALS['WsWdsConfig']['path']['root'].'Admin.php');
+		echo '2 : '.$_GET['username'].' : '.$_GET['password'];
 	} elseif (!empty($_SESSION['WsWds']['login'])) { // authentification has been successful
 		if (isset($_POST['query'])) {
             include ($GLOBALS['WsWdsConfig']['path']['root'].'AJAX.php');
         } else {
 //          include ($GLOBALS['WsWdsConfig']['path']['root'].'Admin.php');
     $page->setPage('admin');
+		echo '3 : '.$_GET['username'].' : '.$_GET['password'];
     }
   }
 	else
@@ -70,6 +73,7 @@ if (session_start()) {
 // 		include ($GLOBALS['WsWdsConfig']['path']['root'].'login.php');
 		$page->setPage('login');
 		// on quitte directement le scripte
+		echo '4 : '.$_GET['username'].' : '.$_GET['password'];
 	}
 
 	if (!file_put_contents ($GLOBALS['WsWdsConfig']['path']['root'].'WsWds.conf', var_export( $GLOBALS['WsWdsConfig'], true )))
