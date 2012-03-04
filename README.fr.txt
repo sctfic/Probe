@@ -12,3 +12,5 @@ les tests sont effectué sur :
 
 - un NAS ReadyNas NV+ (firmware RAIDiator 4.1.8)
   + Vantage pro2 Plus IP
+
+Nous en aucune manière affilié à Davis Instrument. Si vous avez besoin d'aide, veillez consulter leur site web pour plus d'informations. http://www.davis.com/.

@@ -1,6 +1,6 @@
-WsWds is a PHP apps that aim to allow fine and better management of Vantage weather station. 
+WsWds is a PHP apps that aim to allow fine and better management of Vantage weather station.
 The project aim to be :
-- cross-platform (Linux/Mac/Windows), 
+- cross-platform (Linux/Mac/Windows),
 - lightweigt, can run on PC/Mac, NAS, router, smartphone, etc.
 
 Currently, our team test on the following platform/device :
@@ -12,3 +12,5 @@ Currently, our team test on the following platform/device :
 
 - A PC Ubuntu LAMP
    Vantage Pro2 Plus + IP
+
+We are in no way related to Davis Instrument, so please do NOT ask for support about their devices. If you need help with your station, visit their website: http://www.davis.com/.
