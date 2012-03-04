@@ -20,13 +20,22 @@ class page
         $view = $this->getPathToWorkingDir().'./admin.php';
         break;
       case 'login':
-        $this->setTitle(_('Authentification page'));
-        $this->setDescription(_('WsWds: Admin'));
-        $this->setKeywords(array(_('admin')));
-        $view = $this->getPathToWorkingDir().'./login.php';
-        break;
+          $this->setTitle(_('Authentification page'));
+          $this->setDescription(_('WsWds: Admin'));
+          $this->setKeywords(array(_('admin')));
+          $view = $this->getPathToWorkingDir().'./login.php';
+          break;
+      case 'logout':
+          $this->setTitle(_('Authentification page'));
+          $this->setDescription(_('WsWds: Admin'));
+          $this->setKeywords(array(_('admin')));
+          $view = $this->getPathToWorkingDir().'./logout.php';
+          break;
       default:
-          $view = 'Home.php';
+          $view = $this->getPathToWorkingDir().'../index.php';
+          require_once $view;
+          exit();
+//             $view = null;
     }
 
 //     echo $view;

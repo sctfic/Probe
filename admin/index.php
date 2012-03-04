@@ -29,22 +29,22 @@ if (session_start()) {
 	if (isset($_GET['stop'])) { // sur une demande de fermeture
 		$_SESSION['WsWds'] = array(0);		// on vide bien la variable de session
 		unset($_SESSION['WsWds']);			// et on detruit le contenue de session ki nous conserne
-		if (empty($_SESSION)) {				// si aprés ca la session est vide on peut en deduire que personne d'autre ne l'utilise
+		if (empty($_SESSION)) {				// si après ca la session est vide on peut en deduire que personne d'autre ne l'utilise
 			setcookie(session_name(), '', time()-100000, '/');	// on force le cookie de session a etre périmé
 			session_destroy();						// on detruit la session sur le serveur
 		}
-		echo _('loged out !');
+		$page->setPage('logout');
 /*
  remplacer le exit par une redirection
 */
 //		exit();
-		echo '0 : '.$_GET['username'].' : '.$_GET['password'];
+// 		echo '0 : '.$_GET['username'].' : '.$_GET['password']; // UNKOWN variable
 	} elseif (isset($_GET['username'])
             && empty($GLOBALS['WsWdsConfig']['AdminInterface']['Username'])
             && empty($GLOBALS['WsWdsConfig']['AdminInterface']['Password'])
             && strlen($_GET['username'])>2
             && $_GET['password']==$_GET['confirm']
-    ) { // Si le compte admin n´as jamais était definie alors c'est le moment
+    ) { // No admin yet, we let user create one
 		$_SESSION['WsWds']['login'] = $GLOBALS['WsWdsConfig']['AdminInterface']['Username'] = $_GET['username'];
 		$GLOBALS['WsWdsConfig']['AdminInterface']['Password'] = crypt($_GET['password'], $salt);
 		$page->setPage('admin');
@@ -60,11 +60,11 @@ if (session_start()) {
 		echo '2 : '.$_GET['username'].' : '.$_GET['password'];
 	} elseif (!empty($_SESSION['WsWds']['login'])) { // authentification has been successful
 		if (isset($_POST['query'])) {
+            echo sprintf(_('a "query" has been submitted'));
             include ($GLOBALS['workingFolder'].'AJAX.php');
         } else {
-//          include ($GLOBALS['workingFolder'].'admin.php');
-    $page->setPage('admin');
-		echo '3 : '.$_GET['username'].' : '.$_GET['password'];
+            echo sprintf(_('no "query", shall we show the default UI here ?'));
+            $page->setPage('admin');
     }
   }
 	else { // on invite l´utiliseteur a s´identifier
