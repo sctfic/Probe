@@ -84,8 +84,8 @@ if (session_start()) {
 //  Pour continuer, <a href="nextpage.php?<?php echo htmlspecialchars(SID); ? >">cliquez ici</a>.
 // </p>
 
-require_once './themes/head.php';
+require_once './template/head.php';
     $page->View();
-require_once './themes/js-libs.html';
-require_once './themes/footer.php';
+require_once './template/js-libs.html';
+require_once './template/footer.php';
 ?>
