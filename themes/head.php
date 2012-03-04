@@ -13,8 +13,8 @@
 
 	<meta name="viewport" content="width=device-width">
 
-	<link rel="stylesheet/less" href="less/style.less">
-	<script src="js/libs/less-1.2.1.min.js"></script>
+	<link rel="stylesheet/less" href="/themes/less/style.less">
+	<script src="/resources/js/libs/less-1.2.1.min.js"></script>
 
 	<!-- Use SimpLESS (Win/Linux/Mac) or LESS.app (Mac) to compile your .less files
 	to style.css, and replace the 2 lines above by this one:
@@ -23,8 +23,8 @@
 	 -->
 
     <!-- modernizr/HTML5shiv must be in the head as the create HTML5 tag when non exixtent -->
-    <script src="js/libs/modernizr-2.5.3-respond-1.1.0.min.js"></script>
-    <link type="text/css" href="css/ui-lightness/jquery-ui-1.8.17.custom.css" rel="Stylesheet" />
-    <script type="text/javascript" src="js/libs/jquery-1.7.1.min.js"></script>
-    <script type="text/javascript" src="js/libs/jquery-ui-1.8.17.custom.min.js"></script>
+    <script src="/resources/js/libs/modernizr-2.5.3-respond-1.1.0.min.js"></script>
+    <link type="text/css" href="/themes/css/ui-lightness/jquery-ui-1.8.17.custom.css" rel="Stylesheet" />
+    <script type="text/javascript" src="/resources/js/libs/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="/resources/js/libs/jquery-ui-1.8.17.custom.min.js"></script>
 </head>

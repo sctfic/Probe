@@ -1,5 +1,5 @@
 <?php
-require_once 'php/page.phpc';
+require_once 'resources/php/page.phpc';
 
 $workingFolder = dirname(__FILE__).DIRECTORY_SEPARATOR;
 $page = new page();
