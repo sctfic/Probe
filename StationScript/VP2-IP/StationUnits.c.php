@@ -36,6 +36,9 @@
 		return $this->hexToDec($str) ? true :false;
 	}
 
+	function Char($str) {// 
+		return Char2Signed($this->hexToDec(strrev($str)));
+	}
 	function Char2Signed($val) {
 	// Char2Signed http://en.wikipedia.org/wiki/Two%27s_complement
 	// return value between 0 - 255 into signed -128 - +127...Two's complement
@@ -70,14 +73,11 @@
 	function Offset($str) {// ...
 		return Short2Signed($this->hexToDec(strrev($str)));
 	}
-	function Alt($str) {// ...
+	function Alt($str) {// Altitude
 		return Short2Signed($this->hexToDec(strrev($str)));
 	}
-	function GPS($str) {// ...
+	function GPS($str) {// Position GPS
 		return Short2Signed($this->hexToDec(strrev($str)))/10;
-	}
-	function Char($str) {// 
-		return Char2Signed($this->hexToDec(strrev($str)));
 	}
 	function GMT($str) {// ...
 		$val = Short2Signed($this->hexToDec(strrev($str)))/10
@@ -115,13 +115,20 @@
 		$val = $this->hexToDec(strrev($str));
 		return $val/1000;
 	}
+
 	function Temp($str) {// Temperature...
 		$val = $this->hexToDec(strrev($str));
 		return $this->Short2Signed($val)/10;
 	}
-	function Wetnesses($str) {// Humectometre...
-		return $this->hexToDec($str)==255?false:$this->hexToDec($str);
+	function SmallTemp($str) {// Temperature...
+		$val = $this->hexToDec($str);
+		return $val==255 ? false : $val-90;
 	}
+	function SmallTemp120($str) {// Temperature...
+		$val = $this->hexToDec($str);
+		return $val==255 ? false : $val-120;
+	}
+
 	function Speed($str) {// Wind Speed...
 		return $this->hexToDec($str);
 	}
@@ -129,18 +136,7 @@
 		$val = $this->hexToDec(strrev($str));
 		return $val ? $val : false;
 	}
-	function UV($str) {// UV level...
-		$val = $this->hexToDec($str);
-		return $val==255 ? false : $val/10;
-	}
-	function Forecast($str) {// Forecast for next day...
-		$val = $this->hexToDec($str);
-		return $val;
-	}
-	function Rate($str) {// Percentage...
-		$val = $this->hexToDec($str);
-		return $val==255 ? false : $val;
-	}
+
 	function Radiation($str) {// Solar Radiation...
 		$val = $this->hexToDec(strrev($str));
 		return $val;
@@ -151,6 +147,27 @@
 	function ET100($str) {// Evapotranspiration...
 		return $this->hexToDec(strrev($str))/100;
 	}
+	function UV($str) {// UV level...
+		$val = $this->hexToDec($str);
+		return $val==255 ? false : $val/10;
+	}
+
+	function Forecast($str) {// Forecast for next day...
+		$val = $this->hexToDec($str);
+		return $val;
+	}
+
+	function Rate($str) {// Percentage...
+		$val = $this->hexToDec($str);
+		return $val==255 ? false : $val;
+	}
+	function Moistures ($str){ // Humidite du sol
+		return $this->Rate($str);
+	}
+	function Wetnesses($str) {// Humectometre...
+		return $this->Rate($str);
+	}
+
 	function Angle16($str) {// Wind Direction...
 		$val = $this->hexToDec($str);
 		if ($val<=15 && $val>=0)
@@ -170,14 +187,6 @@
 		if ($val==255)
 			return 'Rev A';
 		return 'Rev B';
-	}
-	function SmallTemp($str) {// Temperature...
-		$val = $this->hexToDec($str);
-		return $val==255 ? false : $val-90;
-	}
-	function Moistures ($str){ // Humidite du sol
-		$val = $this->hexToDec($str);
-		return $val==255 ? false : $val;
 	}
 	function BTrend($str) {// ...
 		$val = $this->hexToDec($str);
