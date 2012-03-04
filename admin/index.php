@@ -1,16 +1,13 @@
+
 <?php
 require_once 'resources/php/page.phpc';
 
 $workingFolder = dirname(__FILE__).DIRECTORY_SEPARATOR;
 $page = new page();
 
-<<<<<<< HEAD:WebAdmin/index.php
-$salt = '$2a$07$WsWds.0cEzRZZaN/PX8M0w'; // whit CRYPT_BLOWFISH
-=======
 // webAdmin
 // define ('CRYPT_BLOWFISH', true);
 $salt = '$2a$07$WsWds.0cEzRZZaN/PX8M0w';
->>>>>>> 15ba41eb85b27393f7d8b83e61b96cef83f150c6:admin/index.php
 
 $spath = session_save_path();
 if (strpos ($spath, ";") !== FALSE) {
@@ -52,11 +49,7 @@ if (session_start()) {
 		$_SESSION['WsWds']['login'] = $GLOBALS['WsWdsConfig']['AdminInterface']['Username'] = $_GET['username'];
 		$GLOBALS['WsWdsConfig']['AdminInterface']['Password'] = crypt($_GET['password'], $salt);
 		$page->setPage('admin');
-<<<<<<< HEAD:WebAdmin/index.php
-// 		include ($workingFolder.'Admin.php');
-=======
 // 		include ($GLOBALS['workingFolder'].'admin.php');
->>>>>>> 15ba41eb85b27393f7d8b83e61b96cef83f150c6:admin/index.php
 		echo '1 : '.$_GET['username'].' : '.$_GET['password'];
 	} elseif (isset($_GET['username'])
             && ($_GET['username']==$GLOBALS['WsWdsConfig']['AdminInterface']['Username']
@@ -64,15 +57,6 @@ if (session_start()) {
     ) { // password is correct/valid
 		$_SESSION['WsWds']['login'] = $_GET['username'];
 		$page->setPage('admin');
-<<<<<<< HEAD:WebAdmin/index.php
-// 		include ($workingFolder.'Admin.php');
-		echo '2 : '.$_GET['username'].' : '.$_GET['password'];
-	} elseif (!empty($_SESSION['WsWds']['login'])) { // authentification has been successful
-		if (isset($_POST['query'])) {
-            include ($workingFolder.'AJAX.php');
-        } else {
-//          include ($workingFolder.'Admin.php');
-=======
 // 		include ($GLOBALS['workingFolder'].'admin.php');
 		echo '2 : '.$_GET['username'].' : '.$_GET['password'];
 	} elseif (!empty($_SESSION['WsWds']['login'])) { // authentification has been successful
@@ -80,32 +64,20 @@ if (session_start()) {
             include ($GLOBALS['workingFolder'].'AJAX.php');
         } else {
 //          include ($GLOBALS['workingFolder'].'admin.php');
->>>>>>> 15ba41eb85b27393f7d8b83e61b96cef83f150c6:admin/index.php
     $page->setPage('admin');
 		echo '3 : '.$_GET['username'].' : '.$_GET['password'];
     }
   }
-<<<<<<< HEAD:WebAdmin/index.php
-	else
-	{ // on invite l´utiliseteur a s´identifier
-// 		include ($workingFolder.'login.php');
-=======
 	else { // on invite l´utiliseteur a s´identifier
 // 		include ($GLOBALS['workingFolder'].'login.php');
->>>>>>> 15ba41eb85b27393f7d8b83e61b96cef83f150c6:admin/index.php
 		$page->setPage('login');
 		// on quitte directement le scripte
 // 		echo '4 : '.$_GET['username'].' : '.$_GET['password'];
 	}
 
-<<<<<<< HEAD:WebAdmin/index.php
-	if (!file_put_contents ($workingFolder.'WsWds.conf', var_export( $GLOBALS['WsWdsConfig'], true )))
-		sprintf("%s%s", _('Fail to save modifications.'), _('Please check your rights are corrects.'));
-=======
 	if (!file_put_contents ($GLOBALS['workingFolder'].'WsWds.conf', var_export( $GLOBALS['WsWdsConfig'], true ))) {
         sprintf("%s%s", _('Fail to save modifications.'), _('Please check your rights are corrects.'));
     }
->>>>>>> 15ba41eb85b27393f7d8b83e61b96cef83f150c6:admin/index.php
 //     	echo _('Impossible d´enregistrer les changements, Merci de verifier les droits.');
 }
 
