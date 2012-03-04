@@ -10,6 +10,6 @@ if (is_file('./WsWds.conf')) {
 }
 
 // include_once($_WsWdsFOLDER .'StationScript/index.php');
-include_once($_WsWdsFOLDER .'WebAdmin/index.php');
+include_once($_WsWdsFOLDER .'admin/index.php');
 
 ?>

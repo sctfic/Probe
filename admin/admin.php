@@ -27,7 +27,7 @@
 	<body>
 	<!-- CORPS DE LA PAGE  -->
 <?php
-	include ($GLOBALS['WsWdsConfig']['path']['root'].'WebAdmin/home.php');
+	include ($GLOBALS['WsWdsConfig']['path']['root'].'admin/home.php');
 ?>
 	</body>
 </html>

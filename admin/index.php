@@ -1,21 +1,20 @@
 <?php
-require_once 'page.phpc';
+require_once 'php/page.phpc';
 
-// $GLOBALS['WsWdsConfig']['path']['root'] = dirname(__FILE__).DIRECTORY_SEPARATOR.'../';
+$workingFolder = dirname(__FILE__).DIRECTORY_SEPARATOR;
 $page = new page();
 
-// WebAdmin
+// webAdmin
 // define ('CRYPT_BLOWFISH', true);
 $salt = '$2a$07$WsWds.0cEzRZZaN/PX8M0w';
 
 $spath = session_save_path();
-if (strpos ($spath, ";") !== FALSE)
-	$spath = substr ($spath, strpos($spath, ";")+1);
-if (!is_dir($spath) && !empty($spath))
-{
+if (strpos ($spath, ";") !== FALSE) {
+    $spath = substr ($spath, strpos($spath, ";")+1);
+}
+if (!is_dir($spath) && !empty($spath)) {
 	echo __FILE__."\n".'Problem on line '.(__LINE__ - 2)."\n";
-	if (!is_dir(mkdirs(str_replace(realpath('./'), '.', $spath), 0700, true)))
-	{
+	if (!is_dir(mkdirs(str_replace(realpath('./'), '.', $spath), 0700, true))) {
 		echo __FILE__."\n".'Problem on line '.(__LINE__ - 2)."\n";
 		echo ' ("'.session_save_path().'").<br>';
 	}
@@ -35,9 +34,9 @@ if (session_start()) {
 			session_destroy();						// on detruit la session sur le serveur
 		}
 		echo _('loged out !');
-//////////////////////////////////////////
-/// remplacer le exit par une redirection
-//////////////////////////////////////////
+/*
+ remplacer le exit par une redirection
+*/
 //		exit();
 		echo '0 : '.$_GET['username'].' : '.$_GET['password'];
 	} elseif (isset($_GET['username'])
@@ -49,7 +48,7 @@ if (session_start()) {
 		$_SESSION['WsWds']['login'] = $GLOBALS['WsWdsConfig']['AdminInterface']['Username'] = $_GET['username'];
 		$GLOBALS['WsWdsConfig']['AdminInterface']['Password'] = crypt($_GET['password'], $salt);
 		$page->setPage('admin');
-// 		include ($GLOBALS['WsWdsConfig']['path']['root'].'Admin.php');
+// 		include ($GLOBALS['workingFolder'].'admin.php');
 		echo '1 : '.$_GET['username'].' : '.$_GET['password'];
 	} elseif (isset($_GET['username'])
             && ($_GET['username']==$GLOBALS['WsWdsConfig']['AdminInterface']['Username']
@@ -57,27 +56,27 @@ if (session_start()) {
     ) { // password is correct/valid
 		$_SESSION['WsWds']['login'] = $_GET['username'];
 		$page->setPage('admin');
-// 		include ($GLOBALS['WsWdsConfig']['path']['root'].'Admin.php');
+// 		include ($GLOBALS['workingFolder'].'admin.php');
 		echo '2 : '.$_GET['username'].' : '.$_GET['password'];
 	} elseif (!empty($_SESSION['WsWds']['login'])) { // authentification has been successful
 		if (isset($_POST['query'])) {
-            include ($GLOBALS['WsWdsConfig']['path']['root'].'AJAX.php');
+            include ($GLOBALS['workingFolder'].'AJAX.php');
         } else {
-//          include ($GLOBALS['WsWdsConfig']['path']['root'].'Admin.php');
+//          include ($GLOBALS['workingFolder'].'admin.php');
     $page->setPage('admin');
 		echo '3 : '.$_GET['username'].' : '.$_GET['password'];
     }
   }
-	else
-	{ // on invite l´utiliseteur a s´identifier
-// 		include ($GLOBALS['WsWdsConfig']['path']['root'].'login.php');
+	else { // on invite l´utiliseteur a s´identifier
+// 		include ($GLOBALS['workingFolder'].'login.php');
 		$page->setPage('login');
 		// on quitte directement le scripte
-		echo '4 : '.$_GET['username'].' : '.$_GET['password'];
+// 		echo '4 : '.$_GET['username'].' : '.$_GET['password'];
 	}
 
-	if (!file_put_contents ($GLOBALS['WsWdsConfig']['path']['root'].'WsWds.conf', var_export( $GLOBALS['WsWdsConfig'], true )))
-		sprintf("%s%s", _('Fail to save modifications.'), _('Please check your rights are corrects.'));
+	if (!file_put_contents ($GLOBALS['workingFolder'].'WsWds.conf', var_export( $GLOBALS['WsWdsConfig'], true ))) {
+        sprintf("%s%s", _('Fail to save modifications.'), _('Please check your rights are corrects.'));
+    }
 //     	echo _('Impossible d´enregistrer les changements, Merci de verifier les droits.');
 }
 
