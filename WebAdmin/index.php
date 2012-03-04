@@ -1,12 +1,10 @@
 <?php
 require_once 'page.phpc';
 
-// $GLOBALS['WsWdsConfig']['path']['root'] = dirname(__FILE__).DIRECTORY_SEPARATOR.'../';
+$workingFolder = dirname(__FILE__).DIRECTORY_SEPARATOR;
 $page = new page();
 
-// WebAdmin
-// define ('CRYPT_BLOWFISH', true);
-$salt = '$2a$07$WsWds.0cEzRZZaN/PX8M0w';
+$salt = '$2a$07$WsWds.0cEzRZZaN/PX8M0w'; // whit CRYPT_BLOWFISH
 
 $spath = session_save_path();
 if (strpos ($spath, ";") !== FALSE)
@@ -49,7 +47,7 @@ if (session_start()) {
 		$_SESSION['WsWds']['login'] = $GLOBALS['WsWdsConfig']['AdminInterface']['Username'] = $_GET['username'];
 		$GLOBALS['WsWdsConfig']['AdminInterface']['Password'] = crypt($_GET['password'], $salt);
 		$page->setPage('admin');
-// 		include ($GLOBALS['WsWdsConfig']['path']['root'].'Admin.php');
+// 		include ($workingFolder.'Admin.php');
 		echo '1 : '.$_GET['username'].' : '.$_GET['password'];
 	} elseif (isset($_GET['username'])
             && ($_GET['username']==$GLOBALS['WsWdsConfig']['AdminInterface']['Username']
@@ -57,26 +55,26 @@ if (session_start()) {
     ) { // password is correct/valid
 		$_SESSION['WsWds']['login'] = $_GET['username'];
 		$page->setPage('admin');
-// 		include ($GLOBALS['WsWdsConfig']['path']['root'].'Admin.php');
+// 		include ($workingFolder.'Admin.php');
 		echo '2 : '.$_GET['username'].' : '.$_GET['password'];
 	} elseif (!empty($_SESSION['WsWds']['login'])) { // authentification has been successful
 		if (isset($_POST['query'])) {
-            include ($GLOBALS['WsWdsConfig']['path']['root'].'AJAX.php');
+            include ($workingFolder.'AJAX.php');
         } else {
-//          include ($GLOBALS['WsWdsConfig']['path']['root'].'Admin.php');
+//          include ($workingFolder.'Admin.php');
     $page->setPage('admin');
 		echo '3 : '.$_GET['username'].' : '.$_GET['password'];
     }
   }
 	else
 	{ // on invite l´utiliseteur a s´identifier
-// 		include ($GLOBALS['WsWdsConfig']['path']['root'].'login.php');
+// 		include ($workingFolder.'login.php');
 		$page->setPage('login');
 		// on quitte directement le scripte
 		echo '4 : '.$_GET['username'].' : '.$_GET['password'];
 	}
 
-	if (!file_put_contents ($GLOBALS['WsWdsConfig']['path']['root'].'WsWds.conf', var_export( $GLOBALS['WsWdsConfig'], true )))
+	if (!file_put_contents ($workingFolder.'WsWds.conf', var_export( $GLOBALS['WsWdsConfig'], true )))
 		sprintf("%s%s", _('Fail to save modifications.'), _('Please check your rights are corrects.'));
 //     	echo _('Impossible d´enregistrer les changements, Merci de verifier les droits.');
 }
