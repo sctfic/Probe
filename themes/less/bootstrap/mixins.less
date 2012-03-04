@@ -145,7 +145,7 @@
   // Setup the mixins to be used
   .columns(@gridGutterWidth, @gridColumnWidth, @gridRowWidth, @columns) {
     width: (@gridColumnWidth * @columns) + (@gridGutterWidth * (@columns - 1));
-  } 
+  }
   .offset(@gridColumnWidth, @gridGutterWidth, @columns) {
     margin-left: (@gridColumnWidth * @columns) + (@gridGutterWidth * (@columns - 1)) + (@gridGutterWidth * 2);
   }
@@ -199,13 +199,13 @@
   // Setup the mixins to be used
   .columns(@fluidGridGutterWidth, @fluidGridColumnWidth, @columns) {
     width: 1% * (@fluidGridColumnWidth * @columns) + (@fluidGridGutterWidth * (@columns - 1));
-  } 
+  }
   .gridColumn(@fluidGridGutterWidth) {
     float: left;
     margin-left: @fluidGridGutterWidth;
   }
   // Take these values and mixins, and make 'em do their thang
-  .generate(@gridColumns, @fluidGridColumnWidth, @fluidGridGutterWidth) {      
+  .generate(@gridColumns, @fluidGridColumnWidth, @fluidGridGutterWidth) {
     // Row surrounds the columns
     .row-fluid {
       width: 100%;

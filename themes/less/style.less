@@ -2,6 +2,10 @@
 
 @smallPadding: .25em;
 @borderGrey: #999;
+@backgroundColorForm: #FFF;
+@backgroundForm: none repeat scroll 0 0 @backgroundColorForm;
+@loginMarginTop: -175px;
+@loginFooterMarginTop: @loginMarginTop+250px;
 
 body {
   padding-top: 60px;
@@ -10,6 +14,14 @@ body {
 
 @import "bootstrap/responsive.less";
 
+.debugBox {outline: thin dotted red;}
+
+.textShadowLight {
+    color: #CCC;
+    color: lighten(@grayDark, 50%);
+    text-shadow: 1px 1px 0 #EEE;
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75)
+}
 
 /* ===== Primary Styles ========================================================
    Author:
@@ -18,26 +30,69 @@ body {
 .login {
     .modal;
     .modal-body;
-    margin: -175px 0 0 -280px;
+    margin: @loginMarginTop 0 0 -280px;
+}
     #authentification {
-        background: url("/themes/icons/weather-clear.png") no-repeat scroll 90% 25% transparent;
-        width: inherit;
-/*         width: 50%; */
-        margin: auto 0;
+        > fieldset
+        , aside {
+/*             .debugBox; */
+        }
         > fieldset {
-            width: 50%;
+            width: 49.5%;
+            float: left;
+            background: @backgroundColorForm;
             border-right: thin dotted @borderGrey;
+            input { width: 90%; }
+            input[type="submit"] {
+                margin: 1em auto 0;
+                width: 50%;
+                height: 4em;
+                line-height: 4em;
+            }
+        }
+        > aside {
+            width: 50%;
+            float: right;
+            border-left: thin solid transparent;
+            .now {
+                position: relative;
+                height: 225px;
+                width: 100%;
+                background: url("/themes/icons/weather-clear.png") no-repeat scroll 0% 0% transparent;
+/*                 .debugBox; */
+                img {
+                    position: relative;
+                    bottom: 30%;
+                    left: -20%;
+                }
+            }
+            .now { text-indent: -999em; }
+        }
+        > aside.css {
+            &:hover img {
+                left: 100%;
+                @transition: left 2s ease-in-out;
+                .transition(@transition);
+            }
         }
     }
     .btn {
         display: block;
     }
-}
+/* } */
+
+/* #authentification:hover a { color: red;} */
 
 footer {
-    .center-block();
+/*     .debugBox; */
+    .modal-body;
     text-align: center;
-    margin-top: 1em;
+/*     margin-top: @loginFooterMarginTop; */
+    .textShadowLight;
+    top: 75%;
+    width: 100%;
+    position: fixed;
+    .center-block();
 }
 
 .form-errors {

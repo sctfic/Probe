@@ -86,6 +86,6 @@ if (session_start()) {
 
 require_once './themes/head.php';
     $page->View();
-require_once './themes/js-libs.html';
 require_once './themes/footer.php';
+require_once './themes/js-libs.html';
 ?>

@@ -1,8 +1,10 @@
 <?php
 class page
 {
-  private $_title = null;
-  private $_url = null;
+    private $_title = null;
+    private $_description = null;
+    private $_keywords = null;
+    private $_url = null;
   private $_page = null;
   private $_pathToWorkingDir = null;
   private $_author = 'WsWds Team';

@@ -1,5 +1,5 @@
-<body class="login">
-    <form action="?" class='container' method="get" id="authentification" >
+<!-- <div class="login"> -->
+    <form action="?" class='login' method="get" id="authentification" >
         <fieldset>
         <?php
             // if user already tried one authentification and come back to this page, it means its credentials are not correct
@@ -45,5 +45,11 @@
         <input type="submit" class='btn' value="<?php echo _('login'); ?>" />
                 <!--keygen name="security" /-->
         </fieldset>
+        <aside class="js time-indicator">
+            <div class="now"><?php echo date('Y-m-d H:i'); ?>
+<!--                 <img class="time-indicator" src="/themes/icons/weather-clear.png" alt="<?php echo _("sunny weather");?>" /> -->
+            </div>
+        </aside>
     </form>
-</body>
+<!-- </div> -->
+<!-- </body> -->
