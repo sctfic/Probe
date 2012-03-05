@@ -1,4 +1,5 @@
 <?php
+// http://www.davisnet.com/support/weather/downloads/software_direct.asp?SoftCat=4&SoftwareID=172
 /**
 		#################################################################################
 		################	Function for RAW data convertion	#################
