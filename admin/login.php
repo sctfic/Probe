@@ -1,7 +1,7 @@
 <form action="?" class='login' method="get" id="authentification" >
     <fieldset>
     <?php
-var_export ($GLOBALS['WsWdsConfig']);
+//var_export ($GLOBALS['WsWdsConfig']);
         // if user already tried one authentification and come back to this page, it means its credentials are not correct
         $fieldsStatus = null;
         if (isset($_GET['password'])) {
@@ -36,8 +36,8 @@ var_export ($GLOBALS['WsWdsConfig']);
     <label for='password'><?php echo _('password')._('&nbsp;'); ?>:</label>
         <input type="password" name="password" id="password" <?php echo getStatus('password'); ?>/>
     <?php
-        if (empty($WsWdsConfig['AdminInterface']['Username'])
-            && empty($WsWdsConfig['AdminInterface']['Password'])
+        if (empty($GLOBALS['WsWdsConfig']['AdminInterface']['Username'])
+            && empty($GLOBALS['WsWdsConfig']['AdminInterface']['Password'])
         ) { ?>
             <label for='confirm'><?php echo _('password confirmation')._('&nbsp;'); ?>:</label>
             <input type="password" name="confirm" id="confirm" <?php echo getStatus('username'); ?>/>

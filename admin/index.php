@@ -29,7 +29,7 @@ ini_set('session.use_only_cookies', '0');
 session_cache_limiter ('nocache');
 session_cache_expire (60);            // set cache time out
 
-	if (is_file($workingFolder.'../stations.conf')) {
+	if (is_file($workingFolder.'../WsWds.conf')) {
 		$WsWdsConfig = eval('return '.file_get_contents($workingFolder.'../WsWds.conf').';');
 	}
 	elseif (is_file($workingFolder.'../stations.conf')) {
@@ -40,7 +40,7 @@ session_cache_expire (60);            // set cache time out
 		echo 'erreur sur le fichier de config';
 	}
 
-var_export ($WsWdsConfig);
+// var_export ($WsWdsConfig);
 if (session_start()) {
 	if (isset($_GET['stop'])) { // sur une demande de fermeture
 		$_SESSION['WsWds'] = array(0);		// on vide bien la variable de session
