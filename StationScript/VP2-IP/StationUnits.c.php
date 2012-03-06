@@ -58,10 +58,10 @@
 	// return value between 0 - 65532 into signed -32768 - +32767...Two's complement
 		return (($val>>15)?(($val ^ 0xFFFF)+1)*(-1):$val);
 	}
-	function s2sSh($str) {// String to Signed Short
-		return Short2Signed($this->hexToDec(strrev($str)));
+	function s2sSht($str) {// String to Signed Short
+		return $this->s2sSht($str);
 	}
-	function s2uSh($str) {// String to unSigned Short
+	function s2uSht($str) {// String to unSigned Short
 		return ($this->hexToDec(strrev($str)));
 	}
 
@@ -73,16 +73,16 @@
 		return $this->hexToDec(strrev($str))/1000;
 	}
 	function Offset($str) {// ...
-		return Short2Signed($this->hexToDec(strrev($str)));
+		return $this->s2sSht($str);
 	}
 	function Alt($str) {// Altitude
-		return Short2Signed($this->hexToDec(strrev($str)));
+		return $this->s2sSht($str);
 	}
 	function GPS($str) {// Position GPS
-		return Short2Signed($this->hexToDec(strrev($str)))/10;
+		return $this->s2sSht($str)/10;
 	}
 	function GMT($str) {// ...
-		$val = Short2Signed($this->hexToDec(strrev($str)))/10
+		$val = $this->s2sSht($str)/10
 		return (int)($val/100).":".str_pad((abs($val)%100),2,"0",STR_PAD_LEFT));
 	}
 	function Station($str) {// ...
@@ -119,8 +119,7 @@
 	}
 
 	function Temp($str) {// Temperature...
-		$val = $this->hexToDec(strrev($str));
-		return $this->Short2Signed($val)/10;
+		return $this->s2sSht($str)/10;
 	}
 	function SmallTemp($str) {// Temperature...
 		$val = $this->hexToDec($str);
@@ -135,89 +134,70 @@
 		return $this->hexToDec($str);
 	}
 	function Samples($str) {// number of clic...
-		$val = $this->hexToDec(strrev($str));
-		return $val ? $val : false;
+		return $this->s2uSht($str);
 	}
 
 	function Radiation($str) {// Solar Radiation...
-		$val = $this->hexToDec(strrev($str));
-		return $val;
+		return $this->s2sSht($str);
 	}
 	function ET1000($str) {// Evapotranspiration...
-		return $this->hexToDec(strrev($str))/1000;
+		return return $this->s2sSht($str)/1000;
 	}
 	function ET100($str) {// Evapotranspiration...
-		return $this->hexToDec(strrev($str))/100;
+		return $this->s2us($str)/100;
 	}
 	function UV($str) {// UV level...
-		$val = $this->hexToDec($str);
+		$val = $this->s2uc($str);
 		return $val==255 ? false : $val/10;
 	}
 
 	function Forecast($str) {// Forecast for next day...
-		$val = $this->hexToDec($str);
-		return $val;
+		return $this->s2uc($str);
 	}
 
 	function Rate($str) {// Percentage...
-		$val = $this->hexToDec($str);
-		return $val==255 ? false : $val;
+		return $this->s2uc($str);
 	}
 	function Moistures ($str){ // Humidite du sol
-		return $this->Rate($str);
+		return $this->s2uc($str);
 	}
 	function Wetnesses($str) {// Humectometre...
-		return $this->Rate($str);
+		return $this->s2uc($str);
 	}
 
 	function Angle16($str) {// Wind Direction...
-		$val = $this->hexToDec($str);
-		if ($val<=15 && $val>=0)
-			return $val*22.5; // $this->WinDir[$val];
-		return false;
+		return $this->s2uc($str);
 	}
 	function Angle360($str) {// Wind Direction...
-		$val = $this->hexToDec(strrev($str));
-		if ($val==0)
-			return null;
-		elseif ($val>0 && $val<=360)
-			return $val;
-		return false;
+		return $this->s2sSht($str);
 	}
 	function SpRev($str) {// Special revision...
-		$val = $this->hexToDec($str);
-		if ($val==255)
+		if ($this->hexToDec($str)==255)
 			return 'Rev A';
 		return 'Rev B';
 	}
 	function BTrend($str) {// ...
-		$val = $this->hexToDec($str);
-		return $this->Trend[$val];
+		return $this->Trend[$this->s2uc($str);];
 	}
-	function In_RainAlarms($str) {// ...
-		$val = $this->hexToDec($str);
-		return $val;
-	}
-	function OutAlarms($str) {// ...
-		$val = $this->hexToDec($str);
-		return $val;
+
+	function RainAlarms($str) {// ...
+		return $this->s2sSht($str);
 	}
 	function HumidityAlarms($str) {// ...
+		return $this->s2uc($str);
+	}
+*	function Temp_HumAlarms($str) {// ...
 		$val = $this->hexToDec($str);
 		return $val;
 	}
-	function Temp_HumAlarms($str) {// ...
+*	function Soil_LeafAlarms($str) {// ...
 		$val = $this->hexToDec($str);
 		return $val;
 	}
-	function Soil_LeafAlarms($str) {// ...
-		$val = $this->hexToDec($str);
-		return $val;
-	}
-	function Voltage($str) {// ...
-		return (($this->hexToDec(strrev($str))*300)/512)/100.0;
+	function Voltage($str) {// Tension of inside battery
+		return (($this->s2uSht($str)*300)/512)/100.0;
 	}
 	function Icons($str) {// ...
-		return $this->hexToDec($str);
+		return $this->s2uc($str);
 	}
 ?>
