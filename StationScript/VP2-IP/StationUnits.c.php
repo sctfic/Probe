@@ -27,7 +27,11 @@
 		foreach($modele as $key=>$val)
 		{
 			$val['str'] = substr ($Str, $val['pos'], $val['len']);
-			$x[$key] = $this->$val['fn']($val['str']);
+			$mesure = $this->$val['fn']($val['str']);
+			if ($mesure != $val['err'] && $mesure >= $val['min'] && $mesure <= $val['max'])
+				$x[$key] = $mesure;
+			else
+				$x[$key] = NULL;
 		}
 		return $x;
 	}
@@ -37,19 +41,16 @@
 		return $this->hexToDec($str) ? true :false;
 	}
 
-	function Char($str) {// 
-		return Char2Signed($this->hexToDec(strrev($str)));
-	}
 	function Char2Signed($val) {
 	// Char2Signed http://en.wikipedia.org/wiki/Two%27s_complement
 	// return value between 0 - 255 into signed -128 - +127...Two's complement
 		return (($val>>7)?(($val ^ 0xFF)+1)*(-1):$val);
 	}
 	function s2sc($str) {// String to Signed Char
-		return Char2Signed($this->hexToDec(strrev($str)));
+		return Char2Signed($this->hexToDec($str));
 	}
-	function s2c($str) {// String to Signed Char
-		return ($this->hexToDec(strrev($str)));
+	function s2uc($str) {// String to unSigned Char
+		return ($this->hexToDec($str));
 	}
 
 	function Short2Signed($val) {
@@ -60,7 +61,7 @@
 	function s2sSh($str) {// String to Signed Short
 		return Short2Signed($this->hexToDec(strrev($str)));
 	}
-	function s2Sh($str) {// String to Signed Short
+	function s2uSh($str) {// String to unSigned Short
 		return ($this->hexToDec(strrev($str)));
 	}
 

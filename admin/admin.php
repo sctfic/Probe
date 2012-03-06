@@ -1,6 +1,6 @@
 <?php
-	if (is_file($GLOBALS['workingFolder'].'stations.conf'))
-		$stationConfig = eval('return '.file_get_contents($GLOBALS['workingFolder'].'stations.conf').';');
+	if (is_file($GLOBALS['workingFolder'].'../stations.conf'))
+		$stationConfig = eval('return '.file_get_contents($GLOBALS['workingFolder'].'../stations.conf').';');
 	else {
 		$stationConfig = array ();
 	}
@@ -27,10 +27,10 @@
 	<body>
 	<!-- CORPS DE LA PAGE  -->
 <?php
-	include ($GLOBALS['workingFolder'].'./home.php');
+	include ($GLOBALS['workingFolder'].'home.php');
 ?>
 	</body>
 </html>
 <?
-	file_put_contents ($GLOBALS['workingFolder'].'stations.conf', var_export($stationConfig, true ));
+	file_put_contents ($GLOBALS['workingFolder'].'../stations.conf', var_export($stationConfig, true ));
 ?>

@@ -1,6 +1,7 @@
 <form action="?" class='login' method="get" id="authentification" >
     <fieldset>
     <?php
+var_export ($GLOBALS['WsWdsConfig']);
         // if user already tried one authentification and come back to this page, it means its credentials are not correct
         $fieldsStatus = null;
         if (isset($_GET['password'])) {

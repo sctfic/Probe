@@ -1,5 +1,10 @@
 <?php
-require_once 'resources/php/page.phpc';
+/// #############################################################################################
+/// cette ligne est incoherante avec le fonctionne ment autonome de ce module, car cette ligne ne fonctionnera pas si on lance ce fichier index.php directement.
+require_once 'resources/php/page.phpc'; // $workingFolder.'../resources/php/page.phpc';
+/// a mettre plus bas...
+/// #############################################################################################
+
 
 $workingFolder = dirname(__FILE__).DIRECTORY_SEPARATOR;
 $page = new page();
@@ -24,7 +29,18 @@ ini_set('session.use_only_cookies', '0');
 session_cache_limiter ('nocache');
 session_cache_expire (60);            // set cache time out
 
+	if (is_file($workingFolder.'../stations.conf')) {
+		$WsWdsConfig = eval('return '.file_get_contents($workingFolder.'../WsWds.conf').';');
+	}
+	elseif (is_file($workingFolder.'../stations.conf')) {
+		$WsWdsConfig = eval('return '.file_get_contents($workingFolder.'../WsWds.default.conf').';');
+	}
+	else {
+		$WsWdsConfig = array ();
+		echo 'erreur sur le fichier de config';
+	}
 
+var_export ($WsWdsConfig);
 if (session_start()) {
 	if (isset($_GET['stop'])) { // sur une demande de fermeture
 		$_SESSION['WsWds'] = array(0);		// on vide bien la variable de session
@@ -40,19 +56,19 @@ if (session_start()) {
 //		exit();
 // 		echo '0 : '.$_GET['username'].' : '.$_GET['password']; // UNKOWN variable
 	} elseif (isset($_GET['username'])
-            && empty($GLOBALS['WsWdsConfig']['AdminInterface']['Username'])
-            && empty($GLOBALS['WsWdsConfig']['AdminInterface']['Password'])
+            && empty($WsWdsConfig['AdminInterface']['Username'])
+            && empty($WsWdsConfig['AdminInterface']['Password'])
             && strlen($_GET['username'])>2
             && $_GET['password']==$_GET['confirm']
     ) { // No admin yet, we let user create one
-		$_SESSION['WsWds']['login'] = $GLOBALS['WsWdsConfig']['AdminInterface']['Username'] = $_GET['username'];
-		$GLOBALS['WsWdsConfig']['AdminInterface']['Password'] = crypt($_GET['password'], $salt);
+		$_SESSION['WsWds']['login'] = $WsWdsConfig['AdminInterface']['Username'] = $_GET['username'];
+		$WsWdsConfig['AdminInterface']['Password'] = crypt($_GET['password'], $salt);
 		$page->setPage('admin');
 // 		include ($GLOBALS['workingFolder'].'admin.php');
 		echo '1 : '.$_GET['username'].' : '.$_GET['password'];
 	} elseif (isset($_GET['username'])
-            && ($_GET['username']==$GLOBALS['WsWdsConfig']['AdminInterface']['Username']
-            && crypt($_GET['password'], $salt)==$GLOBALS['WsWdsConfig']['AdminInterface']['Password'])
+            && ($_GET['username']==$WsWdsConfig['AdminInterface']['Username']
+            && crypt($_GET['password'], $salt)==$WsWdsConfig['AdminInterface']['Password'])
     ) { // password is correct/valid
 		$_SESSION['WsWds']['login'] = $_GET['username'];
 		$page->setPage('admin');
@@ -74,9 +90,9 @@ if (session_start()) {
 // 		echo '4 : '.$_GET['username'].' : '.$_GET['password'];
 	}
 
-	if (!file_put_contents ($GLOBALS['workingFolder'].'WsWds.conf', var_export( $GLOBALS['WsWdsConfig'], true ))) {
-        sprintf("%s%s", _('Fail to save modifications.'), _('Please check your rights are corrects.'));
-    }
+	if (!file_put_contents ($workingFolder.'../WsWds.conf', var_export($WsWdsConfig, true ))) {
+		sprintf("%s%s", _('Fail to save modifications.'), _('Please check your rights are corrects.'));
+	}
 //     	echo _('Impossible d´enregistrer les changements, Merci de verifier les droits.');
 }
 
@@ -88,4 +104,5 @@ require_once './themes/head.php';
     $page->View();
 require_once './themes/footer.php';
 require_once './themes/js-libs.html';
+
 ?>
