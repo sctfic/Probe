@@ -43,7 +43,16 @@
 	0xef1f,  0xff3e,  0xcf5d,  0xdf7c,  0xaf9b,  0xbfba,  0x8fd9,  0x9ff8,
 	0x6e17,  0x7e36,  0x4e55,  0x5e74,  0x2e93,  0x3eb2,  0xed1,  0x1ef0);
 
-	$this->Loop = array ( // See docs on pages 20, 21, 22
+// ##############################################################################################
+/// IX. Data Formats (See docs on pages 20, 21, 22)
+/// 1. LOOP data format
+/// Only values read directly from sensors are included in the LOOP packet. Desired values (i.e.,
+/// Dew Point or Wind Chill) must be calculated on the PC. The LOOP packet also contains
+/// information on the current status of all Vantage Alarm conditions, battery status, weather
+/// forecasts, and sunrise and sunset times.
+// ##############################################################################################
+
+	$this->Loop = array (
 // 	'L'			=>	array( 'pos' => 0,	'len' => 1,	'fn'=>'',		'min'=>0,	'max'=>0,	'err'=>0,	'unit'=> ''	),
 // 	'O'			=>	array( 'pos' => 1,	'len' => 1,	'fn'=>'',		'min'=>0,	'max'=>0,	'err'=>0,	'unit'=> ''	),
 // 	'O'			=>	array( 'pos' => 2,	'len' => 1,	'fn'=>'',		'min'=>0,	'max'=>0,	'err'=>0,	'unit'=> ''	),
@@ -88,9 +97,9 @@
 	'DayRain'		=>	array( 'pos' => 50,	'len' => 2,	'fn'=>'Samples',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
 	'MonthRain'		=>	array( 'pos' => 52,	'len' => 2,	'fn'=>'Samples',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
 	'YearRain'		=>	array( 'pos' => 54,	'len' => 2,	'fn'=>'Samples',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
-*	'DayET'			=>	array( 'pos' => 56,	'len' => 2,	'fn'=>'ET1000',		'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
-*	'MonthET'		=>	array( 'pos' => 58,	'len' => 2,	'fn'=>'ET100',		'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
-*	'YearET'		=>	array( 'pos' => 60,	'len' => 2,	'fn'=>'ET100',		'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'DayET'			=>	array( 'pos' => 56,	'len' => 2,	'fn'=>'ET1000',		'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'MonthET'		=>	array( 'pos' => 58,	'len' => 2,	'fn'=>'ET100',		'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'YearET'		=>	array( 'pos' => 60,	'len' => 2,	'fn'=>'ET100',		'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
 	'SoilMoistures0'	=>	array( 'pos' => 62,	'len' => 1,	'fn'=>'Moistures',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
 	'SoilMoistures1'	=>	array( 'pos' => 63,	'len' => 1,	'fn'=>'Moistures',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
 	'SoilMoistures2'	=>	array( 'pos' => 64,	'len' => 1,	'fn'=>'Moistures',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
@@ -102,17 +111,17 @@
 	'InsideAlarms'		=>	array( 'pos' => 70,	'len' => 2,	'fn'=>'RainAlarms',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
 	'OutsideAlarms'		=>	array( 'pos' => 72,	'len' => 2,	'fn'=>'RainAlarms',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
 	'OutHumidityAlarms'	=>	array( 'pos' => 74,	'len' => 1,	'fn'=>'HumidityAlarms',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
-*	'ExtraTemp/HumAlarms0'	=>	array( 'pos' => 75,	'len' => 1,	'fn'=>'Temp_HumAlarms',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
-*	'ExtraTemp/HumAlarms1'	=>	array( 'pos' => 76,	'len' => 1,	'fn'=>'Temp_HumAlarms',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
-*	'ExtraTemp/HumAlarms2'	=>	array( 'pos' => 77,	'len' => 1,	'fn'=>'Temp_HumAlarms',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
-*	'ExtraTemp/HumAlarms3'	=>	array( 'pos' => 78,	'len' => 1,	'fn'=>'Temp_HumAlarms',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
-*	'ExtraTemp/HumAlarms4'	=>	array( 'pos' => 79,	'len' => 1,	'fn'=>'Temp_HumAlarms',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
-*	'ExtraTemp/HumAlarms5'	=>	array( 'pos' => 80,	'len' => 1,	'fn'=>'Temp_HumAlarms',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
-*	'ExtraTemp/HumAlarms6'	=>	array( 'pos' => 81,	'len' => 1,	'fn'=>'Temp_HumAlarms',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
-*	'Soil&LeafAlarms0'	=>	array( 'pos' => 82,	'len' => 1,	'fn'=>'s2uc','min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
-*	'Soil&LeafAlarms1'	=>	array( 'pos' => 83,	'len' => 1,	'fn'=>'s2uc','min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
-*	'Soil&LeafAlarms2'	=>	array( 'pos' => 84,	'len' => 1,	'fn'=>'s2uc','min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
-*	'Soil&LeafAlarms3'	=>	array( 'pos' => 85,	'len' => 1,	'fn'=>'s2uc','min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+// *	'ExtraTemp/HumAlarms0'	=>	array( 'pos' => 75,	'len' => 1,	'fn'=>'Temp_HumAlarms',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+// *	'ExtraTemp/HumAlarms1'	=>	array( 'pos' => 76,	'len' => 1,	'fn'=>'Temp_HumAlarms',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+// *	'ExtraTemp/HumAlarms2'	=>	array( 'pos' => 77,	'len' => 1,	'fn'=>'Temp_HumAlarms',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+// *	'ExtraTemp/HumAlarms3'	=>	array( 'pos' => 78,	'len' => 1,	'fn'=>'Temp_HumAlarms',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+// *	'ExtraTemp/HumAlarms4'	=>	array( 'pos' => 79,	'len' => 1,	'fn'=>'Temp_HumAlarms',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+// *	'ExtraTemp/HumAlarms5'	=>	array( 'pos' => 80,	'len' => 1,	'fn'=>'Temp_HumAlarms',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+// *	'ExtraTemp/HumAlarms6'	=>	array( 'pos' => 81,	'len' => 1,	'fn'=>'Temp_HumAlarms',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+// *	'Soil&LeafAlarms0'	=>	array( 'pos' => 82,	'len' => 1,	'fn'=>'s2uc','min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+// *	'Soil&LeafAlarms1'	=>	array( 'pos' => 83,	'len' => 1,	'fn'=>'s2uc','min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+// *	'Soil&LeafAlarms2'	=>	array( 'pos' => 84,	'len' => 1,	'fn'=>'s2uc','min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+// *	'Soil&LeafAlarms3'	=>	array( 'pos' => 85,	'len' => 1,	'fn'=>'s2uc','min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
 // 	'TransmitterBatteryStatus'=>	array( 'pos' => 86,	'len' => 1,	'fn'=>'',		'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
 	'ConsoleBatteryVoltage'	=>	array( 'pos' => 87,	'len' => 2,	'fn'=>'Voltage',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
 	'ForecastIcons'		=>	array( 'pos' => 89,	'len' => 1,	'fn'=>'Icons',		'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
@@ -120,8 +129,17 @@
 	'TimeOfSunrise'		=>	array( 'pos' => 91,	'len' => 2,	'fn'=>'Raw2Time',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
 	'TimeOfSunset'		=>	array( 'pos' => 93,	'len' => 2,	'fn'=>'Raw2Time',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
 	);
-	
-	$this->DumpAfter = array ( // See docs on pages 28, 29
+
+
+// ##############################################################################################
+/// IX. Data Formats (See docs on pages 28, 29)
+/// 3. DMP and DMPAFT data format
+/// There are two different archived data formats. Rev "A" firmware, dated before April 24, 2002
+/// uses the old format. Rev "B" firmware dated on or after April 24, 2002 uses the new format. The
+/// fields up to ET are identical for both formats. The only differences are in the Soil, Leaf, Extra
+// ##############################################################################################
+
+	$this->DumpAfter = array (
 	'DateStamp'		=>	array( 'pos' => 0,	'len' => 2,	'fn'=>'Raw2Date',	'min'=>0,	'max'=>0xFFFF,	'err'=>0,	'unit'=> 'Date'	),
 	'TimeStamp'		=>	array( 'pos' => 2,	'len' => 2,	'fn'=>'Raw2Time',	'min'=>0,	'max'=>0xFFFF,	'err'=>0,	'unit'=> 'Time'	),
 	'OutsideTemperature'	=>	array( 'pos' => 4,	'len' => 2,	'fn'=>'Temp',		'min'=>0,	'max'=>0xFFFF,	'err'=>32767,	'unit'=> '°F'	),
@@ -140,7 +158,7 @@
 	'DirectionofHiWindSpeed'=>	array( 'pos' => 26,	'len' => 1,	'fn'=>'Angle16',	'min'=>0,	'max'=>360,	'err'=>255,	'unit'=> '°'	),
 	'PrevailingWindDirection'=>	array( 'pos' => 27,	'len' => 1,	'fn'=>'Angle16',	'min'=>0,	'max'=>360,	'err'=>255,	'unit'=> '°'	),
 	'AverageUVIndex'	=>	array( 'pos' => 28,	'len' => 1,	'fn'=>'UV',		'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> '-'	),
-*	'ET'			=>	array( 'pos' => 29,	'len' => 1,	'fn'=>'ET1000',		'min'=>0,	'max'=>0xFF,	'err'=>0,	'unit'=> 'mm'	),
+	'ETLastHour'		=>	array( 'pos' => 29,	'len' => 1,	'fn'=>'ET_h',		'min'=>0,	'max'=>0xFF,	'err'=>0,	'unit'=> 'mm'	),
 	'HighSolarRadiation'	=>	array( 'pos' => 30,	'len' => 2,	'fn'=>'Radiation',	'min'=>0,	'max'=>0xFFFF,	'err'=>0,	'unit'=> 'W/m²'	),
 	'HighUVIndex'		=>	array( 'pos' => 32,	'len' => 1,	'fn'=>'UV',		'min'=>0,	'max'=>0xFF,	'err'=>0,	'unit'=> '-'	),
 	'ForecastRule'		=>	array( 'pos' => 33,	'len' => 1,	'fn'=>'Forecast',	'min'=>0,	'max'=>0xFF,	'err'=>193,	'unit'=> '-'	),
@@ -164,7 +182,14 @@
 	'SoilMoistures-3'	=>	array( 'pos' => 51,	'len' => 1,	'fn'=>'Moistures',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> 'cb'	),
 	); 
 
-	$this->EEPROM = array ( // See Docs on pages 35, 36, 67, 38
+
+
+// ##############################################################################################
+/// XII. EEPROM configuration settings (See Docs on pages 35, 36, 67, 38)
+/// 
+// ##############################################################################################
+
+	$this->EEPROM = array (
 	'BarGain'		=>	array( 'pos' => 1,	'len' => 2,	'fn'=>'Gain',	'min'=>0,	'max'=>0xFFFF,	'err'=>255,	'unit'=> ''	),
 	'BarOffset'		=>	array( 'pos' => 3,	'len' => 2,	'fn'=>'Offset',	'min'=>0,	'max'=>0xFFFF,	'err'=>255,	'unit'=> ''	),
 	'BarCal'		=>	array( 'pos' => 5,	'len' => 2,	'fn'=>'Cal',	'min'=>0,	'max'=>0xFFFF,	'err'=>255,	'unit'=> ''	),
@@ -189,17 +214,40 @@
 	'StationList7'		=>	array( 'pos' => 37,	'len' => 2,	'fn'=>'Station',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
 	'StationList8'		=>	array( 'pos' => 39,	'len' => 2,	'fn'=>'Station',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),*/
 	'UnitBits'		=>	array( 'pos' => 41,	'len' => 1,	'fn'=>'UnitBits',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
-// 	'UnitBitsComp'		=>	array( 'pos' => 42,	'len' => 1,	'fn'=>'s2sc',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+// 	'UnitBitsComp'		=>	array( 'pos' => 42,	'len' => 1,	'fn'=>'s2sc',		'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
 	'SetupBits'		=>	array( 'pos' => 43,	'len' => 1,	'fn'=>'SetupBits',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
-	'RainSeasonStart'	=>	array( 'pos' => 44,	'len' => 1,	'fn'=>'s2sc',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> 'Month'	),
-	'ArchivePeriod'		=>	array( 'pos' => 45,	'len' => 1,	'fn'=>'s2sc',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> 'min'	),
-	'TempsInCal'		=>	array( 'pos' => 50,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
-// 	'TempInComp'		=>	array( 'pos' => 51,	'len' => 1,	'fn'=>'s2sc',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
-	'TempOutCal'		=>	array( 'pos' => 52,	'len' => 1,	'fn'=>'SmallTemp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
-	'TempCal'		=>	array( 'pos' => 53,	'len' => 15,	'fn'=>'SmallTemp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'RainSeasonStart'	=>	array( 'pos' => 44,	'len' => 1,	'fn'=>'s2uc',		'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> 'Month'	),
+	'ArchivePeriod'		=>	array( 'pos' => 45,	'len' => 1,	'fn'=>'s2uc',		'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> 'min'	),
+	'TempsInCal'		=>	array( 'pos' => 50,	'len' => 1,	'fn'=>'Temp',		'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+// 	'TempInComp'		=>	array( 'pos' => 51,	'len' => 1,	'fn'=>'s2sc',		'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'TempOutCal'		=>	array( 'pos' => 52,	'len' => 1,	'fn'=>'CalTemp',	'min'=>-12.8,	'max'=>12.7,	'err'=>NULL,	'unit'=> ''	),
+	'TempCal.extra2'	=>	array( 'pos' => 53,	'len' => 1,	'fn'=>'CalTemp',	'min'=>-12.8,	'max'=>12.7,	'err'=>NULL,	'unit'=> ''	),
+	'TempCal.extra3'	=>	array( 'pos' => 54,	'len' => 1,	'fn'=>'CalTemp',	'min'=>-12.8,	'max'=>12.7,	'err'=>NULL,	'unit'=> ''	),
+	'TempCal.extra4'	=>	array( 'pos' => 55,	'len' => 1,	'fn'=>'CalTemp',	'min'=>-12.8,	'max'=>12.7,	'err'=>NULL,	'unit'=> ''	),
+	'TempCal.extra5'	=>	array( 'pos' => 56,	'len' => 1,	'fn'=>'CalTemp',	'min'=>-12.8,	'max'=>12.7,	'err'=>NULL,	'unit'=> ''	),
+	'TempCal.extra6'	=>	array( 'pos' => 57,	'len' => 1,	'fn'=>'CalTemp',	'min'=>-12.8,	'max'=>12.7,	'err'=>NULL,	'unit'=> ''	),
+	'TempCal.extra7'	=>	array( 'pos' => 58,	'len' => 1,	'fn'=>'CalTemp',	'min'=>-12.8,	'max'=>12.7,	'err'=>NULL,	'unit'=> ''	),
+	'TempCal.extra8'	=>	array( 'pos' => 59,	'len' => 1,	'fn'=>'CalTemp',	'min'=>-12.8,	'max'=>12.7,	'err'=>NULL,	'unit'=> ''	),
 
-	'HumInCal'		=>	array( 'pos' => 68,	'len' => 1,	'fn'=>'Rate',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
-	'HumCal'		=>	array( 'pos' => 69,	'len' => 8,	'fn'=>'Rate',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'TempCal.soil1'		=>	array( 'pos' => 60,	'len' => 1,	'fn'=>'CalTemp',	'min'=>-12.8,	'max'=>12.7,	'err'=>NULL,	'unit'=> ''	),
+	'TempCal.soil2'		=>	array( 'pos' => 61,	'len' => 1,	'fn'=>'CalTemp',	'min'=>-12.8,	'max'=>12.7,	'err'=>NULL,	'unit'=> ''	),
+	'TempCal.soil3'		=>	array( 'pos' => 62,	'len' => 1,	'fn'=>'CalTemp',	'min'=>-12.8,	'max'=>12.7,	'err'=>NULL,	'unit'=> ''	),
+	'TempCal.soil4'		=>	array( 'pos' => 63,	'len' => 1,	'fn'=>'CalTemp',	'min'=>-12.8,	'max'=>12.7,	'err'=>NULL,	'unit'=> ''	),
+
+	'TempCal.leaf1'		=>	array( 'pos' => 64,	'len' => 1,	'fn'=>'CalTemp',	'min'=>-12.8,	'max'=>12.7,	'err'=>NULL,	'unit'=> ''	),
+	'TempCal.leaf2'		=>	array( 'pos' => 65,	'len' => 1,	'fn'=>'CalTemp',	'min'=>-12.8,	'max'=>12.7,	'err'=>NULL,	'unit'=> ''	),
+	'TempCal.leaf3'		=>	array( 'pos' => 66,	'len' => 1,	'fn'=>'CalTemp',	'min'=>-12.8,	'max'=>12.7,	'err'=>NULL,	'unit'=> ''	),
+	'TempCal.leaf4'		=>	array( 'pos' => 67,	'len' => 1,	'fn'=>'CalTemp',	'min'=>-12.8,	'max'=>12.7,	'err'=>NULL,	'unit'=> ''	),
+
+	'HumInCal'		=>	array( 'pos' => 68,	'len' => 1,	'fn'=>'Rate',	'min'=>0,	'max'=>100,	'err'=>255,	'unit'=> ''	),
+	'HumCal.extraCurrent'	=>	array( 'pos' => 69,	'len' => 1,	'fn'=>'Rate',	'min'=>0,	'max'=>100,	'err'=>255,	'unit'=> ''	),
+	'HumCal.extra2'		=>	array( 'pos' => 70,	'len' => 1,	'fn'=>'Rate',	'min'=>0,	'max'=>100,	'err'=>255,	'unit'=> ''	),
+	'HumCal.extra3'		=>	array( 'pos' => 71,	'len' => 1,	'fn'=>'Rate',	'min'=>0,	'max'=>100,	'err'=>255,	'unit'=> ''	),
+	'HumCal.extra4'		=>	array( 'pos' => 72,	'len' => 1,	'fn'=>'Rate',	'min'=>0,	'max'=>100,	'err'=>255,	'unit'=> ''	),
+	'HumCal.extra5'		=>	array( 'pos' => 73,	'len' => 1,	'fn'=>'Rate',	'min'=>0,	'max'=>100,	'err'=>255,	'unit'=> ''	),
+	'HumCal.extra6'		=>	array( 'pos' => 74,	'len' => 1,	'fn'=>'Rate',	'min'=>0,	'max'=>100,	'err'=>255,	'unit'=> ''	),
+	'HumCal.extra7'		=>	array( 'pos' => 75,	'len' => 1,	'fn'=>'Rate',	'min'=>0,	'max'=>100,	'err'=>255,	'unit'=> ''	),
+	'HumCal.extra8'		=>	array( 'pos' => 76,	'len' => 1,	'fn'=>'Rate',	'min'=>0,	'max'=>100,	'err'=>255,	'unit'=> ''	),
 
 	'DirCal'		=>	array( 'pos' => 77,	'len' => 2,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
 // 	'DefaultBarGraph'	=>	array( 'pos' => 79,	'len' => 1,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
@@ -246,13 +294,22 @@
 	'Rain15minAlarm'	=>	array( 'pos' => 169,	'len' => 2,	'fn'=>'Samples',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
 	'Rain24hAlarm'		=>	array( 'pos' => 171,	'len' => 2,	'fn'=>'Samples',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
 	'RainStormAlarm'	=>	array( 'pos' => 173,	'len' => 2,	'fn'=>'Samples',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
-	'EtDayAlarm'		=>	array( 'pos' => 175,	'len' => 1,	'fn'=>'ET1000',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'EtDayAlarm'		=>	array( 'pos' => 175,	'len' => 2,	'fn'=>'ET1000',	'min'=>0,	'max'=>0xfffe,	'err'=>0xffff,	'unit'=> ''	),
 // 	'GraphPointer'		=>	array( 'pos' => 177,	'len' => 8,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
 // 	'GraphData'		=>	array( 'pos' => 185,	'len' => 3898,	'fn'=>'Temp',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
 	'LogAverageTemperature'	=>	array( 'pos' => 4092,	'len' => 1,	'fn'=>'s2sc',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
 	);
 
-	$this->HiLow = array ( // See docs on pages 24, 25, 26
+
+
+// ##############################################################################################
+/// IX. Data Formats (See docs on pages 24, 25,26)
+/// 2. HILOW data format
+/// The "HILOWS" command sends a 436 byte data packet and a 2 byte CRC value. The data packet is
+/// broken up into sections of related data values.
+// ##############################################################################################
+
+	$this->HiLow = array (
 	'DailyLowBarometer'	=>	array( 'pos' => 0,	'len' => 2,	'fn'=>'Pressure',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
 	'DailyHighBarometer'	=>	array( 'pos' => 2,	'len' => 2,	'fn'=>'Pressure',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
 	'MonthLowBar'		=>	array( 'pos' => 4,	'len' => 2,	'fn'=>'Pressure',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),

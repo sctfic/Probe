@@ -112,7 +112,6 @@
 	}
 
 
-
 	function Pressure($str) {// Pressure...
 		$val = $this->hexToDec(strrev($str));
 		return $val/1000;
@@ -121,13 +120,14 @@
 	function Temp($str) {// Temperature...
 		return $this->s2sSht($str)/10;
 	}
+	function CalTemp($str) {// Temperature...
+		return $this->s2sc($str)/10;
+	}
 	function SmallTemp($str) {// Temperature...
-		$val = $this->hexToDec($str);
-		return $val==255 ? false : $val-90;
+		return $this->s2uc($str)-90;
 	}
 	function SmallTemp120($str) {// Temperature...
-		$val = $this->hexToDec($str);
-		return $val==255 ? false : $val-120;
+		return $this->s2uc($str)-120;
 	}
 
 	function Speed($str) {// Wind Speed...
@@ -140,11 +140,14 @@
 	function Radiation($str) {// Solar Radiation...
 		return $this->s2sSht($str);
 	}
+	function ET_h($str) {// Evapotranspiration...
+		return return $this->s2uc($str)/1000;
+	}
 	function ET1000($str) {// Evapotranspiration...
-		return return $this->s2sSht($str)/1000;
+		return return $this->s2uSht($str)/1000;
 	}
 	function ET100($str) {// Evapotranspiration...
-		return $this->s2us($str)/100;
+		return $this->s2uSht($str)/100;
 	}
 	function UV($str) {// UV level...
 		$val = $this->s2uc($str);
