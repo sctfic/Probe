@@ -13,4 +13,4 @@ Currently, our team test on the following platform/device :
 - A PC Ubuntu LAMP
    Vantage Pro2 Plus + IP
 
-We are in no way related to Davis Instrument, so please do NOT ask for support about their devices. If you need help with your station, visit their website: http://www.davis.com/.
+We are in no way related to Davis Instrument, so please do NOT ask for support about their devices. If you need help with your station, visit their website: http://www.davisnet.com/.
