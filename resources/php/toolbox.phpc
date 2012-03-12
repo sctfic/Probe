@@ -1,0 +1,374 @@
+<?php
+// require_once 'html.phpc'; // provide HTML method
+
+// ALLOWED PAGES !
+$GLOBALS['i18n:file'] = array(
+// PAGE FILE
+  'home' => 'home',
+  'features' => 'features',
+  'gallery' => 'screenshots',
+  'demo' => 'demo',
+  'download' => 'download',
+  'help' => 'help',
+  'faq' => 'faq',
+  'documentation' => 'documentation',
+  'forum' => 'forum',
+  'contact' => 'contact',
+  'team' => 'team',
+  'admin' => 'administration',
+  '' => ''
+);
+
+// error_reporting(E_ALL);
+// ini_set('display_errors', 'on');
+// require_once 'html.phpc'; // HTML elements and attribute class
+class toolbox /*extends html*/
+{
+
+  PUBLIC $PDF_NAME;
+
+  function pdf($fn, $lang='en')
+  {
+    return $fn.'-'.date('Y').'-'.$lang.'.pdf';
+//     return $_SERVE['SCRIPT_FILENAME'].'?'.$this->LANG.'&amp;pdf';
+  }
+
+  function server_id() { $this->getServerHost(); }
+  function getServerHost()
+  {
+    $result = '';
+    $host = $_SERVER['HTTP_HOST'];
+    $svr_id = explode('.', $host);
+    if (isset($srv_id[1])==TRUE)
+    {
+      list(, $result) = explode('.', $host);
+    }
+    //dump($result);
+    return $result;
+  }
+
+  function set_arg($key, $file = NULL, $line = NULL)
+  {// return FALSE if the requested $_REQUEST key doesn't exists
+	  if (isset($_REQUEST[$key])==TRUE)
+	  {
+  // 		return $_REQUEST[$key];
+		  return TRUE;
+	  } else {
+  // 		echo '>>> undef variable in <var class=\'e\'>'.basename($file).':'.$line.'</var><br/>';
+		  return FALSE;
+	  }
+  }
+
+
+  function here($file, $line)
+  {
+	  return basename($file).':'.$line.'<br/>';
+  }
+
+  static function dump($var, $label = null)
+  {
+	  echo $label.'<blockquote><pre>';
+	  ob_start ();
+  	  var_dump($var);
+	    $dump = ob_get_contents();
+	  ob_end_clean();
+		echo htmlspecialchars($dump);
+	  echo '</pre></blockquote>';
+  }
+
+  function glue($var)
+  {
+	  echo $var;
+  }
+
+function alphaNumOnly($str)
+{// http://drupal.org/node/63924
+  return preg_replace('~[^\\pL0-9_]+~u', '-', $str); // substitutes anything but letters, numbers and '_' with separator
+}
+
+function translitString($str)
+{// http://drupal.org/node/63924
+  return iconv("utf-8", "us-ascii//TRANSLIT", $str); // substitutes anything but letters, numbers and '_' with separator
+}
+
+function stringToID($str)
+{
+  return $this->translitString($this->alphaNumOnly($str));
+}
+
+function getAttributesList($arr)
+{
+  $attrList = '';
+
+  if (isset ($arr) && !is_null($arr))
+  {
+    foreach ($arr as $a => $val)
+    {
+      $attrList .= sprintf('%s="%s" ', $a, $val);
+    }
+  }
+
+  return $attrList;
+}
+
+function toString($value)
+{
+  $result = '';
+
+  if (is_array($value))
+  {
+    $result = implode($value, ' ');
+  } else
+  {
+   $result .= $value;
+  }
+
+  return $result;
+}
+
+function arrayToList($arr, $attrList = null)
+{
+//   $this->dump($attrList);
+  asort($arr);
+  $attrList = $this->getAttributesList($attrList);
+  $result = '<ol '.$attrList.'>';
+  foreach ($arr as $i => $item)
+  {
+    $result .= "<li>{$item}</li>";
+  }
+  $result .= '</ol>';
+
+  return $result;
+}
+
+  function array2select($name = 'unknown', $data = array('all' => 'Ã¢ÂÂ All Ã¢ÂÂ'), $select, $affich = TRUE)
+  {
+	  $result = "<select id='{$name}' name='{$name}'>";
+
+	  foreach ($data as $key => $value)
+	  {
+		  if ($key==$select)
+		  {
+			  $selected = "selected='selected'";
+		  } else {
+			  $selected = '';
+		  }
+		  $result .= "<option {$selected} value='{$value}'>{$key}</option>";
+	  }
+	  $result .= '</select>';
+  }
+
+  /*function br($varname) {
+	  global $$varname;
+	  var_dump($$varname);
+	  if (is_array($$varname)==TRUE)
+	  {
+		  echo $varname.':'; dump($$varname);
+	  } else
+	  {
+		  echo $varname.':'.$$varname;
+	  }
+	  echo '<br/>';
+  // 	echo $var.': '.$$var;
+  }*/
+  // $yourvariable = 'foobar';
+  // examplefunc('yourvariable');
+
+  function br($var = '')
+  {
+	  if (is_array($var)==TRUE)
+	  {
+		  echo dump($var);
+	  } else
+	  {
+		  echo $var;
+	  }
+	  echo '<br/>';
+  }
+
+
+  function google_finance($i, $j)
+  {
+    return 1.25;
+  }
+
+  function currency($price)
+  {
+    $current_currency = 'EUR';
+    $currency = localeconv();
+    $dest_currency = $currency['int_curr_symbol'];
+    $out = "%.".$currency["frac_digits"]."n";
+    $out = "%.0n";
+
+    if ($current_currency == trim($dest_currency))
+    {
+      //dump($current_currency." == ".$dest_currency.$price);
+      return money_format($out, $price);
+    } else
+    {
+      require_once("GoogleCurrencyConvertor.phpc");
+  //     $gcc = new GoogleCurrencyConvertor($price, $current_currency, $dest_currency);
+
+  //     return money_format($out, round($gcc->getRate()));
+        return $price;
+    }
+  }
+
+  function urlizer($str)
+  {
+    return htmlspecialchars($str, ENT_QUOTES);
+  }
+
+
+  function last_version()
+  {
+    return '2.03-FAKE';
+  }
+
+//   function is_locale($env, $me)
+//   {
+//     if ($env==$me)
+//     {
+//       return "class='active'";
+//     } else
+//     {
+//       return '';
+//     }
+//   }
+
+  function status($item)
+  {// add a CSS-class to the menu entry of the requested page.
+   // Special treatement for wiki/* and forum/* pages
+
+    $result = 'current ';
+    // dump($_REQUEST['p']); dump($item);
+    // dump(preg_match("!(forum|wiki)/!", $_SERVER["REQUEST_URI"], $matches));
+
+    if (preg_match("!(forum|wiki)/!", $_SERVER["REQUEST_URI"], $matches))
+    {// wiki or forum page => [help] menu
+      if ($item=="help")
+      {
+        return $result;
+      }
+    } else
+    {// default behaviour
+      if (isset($_REQUEST['p'])==FALSE)
+      {// no page requested -> home page
+        return $result;
+      } else
+      {// client ask a page
+        if (strtolower($_REQUEST['p'])==$item)
+        {// requested page == current entry menu
+          return $result;
+        }
+      }
+    }
+  }
+
+
+  function include_page()
+  {// we include the requested file if it's a valid one, else homepage
+
+    // default page
+    $key = 'home';
+    $file = str_replace('', '', $key);
+
+    if (isset($_REQUEST['p'])==TRUE)
+    {
+      $req = mb_strtolower($_REQUEST['p']); # some issue on capital character
+  //     dump($req);
+      if (in_array($req, $GLOBALS['i18n:file'])==TRUE)
+      {// the requested page is a valid file
+        $key = array_search($req, $GLOBALS['i18n:file']);
+        $file = str_replace('', '', $key);
+      }
+    }
+  //   dump($file);
+    $page['file'] = $file.'.php';
+    $page['title'] = ucfirst($GLOBALS['i18n:file'][$key]);
+
+    return $page;
+  }
+
+
+//   function BreadCrumbCV()
+//   {
+//     define('NAME', $name);
+//     return BREAD_CRUMB_CV;
+//   }
+
+
+  function relTag($tag, $tagText = null, $tagSpaceURL = 'wiki')
+  {// create microformat relation tag: http://microformats.org/wiki/rel-tag
+    if (is_null($tagText))
+      { $tagText = $tag; }
+    $tagURL = urlencode($tag);
+    switch ($tagSpaceURL)
+    {
+      case 'tr':
+        $tagSpaceURL = "http://technorati.com/tag/";
+      break;
+      case 'wiki':
+      default:
+        $i18n = new i18n();
+        $lang = $i18n->getRequestedLang();
+        $tagSpaceURL = "http://{$lang}.wikipedia.org/wiki/";
+        $tagURL = str_replace('+', '_', $tagURL);
+      break;
+    }
+    return sprintf('<a href="%s%s" rel="tag">%s</a>', $tagSpaceURL, $tagURL, $tagText);
+}
+
+function now($dateFormat) {
+  $now = new DateTime(date($dateFormat));
+  return $now->format($dateFormat);
+}
+
+function getTagContent( $str , $tag = 'abbr')
+{
+  $pattern = "!(.*)<[^>]+>(.*)</[^>]+>(.*)!U";
+  // Let's perform the regex
+  $do = preg_match_all($pattern, $str, $matches, PREG_SET_ORDER);
+
+  // Check if regex was successful
+  if ($do = true && isset($matches[0][0]) )
+  {// Matched something, show the matched string
+  $tagContent = array_shift($matches[0]);
+//   $this->dump( $matches[0] );
+
+    return trim(implode(' ', $matches[0]));
+  }
+}
+
+function getAbbrText( $str )
+{
+  // $this->dump( $str );
+  return $this->getTagContent($str, 'abbr');
+}
+
+function sanitizeToId(
+    $string,
+    $pattern = '/[\s\$_\.\-+!*\'\(\),\{\}|\\^~\[\]`<>#%";\/\?:@&=]+/' ,
+    $replacement = '-'
+  )
+  {
+  return trim(preg_replace($pattern, $replacement, strtolower($string) ), $replacement);
+}
+
+function getIdFrom( $str )
+{
+  $abbr = $this->getAbbrText($str);
+  return $this->sanitizeToId( (is_null($abbr) ? $str : $abbr ) );
+}
+
+
+// function nowToString()
+// { }
+
+  function __construct()
+  {
+
+  }
+}
+?>
+
