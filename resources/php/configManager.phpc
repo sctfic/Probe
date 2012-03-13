@@ -48,7 +48,7 @@ class configManager
      */
     static function _is_readable($filename) { //
         if (is_readable($filename)) {
-            echo _(sprintf('The file <i>%s</i> is readable', basename($filename)));
+//             echo _(sprintf('The file <i>%s</i> is readable', basename($filename)));
             return true;
         } else {
             echo _(sprintf('The file <i>%s</i> is <strong>not</strong> readable', $filename));
