@@ -8,11 +8,20 @@
     foreach ($stationConf as $stationId => $stationInfos) {?>
         <section id="<?php echo $stationId;?>">
             <h3><?php echo $stationId;?></h3>
-            <?php
-                foreach ($stationInfos as $key => $val) {
-
-                }
-            ?>
+            <form action="edit.php" method="get">
+                <fieldset>
+                <input type="hidden" name="config" value="station" />
+                <input type="hidden" name="stationId" value="<?php echo $stationId;?>" />
+                <?php
+                    foreach ($stationInfos as $infoKey => $infoVal) {
+                    ?>
+                        <label for="<?php echo $infoKey;?>"><?php echo $infoKey;?></label>
+                        <input id="<?php echo $infoKey;?>" name="<?php echo $infoKey;?>" type="text" readonly />
+                    <?php
+                    }
+                ?>
+                </fieldset>
+            </form>
         </section>
     <?php
     }
