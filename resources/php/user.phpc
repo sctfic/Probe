@@ -1,0 +1,62 @@
+<?php
+require_once 'i18n.phpc'; // set internationalisation environnement
+
+class user extends i18n
+{
+
+  PRIVATE $FIRSTNAME;
+  PRIVATE $LASTNAME;
+  PRIVATE $FULLNAME;
+  
+  PRIVATE $USERNAME;
+  PRIVATE $EMAIL;
+  PRIVATE $URL = array();
+
+  function setFirstName($value)
+    { $this->FIRSTNAME = $value; }
+  function getFirstName()
+    { return $this->FIRSTNAME; }
+  function setLastName($value)
+    { $this->LASTNAME = $value; }
+  function getLastName()
+    { return $this->LASTNAME; }
+  function setFullName($getLocale = NULL)
+  {
+    if (is_null($getLocale))
+      { $getLocale = $this->getCurrentLocale(); }
+      
+    switch($getLocale)
+    {// depending on the country firstname can be before or after the lastname
+      case 'zh':
+      case 'tw':
+      case 'jp':
+        $this->FULLNAME = $this->getLastName().' '.$this->getFirstName();
+        break;
+      case 'en':
+      case 'fr':
+      default:
+        $this->FULLNAME = $this->getFirstName().' '.$this->getLastName();
+        break;
+    }
+  }
+  function getFullName()
+    { return $this->FULLNAME; }
+  function getTranslitFullName()
+    { return iconv("UTF-8", "ASCII//TRANSLIT", $this->getFullName()); }
+
+
+function setUserName($value)
+  { $this->USERNAME = $value; }
+function getUserName()
+  { return $this->USERNAME; }    
+    
+  function setEmail($value)
+    { $this->EMAIL = $value; }
+  function getEmail()
+    { return $this->EMAIL; }
+
+  function __construct()
+  {
+  }
+}
+?>
