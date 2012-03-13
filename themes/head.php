@@ -14,7 +14,7 @@
 	<meta name="viewport" content="width=device-width">
 
     <link type="image/png" rel="shortcut icon" href="/.favicon.png">
-    <link rel="stylesheet/less" href="/themes/less/style.less">
+    <link rel="stylesheet/less" href="/themes/less/wswds.less">
 	<script src="/resources/js/libs/less-1.2.1.min.js"></script>
 
 	<!-- Use SimpLESS (Win/Linux/Mac) or LESS.app (Mac) to compile your .less files
