@@ -69,41 +69,66 @@ class station
 		}
 		return FALSE;
 	}
-	function Read_Configs() {
-		$cmd = array();
-		foreach($this->EEPROM as $key=>$val)
-		{
-			if (is_array($val))
-				$cmd[$key] = $this->GET_EEPROM($key);
-			else
-				$cmd[$key] = $this->GET_info($key);
-			if ($cmd[$key])
-			{
-				$this->StationConfig[$this->getKeyConf()]['Last_Read_Config'] = date('Y/m/d H:i:s');
-				$this->StationConfig[$this->getKeyConf()][$key] = $cmd[$key];
-				$this->SaveConfs();
-			}
-		}
-		return $cmd;
+
+
+// 	private function GET_info($cmd) { // VER, NVER, RXCHECK, BARDATA
+// 		fwrite ($this->fp, strtoupper($cmd)."\n");
+// 		if (fread($this->fp,6)==$this->symb['_OK_'])
+// 		{
+// 			$val = fread($this->fp,99);
+// 			$this->Waiting (0,'GET_info '.$cmd.' : OK');
+// 			return eval('return '.$this->EEPROM[$cmd].';');
+// 		}
+// 		$this->Waiting (0,'GET_info : Answer Error');
+// 		return FALSE;
+// 	}
+// 	function GET_EEPROM($cmd) {
+// 		fwrite ($this->fp, strtoupper('EEBRD '.$this->_EEPROM[$cmd]['pos']).' '.$this->_EEPROM[$cmd]['len']."\n");
+// 		$r = fread($this->fp, 1);
+// 		if ($r == $this->symb['ACK'])
+// 		{
+// 			$EEBRD = fread($this->fp, $this->_EEPROM[$cmd]['len']+2);
+// 			if (strlen($EEBRD)==$this->_EEPROM[$cmd]['len']+2 && !$this->CalculateCRC($EEBRD))
+// 			{
+// 				$val = $this->hexToDec(strrev(substr($EEBRD, 0,-2)));
+// // 				$this->Waiting (0, decbin($val));
+// 				$this->Waiting (0,'GET_EEPROM '.$cmd.' : OK');
+// 				return eval('return '.$this->_EEPROM[$cmd]['eval'].';');
+// 			}
+// 			$this->Waiting (0,'GET_EEPROM : CRC Error');
+// 			return False;
+// 		}
+// 		$this->Waiting (0,'GET_EEPROM : Answer Error');
+// 		return FALSE;
+// 	}
+
+// 	function PUT_infos($cmd) { // $cmd = array('PUTRAIN'=>'', 'PUTET'=>'', 'BAR'=>'', 'SETPER'=>'');
+// 		foreach($cmd as $key=>$val)
+// 		{
+// 			$cmd[$key] = $this-PUT_info($key);
+// 		}
+// 		return $cmd;
+// 	}
+
+// 	private function PUT_info($cmd) { // PUTRAIN, PUTET, BAR=P H, SETPER
+// 		fwrite ($this->fp, strtoupper($cmd)."\n");
+// 		$r = fread($this->fp, 1);
+// 		if ($r == $this->symb['ACK'])
+// 		{
+// 			$this->Waiting (0,'PUT_info '.$cmd.' : OK');
+// 			return true;
+// 		}
+// 		$this->Waiting (0,'PUT_info : Answer Error');
+// 		return FALSE;
+// 	}
+	function CloseConnection()	{
+		$this->StationConfig[$this->getKeyConf()]['Last']['Connected'] = date('Y/m/d H:i:s');
+		$this->SaveConfs();
+		$this->toggleBacklight(0);
+		fclose($this->fp);
+		return TRUE;
 	}
-	function PUT_infos($cmd) { // $cmd = array('PUTRAIN'=>'', 'PUTET'=>'', 'BAR'=>'', 'SETPER'=>'');
-		foreach($cmd as $key=>$val)
-		{
-			$cmd[$key] = $this-PUT_info($key);
-		}
-		return $cmd;
-	}
-	private function GET_info($cmd) { // VER, NVER, RXCHECK, BARDATA
-		fwrite ($this->fp, strtoupper($cmd)."\n");
-		if (fread($this->fp,6)==$this->symb['_OK_'])
-		{
-			$val = fread($this->fp,99);
-			$this->Waiting (0,'GET_info '.$cmd.' : OK');
-			return eval('return '.$this->EEPROM[$cmd].';');
-		}
-		$this->Waiting (0,'GET_info : Answer Error');
-		return FALSE;
-	}
+
 	function GET_EEPROM_4K() {
 		fwrite ($this->fp, strtoupper('GETEE'."\n");
 		$r = fread($this->fp, 1);
@@ -114,7 +139,7 @@ class station
 			if (strlen($EE)==4096 && $CRC==$this->CalculateCRC($EE))
 			{
 				$this->Waiting (0,'GET_EEPROM_4K : OK');
-				$this->StationConfig[$this->getKeyConf()]['Last_GET_EEPROM_4K'] = date('Y/m/d H:i:s');
+				$this->StationConfig[$this->getKeyConf()]['Last']['GET_EEPROM_4K'] = date('Y/m/d H:i:s');
 				$this->SaveConfs();
 				echo implode("\t",$this->ConvertStrRaw($EE))."\n";
 				return $this->EE;
@@ -124,43 +149,6 @@ class station
 		}
 		$this->Waiting (0,'GET_EEPROM_4K : Answer Error');
 		return FALSE;
-	}
-	function GET_EEPROM($cmd) {
-		fwrite ($this->fp, strtoupper('EEBRD '.$this->_EEPROM[$cmd]['pos']).' '.$this->_EEPROM[$cmd]['len']."\n");
-		$r = fread($this->fp, 1);
-		if ($r == $this->symb['ACK'])
-		{
-			$EEBRD = fread($this->fp, $this->_EEPROM[$cmd]['len']+2);
-			if (strlen($EEBRD)==$this->_EEPROM[$cmd]['len']+2 && !$this->CalculateCRC($EEBRD))
-			{
-				$val = $this->hexToDec(strrev(substr($EEBRD, 0,-2)));
-// 				$this->Waiting (0, decbin($val));
-				$this->Waiting (0,'GET_EEPROM '.$cmd.' : OK');
-				return eval('return '.$this->_EEPROM[$cmd]['eval'].';');
-			}
-			$this->Waiting (0,'GET_EEPROM : CRC Error');
-			return False;
-		}
-		$this->Waiting (0,'GET_EEPROM : Answer Error');
-		return FALSE;
-	}
-	private function PUT_info($cmd) { // PUTRAIN, PUTET, BAR=P H, SETPER
-		fwrite ($this->fp, strtoupper($cmd)."\n");
-		$r = fread($this->fp, 1);
-		if ($r == $this->symb['ACK'])
-		{
-			$this->Waiting (0,'PUT_info '.$cmd.' : OK');
-			return true;
-		}
-		$this->Waiting (0,'PUT_info : Answer Error');
-		return FALSE;
-	}
-	function CloseConnection()	{
-		$this->StationConfig[$this->getKeyConf()]['Last_Connected'] = date('Y/m/d H:i:s');
-		$this->SaveConfs();
-		$this->toggleBacklight(0);
-		fclose($this->fp);
-		return TRUE;
 	}
 	function Get_LOOP_Raw($nbr=1)	{
 		$_NBR = $nbr;
@@ -176,7 +164,7 @@ class station
 // 					$LOOP = substr($LOOP,0,-2);
 					$this->Waiting (0,'LOOP : Download the current Values');
 // 					file_put_contents($this->StationFolder.'../../ExportedData/LOOP['.($_NBR-$nbr).'].brut',$LOOP);
-					$this->StationConfig[$this->getKeyConf()]['Last_LOOP'] = date('Y/m/d H:i:s');
+					$this->StationConfig[$this->getKeyConf()]['Last']['LOOP'] = date('Y/m/d H:i:s');
 					$this->SaveConfs();
 					echo implode("\t",$this->ConvertStrRaw($LOOP))."\n";
 				}
@@ -209,7 +197,7 @@ class station
 // 				$HILOWS = substr($HILOWS,0,-2);
 				$this->Waiting (0,'HILOWS : Download Mini and Maxi');
 // 				file_put_contents($this->StationFolder.'../../ExportedData/HILOWS.brut',$HILOWS);
-				$this->StationConfig[$this->getKeyConf()]['Last_HILOWS'] = date('Y/m/d H:i:s');
+				$this->StationConfig[$this->getKeyConf()]['Last']['HILOWS'] = date('Y/m/d H:i:s');
 				$this->SaveConfs();
 				echo implode("\t",$this->ConvertStrRaw($HILOWS))."\n";
 				return true;
@@ -265,7 +253,7 @@ class station
 			if ($r == $this->symb['ACK'])
 			{
 				$this->Waiting (0,'SETTIME : '.$_date.' '.$_clock);
-				$this->StationConfig[$this->getKeyConf()]['Last_SETTIME'] = $_date.' '.$_clock;
+				$this->StationConfig[$this->getKeyConf()]['Last']['SETTIME'] = $_date.' '.$_clock;
 				$this->SaveConfs();
 				return $_date.' '.$_clock;
 			}
@@ -284,7 +272,7 @@ class station
 		$r = fread($this->fp, 1);			// Read the answer
 		if ($r == $this->symb['ACK'])			// ACK if VP2 understood
 		{
-			$d = $this->DMPAFT_SetVP2Date($this->StationConfig[$this->getKeyConf()]['Last_DMPAFT']); // define date of first archives record
+			$d = $this->DMPAFT_SetVP2Date($this->StationConfig[$this->getKeyConf()]['Last']['DMPAFT']); // define date of first archives record
 			fwrite($this->fp, $d);				// Send this date
 			$crc = $this->CalculateCRC($d);		// define the CRC of my date
 			fwrite($this->fp, $crc);			// Send this CRC
@@ -311,12 +299,12 @@ class station
 							{
 								$ArchiveStrRaw=substr($Page,1+52*$k,52);
 								$ArchDate = $this->DMPAFT_GetVP2Date(substr($ArchiveStrRaw,0,4));
-								if (strtotime($ArchDate) > strtotime($this->StationConfig[$this->getKeyConf()]['Last_DMPAFT']))
+								if (strtotime($ArchDate) > strtotime($this->StationConfig[$this->getKeyConf()]['Last']['DMPAFT']))
 								{
 // 									$this->Waiting (0,"\t".'ARCHIVE #'.($nbrArch++).' of '.$ArchDate.' saved.');
 // 									var_export ($this->ConvertStrRaw($ArchiveStrRaw));
 									echo implode("\t",$this->ConvertStrRaw($ArchiveStrRaw))."\n";
-									$this->StationConfig[$this->getKeyConf()]['Last_DMPAFT'] = $ArchDate;
+									$this->StationConfig[$this->getKeyConf()]['Last']['DMPAFT'] = $ArchDate;
 								}
 							}
 							$this->SaveConfs();
