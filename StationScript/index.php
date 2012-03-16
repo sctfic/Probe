@@ -16,16 +16,20 @@ foreach($stationConfig as $configKey=>$configValue)
 		if ($station->initConnection())
 		{
 			$station->Waiting( 0, _( sprintf('[Succès] Ouverture de la connexion à %s', $configKey) ) );
+			$LagTime = abs(strtotime($station->fetchStationTime()) - strtotime(date('Y/m/d H:i:s')));
+			if ($LagTime > 5) {	// OK
+				$station->Waiting( 0, sprintf( _( '[Infos] Default Clock synch : %ssec' ), $LagTime) );
+				if ($station->updateStationTime())							// OK
+					$station->Waiting (0,'Clock synch.');						// OK
+				else $station->Waiting( 0, _( '[Échec] Clock synch.'  ) );
+			}
 
 //			var_export ($station->Read_Configs());
 // 			$station->Get_HILOWS_Raw();	// OK
-			$station->Get_LOOP_Raw();	// OK
-// 			$station->Get_DMPAFT_Raw();	// OK
+// 			$station->Get_LOOP_Raw();	// OK
+			$station->Get_DMPAFT_Raw();	// OK
 // 			$station->fetchStationTime();
 			
-// 			if (abs(strtotime($station->fetchStationTime()) - strtotime(date('Y/m/d H:i:s'))) > 5)	// OK
-// 			  if ($station->updateStationTime())									// OK
-// 					$station->Waiting (0,'Clock synch.');							// OK
 
 			if ($station->closeConnection())
 				$station->Waiting( 0, sprintf( _('[Succès] Fermeture de %s correcte.'), $configKey ) );

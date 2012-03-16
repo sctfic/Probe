@@ -22,12 +22,13 @@ class station
 		$this->setStationFolder( dirname(__FILE__).DIRECTORY_SEPARATOR );
 		$this->setKeyConf($name);
 		$this->setStationConfig($stationConfig);
-		require_once ($this->StationFolder.'Tools.h.php');
-		require_once ($this->StationFolder.'EepromDumpAfter.h.php');
-		require_once ($this->StationFolder.'EepromLoop.h.php');
-		require_once ($this->StationFolder.'EepromHiLow.h.php');
-		require_once ($this->StationFolder.'EepromConfig.h.php');	
+		require ($this->StationFolder.'Tools.h.php');
+		require ($this->StationFolder.'EepromDumpAfter.h.php');
+		require ($this->StationFolder.'EepromLoop.h.php');
+		require ($this->StationFolder.'EepromHiLow.h.php');
+		require ($this->StationFolder.'EepromConfig.h.php');	
 	}
+	
 	function SaveConfs ()	{
 		$confs = $this->getStationConfig();
 		$confs[$this->getKeyConf()] = $this->StationConfig[$this->getKeyConf()];
@@ -37,6 +38,7 @@ class station
 	function GetConf ()	{
 		return eval('return '.file_get_contents(dirname(__FILE__).DIRECTORY_SEPARATOR.'../../stations.conf').';');
 	}
+	
 	function setKeyConf($value)	{ $this->KeyConf = $value; }
 	function getKeyConf()		{ return $this->KeyConf; }
 
@@ -62,8 +64,7 @@ class station
 			stream_set_timeout($this->fp, 0, 2500000);
 			if ($this->wakeUp())
 			{
-				$this->toggleBacklight(1);
-				return TRUE;
+				return $this->toggleBacklight(1);
 			}
 		}
 		return FALSE;
@@ -258,7 +259,7 @@ class station
 		else
 		{
 			fread($this->fp, 999);
-				$this->Waiting (0,'GETTIME : unknown Error');
+				$this->Waiting (0,'GETTIME : unknown Error '.ord($r).'='.ord($this->symb['ACK']));
 		}
 		return false;
 	}
@@ -296,7 +297,11 @@ class station
 		$r = fread($this->fp, 1);			// Read the answer
 		if ($r == $this->symb['ACK'])			// ACK if VP2 understood
 		{
-			$d = $this->DMPAFT_SetVP2Date($this->StationConfig[$this->getKeyConf()]['Last']['DMPAFT']); // define date of first archives record
+			;
+			if (isset($this->StationConfig[$this->getKeyConf()]['Last']['DMPAFT']))
+				$d = $this->DMPAFT_SetVP2Date($this->StationConfig[$this->getKeyConf()]['Last']['DMPAFT']); // define date of first archives record
+			else
+				$d = $this->DMPAFT_SetVP2Date('2000/00/00 00:00:00');
 			fwrite($this->fp, $d);				// Send this date
 			$crc = $this->CalculateCRC($d);		// define the CRC of my date
 			fwrite($this->fp, $crc);			// Send this CRC
@@ -469,8 +474,9 @@ class station
 		$x = array();
 		foreach($modele as $key=>$val)
 		{
-			$val['str'] = substr ($Str, $val['pos'], $val['len']);
-			$mesure = $this->$val['fn']($val['str']);
+			$StrValue = substr ($Str, $val['pos'], $val['len']);
+// 			$this->Waiting (0,$key.'['.strlen($StrValue).'] : '.$val['fn'].'('.$StrValue.');  '.$val['fn'].'('.$this->hexToDec($StrValue).');'); 
+			$mesure = $this->$val['fn'] ($StrValue);
 			if ($mesure != $val['err'] && $mesure >= $val['min'] && $mesure <= $val['max'])
 				$x[$key] = $mesure;
 			else
@@ -500,7 +506,7 @@ class station
 		return (($val>>15)?(($val ^ 0xFFFF)+1)*(-1):$val);
 	}
 	function s2sSht($str) {// String to Signed Short
-		return $this->s2sSht($str);
+		return $this->Short2Signed($this->hexToDec(strrev($str)));
 	}
 	function s2uSht($str) {// String to unSigned Short
 		return ($this->hexToDec(strrev($str)));
@@ -551,6 +557,7 @@ class station
 				($val&0x01)?"24h?":"AM/PM?",
 			));
 	}
+	
 	function Pressure($str) {// Pressure...
 		$val = $this->hexToDec(strrev($str));
 		return $val/1000;
