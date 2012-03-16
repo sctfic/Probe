@@ -6,7 +6,7 @@ $stationConfig = eval('return '.file_get_contents($workingFolder.'../stations.co
 foreach($stationConfig as $configKey=>$configValue)
 {
 	$stationFolder = $configValue['type']; // folder with class related to the given station model
-	require_once sprintf( "%s/%s/Station.c.php", $workingFolder, $stationFolder ); // load correct station class so it can be instantiated later
+	require_once sprintf( "%s/%s/Main.c.php", $workingFolder, $stationFolder ); // load correct station class so it can be instantiated later
 
 	if ($configValue['type']=='VP2-IP')
 	{
