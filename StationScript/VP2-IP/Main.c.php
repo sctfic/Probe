@@ -32,8 +32,8 @@ class station
 	function SaveConfs ()	{
 		$confs = $this->getStationConfig();
 		$confs[$this->getKeyConf()] = $this->StationConfig[$this->getKeyConf()];
-		file_put_contents (dirname(__FILE__).DIRECTORY_SEPARATOR.'../../stations.conf', var_export($confs,true));
-		return true;
+		file_put_contents (dirname(__FILE__).DIRECTORY_SEPARATOR.'../../stations.conf', var_export($confs,TRUE));
+		return TRUE;
 	}
 	function GetConf ()	{
 		return eval('return '.file_get_contents(dirname(__FILE__).DIRECTORY_SEPARATOR.'../../stations.conf').';');
@@ -120,7 +120,7 @@ class station
 // 				return eval('return '.$this->_EEPROM[$cmd]['eval'].';');
 // 			}
 // 			$this->Waiting (0,'GET_EEPROM : CRC Error');
-// 			return False;
+// 			return FALSE;
 // 		}
 // 		$this->Waiting (0,'GET_EEPROM : Answer Error');
 // 		return FALSE;
@@ -140,7 +140,7 @@ class station
 // 		if ($r == $this->symb['ACK'])
 // 		{
 // 			$this->Waiting (0,'PUT_info '.$cmd.' : OK');
-// 			return true;
+// 			return TRUE;
 // 		}
 // 		$this->Waiting (0,'PUT_info : Answer Error');
 // 		return FALSE;
@@ -154,25 +154,68 @@ class station
 		return TRUE;
 	}
 
-	function GET_EEPROM_4K()	{
-		fwrite ($this->fp, 'GETEE'."\n");
+	function EEBRD()	{
+		fwrite ($this->fp, 'EEBRD 0 B1'."\n");
 		$r = fread($this->fp, 1);
 		if ($r == $this->symb['ACK'])
 		{
-			$EE = fread($this->fp, 4096);
+			$EE = fread($this->fp, 177);
 			$CRC = fread($this->fp, 2);
-			if (strlen($EE)==4096 && $CRC==$this->CalculateCRC($EE))
+			if (strlen($EE)==177 && $CRC==$this->CalculateCRC($EE))
 			{
-				$this->Waiting (0,'GET_EEPROM_4K : OK');
-				$this->StationConfig[$this->getKeyConf()]['Last']['GET_EEPROM_4K'] = date('Y/m/d H:i:s');
+				$this->Waiting (0,'EEBRD : OK');
+				$this->StationConfig[$this->getKeyConf()]['Last']['EEBRD'] = date('Y/m/d H:i:s');
 				$this->SaveConfs();
-				echo implode("\t",$this->ConvertStrRaw($EE))."\n";
-				return $this->EE;
+				$EE=$this->ConvertStrRaw($EE);
+				var_export($EE);
+				return $EE;
 			}
-			$this->Waiting (0,'GET_EEPROM_4K : CRC Error');
-			return False;
+			else {
+				$this->Waiting (0,'EEBRD : CRC Error > '.strlen($EE));
+			}
+			return FALSE;
 		}
-		$this->Waiting (0,'GET_EEPROM_4K : Answer Error');
+		else if ($r == $this->symb['NAK'])
+		{
+			$this->Waiting (0,'EEBRD : Erreur de NAK');
+		}
+		else
+		{
+			fread($this->fp, 666);
+				$this->Waiting (0,'EEBRD : unknown Error');
+		}
+		return FALSE;
+	}
+	function EEBRD_AvgTemp()	{
+		fwrite ($this->fp, 'EEBRD FFC 1'."\n");
+		$r = fread($this->fp, 1);
+		if ($r == $this->symb['ACK'])
+		{
+			$EE = fread($this->fp, 1);
+			$CRC = fread($this->fp, 2);
+			if (strlen($EE)==1 && $CRC==$this->CalculateCRC($EE))
+			{
+				$this->Waiting (0,'EEBRD : OK');
+// 				$this->StationConfig[$this->getKeyConf()]['Last']['EEBRD'] = date('Y/m/d H:i:s');
+// 				$this->SaveConfs();
+// 				$EE=$this->ConvertStrRaw($EE);
+				var_export($EE);
+				return $EE;
+			}
+			else {
+				$this->Waiting (0,'EEBRD : CRC Error > '.strlen($EE));
+			}
+			return FALSE;
+		}
+		else if ($r == $this->symb['NAK'])
+		{
+			$this->Waiting (0,'EEBRD : Erreur de NAK');
+		}
+		else
+		{
+			fread($this->fp, 666);
+				$this->Waiting (0,'EEBRD : unknown Error');
+		}
 		return FALSE;
 	}
 	function Get_LOOP_Raw($nbr=1)	{
@@ -191,13 +234,12 @@ class station
 // 					file_put_contents($this->StationFolder.'../../ExportedData/LOOP['.($_NBR-$nbr).'].brut',$LOOP);
 					$this->StationConfig[$this->getKeyConf()]['Last']['LOOP'] = date('Y/m/d H:i:s');
 					$this->SaveConfs();
-					echo implode("\t",$this->ConvertStrRaw($LOOP))."\n";
+					echo implode("\t",$LOOP=$this->ConvertStrRaw($LOOP))."\n";
 				}
 				else
 					$this->Waiting (0,'LOOP : Erreur de CRC');
 				if ($nbr > 0) sleep(1);
 			}
-			return true;
 		}
 		else if ($r == $this->symb['NAK'])
 		{
@@ -206,10 +248,10 @@ class station
 		else
 		{
 			fwrite ($this->fp, $this->symb['CR']); // Cancel this command
-			fread($this->fp, 999);
+			fread($this->fp, 666);
 			$this->Waiting (0,'LOOP : unknown Error');
 		}
-		return true;
+		return FALSE;
 	}
 	function Get_HILOWS_Raw()	{
 		fwrite ($this->fp, "HILOWS\n");
@@ -224,8 +266,8 @@ class station
 // 				file_put_contents($this->StationFolder.'../../ExportedData/HILOWS.brut',$HILOWS);
 				$this->StationConfig[$this->getKeyConf()]['Last']['HILOWS'] = date('Y/m/d H:i:s');
 				$this->SaveConfs();
-				echo implode("\t",$this->ConvertStrRaw($HILOWS))."\n";
-				return true;
+				echo implode("\t",$HILOWS=$this->ConvertStrRaw($HILOWS))."\n";
+				return TRUE;
 			}
 			else
 				$this->Waiting (0,'HILOWS : Erreur de CRC');
@@ -236,10 +278,10 @@ class station
 		}
 		else
 		{
-			fread($this->fp, 999);
+			fread($this->fp, 666);
 				$this->Waiting (0,'HILOWS : unknown Error');
 		}
-		return true;
+		return FALSE;
 	}
 	function fetchStationTime()	{// 0x35 16 00 1d 0c 6f  0x7c 44  ==  2011/12/29 00:22:53
 		fwrite ($this->fp, "GETTIME\n");
@@ -258,10 +300,10 @@ class station
 		}
 		else
 		{
-			fread($this->fp, 999);
+			fread($this->fp, 666);
 				$this->Waiting (0,'GETTIME : unknown Error '.ord($r).'='.ord($this->symb['ACK']));
 		}
-		return false;
+		return FALSE;
 	}
 	function updateStationTime()	{// 0x35 16 00 1d 0c 6f  0x7c 44  ==  2011/12/29 00:22:53
 		fwrite ($this->fp, "SETTIME\n");
@@ -287,7 +329,7 @@ class station
 		}
 		else
 		{
-			fread($this->fp, 999);
+			fread($this->fp, 666);
 				$this->Waiting (0,'SETTIME : unknown Error');
 		}
 		return FALSE;
@@ -297,11 +339,10 @@ class station
 		$r = fread($this->fp, 1);			// Read the answer
 		if ($r == $this->symb['ACK'])			// ACK if VP2 understood
 		{
-			;
 			if (isset($this->StationConfig[$this->getKeyConf()]['Last']['DMPAFT']))
 				$d = $this->DMPAFT_SetVP2Date($this->StationConfig[$this->getKeyConf()]['Last']['DMPAFT']); // define date of first archives record
 			else
-				$d = $this->DMPAFT_SetVP2Date('2000/00/00 00:00:00');
+				$d = $this->DMPAFT_SetVP2Date('2012/01/01 00:00:00');
 			fwrite($this->fp, $d);				// Send this date
 			$crc = $this->CalculateCRC($d);		// define the CRC of my date
 			fwrite($this->fp, $crc);			// Send this CRC
@@ -345,13 +386,13 @@ class station
 							if (!$retry)
 							{
 								$this->Waiting (0,'Page #'.$j.' invalide, Aborting Download.');
-								fread($this->fp, 999); // vidange
+								fread($this->fp, 666); // vidange
 								fwrite($this->fp, $this->symb['ESC']);
-								return false;
+								return FALSE;
 							}
 							else
 							{
-								$vidange = fread($this->fp, 999); // vidange
+								$vidange = fread($this->fp, 666); // vidange
 								$this->Waiting (100,'Page #'.$j.' invalide by wrong CRC ('.strlen($vidange).'-'.strlen($Page).'), retry. '.$retry);
 								fwrite($this->fp, $this->symb['NAK']);
 								$retry--;
@@ -359,14 +400,14 @@ class station
 							}
 						}
 					}
-					return true;
+					return TRUE;
 				}
 				else if ($r == $this->symb['NAK'])
 					$this->Waiting (0,'DMPAFT Pages : NAK on first page, wrong Date or CRC!');
 				else
 				{
 					$this->Waiting (0,'DMPAFT Pages : NULL!');
-					fread($this->fp, 999); // vidange
+					fread($this->fp, 666); // vidange
 					$this->Waiting (8);
 				}
 			}
@@ -375,7 +416,7 @@ class station
 			else
 			{
 				$this->Waiting (0,'DMPAFT Date : NULL!');
-				fread($this->fp, 999); // vidange
+				fread($this->fp, 666); // vidange
 				$this->Waiting (8);
 			}
 		}
@@ -384,10 +425,10 @@ class station
 		else
 		{
 			$this->Waiting (0,'DMPAFT NULL!');
-			fread($this->fp, 999); // vidange
+			fread($this->fp, 666); // vidange
 			$this->Waiting (8);
 		}
-		return true;
+		return FALSE;
 	}
 /**
 	#########################################################################################
@@ -467,6 +508,8 @@ class station
 			case 438:
 				$modele = $this->HiLow;
 				break;
+			case 177:
+			case 999:
 			case 4096:
 				$modele = $this->EEPROM;
 				break;
@@ -477,7 +520,7 @@ class station
 			$StrValue = substr ($Str, $val['pos'], $val['len']);
 // 			$this->Waiting (0,$key.'['.strlen($StrValue).'] : '.$val['fn'].'('.$StrValue.');  '.$val['fn'].'('.$this->hexToDec($StrValue).');'); 
 			$mesure = $this->$val['fn'] ($StrValue);
-			if ($mesure != $val['err'] && $mesure >= $val['min'] && $mesure <= $val['max'])
+			if ($mesure != $val['err'] && $mesure >= $val['min'] && $mesure <= $val['max'] || is_array($mesure))
 				$x[$key] = $mesure;
 			else
 				$x[$key] = NULL;
@@ -485,7 +528,7 @@ class station
 		return $x;
 	}
 		function Bool($str) {// 
-		return $this->hexToDec($str) ? true :false;
+		return $this->hexToDec($str) ? TRUE :FALSE;
 	}
 
 	function Char2Signed($val) {
@@ -494,7 +537,7 @@ class station
 		return (($val>>7)?(($val ^ 0xFF)+1)*(-1):$val);
 	}
 	function s2sc($str) {// String to Signed Char
-		return Char2Signed($this->hexToDec($str));
+		return $this->Char2Signed($str);
 	}
 	function s2uc($str) {// String to unSigned Char
 		return ($this->hexToDec($str));
@@ -536,6 +579,7 @@ class station
 	}
 
 	function UnitBits($str) {// ...
+		$val = $this->s2uc($str);
 		return array_combine(array("Wind","Rain","Elev","Temp","Barom"),
 			array(
 				!(($val&0xC0)>>6)?"mph":(((($val&0xC0)>>6)==1)?"m/s":(((($val&0xC0)>>6)==2)?"Km/h":"Knots")),
@@ -546,6 +590,7 @@ class station
 		));
 	}
 	function SetupBits($str) {// ...
+		$val = $this->s2uc($str);
 		return array_combine(array("Longitude:","Latitude:","RainCupSize","WinCupSize","DayMonth","AM/PM","12/24"),
 			array(
 				(($val&0x80)>>7)?"East":"West",
@@ -596,7 +641,7 @@ class station
 	}
 	function UV($str) {// UV level...
 		$val = $this->s2uc($str);
-		return $val==255 ? false : $val/10;
+		return $val==255 ? FALSE : $val/10;
 	}
 
 	function Forecast($str) {// Forecast for next day...
