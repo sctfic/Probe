@@ -186,4 +186,8 @@
 // 	'GraphData'		=>	array( 'pos' => 185,	'len' => 3898,	'w'=>false,	'fn'=>'Temp',		'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
 //	'LogAverageTemperature'	=>	array( 'pos' => 4092,	'len' => 1,	'w'=>false,	'fn'=>'s2sc',		'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
 	);
+	
+	$this->EEPROM_FFC = array (
+	'LogAverageTemperature'	=>	array( 'pos' => 1,	'len' => 1,	'w'=>false,	'fn'=>'bool',		'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	);
 ?>

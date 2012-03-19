@@ -28,8 +28,8 @@ foreach($stationConfig as $configKey=>$configValue)
 // 				$station->Get_HILOWS_Raw();	// OK
 // 				$station->Get_LOOP_Raw();	// OK
 // 				$station->Get_DMPAFT_Raw();	// OK
-				$station->EEBRD();	// OK
-
+// 				$station->EEBRD();	// OK
+				$station->EEBRD_AvgTemp();	// OK
 				if ($station->closeConnection())
 					$station->Waiting( 0, sprintf( _('[Succès] Fermeture de %s correcte.'), $configKey ) );
 				else

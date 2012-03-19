@@ -198,7 +198,7 @@ class station
 				$this->Waiting (0,'EEBRD : OK');
 // 				$this->StationConfig[$this->getKeyConf()]['Last']['EEBRD'] = date('Y/m/d H:i:s');
 // 				$this->SaveConfs();
-// 				$EE=$this->ConvertStrRaw($EE);
+				$EE=$this->ConvertStrRaw($EE);
 				var_export($EE);
 				return $EE;
 			}
@@ -509,9 +509,12 @@ class station
 				$modele = $this->HiLow;
 				break;
 			case 177:
-			case 999:
-			case 4096:
+// 			case 999:
+// 			case 4096:
 				$modele = $this->EEPROM;
+				break;
+			case 1:
+				$modele = $this->EEPROM_FFC;
 				break;
 		}
 		$x = array();
