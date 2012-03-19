@@ -1,6 +1,9 @@
 <?php // clear;php5 -f WsWds/index.php
 // StationScript
 $workingFolder = dirname(__FILE__).DIRECTORY_SEPARATOR;
+require_once($GLOBALS['workingFolder'].'../resources/php/configManager.phpc');
+$stationConf = configManager::getConfig('station');
+
 $stationConfig = eval('return '.file_get_contents($workingFolder.'../stations.conf').';');
 
 foreach($stationConfig as $configKey=>$configValue)
@@ -16,20 +19,14 @@ foreach($stationConfig as $configKey=>$configValue)
 			if ($station->initConnection())
 			{
 				$station->Waiting( 0, _( sprintf('[Succès] Ouverture de la connexion à %s', $configKey) ) );
-				$LagTime = abs(strtotime($station->fetchStationTime()) - strtotime(date('Y/m/d H:i:s')));
-				if ($LagTime > 5) {	// OK
-					$station->Waiting( 0, sprintf( _( '[Infos] Default Clock synch : %ssec' ), $LagTime) );
-					if ($station->updateStationTime())							// OK
-						$station->Waiting (0,'Clock synch.');						// OK
-					else $station->Waiting( 0, _( '[Échec] Clock synch.'  ) );
-				}
 
 // 				var_export ($station->Read_Configs());
 // 				$station->Get_HILOWS_Raw();	// OK
 // 				$station->Get_LOOP_Raw();	// OK
 // 				$station->Get_DMPAFT_Raw();	// OK
-// 				$station->EEBRD();	// OK
-				$station->EEBRD_AvgTemp();	// OK
+// 				$station->EEBRD(11, 6);	// OK
+				var_export($station->EEBRD_Confs());	// OK
+
 				if ($station->closeConnection())
 					$station->Waiting( 0, sprintf( _('[Succès] Fermeture de %s correcte.'), $configKey ) );
 				else
