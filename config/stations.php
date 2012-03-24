@@ -1,4 +1,5 @@
-array (
+<?php
+$conf = array (
   'VP2-Gtd' => 
   array (
     'IP' => 'nas-alban.no-ip.org',
@@ -6,8 +7,8 @@ array (
     'type' => 'VP2-IP',
     'Last' => 
     array (
-      'EEBRD' => '2012/03/24 10:55:25',
-      'Connected' => '2012/03/24 10:55:25',
+      'Connected' => '2012/03/24 19:36:03',
+      'DumpAfter' => '2012/03/24 19:37:07',
     ),
   ),
   'VP2-Inside' => 
@@ -16,4 +17,5 @@ array (
     'Port' => 22222,
     'type' => 'VP2-IP',
   ),
-)
+);
+?>

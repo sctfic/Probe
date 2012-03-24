@@ -1,10 +1,9 @@
 <?php // clear;php5 -f WsWds/index.php
 // StationScript
 $workingFolder = dirname(__FILE__).DIRECTORY_SEPARATOR;
-require_once($GLOBALS['workingFolder'].'../resources/php/configManager.phpc');
-$stationConf = configManager::getConfig('station');
-echo $_SERVER['DOCUMENT_ROOT']."\n";
-
+require_once($workingFolder.'../config/rwConf.c.php');
+$stationConf = configManager::readConfig('station');
+var_export($stationConf);
 foreach($stationConf as $configKey=>$configValue)
 {
 	$stationFolder = $configValue['type']; // folder with class related to the given station model
@@ -15,8 +14,6 @@ foreach($stationConf as $configKey=>$configValue)
 		case 'VP2-IP':
 			echo sprintf ("\n%'+40s %16s %'+40s\n", "", $configKey, "");
 			$station = new station($configKey, $configValue);
-echo '>> '.$station->DMPAFT_GetVP2Date (0x06D303A2).' <<'."\n";
-echo '>> '.$station->DMPAFT_GetVP2Date ($station->DMPAFT_SetVP2Date('2012/06/19 00:30:00')).' <<'."\n";
 			if ($station->initConnection()){
 				$configValue['Last']['Connected'] = date('Y/m/d H:i:s');
 				$station->Waiting( 0, _( sprintf('[Succès] Ouverture de la connexion à %s', $configKey) ) );
@@ -29,10 +26,10 @@ echo '>> '.$station->DMPAFT_GetVP2Date ($station->DMPAFT_SetVP2Date('2012/06/19 
 // 					$configValue['Last']['Loop'] = date('Y/m/d H:i:s');
 // 					var_export($retuned);	// OK
 // 				}
-					if (($retuned = $station->get_DMPAFT($configValue['Last']['DumpAfter']))) {
-						$configValue['Last']['DumpAfter'] = date('Y/m/d H:i:s');
-						var_export($retuned);	// OK
-					}
+				if (($retuned = $station->get_DMPAFT($configValue['Last']['DumpAfter']))) {
+					$configValue['Last']['DumpAfter'] = date('Y/m/d H:i:s');
+					var_export($retuned);	// OK
+				}
 // 				if (($retuned = $station->EEBRD_Confs())) {
 // 					$configValue['Last']['AllConfs'] = date('Y/m/d H:i:s');
 // 					var_export($retuned);	// OK
@@ -53,7 +50,7 @@ echo '>> '.$station->DMPAFT_GetVP2Date ($station->DMPAFT_SetVP2Date('2012/06/19 
 		default :
 	}
 	$stationConf[$configKey]=$configValue;
-// 	configManager::setConfig('station', $stationConf);
+	configManager::writeConfig('station', $stationConf);
 }
 echo "\n\n\n\n";
 ?>

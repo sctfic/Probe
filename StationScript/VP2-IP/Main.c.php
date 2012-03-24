@@ -16,7 +16,7 @@ class station
 	protected $Trend = null;
 	protected $IP = null;
 	protected $Port = null;
-	public $_version = 0.10;
+	public $_version = 0.12;
 
 
 	function __construct($name, $myConfig)	{
@@ -306,7 +306,7 @@ class station
 				if (strlen($r)==6 && $this->CalculateCRC($r)==0x0000)
 				{
 					$nbrArch=0;
-					$retry = $this->retry;
+					$retry = $this->retry-1;
 					$nbrPages = $this->hexToDec (strrev(substr($r,0,2)));		// Split Bytes in revers order : Nbr of page
 					$firstArch = $this->hexToDec (strrev(substr($r,2,2)));		// Split Bytes in revers order : # of first archive
 					$this->Waiting (0,'There are '.$nbrPages.'p. in queue, from archive '.$firstArch.' on first page.');
@@ -344,6 +344,7 @@ class station
 							}
 							else
 							{
+								$this->wakeUp();
 								$vidange = fread($this->fp, 666); // vidange
 								$this->Waiting (100,'Page #'.$j.' invalide by wrong CRC ('.strlen($vidange).'-'.strlen($Page).'), retry. '.$retry);
 								fwrite($this->fp, $this->symb['NAK']);
@@ -399,7 +400,7 @@ class station
 		$TimeStamp = $this->hexToDec(strrev($TimeStamp));
 		$h = str_pad((int)($TimeStamp/100),2,'0',STR_PAD_LEFT);
 		$min = str_pad($TimeStamp-$h*100,2,'0',STR_PAD_LEFT);
-		echo "$h => int $TimeStamp/100 = ".(int)($TimeStamp/100)."\n";
+/*		echo "$h => int $TimeStamp/100 = ".(int)($TimeStamp/100)."\n";*/
 		return $h.':'.$min.':00';
 	}
 	function DMPAFT_GetVP2Date ($VP2Date)	{// 2003/06/19 09:30:00  <=  0x03A2 0x06D3
@@ -412,7 +413,6 @@ class station
 		$h = substr($StrDate, -8, 2);
 		$min = substr($StrDate, -5, 2);
 		$s = substr($StrDate, -2);
-		
 		$d = ((($y-2000)*512+$m*32+$d)<<16) + ($h*100+$min);							// settype($d, 'integer');
 		$d = chr(($d&0xff0000)>>16).chr(($d&0xff000000)>>24).chr($d&0xff).chr(($d&0xff00)>>8);	// Reverse version
 		return $d;

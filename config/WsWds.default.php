@@ -1,9 +1,10 @@
+<?php
 // ++++++++++++++++++++++++++++++++++++
 // do NOT edit/remove this file under any condition !
 // If you do so, we won't be able to come back to default settings
 // ++++++++++++++++++++++++++++++++++++
 
-array (
+$conf = array (
     'AdminInterface' => array (
         'Username' => '',
         'Password' => '',
@@ -43,7 +44,22 @@ array (
         'Username' => 'WsWds',
         'Password' => '',
         ),
-    '' => array (
+    'DEMETER' => array (
+        'useIt' => False,
+        'Serveur' => '127.0.0.1',
+        'Port' => 21,
+        ),
+    'CWOP' => array (
+        'useIt' => False,
+        'Serveur' => '127.0.0.1',
+        'Port' => 21,
+        ),
+    'GLOBE' => array (
+        'useIt' => False,
+        'Serveur' => '127.0.0.1',
+        'Port' => 21,
+        ),
+    'WeatherUnderground' => array (
         'useIt' => False,
         'Serveur' => '127.0.0.1',
         'Port' => 21,
@@ -53,4 +69,5 @@ array (
         'Serveur' => '127.0.0.1',
         'Port' => 80,
     ),
-)
+);
+?>
