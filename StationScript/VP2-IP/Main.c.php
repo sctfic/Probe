@@ -2,11 +2,10 @@
 
 class station
 {
-	protected $KeyConf=NULL;	// FileConf of this Vantage Pro2
 	protected $fp=NULL;	// Pointer of VP2 Connection
 	protected $symb=NULL;
 	protected $StationFolder=NULL;
-	protected $StationConfig=NULL;
+// 	protected $StationConfig=NULL;
 	protected $retry=3;	// number of attempts before aborting
 	protected $backLightScreen=FALSE; // actual state of backlight screen
 	protected $table = null;
@@ -15,13 +14,16 @@ class station
 	public $HiLow = null;
 	protected $EEPROM = null;
 	protected $Trend = null;
+	protected $IP = null;
+	protected $Port = null;
 	public $_version = 0.10;
 
 
-	function __construct($stationConfig, $name)	{
+	function __construct($name, $myConfig)	{
 		$this->setStationFolder( dirname(__FILE__).DIRECTORY_SEPARATOR );
-		$this->setKeyConf($name);
-		$this->setStationConfig($stationConfig);
+		$this->IP = $myConfig['IP'];
+		$this->Port = $myConfig['Port'];
+// 		$this->setStationConfig($stationConfig);
 		require ($this->StationFolder.'Tools.h.php');
 		require ($this->StationFolder.'EepromDumpAfter.h.php');
 		require ($this->StationFolder.'EepromLoop.h.php');
@@ -29,42 +31,45 @@ class station
 		require ($this->StationFolder.'EepromConfig.h.php');	
 	}
 	
-	function SaveConfs ()	{
-		$confs = $this->getStationConfig();
-		$confs[$this->getKeyConf()] = $this->StationConfig[$this->getKeyConf()];
-		file_put_contents (dirname(__FILE__).DIRECTORY_SEPARATOR.'../../stations.conf', var_export($confs,TRUE));
-		return TRUE;
-	}
-	function GetConf ()	{
-		return eval('return '.file_get_contents(dirname(__FILE__).DIRECTORY_SEPARATOR.'../../stations.conf').';');
-	}
+// 	function SaveConfs ()	{
+// 		$confs = $this->getStationConfig();
+// 		$confs[$this->getKeyConf()] = $this->StationConfig[$this->getKeyConf()];
+// 		file_put_contents (dirname(__FILE__).DIRECTORY_SEPARATOR.'../../stations.conf', var_export($confs,TRUE));
+// 		return TRUE;
+// 	}
+// 	function GetConf ()	{
+// 		return eval('return '.file_get_contents(dirname(__FILE__).DIRECTORY_SEPARATOR.'../../stations.conf').';');
+// 	}
 	
-	function setKeyConf($value)	{ $this->KeyConf = $value; }
-	function getKeyConf()		{ return $this->KeyConf; }
-
-	function setStationConfig($value)	{ $this->StationConfig = $value; }
-	function getStationConfig()		{ return $this->StationConfig; }
-
+// 	function setStationConfig($value)	{ $this->StationConfig = $value; }
+// 	function getStationConfig()		{ return $this->StationConfig; }
+// 
 	function setStationFolder($value)	{ $this->StationFolder = $value; }
 	function getStationFolder()		{ return $this->StationFolder; }
-
-	function getStationIP()		{ return $this->StationConfig[$this->getKeyConf()]['IP']; }
-	function getStationPort()	{ return $this->StationConfig[$this->getKeyConf()]['Port']; }
+// 
 
 	public function initConnection()	{
-		$errno = 0;
-		$this->fp = @fsockopen(
-			$this->getStationIP(),
-			$this->getStationPort(),
-			&$errno
-		);
-
-		if ($this->fp && $errno==0)
-		{
-			stream_set_timeout($this->fp, 0, 2500000);
-			if ($this->wakeUp())
+		for ($i=1;$i>=0;$i--){
+			$errno = 0;
+			$this->fp = @fsockopen(
+				$this->IP,
+				$this->Port,
+				&$errno
+			);
+			if ($this->fp && $errno==0)
 			{
-				return $this->toggleBacklight(1);
+				stream_set_timeout($this->fp, 0, 2500000);
+				if ($this->wakeUp())
+				{
+					$this->toggleBacklight(1);
+					return TRUE;
+				}
+				else
+				{
+					sleep(2*$i);
+					$this->CloseConnection();
+					sleep(2*$i);
+				}
 			}
 		}
 		return FALSE;
@@ -95,11 +100,10 @@ class station
 	}
 
 	function CloseConnection()	{
-		$this->StationConfig[$this->getKeyConf()]['Last']['Connected'] = date('Y/m/d H:i:s');
-		$this->SaveConfs();
 		$this->toggleBacklight(0);
-		fclose($this->fp);
-		return TRUE;
+		if (fclose($this->fp))
+			return TRUE;
+		else return FALSE;
 	}
 
 	function EEBRD_Confs()	{
@@ -107,8 +111,6 @@ class station
 		if (is_array($a)){
 			$b = $this->EEBRD(4092, 1);
 			if (is_array($b)){
-				$this->StationConfig[$this->getKeyConf()]['Last']['EEBRD'] = date('Y/m/d H:i:s');
-				$this->SaveConfs();
 				$EE = array_merge($a, $b, $a['UnitBits'], $a['SetupBits']);
 				unset($EE['UnitBits']);
 				unset($EE['SetupBits']);
@@ -163,7 +165,7 @@ class station
 		return FALSE;
 	}
 
-	function Get_LOOP_Raw($nbr=1)	{
+	function get_LOOP($nbr=1)	{
 		$_NBR = $nbr;
 		fwrite ($this->fp, "LOOP $nbr\n");
 		$r = fread($this->fp, 1);
@@ -177,14 +179,14 @@ class station
 // 					$LOOP = substr($LOOP,0,-2);
 					$this->Waiting (0,'[LOOP] : Download the current Values');
 // 					file_put_contents($this->StationFolder.'../../ExportedData/LOOP['.($_NBR-$nbr).'].brut',$LOOP);
-					$this->StationConfig[$this->getKeyConf()]['Last']['LOOP'] = date('Y/m/d H:i:s');
-					$this->SaveConfs();
 					echo implode("\t",$LOOP=$this->ConvertStrRaw($LOOP))."\n";
 				}
 				else
 					$this->Waiting (0,'[LOOP] : Erreur de CRC');
 				if ($nbr > 0) sleep(1);
+				$LOOPS[]=$LOOP;
 			}
+			return $LOOPS;
 		}
 		else if ($r == $this->symb['NAK'])
 		{
@@ -198,7 +200,7 @@ class station
 		}
 		return FALSE;
 	}
-	function Get_HILOWS_Raw()	{
+	function get_HILOWS()	{
 		fwrite ($this->fp, "HILOWS\n");
 		$r = fread($this->fp, 1);
 		if ($r == $this->symb['ACK'])
@@ -209,10 +211,8 @@ class station
 // 				$HILOWS = substr($HILOWS,0,-2);
 				$this->Waiting (0,'[HILOWS] : Download Mini and Maxi');
 // 				file_put_contents($this->StationFolder.'../../ExportedData/HILOWS.brut',$HILOWS);
-				$this->StationConfig[$this->getKeyConf()]['Last']['HILOWS'] = date('Y/m/d H:i:s');
-				$this->SaveConfs();
 				echo implode("\t",$HILOWS=$this->ConvertStrRaw($HILOWS))."\n";
-				return TRUE;
+				return $HILOWS;
 			}
 			else
 				$this->Waiting (0,'[HILOWS] : Erreur de CRC');
@@ -265,8 +265,6 @@ class station
 			if ($r == $this->symb['ACK'])
 			{
 				$this->Waiting (0,'[SETTIME] : '.$_date.' '.$_clock);
-				$this->StationConfig[$this->getKeyConf()]['Last']['SETTIME'] = $_date.' '.$_clock;
-				$this->SaveConfs();
 				return $_date.' '.$_clock;
 			}
 			else
@@ -279,7 +277,7 @@ class station
 		}
 		return FALSE;
 	}
-	function synchronize($maxLag)
+	function clockSync($maxLag)
 	{
 		$realLag = abs(strtotime($station->fetchStationTime()) - strtotime(date('Y/m/d H:i:s')));
 		if ($realLag > $maxLag) {	// OK
@@ -289,22 +287,22 @@ class station
 			else $this->Waiting( 0, _( '[Echec] Clock synch.'));
 		}
 	}
-	function Get_DMPAFT_Raw()	{
+	function get_DMPAFT($last='2012/01/01 00:00:00')	{
+		$dateRegex = '/^20[\d]{2}\/[\d]{2}\/[\d]{2}\s[\d]{2}:[\d]{2}:[\d]{2}$/';
+		if (preg_match($dateRegex, $last)!=1)
+			$last='2012/01/01 00:00:00';
 		fwrite($this->fp,"DMPAFT\n");			// Send the command to VP2 : DumpAfter
 		$r = fread($this->fp, 1);			// Read the answer
 		if ($r == $this->symb['ACK'])			// ACK if VP2 understood
 		{
-			if (isset($this->StationConfig[$this->getKeyConf()]['Last']['DMPAFT']))
-				$d = $this->DMPAFT_SetVP2Date($this->StationConfig[$this->getKeyConf()]['Last']['DMPAFT']); // define date of first archives record
-			else
-				$d = $this->DMPAFT_SetVP2Date('2012/01/01 00:00:00');
+			$d = $this->DMPAFT_SetVP2Date($last);
 			fwrite($this->fp, $d);				// Send this date
-			$crc = $this->CalculateCRC($d);		// define the CRC of my date
+			$crc = $this->CalculateCRC($d);			// define the CRC of my date
 			fwrite($this->fp, $crc);			// Send this CRC
 			$r = fread($this->fp, 1);			// Read the answer
 			if ($r == $this->symb['ACK'])			// ACK if VP2 confirm the CRC
 			{
-				$r = fread($this->fp, 6);			// Read the answer
+				$r = fread($this->fp, 6);		// Read the answer
 				if (strlen($r)==6 && $this->CalculateCRC($r)==0x0000)
 				{
 					$nbrArch=0;
@@ -316,7 +314,7 @@ class station
 					for ($j=0;$j<$nbrPages;$j++)
 					{
 						$Page = fread($this->fp, 267);
-						$this->Waiting (0,'Download Archive PAGE #'.$j.' since : '.$this->DMPAFT_GetVP2Date(substr($Page,1,4)));
+						$this->Waiting (0,'Download Archive PAGE #'.$j.' since : '.$this->DMPAFT_GetVP2Date(substr($Page,1+52*($firstArch),4)));
 						if (strlen($Page)==267 && $this->CalculateCRC($Page)==0x0000)
 						{
 							fwrite($this->fp, $this->symb['ACK']);
@@ -324,15 +322,14 @@ class station
 							{
 								$ArchiveStrRaw=substr($Page,1+52*$k,52);
 								$ArchDate = $this->DMPAFT_GetVP2Date(substr($ArchiveStrRaw,0,4));
-								if (strtotime($ArchDate) > strtotime($this->StationConfig[$this->getKeyConf()]['Last']['DMPAFT']))
+								if (strtotime($ArchDate) > strtotime($last))
 								{
 // 									$this->Waiting (0,"\t".'ARCHIVE #'.($nbrArch++).' of '.$ArchDate.' saved.');
 // 									var_export ($this->ConvertStrRaw($ArchiveStrRaw));
 									echo implode("\t",$this->ConvertStrRaw($ArchiveStrRaw))."\n";
-									$this->StationConfig[$this->getKeyConf()]['Last']['DMPAFT'] = $ArchDate;
+									$LastArchDate = $ArchDate;
 								}
 							}
-							$this->SaveConfs();
 							$retry = $this->retry;
 							$firstArch=0;
 						}
@@ -343,7 +340,7 @@ class station
 								$this->Waiting (0,'Page #'.$j.' invalide, Aborting Download.');
 								fread($this->fp, 666); // vidange
 								fwrite($this->fp, $this->symb['ESC']);
-								return FALSE;
+								return $LastArchDate;
 							}
 							else
 							{
@@ -355,7 +352,7 @@ class station
 							}
 						}
 					}
-					return TRUE;
+					return $LastArchDate;
 				}
 				else if ($r == $this->symb['NAK'])
 					$this->Waiting (0,'DMPAFT Pages : NAK on first page, wrong Date or CRC!');
@@ -390,16 +387,6 @@ class station
 	#########		Function for manage Variable and Conf-File		#########
 	#########################################################################################
 **/
-	function DMPAFT_SetVP2Date ($StrDate)	{// 2003/06/19 09:30:00  =>  0x03A2 0x06D3
-		$y = substr($StrDate, 0, 4);
-		$m = substr($StrDate, 5, 2);
-		$d = substr($StrDate, 8, 2);
-		$h = substr($StrDate, -8, 2);
-		$min = substr($StrDate, -5, 2);
-		$s = substr($StrDate, -2);
-		$d = chr(($d&0xff0000)>>16).chr(($d&0xff000000)>>24).chr($d&0xff).chr(($d&0xff00)>>8);	// Reverse version
-		return $d;
-	}
 	function Raw2Date ($DateStamp){
 	
 		$DateStamp = $this->hexToDec(strrev($DateStamp));
@@ -412,10 +399,23 @@ class station
 		$TimeStamp = $this->hexToDec(strrev($TimeStamp));
 		$h = str_pad((int)($TimeStamp/100),2,'0',STR_PAD_LEFT);
 		$min = str_pad($TimeStamp-$h*100,2,'0',STR_PAD_LEFT);
+		echo "$h => int $TimeStamp/100 = ".(int)($TimeStamp/100)."\n";
 		return $h.':'.$min.':00';
 	}
 	function DMPAFT_GetVP2Date ($VP2Date)	{// 2003/06/19 09:30:00  <=  0x03A2 0x06D3
 		return $this->Raw2Date(substr($VP2Date,0,2)).' '.$this->Raw2Time(substr($VP2Date,-2));
+	}
+	function DMPAFT_SetVP2Date ($StrDate)	{// 2003/06/19 09:30:00  =>  0x03A2 0x06D3
+		$y = substr($StrDate, 0, 4);
+		$m = substr($StrDate, 5, 2);
+		$d = substr($StrDate, 8, 2);
+		$h = substr($StrDate, -8, 2);
+		$min = substr($StrDate, -5, 2);
+		$s = substr($StrDate, -2);
+		
+		$d = ((($y-2000)*512+$m*32+$d)<<16) + ($h*100+$min);							// settype($d, 'integer');
+		$d = chr(($d&0xff0000)>>16).chr(($d&0xff000000)>>24).chr($d&0xff).chr(($d&0xff00)>>8);	// Reverse version
+		return $d;
 	}
 	function CalculateCRC($ptr)	{
 		$crc = 0x0000;
@@ -468,7 +468,7 @@ class station
 			$StrValue = substr ($Str, $val['pos'], $val['len']);
 // 			$this->Waiting (0,$key.'['.strlen($StrValue).'] : '.$val['fn'].'('.$StrValue.');  '.$val['fn'].'('.$this->hexToDec($StrValue).');'); 
 			$mesure = $this->$val['fn'] ($StrValue);
-			if ($mesure != $val['err'] && $mesure >= $val['min'] && $mesure <= $val['max'] || is_bool($mesure))
+			if ($mesure != $val['err'] && $mesure >= $val['min'] && $mesure <= $val['max'] || is_bool($mesure) || is_string($mesure))
 				$x[$key] = $mesure;
 			else
 				$x[$key] = NULL;

@@ -21,6 +21,18 @@ class configManager
 
         return $config;
     }
+    static function setConfig($requestedConfig, $arrayData) {
+
+       switch ($requestedConfig) {
+            case 'station':
+		return file_put_contents($GLOBALS['workingFolder'].'stations.conf', $arrayData);
+                break;
+            case 'global':
+		return file_put_contents($GLOBALS['workingFolder'].'WsWds.conf', $arrayData);
+                break;
+        }
+	return false;
+    }
 
 
     /*

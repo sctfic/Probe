@@ -3,10 +3,9 @@
 $workingFolder = dirname(__FILE__).DIRECTORY_SEPARATOR;
 require_once($GLOBALS['workingFolder'].'../resources/php/configManager.phpc');
 $stationConf = configManager::getConfig('station');
+echo $_SERVER['DOCUMENT_ROOT']."\n";
 
-$stationConfig = eval('return '.file_get_contents($workingFolder.'../stations.conf').';');
-
-foreach($stationConfig as $configKey=>$configValue)
+foreach($stationConf as $configKey=>$configValue)
 {
 	$stationFolder = $configValue['type']; // folder with class related to the given station model
 	require_once sprintf( "%s/%s/Main.c.php", $workingFolder, $stationFolder ); // load correct station class so it can be instantiated later
@@ -14,18 +13,34 @@ foreach($stationConfig as $configKey=>$configValue)
 	switch ($configValue['type'])
 	{
 		case 'VP2-IP':
-			echo sprintf ("\n%'+40s %10s %'+40s\n", "", $configKey, "");
-			$station = new station($stationConfig, $configKey);
-			if ($station->initConnection())
-			{
+			echo sprintf ("\n%'+40s %16s %'+40s\n", "", $configKey, "");
+			$station = new station($configKey, $configValue);
+echo '>> '.$station->DMPAFT_GetVP2Date (0x06D303A2).' <<'."\n";
+echo '>> '.$station->DMPAFT_GetVP2Date ($station->DMPAFT_SetVP2Date('2012/06/19 00:30:00')).' <<'."\n";
+			if ($station->initConnection()){
+				$configValue['Last']['Connected'] = date('Y/m/d H:i:s');
 				$station->Waiting( 0, _( sprintf('[Succès] Ouverture de la connexion à %s', $configKey) ) );
 
-// 				var_export ($station->Read_Configs());
-// 				$station->Get_HILOWS_Raw();	// OK
-// 				$station->Get_LOOP_Raw();	// OK
-// 				$station->Get_DMPAFT_Raw();	// OK
-// 				$station->EEBRD(11, 6);	// OK
-				var_export($station->EEBRD_Confs());	// OK
+// 				if (($retuned = $station->get_HILOWS())) {
+// 					$configValue['Last']['HiLows'] = date('Y/m/d H:i:s');
+// 					var_export($retuned);	// OK
+// 				}
+// 				if (($retuned = $station->get_LOOP())) {
+// 					$configValue['Last']['Loop'] = date('Y/m/d H:i:s');
+// 					var_export($retuned);	// OK
+// 				}
+					if (($retuned = $station->get_DMPAFT($configValue['Last']['DumpAfter']))) {
+						$configValue['Last']['DumpAfter'] = date('Y/m/d H:i:s');
+						var_export($retuned);	// OK
+					}
+// 				if (($retuned = $station->EEBRD_Confs())) {
+// 					$configValue['Last']['AllConfs'] = date('Y/m/d H:i:s');
+// 					var_export($retuned);	// OK
+// 				}
+// 				if (($retuned = $station->clockSync(5))) {
+// 					$configValue['Last']['ClockSync'] = date('Y/m/d H:i:s');
+// 					var_export($retuned);	// OK
+// 				}
 
 				if ($station->closeConnection())
 					$station->Waiting( 0, sprintf( _('[Succès] Fermeture de %s correcte.'), $configKey ) );
@@ -37,6 +52,8 @@ foreach($stationConfig as $configKey=>$configValue)
 			break;
 		default :
 	}
+	$stationConf[$configKey]=$configValue;
+// 	configManager::setConfig('station', $stationConf);
 }
 echo "\n\n\n\n";
 ?>
