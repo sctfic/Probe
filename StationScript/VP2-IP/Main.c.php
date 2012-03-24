@@ -279,7 +279,7 @@ class station
 	}
 	function clockSync($maxLag)
 	{
-		$realLag = abs(strtotime($station->fetchStationTime()) - strtotime(date('Y/m/d H:i:s')));
+		$realLag = abs(strtotime($this->fetchStationTime()) - strtotime(date('Y/m/d H:i:s')));
 		if ($realLag > $maxLag) {	// OK
 			$this->Waiting( 0, sprintf( _('[Infos] Default Clock synchronize : %ssec'), $realLag) );
 			if ($this->updateStationTime())								// OK
@@ -306,6 +306,7 @@ class station
 				if (strlen($r)==6 && $this->CalculateCRC($r)==0x0000)
 				{
 					$nbrArch=0;
+					$LastArchDate = false;
 					$retry = $this->retry-1;
 					$nbrPages = $this->hexToDec (strrev(substr($r,0,2)));		// Split Bytes in revers order : Nbr of page
 					$firstArch = $this->hexToDec (strrev(substr($r,2,2)));		// Split Bytes in revers order : # of first archive
