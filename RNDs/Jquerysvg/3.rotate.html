@@ -1,0 +1,157 @@
+<!DOCTYPE html PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<html>
+ <head>
+  <title> Rotate SVG 0.1 </title>
+  <script type="text/javascript" src="jquery-1.7.2.min.js"></script>
+  <style type="text/css">@import "jquery.svg.css";</style> 
+  <script type="text/javascript" src="jquery.svg.js"></script>
+  <script>
+  $(document).ready(function(){
+      $("#rotate").click(
+        function() {
+            for (i=0; i<16; i++) {
+                angle = (i+1)*22.5;
+                console.log('here:'+i); // message
+                $('#gToTransform').clone() // we clone the template object
+                .attr('id', 'gToTransform-'+i) // we change its @id to prevent further conflict
+                .appendTo('svg') // we append the clone at the end (inside) on the <svg>
+                .attr('transform', 'translate(110, 110) rotate('+angle+' 0 0)'); // update the @tranform value
+            }
+        }
+    )
+  $("#rotate").click()
+  }
+)
+  </script>
+ </head>
+ <body>
+<!--
+     ################################
+     ##            SVG             ##
+     ################################
+-->
+<?xml version="1.0" encoding="utf-8"?>
+<svg
+   xmlns="http://www.w3.org/2000/svg" 
+   version="1.1"
+   width="220"
+   height="220"
+   copyright="Hugo Lopez"
+   docname="Rosetemplate.svg">
+  <title>Rose</title>
+  <desc>Rose to work out.</desc>
+  <rect id="BgRectangle"
+     width="220" height="220"
+     x="0" y="0"
+     fill="green"
+     opacity="0.05" />
+<g id="my background" transform="translate(110,110)" style="fill:#aaccee;fill-opacity:0;stroke:#888888;stroke-opacity:1;">
+  <!-- my background -->
+  <g id="Circles">
+  <circle
+     cx="0" cy="0"
+     r="100" />
+  <circle
+     cx="0" cy="0"
+     r="75" />
+  <circle
+     cx="0" cy="0"
+     r="50" />
+  <circle
+     cx="0" cy="0"
+     r="25" />
+  <circle
+     cx="0" cy="0"
+     r="1" />
+</g>
+<g id="Axis">
+  <line
+     id="AxisHorizontal"
+     x1="-105"
+     y1="0"
+     x2="105"
+     y2="0" />
+  <line
+     id="AxisVertical"
+     x1="0"
+     y1="-105"
+     x2="0"
+     y2="105" />
+   <rect id="tit000⁰"
+     width="1" height="2"
+     x="-0.5" y="-102"
+     style="fill:red;fill-opacity:0.7;stroke:none" />
+</g>
+</g>
+<g id="gToTransform" transform="rotate(22.5 0 0)"> <!-- 
+//translate(110,110)
+//rotate(22.5 0 0) => rotate(22.5*n 0 0)
+//scale(0.75) => scale(x)
+-->
+   <rect id="tit022.5⁰"
+     width="2" height="2"
+     x="-1" y="-102.5"
+     style="fill:#888888;fill-opacity:1;stroke:none" />
+<g id="gTriangleAlpha" transform="scale(0.75)">
+    <path
+       id="TriangleAlpha"
+       d="m -17.367834,-98.476312 c 11.4883558,-2.026718 23.2427404,-2.027578 34.731387,-0.0026 L 0.00499345,0 z"
+       style="opacity:0.5;fill:#003366;fill-opacity:1;stroke:black;stroke-width:1;stroke-opacity:1" />
+    <rect
+    id="TriangleTit"
+    width="3" height="4"
+     x="-1.5" y="-104"
+     style="fill:#d40000;fill-opacity:1;stroke:none" />
+       <!--
+    <path
+       id="TriangleAlphaCap"
+       style="fill:#d40000;fill-opacity:1"
+       d="m 0,-105 -5,5 c 3.75,-0.015 7.0,0.016 10,0 z" />
+       -->
+</g>
+</g>
+<g id="mytexts" >
+   <text x="112" y="7" font-size="10" font-family="sans-serif">
+     N
+   </text>
+   <text x="145" y="13" font-size="6" font-family="sans-serif">
+     NNE
+   </text>
+   <text x="183" y="38" font-size="6" font-family="sans-serif">
+     NE
+   </text>
+   <text x="205" y="70" font-size="6" font-family="sans-serif">
+     NEE
+   </text>
+   <text x="214" y="112" font-size="10" font-family="sans-serif">
+     E
+   </text>
+   <text x="1" y="112" font-size="10" font-family="sans-serif">
+     W
+   </text>
+   <text x="2" y="150" font-size="6" font-family="sans-serif">
+     WSW
+   </text>
+   <text x="27" y="183" font-size="6" font-family="sans-serif">
+     SW
+   </text>
+   <text x="60" y="210" font-size="6" font-family="sans-serif">
+     SSW
+   </text>
+   <text x="112" y="215" font-size="10" font-family="sans-serif">
+     S
+   </text>
+</g>
+</svg><!--
+     ################################
+     ##         BUTTON             ##
+     ################################
+-->
+<br />
+ <button id="scale">scale</button>
+ <button id="rotate">rotate</button>
+  <p>
+ Texte
+  </p>
+ </body>
+</html>
