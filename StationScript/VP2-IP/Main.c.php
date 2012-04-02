@@ -79,7 +79,6 @@ class station
 	protected function wakeUp()	{
 		for ($i=0;$i<=$this->retry;$i++) {
 			fwrite ($this->fp,$this->symb['LF']);
-
 			if (fread($this->fp,6)==$this->symb['LFCR'])
 				return TRUE;
 			usleep(1200000);
@@ -143,7 +142,7 @@ class station
 // 						$this->Waiting (0,$key.'['.strlen($StrValue).'] : '.$val['fn'].'('.$StrValue.');  '.$val['fn'].'('.$this->hexToDec($StrValue).');'); 
 						$mesure = $this->$val['fn'] ($StrValue);
 						if ($mesure != $val['err'] && $mesure >= $val['min'] && $mesure <= $val['max'] || is_array($mesure)) {
-							if (!empty($this->$val['SI'])) { 
+							if (!empty($val['SI'])) { 
 								$x[$key] = $this->$val['SI'] ($mesure);
 							}
 							else
@@ -191,7 +190,7 @@ class station
 // 						$this->Waiting (0,$key.'['.strlen($StrValue).'] : '.$val['fn'].'('.$StrValue.');  '.$val['fn'].'('.$this->hexToDec($StrValue).');'); 
 						$mesure = $this->$val['fn'] ($StrValue);
 						if ($mesure != $val['err'] && $mesure >= $val['min'] && $mesure <= $val['max'] || is_array($mesure)) {
-							if (!empty($this->$val['SI'])) { 
+							if (!empty($val['SI'])) { 
 								$x[$key] = $this->$val['SI'] ($mesure);
 							}
 							else
@@ -237,7 +236,7 @@ class station
 // 						$this->Waiting (0,$key.'['.strlen($StrValue).'] : '.$val['fn'].'('.$StrValue.');  '.$val['fn'].'('.$this->hexToDec($StrValue).');'); 
 					$mesure = $this->$val['fn'] ($StrValue);
 					if ($mesure != $val['err'] && $mesure >= $val['min'] && $mesure <= $val['max'] || is_array($mesure)) {
-						if (!empty($this->$val['SI'])) { 
+						if (!empty($val['SI'])) { 
 							$x[$key] = $this->$val['SI'] ($mesure);
 						}
 						else
@@ -339,11 +338,11 @@ class station
 				if (strlen($r)==6 && $this->CalculateCRC($r)==0x0000)
 				{
 					$nbrArch=0;
-					$LastArchDate = false;
+					$LastArchDate = 0;
 					$retry = $this->retry-1;
 					$nbrPages = $this->hexToDec (strrev(substr($r,0,2)));		// Split Bytes in revers order : Nbr of page
 					$firstArch = $this->hexToDec (strrev(substr($r,2,2)));		// Split Bytes in revers order : # of first archive
-					$this->Waiting (0,'There are '.$nbrPages.'p. in queue, from archive '.$firstArch.' on first page.');
+					$this->Waiting (0,'There are '.$nbrPages.'p. in queue, from archive '.$firstArch.' on first page since '.$last.'.');
 					fwrite($this->fp, $this->symb['ACK']);	// Send ACK to start
 					for ($j=0;$j<$nbrPages;$j++)
 					{
@@ -351,13 +350,14 @@ class station
 						$this->Waiting (0,'Download Archive PAGE #'.$j.' since : '.$this->DMPAFT_GetVP2Date(substr($Page,1+52*($firstArch),4)));
 						if (strlen($Page)==267 && $this->CalculateCRC($Page)==0x0000)
 						{
-							fwrite($this->fp, $this->symb['ACK']);
-							for($k=$firstArch;$k<=4;$k++)
+							fwrite ($this->fp, $this->symb['ACK']);
+							for ($k=$firstArch; $k<=4; $k++)
 							{
-								$ArchiveStrRaw=substr($Page,1+52*$k,52);
+								$ArchiveStrRaw = substr ($Page, 1+52*$k, 52);
 								$ArchDate = $this->DMPAFT_GetVP2Date(substr($ArchiveStrRaw,0,4));
-								if (strtotime($ArchDate) > strtotime($last))
-								{
+								
+								if (strtotime($ArchDate) > strtotime($LastArchDate)) // && strtotime($ArchDate) > strtotime($last))
+								{// ignore les 1er et derniere valeur hors champ.
 									$x = array();
 									foreach($this->HiLow as $key=>$val)
 									{
@@ -365,7 +365,7 @@ class station
 				// 						$this->Waiting (0,$key.'['.strlen($StrValue).'] : '.$val['fn'].'('.$StrValue.');  '.$val['fn'].'('.$this->hexToDec($StrValue).');'); 
 										$mesure = $this->$val['fn'] ($StrValue);
 										if ($mesure != $val['err'] && $mesure >= $val['min'] && $mesure <= $val['max'] || is_array($mesure)) {
-											if (!empty($this->$val['SI'])) {
+											if (!empty($val['SI'])) {
 												$x[$key] = $this->$val['SI'] ($mesure);
 											}
 											else
@@ -374,8 +374,12 @@ class station
 										else
 											$x[$key] = NULL;
 									}
+									echo implode("\t",$x)."\n";
 									$this->Waiting (0,'Page #'.$j.'-'.$k.' of '.$ArchDate.' archived Ok.');
 									$LastArchDate = $ArchDate;
+								}
+								else {
+									$this->Waiting (0,'Page #'.$j.'-'.$k.' of '.$ArchDate.' Ignored (Out of Range).');
 								}
 							}
 							$retry = $this->retry;
@@ -401,6 +405,7 @@ class station
 							}
 						}
 					}
+					$this->Waiting (0,'Download '.$nbrPages.' Archives PAGES.');
 					return $LastArchDate;
 				}
 				else if ($r == $this->symb['NAK'])
@@ -690,16 +695,22 @@ class station
 		#################################################################################
 **/
 	function metric($val){
-		return $val/3.2808;
+		return round($val/3.2808, 2);
 	}
 	function tempSI($val){
-		return kelvin($val);
+		return $this->celcius($val);
+	}
+	function celcius($val){ // convert °F to Kelvin
+		return round(($val-32)*5/9, 2);
 	}
 	function kelvin($val){ // convert °F to Kelvin
-		return ($val+459.67)*5/9;
+		return round(($val+459.67)*5/9, 2);
 	}
 	function mBySec($val){ // convert milles per hour speed 
-		return $val/2.2369362920544; // (3600/((5280*12)*0.0254));
+		return round($val/2.2369362920544, 3); // (3600/((5280*12)*0.0254));
+	}
+	function kmByh($val){ // convert milles per hour speed 
+		return round($val*1,609.345, 2); // (3600/((5280*12)*0.0254));
 	}
 	function UTC ($val){
 	

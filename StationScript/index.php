@@ -3,7 +3,7 @@
 $workingFolder = dirname(__FILE__).DIRECTORY_SEPARATOR;
 require_once($workingFolder.'../config/rwConf.c.php');
 $stationConf = configManager::readConfig('station');
-var_export($stationConf);
+// var_export($stationConf);
 foreach($stationConf as $configKey=>$configValue)
 {
 	$stationFolder = $configValue['type']; // folder with class related to the given station model
@@ -20,23 +20,27 @@ foreach($stationConf as $configKey=>$configValue)
 
 				if (($retuned = $station->get_HILOWS())) {
 					$configValue['Last']['HiLows'] = date('Y/m/d H:i:s');
-					var_export($retuned);	// OK
+// 					var_export($retuned);	// OK
+					echo implode("\t",$retuned)."\n";
 				}
 				if (($retuned = $station->get_LOOP())) {
 					$configValue['Last']['Loop'] = date('Y/m/d H:i:s');
-					var_export($retuned);	// OK
+// 					var_export($retuned);	// OK
 				}
-				if (($retuned = $station->get_DMPAFT($configValue['Last']['DumpAfter']))) {
+				if (($retuned = $station->get_DMPAFT($configValue['Last']['_DumpAfter']))) {
+					$configValue['Last']['_DumpAfter'] = $retuned;
 					$configValue['Last']['DumpAfter'] = date('Y/m/d H:i:s');
-					var_export($retuned);	// OK
+// 					var_export($retuned);	// OK
 				}
 				if (($retuned = $station->EEBRD_Confs())) {
 					$configValue['Last']['AllConfs'] = date('Y/m/d H:i:s');
-					var_export($retuned);	// OK
+// 					var_export($retuned);	// OK
+					echo implode("\t",$retuned)."\n";
 				}
 				if (($retuned = $station->clockSync(5))) {
 					$configValue['Last']['ClockSync'] = date('Y/m/d H:i:s');
-					var_export($retuned);	// OK
+// 					var_export($retuned);	// OK
+					echo implode("\t",$retuned)."\n";
 				}
 
 				if ($station->closeConnection())
