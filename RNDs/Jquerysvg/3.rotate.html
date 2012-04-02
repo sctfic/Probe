@@ -15,7 +15,9 @@
                 $('#gToTransform').clone() // we clone the template object
                 .attr('id', 'gToTransform-'+i) // we change its @id to prevent further conflict
                 .appendTo('svg') // we append the clone at the end (inside) on the <svg>
-                .attr('transform', 'translate(110, 110) rotate('+angle+' 0 0)'); // update the @tranform value
+                .attr('transform', 'translate(110, 110) rotate('+angle+' 0 0) scale('+(i%7*14+5)/100+')'); // update the @tranform value
+//                .appendTo('svg') // we append the clone at the end (inside) on the <svg>
+//		.attr('title', 'taille = '+(i%7*14+5)/100+' mm');
             }
         }
     )
@@ -92,7 +94,7 @@
      width="2" height="2"
      x="-1" y="-102.5"
      style="fill:#888888;fill-opacity:1;stroke:none" />
-<g id="gTriangleAlpha" transform="scale(0.75)">
+<g id="gTriangleAlpha" transform="scale(0.95)" title="test">
     <path
        id="TriangleAlpha"
        d="m -17.367834,-98.476312 c 11.4883558,-2.026718 23.2427404,-2.027578 34.731387,-0.0026 L 0.00499345,0 z"

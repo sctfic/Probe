@@ -14,15 +14,17 @@ class station
 	public $HiLow = null;
 	protected $EEPROM = null;
 	protected $Trend = null;
-	protected $IP = null;
-	protected $Port = null;
+/*	protected $IP = null;
+	protected $Port = null;*/
+	protected $conf = null;
 	public $_version = 0.12;
 
 
 	function __construct($name, $myConfig)	{
 		$this->setStationFolder( dirname(__FILE__).DIRECTORY_SEPARATOR );
-		$this->IP = $myConfig['IP'];
-		$this->Port = $myConfig['Port'];
+/*		$this->IP = $myConfig['IP'];
+		$this->Port = $myConfig['Port'];*/
+		$this->conf = $myConfig;
 // 		$this->setStationConfig($stationConfig);
 		require ($this->StationFolder.'Tools.h.php');
 		require ($this->StationFolder.'EepromDumpAfter.h.php');
@@ -52,8 +54,8 @@ class station
 		for ($i=1;$i>=0;$i--){
 			$errno = 0;
 			$this->fp = @fsockopen(
-				$this->IP,
-				$this->Port,
+				$this->conf['IP'],
+				$this->conf['Port'],
 				&$errno
 			);
 			if ($this->fp && $errno==0)
@@ -140,8 +142,13 @@ class station
 						$StrValue = substr ($StrEE, $val['pos']-$Pos, $val['len']);
 // 						$this->Waiting (0,$key.'['.strlen($StrValue).'] : '.$val['fn'].'('.$StrValue.');  '.$val['fn'].'('.$this->hexToDec($StrValue).');'); 
 						$mesure = $this->$val['fn'] ($StrValue);
-						if ($mesure != $val['err'] && $mesure >= $val['min'] && $mesure <= $val['max'] || is_array($mesure))
-							$x[$key] = $mesure;
+						if ($mesure != $val['err'] && $mesure >= $val['min'] && $mesure <= $val['max'] || is_array($mesure)) {
+							if (!empty($this->$val['SI'])) { 
+								$x[$key] = $this->$val['SI'] ($mesure);
+							}
+							else
+								$x[$key] = $mesure;
+						}
 						else
 							$x[$key] = NULL;
 					}
@@ -176,10 +183,24 @@ class station
 				$LOOP = fread($this->fp, 99);
 				if (strlen($LOOP)==99 && !$this->CalculateCRC($LOOP))
 				{
-// 					$LOOP = substr($LOOP,0,-2);
 					$this->Waiting (0,'[LOOP] : Download the current Values');
-// 					file_put_contents($this->StationFolder.'../../ExportedData/LOOP['.($_NBR-$nbr).'].brut',$LOOP);
-					echo implode("\t",$LOOP=$this->ConvertStrRaw($LOOP))."\n";
+					$x = array();
+					foreach($this->Loop as $key=>$val)
+					{
+						$StrValue = substr ($LOOP, $val['pos'], $val['len']);
+// 						$this->Waiting (0,$key.'['.strlen($StrValue).'] : '.$val['fn'].'('.$StrValue.');  '.$val['fn'].'('.$this->hexToDec($StrValue).');'); 
+						$mesure = $this->$val['fn'] ($StrValue);
+						if ($mesure != $val['err'] && $mesure >= $val['min'] && $mesure <= $val['max'] || is_array($mesure)) {
+							if (!empty($this->$val['SI'])) { 
+								$x[$key] = $this->$val['SI'] ($mesure);
+							}
+							else
+								$x[$key] = $mesure;
+						}
+						else
+							$x[$key] = NULL;
+					}
+					echo implode("\t",$LOOP=$x)."\n";
 				}
 				else
 					$this->Waiting (0,'[LOOP] : Erreur de CRC');
@@ -208,11 +229,24 @@ class station
 			$HILOWS = fread($this->fp, 438);
 			if (strlen($HILOWS)==438 && ($this->CalculateCRC($HILOWS))==0x0000)
 			{
-// 				$HILOWS = substr($HILOWS,0,-2);
 				$this->Waiting (0,'[HILOWS] : Download Mini and Maxi');
-// 				file_put_contents($this->StationFolder.'../../ExportedData/HILOWS.brut',$HILOWS);
-				echo implode("\t",$HILOWS=$this->ConvertStrRaw($HILOWS))."\n";
-				return $HILOWS;
+				$x = array();
+				foreach($this->HiLow as $key=>$val)
+				{
+					$StrValue = substr ($HILOWS, $val['pos'], $val['len']);
+// 						$this->Waiting (0,$key.'['.strlen($StrValue).'] : '.$val['fn'].'('.$StrValue.');  '.$val['fn'].'('.$this->hexToDec($StrValue).');'); 
+					$mesure = $this->$val['fn'] ($StrValue);
+					if ($mesure != $val['err'] && $mesure >= $val['min'] && $mesure <= $val['max'] || is_array($mesure)) {
+						if (!empty($this->$val['SI'])) { 
+							$x[$key] = $this->$val['SI'] ($mesure);
+						}
+						else
+							$x[$key] = $mesure;
+					}
+					else
+						$x[$key] = NULL;
+				}
+				return $x;
 			}
 			else
 				$this->Waiting (0,'[HILOWS] : Erreur de CRC');
@@ -277,8 +311,7 @@ class station
 		}
 		return FALSE;
 	}
-	function clockSync($maxLag)
-	{
+	function clockSync($maxLag)	{
 		$realLag = abs(strtotime($this->fetchStationTime()) - strtotime(date('Y/m/d H:i:s')));
 		if ($realLag > $maxLag) {	// OK
 			$this->Waiting( 0, sprintf( _('[Infos] Default Clock synchronize : %ssec'), $realLag) );
@@ -325,9 +358,23 @@ class station
 								$ArchDate = $this->DMPAFT_GetVP2Date(substr($ArchiveStrRaw,0,4));
 								if (strtotime($ArchDate) > strtotime($last))
 								{
-// 									$this->Waiting (0,"\t".'ARCHIVE #'.($nbrArch++).' of '.$ArchDate.' saved.');
-// 									var_export ($this->ConvertStrRaw($ArchiveStrRaw));
-									echo implode("\t",$this->ConvertStrRaw($ArchiveStrRaw))."\n";
+									$x = array();
+									foreach($this->HiLow as $key=>$val)
+									{
+										$StrValue = substr ($ArchiveStrRaw, $val['pos'], $val['len']);
+				// 						$this->Waiting (0,$key.'['.strlen($StrValue).'] : '.$val['fn'].'('.$StrValue.');  '.$val['fn'].'('.$this->hexToDec($StrValue).');'); 
+										$mesure = $this->$val['fn'] ($StrValue);
+										if ($mesure != $val['err'] && $mesure >= $val['min'] && $mesure <= $val['max'] || is_array($mesure)) {
+											if (!empty($this->$val['SI'])) {
+												$x[$key] = $this->$val['SI'] ($mesure);
+											}
+											else
+												$x[$key] = $mesure;
+										}
+										else
+											$x[$key] = NULL;
+									}
+									$this->Waiting (0,'Page #'.$j.'-'.$k.' of '.$ArchDate.' archived Ok.');
 									$LastArchDate = $ArchDate;
 								}
 							}
@@ -448,34 +495,34 @@ class station
 		################	Function for RAW data convertion	#################
 		#################################################################################
 **/
-	function ConvertStrRaw($Str) {// ConvertStrRaw return les donnees RAW au format Numerique dans un tableau...
-		switch (strlen($Str)) {
-			case 50:
-			case 52:
-				$modele = $this->DumpAfter;
-				break;
-			case 97:
-			case 99:
-				$modele = $this->Loop;
-				break;
-			case 436:
-			case 438:
-				$modele = $this->HiLow;
-				break;
-		}
-		$x = array();
-		foreach($modele as $key=>$val)
-		{
-			$StrValue = substr ($Str, $val['pos'], $val['len']);
-// 			$this->Waiting (0,$key.'['.strlen($StrValue).'] : '.$val['fn'].'('.$StrValue.');  '.$val['fn'].'('.$this->hexToDec($StrValue).');'); 
-			$mesure = $this->$val['fn'] ($StrValue);
-			if ($mesure != $val['err'] && $mesure >= $val['min'] && $mesure <= $val['max'] || is_bool($mesure) || is_string($mesure))
-				$x[$key] = $mesure;
-			else
-				$x[$key] = NULL;
-		}
-		return $x;
-	}
+// 	function ConvertStrRaw($Str) {// ConvertStrRaw return les donnees RAW au format Numerique dans un tableau...
+// 		switch (strlen($Str)) {
+// 			case 50:
+// 			case 52:
+// 				$modele = $this->DumpAfter;
+// 				break;
+// 			case 97:
+// 			case 99:
+// 				$modele = $this->Loop;
+// 				break;
+// 			case 436:
+// 			case 438:
+// 				$modele = $this->HiLow;
+// 				break;
+// 		}
+// 		$x = array();
+// 		foreach($modele as $key=>$val)
+// 		{
+// 			$StrValue = substr ($Str, $val['pos'], $val['len']);
+// // 			$this->Waiting (0,$key.'['.strlen($StrValue).'] : '.$val['fn'].'('.$StrValue.');  '.$val['fn'].'('.$this->hexToDec($StrValue).');'); 
+// 			$mesure = $this->$val['fn'] ($StrValue);
+// 			if ($mesure != $val['err'] && $mesure >= $val['min'] && $mesure <= $val['max'] || is_bool($mesure) || is_string($mesure))
+// 				$x[$key] = $mesure;
+// 			else
+// 				$x[$key] = NULL;
+// 		}
+// 		return $x;
+// 	}
 	function Bool($str) {// 
 		return ord($str) ? TRUE : FALSE ;
 	}
@@ -636,6 +683,26 @@ class station
 	}
 	function Icons($str) {// ...
 		return $this->s2uc($str);
+	}
+/**
+		#################################################################################
+		################	Function for Numeric data convertion to SI	#################
+		#################################################################################
+**/
+	function metric($val){
+		return $val/3.2808;
+	}
+	function tempSI($val){
+		return kelvin($val);
+	}
+	function kelvin($val){ // convert °F to Kelvin
+		return ($val+459.67)*5/9;
+	}
+	function mBySec($val){ // convert milles per hour speed 
+		return $val/2.2369362920544; // (3600/((5280*12)*0.0254));
+	}
+	function UTC ($val){
+	
 	}
 }
 ?>
