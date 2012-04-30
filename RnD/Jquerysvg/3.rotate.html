@@ -3,30 +3,11 @@
  <head>
   <title> Rotate SVG 0.1 </title>
   <script type="text/javascript" src="jquery-1.7.2.min.js"></script>
-  <style type="text/css">@import "jquery.svg.css";</style> 
+  <style type="text/css">@import "jquery.svg.css";</style>
   <script type="text/javascript" src="jquery.svg.js"></script>
-  <script>
-  $(document).ready(function(){
-      $("#rotate").click(
-        function() {
-            for (i=0; i<16; i++) {
-                angle = (i+1)*22.5;
-                console.log('here:'+i); // message
-                $('#gToTransform').clone() // we clone the template object
-                .attr('id', 'gToTransform-'+i) // we change its @id to prevent further conflict
-                .appendTo('svg') // we append the clone at the end (inside) on the <svg>
-                .attr('transform', 'translate(110, 110) rotate('+angle+' 0 0) scale('+(i%7*14+5)/100+')'); // update the @tranform value
-//                .appendTo('svg') // we append the clone at the end (inside) on the <svg>
-//		.attr('title', 'taille = '+(i%7*14+5)/100+' mm');
-            }
-        }
-    )
-  $("#rotate").click()
-  }
-)
-  </script>
- </head>
- <body>
+  <script type="text/javascript" src="wswds.wind-rose.js"></script>
+</head>
+<body>
 <!--
      ################################
      ##            SVG             ##
@@ -34,7 +15,7 @@
 -->
 <?xml version="1.0" encoding="utf-8"?>
 <svg
-   xmlns="http://www.w3.org/2000/svg" 
+   xmlns="http://www.w3.org/2000/svg"
    version="1.1"
    width="220"
    height="220"
@@ -85,7 +66,7 @@
      style="fill:red;fill-opacity:0.7;stroke:none" />
 </g>
 </g>
-<g id="gToTransform" transform="rotate(22.5 0 0)"> <!-- 
+<g id="gToTransform" transform="rotate(22.5 0 0)"> <!--
 //translate(110,110)
 //rotate(22.5 0 0) => rotate(22.5*n 0 0)
 //scale(0.75) => scale(x)
@@ -94,11 +75,11 @@
      width="2" height="2"
      x="-1" y="-102.5"
      style="fill:#888888;fill-opacity:1;stroke:none" />
-<g id="gTriangleAlpha" transform="scale(0.95)" title="test">
+<g id="gTriangleAlpha" transform="scale(0.95)">
     <path
        id="TriangleAlpha"
        d="m -17.367834,-98.476312 c 11.4883558,-2.026718 23.2427404,-2.027578 34.731387,-0.0026 L 0.00499345,0 z"
-       style="opacity:0.5;fill:#003366;fill-opacity:1;stroke:black;stroke-width:1;stroke-opacity:1" />
+       style="opacity:0.5;;fill-opacity:1;stroke:black;stroke-width:1;stroke-opacity:1" />
     <rect
     id="TriangleTit"
     width="3" height="4"
