@@ -359,11 +359,13 @@ class station
 								if (strtotime($ArchDate) > strtotime($LastArchDate)) // && strtotime($ArchDate) > strtotime($last))
 								{// ignore les 1er et derniere valeur hors champ.
 									$x = array();
-									foreach($this->HiLow as $key=>$val)
+									foreach($this->DumpAfter as $key=>$val)
 									{
 										$StrValue = substr ($ArchiveStrRaw, $val['pos'], $val['len']);
 				// 						$this->Waiting (0,$key.'['.strlen($StrValue).'] : '.$val['fn'].'('.$StrValue.');  '.$val['fn'].'('.$this->hexToDec($StrValue).');'); 
 										$mesure = $this->$val['fn'] ($StrValue);
+/*										if ($val['pos']==4 || $val['pos']==6 || $val['pos']==8)
+											$this->Waiting (0,$StrValue.' = '.bin2hex($StrValue).' = '.($this->hexToDec($StrValue)/10).' = '.$this->tempSI($this->hexToDec($StrValue)/10).' >> '.strrev($StrValue).' = '.bin2hex(strrev($StrValue)).' = '.($this->hexToDec(strrev($StrValue))/10).' = '.$this->tempSI($this->hexToDec(strrev($StrValue))/10));*/
 										if ($mesure != $val['err'] && $mesure >= $val['min'] && $mesure <= $val['max'] || is_array($mesure)) {
 											if (!empty($val['SI'])) {
 												$x[$key] = $this->$val['SI'] ($mesure);
@@ -374,6 +376,7 @@ class station
 										else
 											$x[$key] = NULL;
 									}
+									var_export($x);
 									echo implode("\t",$x)."\n";
 									$this->Waiting (0,'Page #'.$j.'-'.$k.' of '.$ArchDate.' archived Ok.');
 									$LastArchDate = $ArchDate;
@@ -500,34 +503,7 @@ class station
 		################	Function for RAW data convertion	#################
 		#################################################################################
 **/
-// 	function ConvertStrRaw($Str) {// ConvertStrRaw return les donnees RAW au format Numerique dans un tableau...
-// 		switch (strlen($Str)) {
-// 			case 50:
-// 			case 52:
-// 				$modele = $this->DumpAfter;
-// 				break;
-// 			case 97:
-// 			case 99:
-// 				$modele = $this->Loop;
-// 				break;
-// 			case 436:
-// 			case 438:
-// 				$modele = $this->HiLow;
-// 				break;
-// 		}
-// 		$x = array();
-// 		foreach($modele as $key=>$val)
-// 		{
-// 			$StrValue = substr ($Str, $val['pos'], $val['len']);
-// // 			$this->Waiting (0,$key.'['.strlen($StrValue).'] : '.$val['fn'].'('.$StrValue.');  '.$val['fn'].'('.$this->hexToDec($StrValue).');'); 
-// 			$mesure = $this->$val['fn'] ($StrValue);
-// 			if ($mesure != $val['err'] && $mesure >= $val['min'] && $mesure <= $val['max'] || is_bool($mesure) || is_string($mesure))
-// 				$x[$key] = $mesure;
-// 			else
-// 				$x[$key] = NULL;
-// 		}
-// 		return $x;
-// 	}
+
 	function Bool($str) {// 
 		return ord($str) ? TRUE : FALSE ;
 	}
@@ -700,7 +676,7 @@ class station
 	function tempSI($val){
 		return $this->celcius($val);
 	}
-	function celcius($val){ // convert °F to Kelvin
+	function celcius($val){ // convert °F to celcius
 		return round(($val-32)*5/9, 2);
 	}
 	function kelvin($val){ // convert °F to Kelvin
@@ -712,8 +688,11 @@ class station
 	function kmByh($val){ // convert milles per hour speed 
 		return round($val*1,609.345, 2); // (3600/((5280*12)*0.0254));
 	}
+	function barSI ($val){
+	return $val;
+	}
 	function UTC ($val){
-	
+	return strtotime($val);
 	}
 }
 ?>
