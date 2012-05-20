@@ -163,7 +163,10 @@ class Utilitaire_VP2
 	public static function Station($str) {// ...
 		return null;
 	}
-
+	public static function getBits($oct, $bitPos, $nbrBit) { // recupaire dans un octé $oct l´etat des $nbrBit a partir du bit $bitPos
+		($oct<<$bitPos)&(2^$nbrBit-1);
+		retun $oct;
+	}
 	public static function UnitBits($str) {// ...
 		$val = $this->s2uc($str);
 		return array_combine(array("Unit.Wind","Unit.Rain","Unit.Elev","Unit.Temp","Unit.Barom"),
