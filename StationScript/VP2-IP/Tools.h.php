@@ -1,4 +1,6 @@
-<?
+<?php
+class Utilitaire_VP2
+{
 	$this->symb = array (
 			'CR' => chr(0x0D), // \r
 			'LF' => chr(0x0A), // \n
@@ -46,4 +48,261 @@
 	$this->WinDir = array('N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSW','SW','WSW','W','WNW','NW','NNW');
 
 	$this->Trend = array(196=>-2, 236=>-1, 0=>0, 20=>1, 60=>2, 80=>'Rev A');
+
+	/**
+	#########################################################################################
+	#########		Function for manage Variable and Conf-File		#########
+	#########################################################################################
+**/
+	public static function Raw2Date ($DateStamp){
+	
+		$DateStamp = $this->hexToDec(strrev($DateStamp));
+		$y = (($DateStamp & 0xFE00)>>9)+2000;
+		$m = str_pad(($DateStamp & 0x01E0)>>5,2,'0',STR_PAD_LEFT);
+		$d = str_pad($DateStamp & 0x1f,2,'0',STR_PAD_LEFT);
+		return $y.'/'.$m.'/'.$d;
+	}
+	public static function Raw2Time ($TimeStamp){
+		$TimeStamp = $this->hexToDec(strrev($TimeStamp));
+		$h = str_pad((int)($TimeStamp/100),2,'0',STR_PAD_LEFT);
+		$min = str_pad($TimeStamp-$h*100,2,'0',STR_PAD_LEFT);
+/*		echo "$h => int $TimeStamp/100 = ".(int)($TimeStamp/100)."\n";*/
+		return $h.':'.$min.':00';
+	}
+	public static function DMPAFT_GetVP2Date ($VP2Date)	{// 2003/06/19 09:30:00  <=  0x03A2 0x06D3
+		return $this->Raw2Date(substr($VP2Date,0,2)).' '.$this->Raw2Time(substr($VP2Date,-2));
+	}
+	public static function DMPAFT_SetVP2Date ($StrDate)	{// 2003/06/19 09:30:00  =>  0x03A2 0x06D3
+		$y = substr($StrDate, 0, 4);
+		$m = substr($StrDate, 5, 2);
+		$d = substr($StrDate, 8, 2);
+		$h = substr($StrDate, -8, 2);
+		$min = substr($StrDate, -5, 2);
+		$s = substr($StrDate, -2);
+		$d = ((($y-2000)*512+$m*32+$d)<<16) + ($h*100+$min);							// settype($d, 'integer');
+		$d = chr(($d&0xff0000)>>16).chr(($d&0xff000000)>>24).chr($d&0xff).chr(($d&0xff00)>>8);	// Reverse version
+		return $d;
+	}
+	public static function CalculateCRC($ptr)	{
+		$crc = 0x0000;
+		settype($crc, "integer");
+		for ($i = 0; $i < strlen($ptr); $i++)
+		{
+			$crc =  $this->table[(($crc>>8) ^ ord($ptr[$i]))] ^ (($crc<<8) & 0x00FFFF);
+		}
+		return !$crc?$crc:chr($crc>>8).chr($crc&0xff);
+	}
+	public static function Waiting ($s=10, $msg = 'Waiting and retry')	{
+		$w = '-\|/';
+		if ($s==0)
+			echo "\r".date('Y/m/d H:i:s u')."\t".$msg;
+		for ($j=0;$j<$s;$j++)
+		{
+			usleep(100000);
+			echo "\r".date('Y/m/d H:i:s u')."\t".$msg.' '.$w[$j%4];
+		}
+		echo "\n";
+	}
+	public static function hexToDec($hex)	{
+		return hexdec(bin2hex($hex));
+	}
+// http://www.davisnet.com/support/weather/downloads/software_direct.asp?SoftCat=4&SoftwareID=172
+/**
+		#################################################################################
+		################	Function for RAW data convertion	#################
+		#################################################################################
+**/
+
+	public static function Bool($str) {// 
+		return ord($str) ? TRUE : FALSE ;
+	}
+
+	public static function Char2Signed($val) {
+	// Char2Signed http://en.wikipedia.org/wiki/Two%27s_complement
+	// return value between 0 - 255 into signed -128 - +127...Two's complement
+		return (($val>>7)?(($val ^ 0xFF)+1)*(-1):$val);
+	}
+	public static function s2sc($str) {// String to Signed Char
+		return $this->Char2Signed($str);
+	}
+	public static function s2uc($str) {// String to unSigned Char
+		return ($this->hexToDec($str));
+	}
+
+	public static function Short2Signed($val) {
+	// Char2Signed http://en.wikipedia.org/wiki/Two%27s_complement
+	// return value between 0 - 65532 into signed -32768 - +32767...Two's complement
+		return (($val>>15)?(($val ^ 0xFFFF)+1)*(-1):$val);
+	}
+	public static function s2sSht($str) {// String to Signed Short
+		return $this->Short2Signed($this->hexToDec(strrev($str)));
+	}
+	public static function s2uSht($str) {// String to unSigned Short
+		return ($this->hexToDec(strrev($str)));
+	}
+
+	public static function Gain($str) {// ...
+		return $this->hexToDec(strrev($str))/1000;
+	}
+	public static function Cal($str) {// ...
+		return $this->hexToDec(strrev($str))/1000;
+	}
+	public static function Offset($str) {// ...
+		return $this->s2sSht($str);
+	}
+	public static function Alt($str) {// Altitude
+		return $this->s2sSht($str);
+	}
+	public static function GPS($str) {// Position GPS
+		return $this->s2sSht($str)/10;
+	}
+	public static function GMT($str) {// ...
+		$val = $this->s2sSht($str);
+		return (int)($val/100).":".str_pad((abs($val)%100),2,"0",STR_PAD_LEFT);
+	}
+	public static function Station($str) {// ...
+		return null;
+	}
+
+	public static function UnitBits($str) {// ...
+		$val = $this->s2uc($str);
+		return array_combine(array("Unit.Wind","Unit.Rain","Unit.Elev","Unit.Temp","Unit.Barom"),
+			array(
+				!(($val&0xC0)>>6)?"mph":(((($val&0xC0)>>6)==1)?"m/s":(((($val&0xC0)>>6)==2)?"Km/h":"Knots")),
+				(($val&0x20)>>5)?"mm":"in",
+				(($val&0x10)>>4)?"m":"ft",
+				!(($val&0x0C)>>2)?"1 °F":(((($val&0x0C)>>2)==1)?"0.1 °F":(((($val&0x0C)>>2)==2)?"1 °C":"0.1 °C")),
+				!($val&0x03)?"0.01 in":((($val&0x03)==1)?"0.1 mm":((($val&0x03)==2)?"0.1 hpa":"0.1 mB")),
+		));
+	}
+	public static function SetupBits($str) {// ...
+		$val = $this->s2uc($str);
+		return array_combine(array("Setup.Longitude","Setup.Latitude","Setup.RainCupSize","Setup.WinCupSize","Setup.DayMonth","Setup.AM/PM","Setup.12/24"),
+			array(
+				(($val&0x80)>>7)?"East":"West",
+				(($val&0x40)>>6)?"Nord":"South",
+				!(($val&30)>>4)?"0.01 in":(((($val&30)>>4)==1)?"0.2 mm":"0.1 mm"),
+				(($val&0x08)>>3)?"Large":"Small",
+				(($val&0x04)>>2)?"Day/Month":"Month/Day",
+				(($val&0x02)>>1)?"AM?":"PM?",
+				($val&0x01)?"24h?":"AM/PM?",
+			));
+	}
+	
+	public static function Pressure($str) {// Pressure...
+		$val = $this->hexToDec(strrev($str));
+		return $val/1000;
+	}
+	public static function Temp($str) {// Temperature...
+		return $this->s2sSht($str)/10;
+	}
+	public static function CalTemp($str) {// Temperature...
+		return $this->s2sc($str)/10;
+	}
+	public static function SmallTemp($str) {// Temperature...
+		return $this->s2uc($str)-90;
+	}
+	public static function SmallTemp120($str) {// Temperature...
+		return $this->s2uc($str)-120;
+	}
+
+	public static function Speed($str) {// Wind Speed...
+		return $this->hexToDec($str);
+	}
+	public static function Samples($str) {// number of clic...
+		return $this->s2uSht($str);
+	}
+
+	public static function Radiation($str) {// Solar Radiation...
+		return $this->s2sSht($str);
+	}
+	public static function ET_h($str) {// Evapotranspiration...
+		return $this->s2uc($str)/1000;
+	}
+	public static function ET1000($str) {// Evapotranspiration...
+		return $this->s2uSht($str)/1000;
+	}
+	public static function ET100($str) {// Evapotranspiration...
+		return $this->s2uSht($str)/100;
+	}
+	public static function UV($str) {// UV level...
+		return $this->s2uc($str)/10;
+	}
+
+	public static function Forecast($str) {// Forecast for next day...
+		return $this->s2uc($str);
+	}
+
+	public static function Rate($str) {// Percentage...
+		return $this->s2uc($str);
+	}
+	public static function Moistures ($str){ // Humidite du sol
+		return $this->s2uc($str);
+	}
+	public static function Wetnesses($str) {// Humectometre...
+		return $this->s2uc($str);
+	}
+
+	public static function Angle16($str) {// Wind Direction...
+		return $this->s2uc($str);
+	}
+	public static function Angle360($str) {// Wind Direction...
+		return $this->s2sSht($str);
+	}
+	public static function SpRev($str) {// Special revision...
+		if ($this->hexToDec($str)==255)
+			return 'Rev A';
+		return 'Rev B';
+	}
+	public static function BTrend($str) {// ...
+		return $this->Trend[$this->s2uc($str)];
+	}
+
+	public static function RainAlarms($str) {// ...
+		return $this->s2sSht($str);
+	}
+	public static function HumidityAlarms($str) {// ...
+		return $this->s2uc($str);
+	}
+	public static function Soil_LeafAlarms($str) {// ...
+		$val = $this->hexToDec($str);
+		return $val;
+	}
+	public static function Voltage($str) {// Tension of inside battery
+		return (($this->s2uSht($str)*300)/512)/100.0;
+	}
+	public static function Icons($str) {// ...
+		return $this->s2uc($str);
+	}
+/**
+		#################################################################################
+		################	Function for Numeric data convertion to SI	#################
+		#################################################################################
+**/
+	public static function metric($val){
+		return round($val/3.2808, 2);
+	}
+	public static function tempSI($val){
+		return $this->celcius($val);
+	}
+	public static function celcius($val){ // convert °F to celcius
+		return round(($val-32)*5/9, 2);
+	}
+	public static function kelvin($val){ // convert °F to Kelvin
+		return round(($val+459.67)*5/9, 2);
+	}
+	public static function mBySec($val){ // convert milles per hour speed 
+		return round($val/2.2369362920544, 3); // (3600/((5280*12)*0.0254));
+	}
+	public static function kmByh($val){ // convert milles per hour speed 
+		return round($val*1,609.345, 2); // (3600/((5280*12)*0.0254));
+	}
+	public static function barSI ($val){
+	return $val;
+	}
+	public static function UTC ($val){
+	return strtotime($val);
+	}
+
+}
 ?>
