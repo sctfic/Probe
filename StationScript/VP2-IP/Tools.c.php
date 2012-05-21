@@ -1,17 +1,26 @@
 <?php
 class Tools
 {
-	$this->symb = array (
-			'CR' => chr(0x0D), // \r
-			'LF' => chr(0x0A), // \n
-			'LFCR' => chr(0x0A).chr(0x0D),
-			'ESC' => chr(0x1b), // Echap
-			'ACK' => chr(0x06), // Compris
-			'NAK' => chr(0x21), // Pas Compris
-			'CANCEL' => chr(0x18), // Bad CRC Code
-			'_OK_' => "\n\rOK\n\r"
-	);
-	$this->table = array(
+// 	var $_SYMB = array (
+// 			'CR' => "\r", // chr(0x0D), // \r
+// 			'LF' => "\n", // chr(0x0A), // \n
+// 			'LFCR' => "\n\r", // chr(0x0A).chr(0x0D),
+// 			'ESC' => "\x1b", // chr(0x1b), // Echap
+// 			'ACK' => "\x06", // chr(0x06), // Compris
+// 			'NAK' => "\x21", // chr(0x21), // Pas Compris
+// 			'CANCEL' => "\x18", // chr(0x18), // Bad CRC Code
+// 			'_OK_' => "\n\rOK\n\r"
+// 	);
+	const CR = "\r";
+	const LF = "\n";
+	const LFCR = "\n\r";
+	const ESC = "\x1b";
+	const ACK = "\x06";
+	const NAK = "\x21";
+	const CANCEL = "\x18";
+	const OK = "\n\rOK\n\r";
+
+	var $TABLE = array(
 	0x0,  0x1021,  0x2042,  0x3063,  0x4084,  0x50a5,  0x60c6,  0x70e7,
 	0x8108,  0x9129,  0xa14a,  0xb16b,  0xc18c,  0xd1ad,  0xe1ce,  0xf1ef,
 	0x1231,  0x210,  0x3273,  0x2252,  0x52b5,  0x4294,  0x72f7,  0x62d6,
@@ -45,15 +54,19 @@ class Tools
 	0xef1f,  0xff3e,  0xcf5d,  0xdf7c,  0xaf9b,  0xbfba,  0x8fd9,  0x9ff8,
 	0x6e17,  0x7e36,  0x4e55,  0x5e74,  0x2e93,  0x3eb2,  0xed1,  0x1ef0);
 
-	$this->WinDir = array('N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSW','SW','WSW','W','WNW','NW','NNW');
+	var $WinDir = array('N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSW','SW','WSW','W','WNW','NW','NNW');
 
-	$this->Trend = array(196=>-2, 236=>-1, 0=>0, 20=>1, 60=>2, 80=>'Rev A');
+	var $Trend = array(196=>-2, 236=>-1, 0=>0, 20=>1, 60=>2, 80=>'Rev A');
 
 	/**
 	#########################################################################################
 	#########		Function for manage Variable and Conf-File		#########
 	#########################################################################################
 **/
+
+	public static function table ($i){
+		return $this->TABLE[$i];
+	}
 	public static function Raw2Date ($DateStamp){
 	
 		$DateStamp = $this->hexToDec(strrev($DateStamp));

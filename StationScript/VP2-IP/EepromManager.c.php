@@ -10,7 +10,7 @@
 class dataFetcher extends ConnexionManager
 {
 	function __construct($name, $myConfig)	{
-		parent::__construct();
+		parent::__construct($name, $myConfig);
 	}
 	
 	/*
@@ -37,10 +37,10 @@ class dataFetcher extends ConnexionManager
 	function RequestCmd($cmd) { //
 		fwrite ($this->fp, $cmd);
 		$r = fread($this->fp, 1);
-		if ($r == Tools::symb['ACK']){
+		if ($r == Tools::ACK){
 			return true;
 		}
-		else if ($r == Tools::symb['NAK'])
+		else if ($r == Tools::NAK)
 		{
 			throw new Exception(sprintf(_('Command [%s] not understand'),$cmd));
 		}
@@ -56,7 +56,7 @@ class dataFetcher extends ConnexionManager
 	*/
 	function RawConverter($DataModele, $RawStr) { //
 		$x = array();
-		foreach( as $key=>$val) {
+		foreach($DataModele as $key=>$val) {
 			if (is_int($val['pos'])) {
 				$StrValue = substr ($RawStr, $val['pos'], $val['len']);
 			}
@@ -98,28 +98,3 @@ class dataFetcher extends ConnexionManager
 	}
 }
 ?>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
