@@ -8,16 +8,16 @@
 // ##############################################################################################
 
 	$this->DumpAfter = array (
-	'Archive.Common:Date'			=>	array( 'pos' => 0,	'len' => 2,	'fn'=>'Raw2Date',	'SI'=>'UTC',	'min'=>0,	'max'=>0xFFFF,	'err'=>0xFFFF,	'unit'=> 'Date'	),
-	'Archive.Common:Time'			=>	array( 'pos' => 2,	'len' => 2,	'fn'=>'Raw2Time',	'SI'=>'UTC',	'min'=>0,	'max'=>0xFFFF,	'err'=>0xFFFF,	'unit'=> 'Time'	),
+	'Archive.none:Date'			=>	array( 'pos' => 0,	'len' => 2,	'fn'=>'Raw2Date',	'SI'=>'UTC',	'min'=>0,	'max'=>0xFFFF,	'err'=>0xFFFF,	'unit'=> 'Date'	),
+	'Archive.none:Time'			=>	array( 'pos' => 2,	'len' => 2,	'fn'=>'Raw2Time',	'SI'=>'UTC',	'min'=>0,	'max'=>0xFFFF,	'err'=>0xFFFF,	'unit'=> 'Time'	),
 
 	'Archive.Temp:Avg_Out'			=>	array( 'pos' => 4,	'len' => 2,	'fn'=>'Temp',		'SI'=>'tempSI',	'min'=>0,	'max'=>150,	'err'=>32767,	'unit'=> '°F'	),
 	'Archive.Temp:High_Out'			=>	array( 'pos' => 6,	'len' => 2,	'fn'=>'Temp',		'SI'=>'tempSI',	'min'=>0,	'max'=>150,	'err'=>-32768,	'unit'=> '°F'	),
 	'Archive.Temp:Low_Out'			=>	array( 'pos' => 8,	'len' => 2,	'fn'=>'Temp',		'SI'=>'tempSI',	'min'=>0,	'max'=>150,	'err'=>-32767,	'unit'=> '°F'	),
 
-	'Archive.Common:Sample_Rainfall'	=>	array( 'pos' => 10,	'len' => 2,	'fn'=>'Samples',	'SI'=>NULL,	'min'=>0,	'max'=>0xFFFF,	'err'=>0,	'unit'=> 'clic'	),
-	'Archive.Common:Sample_High_Rain_Rate'	=>	array( 'pos' => 12,	'len' => 2,	'fn'=>'Samples',	'SI'=>NULL,	'min'=>0,	'max'=>0xFFFF,	'err'=>0,	'unit'=> 'clic/h'),
-	'Archive.Common:Presure'		=>	array( 'pos' => 14,	'len' => 2,	'fn'=>'Pressure',	'SI'=>'barSI',	'min'=>0,	'max'=>0xFFFF,	'err'=>0,	'unit'=> 'in.Hg'),
+	'Archive.Rain:Sample_Rainfall'	=>	array( 'pos' => 10,	'len' => 2,	'fn'=>'Samples',	'SI'=>NULL,	'min'=>0,	'max'=>0xFFFF,	'err'=>0,	'unit'=> 'clic'	),
+	'Archive.Rain:Sample_High_Rain_Rate'	=>	array( 'pos' => 12,	'len' => 2,	'fn'=>'Samples',	'SI'=>NULL,	'min'=>0,	'max'=>0xFFFF,	'err'=>0,	'unit'=> 'clic/h'),
+	'Archive.Common:Pressure'		=>	array( 'pos' => 14,	'len' => 2,	'fn'=>'Pressure',	'SI'=>'barSI',	'min'=>0,	'max'=>0xFFFF,	'err'=>0,	'unit'=> 'in.Hg'),
 	'Archive.Common:Solar_Radiation'	=>	array( 'pos' => 16,	'len' => 2,	'fn'=>'Radiation',	'SI'=>NULL,	'min'=>0,	'max'=>3000,	'err'=>32767,	'unit'=> 'W/m²'	),
 	'Archive.Common:Sample_Wind'		=>	array( 'pos' => 18,	'len' => 2,	'fn'=>'Samples',	'SI'=>NULL,	'min'=>0,	'max'=>0xFFFF,	'err'=>0,	'unit'=> '-'	),
 
@@ -32,7 +32,7 @@
 	'Archive.Common:Dominant_Wind_Direction'=>	array( 'pos' => 27,	'len' => 1,	'fn'=>'Angle16',	'SI'=>NULL,	'min'=>0,	'max'=>16,	'err'=>255,	'unit'=> '°'	),
 
 	'Archive.Common:Avg_UV_Index'		=>	array( 'pos' => 28,	'len' => 1,	'fn'=>'UV',		'SI'=>NULL,	'min'=>0,	'max'=>25,	'err'=>255,	'unit'=> '-'	),
-	'Archive.Common:ET_Last_Hour'		=>	array( 'pos' => 29,	'len' => 1,	'fn'=>'ET_h',		'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>0,	'unit'=> 'mm'	),
+	'Archive.ET:Last_Hour'		=>	array( 'pos' => 29,	'len' => 1,	'fn'=>'ET_h',		'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>0,	'unit'=> 'mm'	),
 	'Archive.Common:High_Solar_Rad'		=>	array( 'pos' => 30,	'len' => 2,	'fn'=>'Radiation',	'SI'=>NULL,	'min'=>0,	'max'=>2000,	'err'=>0,	'unit'=> 'W/m²'	),
 	'Archive.Common:High_UV_Index'		=>	array( 'pos' => 32,	'len' => 1,	'fn'=>'UV',		'SI'=>NULL,	'min'=>0,	'max'=>25,	'err'=>255,	'unit'=> 'W/m²'	),
 	'Archive.Common:Forecast_Rule'		=>	array( 'pos' => 33,	'len' => 1,	'fn'=>'Forecast',	'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>193,	'unit'=> '-'	),

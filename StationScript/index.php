@@ -23,11 +23,11 @@ foreach($stationConf as $configKey=>$configValue)
 					$configValue['Last']['HiLows'] = date('Y/m/d H:i:s');
 // 					var_export($retuned);	// OK
 					echo implode("\t",$retuned)."\n";
-				}
-				if (($retuned = $station->get_LOOP())) {
+				}*/
+				if (($retuned = $station->GetLoop())) {
 					$configValue['Last']['Loop'] = date('Y/m/d H:i:s');
 // 					var_export($retuned);	// OK
-				}*/
+				}
 // 				if (($retuned = $station->get_DMPAFT($configValue['Last']['_DumpAfter']))) {
 // 					$configValue['Last']['_DumpAfter'] = $retuned;
 // 					$configValue['Last']['DumpAfter'] = date('Y/m/d H:i:s');

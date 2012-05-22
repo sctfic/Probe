@@ -24,7 +24,7 @@ class dataFetcher extends ConnexionManager
 		}
 		
 		$crc = Tools::CalculateCRC($data);
-		if ($crc !== chr(0).chr(0)){
+		if ($crc != chr(0).chr(0)){
 			throw new Exception(sprintf(_('Wrong CRC, on good data : 0x%X'),$crc));
 		}
 		return true;
@@ -67,7 +67,7 @@ class dataFetcher extends ConnexionManager
 					$val['len']);
 			}
 			
-			Tools::$val['fn'] ($StrValue);
+			$val['fn'] ($StrValue);
 		}
 		
 		return returnValue;
@@ -82,13 +82,13 @@ class dataFetcher extends ConnexionManager
 	{
 		$_NBR = $nbr;	
 		try {
-			RequestCmd("LOOP $nbr\n");
+			self::RequestCmd("LOOP $nbr\n");
 			while ($nbr-- > 0) {
 				$data = fread($this->fp, 99);
-				VerifAnswersAndCRC&CRC($data, 99);
+				self::VerifAnswersAndCRC($data, 99);
 				Tools::Waiting (0,'[LOOP] : Download the current Values');
-				RawConverter($this->Loop, $RawStr);
-				$LOOPS[]=0;
+				$LOOPS[]=self::RawConverter($this->Loop, $data);
+				echo implode("\t",$LOOPS[0])."\n";
 			}
 		}
 		catch (Exception $e) {

@@ -1,26 +1,16 @@
 <?php
 class Tools
 {
-// 	var $_SYMB = array (
-// 			'CR' => "\r", // chr(0x0D), // \r
-// 			'LF' => "\n", // chr(0x0A), // \n
-// 			'LFCR' => "\n\r", // chr(0x0A).chr(0x0D),
-// 			'ESC' => "\x1b", // chr(0x1b), // Echap
-// 			'ACK' => "\x06", // chr(0x06), // Compris
-// 			'NAK' => "\x21", // chr(0x21), // Pas Compris
-// 			'CANCEL' => "\x18", // chr(0x18), // Bad CRC Code
-// 			'_OK_' => "\n\rOK\n\r"
-// 	);
-	const CR = "\r";
-	const LF = "\n";
-	const LFCR = "\n\r";
-	const ESC = "\x1b";
-	const ACK = "\x06";
-	const NAK = "\x21";
-	const CANCEL = "\x18";
-	const OK = "\n\rOK\n\r";
+	const CR	=	"\r";		// chr(0x0D)
+	const LF	=	"\n";		// chr(0x0A)
+	const LFCR	=	"\n\r";		// chr(0x0A).chr(0x0D)
+	const ESC	=	"\x1b";		// chr(0x1b), Echap
+	const ACK	=	"\x06";		// chr(0x06), Compris
+	const NAK	=	"\x21";		// chr(0x21), Pas Compris
+	const CANCEL	=	"\x18";		// chr(0x18), Bad CRC Code
+	const OK	=	"\n\rOK\n\r";	// Confirm
 
-	var $TABLE = array(
+	private static $TABLE = array(
 	0x0,  0x1021,  0x2042,  0x3063,  0x4084,  0x50a5,  0x60c6,  0x70e7,
 	0x8108,  0x9129,  0xa14a,  0xb16b,  0xc18c,  0xd1ad,  0xe1ce,  0xf1ef,
 	0x1231,  0x210,  0x3273,  0x2252,  0x52b5,  0x4294,  0x72f7,  0x62d6,
@@ -54,9 +44,9 @@ class Tools
 	0xef1f,  0xff3e,  0xcf5d,  0xdf7c,  0xaf9b,  0xbfba,  0x8fd9,  0x9ff8,
 	0x6e17,  0x7e36,  0x4e55,  0x5e74,  0x2e93,  0x3eb2,  0xed1,  0x1ef0);
 
-	var $WinDir = array('N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSW','SW','WSW','W','WNW','NW','NNW');
+// 	var $WinDir = array('N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSW','SW','WSW','W','WNW','NW','NNW');
 
-	var $Trend = array(196=>-2, 236=>-1, 0=>0, 20=>1, 60=>2, 80=>'Rev A');
+	private static $TREND = array(196=>-2, 236=>-1, 0=>0, 20=>1, 60=>2, 80=>'Rev A');
 
 	/**
 	#########################################################################################
@@ -64,26 +54,23 @@ class Tools
 	#########################################################################################
 **/
 
-	public static function table ($i){
-		return $this->TABLE[$i];
-	}
 	public static function Raw2Date ($DateStamp){
 	
-		$DateStamp = $this->hexToDec(strrev($DateStamp));
+		$DateStamp = self::hexToDec(strrev($DateStamp));
 		$y = (($DateStamp & 0xFE00)>>9)+2000;
 		$m = str_pad(($DateStamp & 0x01E0)>>5,2,'0',STR_PAD_LEFT);
 		$d = str_pad($DateStamp & 0x1f,2,'0',STR_PAD_LEFT);
 		return $y.'/'.$m.'/'.$d;
 	}
 	public static function Raw2Time ($TimeStamp){
-		$TimeStamp = $this->hexToDec(strrev($TimeStamp));
+		$TimeStamp = self::hexToDec(strrev($TimeStamp));
 		$h = str_pad((int)($TimeStamp/100),2,'0',STR_PAD_LEFT);
 		$min = str_pad($TimeStamp-$h*100,2,'0',STR_PAD_LEFT);
 /*		echo "$h => int $TimeStamp/100 = ".(int)($TimeStamp/100)."\n";*/
 		return $h.':'.$min.':00';
 	}
 	public static function DMPAFT_GetVP2Date ($VP2Date)	{// 2003/06/19 09:30:00  <=  0x03A2 0x06D3
-		return $this->Raw2Date(substr($VP2Date,0,2)).' '.$this->Raw2Time(substr($VP2Date,-2));
+		return self::Raw2Date(substr($VP2Date,0,2)).' '.self::Raw2Time(substr($VP2Date,-2));
 	}
 	public static function DMPAFT_SetVP2Date ($StrDate)	{// 2003/06/19 09:30:00  =>  0x03A2 0x06D3
 		$y = substr($StrDate, 0, 4);
@@ -101,7 +88,7 @@ class Tools
 		settype($crc, "integer");
 		for ($i = 0; $i < strlen($ptr); $i++)
 		{
-			$crc =  $this->table[(($crc>>8) ^ ord($ptr[$i]))] ^ (($crc<<8) & 0x00FFFF);
+			$crc =  self::$TABLE[(($crc>>8) ^ ord($ptr[$i]))] ^ (($crc<<8) & 0x00FFFF);
 		}
 		return !$crc?$crc:chr($crc>>8).chr($crc&0xff);
 	}
@@ -136,10 +123,10 @@ class Tools
 		return (($val>>7)?(($val ^ 0xFF)+1)*(-1):$val);
 	}
 	public static function s2sc($str) {// String to Signed Char
-		return $this->Char2Signed($str);
+		return self::Char2Signed($str);
 	}
 	public static function s2uc($str) {// String to unSigned Char
-		return ($this->hexToDec($str));
+		return (self::hexToDec($str));
 	}
 
 	public static function Short2Signed($val) {
@@ -148,39 +135,39 @@ class Tools
 		return (($val>>15)?(($val ^ 0xFFFF)+1)*(-1):$val);
 	}
 	public static function s2sSht($str) {// String to Signed Short
-		return $this->Short2Signed($this->hexToDec(strrev($str)));
+		return self::Short2Signed(self::hexToDec(strrev($str)));
 	}
 	public static function s2uSht($str) {// String to unSigned Short
-		return ($this->hexToDec(strrev($str)));
+		return (self::hexToDec(strrev($str)));
 	}
 
 	public static function Gain($str) {// ...
-		return $this->hexToDec(strrev($str))/1000;
+		return self::hexToDec(strrev($str))/1000;
 	}
 	public static function Cal($str) {// ...
-		return $this->hexToDec(strrev($str))/1000;
+		return self::hexToDec(strrev($str))/1000;
 	}
 	public static function Offset($str) {// ...
-		return $this->s2sSht($str);
+		return self::s2sSht($str);
 	}
 	public static function Alt($str) {// Altitude
-		return $this->s2sSht($str);
+		return self::s2sSht($str);
 	}
 	public static function GPS($str) {// Position GPS
-		return $this->s2sSht($str)/10;
+		return self::s2sSht($str)/10;
 	}
 	public static function GMT($str) {// ...
-		$val = $this->s2sSht($str);
+		$val = self::s2sSht($str);
 		return (int)($val/100).":".str_pad((abs($val)%100),2,"0",STR_PAD_LEFT);
 	}
 	public static function Station($str) {// ...
 		return null;
 	}
 	public static function getBits($oct, $bitPos, $nbrBit) { // recupaire dans un octé $oct l´etat des $nbrBit a partir du bit $bitPos
-		retun ($oct<<$bitPos)&(pow(2,$nbrBit)-1);
+		return ($oct<<$bitPos)&(pow(2,$nbrBit)-1);
 	}
 // 	public static function UnitBits($str) {// ...
-// 		$val = $this->s2uc($str);
+// 		$val = self::s2uc($str);
 // 		return array_combine(array("Unit.Wind","Unit.Rain","Unit.Elev","Unit.Temp","Unit.Barom"),
 // 			array(
 // 				!(($val&0xC0)>>6)?"mph":(((($val&0xC0)>>6)==1)?"m/s":(((($val&0xC0)>>6)==2)?"Km/h":"Knots")),
@@ -191,7 +178,7 @@ class Tools
 // 		));
 // 	}
 // 	public static function SetupBits($str) {// ...
-// 		$val = $this->s2uc($str);
+// 		$val = self::s2uc($str);
 // 		return array_combine(array("Setup.Longitude","Setup.Latitude","Setup.RainCupSize","Setup.WinCupSize","Setup.DayMonth","Setup.AM/PM","Setup.12/24"),
 // 			array(
 // 				(($val&0x80)>>7)?"East":"West",
@@ -205,89 +192,89 @@ class Tools
 // 	}
 	
 	public static function Pressure($str) {// Pressure...
-		$val = $this->hexToDec(strrev($str));
+		$val = self::hexToDec(strrev($str));
 		return $val/1000;
 	}
 	public static function Temp($str) {// Temperature...
-		return $this->s2sSht($str)/10;
+		return self::s2sSht($str)/10;
 	}
 	public static function CalTemp($str) {// Temperature...
-		return $this->s2sc($str)/10;
+		return self::s2sc($str)/10;
 	}
 	public static function SmallTemp($str) {// Temperature...
-		return $this->s2uc($str)-90;
+		return self::s2uc($str)-90;
 	}
 	public static function SmallTemp120($str) {// Temperature...
-		return $this->s2uc($str)-120;
+		return self::s2uc($str)-120;
 	}
 
 	public static function Speed($str) {// Wind Speed...
-		return $this->hexToDec($str);
+		return self::hexToDec($str);
 	}
 	public static function Samples($str) {// number of clic...
-		return $this->s2uSht($str);
+		return self::s2uSht($str);
 	}
 
 	public static function Radiation($str) {// Solar Radiation...
-		return $this->s2sSht($str);
+		return self::s2sSht($str);
 	}
 	public static function ET_h($str) {// Evapotranspiration...
-		return $this->s2uc($str)/1000;
+		return self::s2uc($str)/1000;
 	}
 	public static function ET1000($str) {// Evapotranspiration...
-		return $this->s2uSht($str)/1000;
+		return self::s2uSht($str)/1000;
 	}
 	public static function ET100($str) {// Evapotranspiration...
-		return $this->s2uSht($str)/100;
+		return self::s2uSht($str)/100;
 	}
 	public static function UV($str) {// UV level...
-		return $this->s2uc($str)/10;
+		return self::s2uc($str)/10;
 	}
 
 	public static function Forecast($str) {// Forecast for next day...
-		return $this->s2uc($str);
+		return self::s2uc($str);
 	}
 
 	public static function Rate($str) {// Percentage...
-		return $this->s2uc($str);
+		return self::s2uc($str);
 	}
 	public static function Moistures ($str){ // Humidite du sol
-		return $this->s2uc($str);
+		return self::s2uc($str);
 	}
 	public static function Wetnesses($str) {// Humectometre...
-		return $this->s2uc($str);
+		return self::s2uc($str);
 	}
 
 	public static function Angle16($str) {// Wind Direction...
-		return $this->s2uc($str);
+		return self::s2uc($str);
 	}
 	public static function Angle360($str) {// Wind Direction...
-		return $this->s2sSht($str);
+		return self::s2sSht($str);
 	}
 	public static function SpRev($str) {// Special revision...
-		if ($this->hexToDec($str)==255)
+		if (self::hexToDec($str)==255)
 			return 'Rev A';
 		return 'Rev B';
 	}
 	public static function BTrend($str) {// ...
-		return $this->Trend[$this->s2uc($str)];
+		return self::$TREND[self::s2uc($str)];
 	}
 
 	public static function RainAlarms($str) {// ...
-		return $this->s2sSht($str);
+		return self::s2sSht($str);
 	}
 	public static function HumidityAlarms($str) {// ...
-		return $this->s2uc($str);
+		return self::s2uc($str);
 	}
 	public static function Soil_LeafAlarms($str) {// ...
-		$val = $this->hexToDec($str);
+		$val = self::hexToDec($str);
 		return $val;
 	}
 	public static function Voltage($str) {// Tension of inside battery
-		return (($this->s2uSht($str)*300)/512)/100.0;
+		return ((self::s2uSht($str)*300)/512)/100.0;
 	}
 	public static function Icons($str) {// ...
-		return $this->s2uc($str);
+		return self::s2uc($str);
 	}
 /**
 		#################################################################################
@@ -298,7 +285,7 @@ class Tools
 		return round($val/3.2808, 2);
 	}
 	public static function tempSI($val){
-		return $this->celcius($val);
+		return self::celcius($val);
 	}
 	public static function celcius($val){ // convert °F to celcius
 		return round(($val-32)*5/9, 2);

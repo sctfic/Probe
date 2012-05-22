@@ -61,8 +61,13 @@ class ConnexionManager {
 			fwrite ($this->fp,'LAMPS '.($force?'1':'0').Tools::LF);
 		}
 		if (fread($this->fp,6)==Tools::OK) {
-			if ($force==-1)$this->backLightScreen = !$this->backLightScreen;
-			else $this->backLightScreen = $force;
+			if ($force==-1) {
+				$this->backLightScreen = !$this->backLightScreen;
+			}
+			else {
+				$this->backLightScreen = $force;
+			}
+			usleep(500000);
 			return TRUE;
 		}
 		return FALSE;
