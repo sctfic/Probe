@@ -116,35 +116,32 @@ class dataFetcher extends ConnexionManager
 			$nbrPages = $this->hexToDec (strrev(substr($r,0,2)));	// Split Bytes in revers order : Nbr of page
 			$firstArch = $this->hexToDec (strrev(substr($r,2,2)));	// Split Bytes in revers order : # of first archived
 				Tools::Waiting (0,'There are '.$nbrPages.'p. in queue, from archive '.$firstArch.' on first page since '.$last.'.');
-			fwrite($this->fp, Tools::ACK);			// Send ACK to start
+			fwrite($this->fp, Tools::ACK);				// Send ACK to start
 			for ($j=0;$j<$nbrPages;$j++) {
 				$Page = fread($this->fp, 267);
 					Tools::Waiting (0,'Download Archive PAGE #'.$j.' since : '.Tools::DMPAFT_GetVP2Date(substr($Page,1+52*($firstArch),4)));
 				self::VerifAnswersAndCRC($Page, 267);
 				fwrite ($this->fp, Tools::ACK);
-				for ($k=$firstArch; $k<=4; $k++) {
+				for ($k=$firstArch; $k<=4; $k++) {			// ignore les 1er valeur hors champ.
 					$ArchiveStrRaw = substr ($Page, 1+52*$k, 52);
 					$ArchDate = Tools::DMPAFT_GetVP2Date(substr($ArchiveStrRaw,0,4));
-					if (strtotime($ArchDate) > strtotime($LastArchDate)) {// ignore les 1er et derniere valeur hors champ.
-						$DATA=self::RawConverter($this->DumpAfter, $ArchiveStrRaw);
-						echo implode("\t",$DATA)."\n";
+					if (strtotime($ArchDate) > strtotime($LastArchDate)) {// ignore les derniere valeur hors champ.
+						$data=self::RawConverter($this->DumpAfter, $ArchiveStrRaw);
+						echo implode("\t",$data)."\n";
 						$DATAS[]=$DATA;
+						Tools::Waiting (0,'Page #'.$j.'-'.$k.' of '.$ArchDate.' archived Ok.');
+						$LastArchDate = $ArchDate;
+					}
+					else {
+						Tools::Waiting (0,'Page #'.$j.'-'.$k.' of '.$ArchDate.' Ignored (Out of Range).');
 					}
 				}
 			}
-			
-			
-			
-			
-			
-			
-			
-			
 		}
 		catch (Exception $e) {
 			Tools::Waiting (0, $e->getMessage());
 		}
-		return $data;
+		return array = ($LastArchDate => $data);
 	}
 
 }
