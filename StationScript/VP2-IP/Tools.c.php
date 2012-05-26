@@ -53,7 +53,12 @@ class Tools
 	#########		Function for manage Variable and Conf-File		#########
 	#########################################################################################
 **/
-
+	public static function is_date ($date) {
+		if (preg_match('/^20[\d]{2}\/[\d]{2}\/[\d]{2}\s[\d]{2}:[\d]{2}:[\d]{2}$/', $last)) {
+			return $date
+		}
+		return '2012/01/01 00:00:00';
+	}
 	public static function Raw2Date ($DateStamp){
 	
 		$DateStamp = self::hexToDec(strrev($DateStamp));

@@ -1,5 +1,6 @@
 <?php	// clear;php5 -f ./StationScript/VP2-IP/index.php
 
+require (dirname(__FILE__).DIRECTORY_SEPARATOR.'Tools.c.php');
 class ConnexionManager {
 	protected $fp=NULL;	// Pointer of VP2 Connection
 	protected $backLightScreen=FALSE; // actual state of backlight screen
@@ -16,11 +17,10 @@ class ConnexionManager {
 		$this->Port = $myConfig['Port'];*/
 		$this->conf = $myConfig;
 // 		$this->setStationConfig($stationConfig);
-		require_once ($this->StationFolder.'Tools.c.php');
-		require_once ($this->StationFolder.'EepromDumpAfter.h.php');
-		require_once ($this->StationFolder.'EepromLoop.h.php');
-		require_once ($this->StationFolder.'EepromHiLow.h.php');
-		require_once ($this->StationFolder.'EepromConfig.h.php');	
+		require ($this->StationFolder.'EepromDumpAfter.h.php');
+		require ($this->StationFolder.'EepromLoop.h.php');
+		require ($this->StationFolder.'EepromHiLow.h.php');
+		require ($this->StationFolder.'EepromConfig.h.php');	
 	}
 
 	public function initConnection()	{
