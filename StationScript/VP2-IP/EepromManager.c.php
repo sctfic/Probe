@@ -66,11 +66,14 @@ class dataFetcher extends ConnexionManager
 					($val['pos']-(int)$val['pos']-0.1)*10,
 					$val['len']);
 			}
-			echo $val['fn']."\n";
-			eval('return '.$val['fn'].' ($StrValue);');
+// 			echo $val['fn']." = ";
+			$returnValue = call_user_func($val['fn'], $StrValue);
+// 			$returnValue = eval('return '.$val['fn'].' ($StrValue);');
+// 			echo $returnValue."\n";
+			$x[]=$returnValue;
 		}
 		
-		return $returnValue;
+		return $x;
 	}
 
 	/*
@@ -100,21 +103,21 @@ class dataFetcher extends ConnexionManager
 	@return: functionReturn
 	@param: returnValue
 	*/
-	function GetDmpAft($last=0) { //
+	function GetDmpAft($last='2012/01/01 00:00:00') { //
 		try {
-			Tools::is_date($last);
+			$firstDate2Get=Tools::is_date($last);
 			self::RequestCmd("DMPAFT\n");
-			$RawDate = Tools::DMPAFT_SetVP2Date($last);
+			$RawDate = Tools::DMPAFT_SetVP2Date($firstDate2Get);
 			fwrite($this->fp, $RawDate);				// Send this date (parametre #1)
 			$crc = Tools::CalculateCRC($RawDate);			// define the CRC of my date
 			self::RequestCmd($crc);					// Send the CRC (parametre #2)
 			$data = fread($this->fp, 6);				// we read the properties : item count and first item position
 			self::VerifAnswersAndCRC($data, 6);
 // 			$nbrArch=0;
-// 			$LastArchDate = 0;
+			$LastArchDate = 0;
 // 			$retry = $this->retry-1;
-			$nbrPages = $this->hexToDec (strrev(substr($r,0,2)));	// Split Bytes in revers order : Nbr of page
-			$firstArch = $this->hexToDec (strrev(substr($r,2,2)));	// Split Bytes in revers order : # of first archived
+			$nbrPages = Tools::hexToDec (strrev(substr($data,0,2)));	// Split Bytes in revers order : Nbr of page
+			$firstArch = Tools::hexToDec (strrev(substr($data,2,2)));	// Split Bytes in revers order : # of first archived
 				Tools::Waiting (0,'There are '.$nbrPages.'p. in queue, from archive '.$firstArch.' on first page since '.$last.'.');
 			fwrite($this->fp, Tools::ACK);				// Send ACK to start
 			for ($j=0;$j<$nbrPages;$j++) {
@@ -128,7 +131,7 @@ class dataFetcher extends ConnexionManager
 					if (strtotime($ArchDate) > strtotime($LastArchDate)) {// ignore les derniere valeur hors champ.
 						$data=self::RawConverter($this->DumpAfter, $ArchiveStrRaw);
 						echo implode("\t",$data)."\n";
-						$DATAS[]=$DATA;
+						$DATAS[]=$data;
 						Tools::Waiting (0,'Page #'.$j.'-'.$k.' of '.$ArchDate.' archived Ok.');
 						$LastArchDate = $ArchDate;
 					}
@@ -141,7 +144,7 @@ class dataFetcher extends ConnexionManager
 		catch (Exception $e) {
 			Tools::Waiting (0, $e->getMessage());
 		}
-		return array = ($LastArchDate => $data);
+		return array ($LastArchDate => $data);
 	}
 
 }
