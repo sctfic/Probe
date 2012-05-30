@@ -89,7 +89,7 @@ class dataFetcher extends ConnexionManager
 				$data = fread($this->fp, 99);
 				self::VerifAnswersAndCRC($data, 99);
 				Tools::Waiting (0,'[LOOP] : Download the current Values');
-				$LOOPS[]=self::RawConverter($this->Loop, $data);
+				$LOOPS[date('Y/m/d H:i:s')]=self::RawConverter($this->Loop, $data);
 				echo implode("\t",$LOOPS[0])."\n";
 			}
 		}
@@ -105,6 +105,7 @@ class dataFetcher extends ConnexionManager
 	*/
 	function GetDmpAft($last='2012/01/01 00:00:00') { //
 		try {
+			$DATAS=false;
 			$firstDate2Get=Tools::is_date($last);
 			self::RequestCmd("DMPAFT\n");
 			$RawDate = Tools::DMPAFT_SetVP2Date($firstDate2Get);
@@ -120,34 +121,50 @@ class dataFetcher extends ConnexionManager
 			$firstArch = Tools::hexToDec (strrev(substr($data,2,2)));	// Split Bytes in revers order : # of first archived
 				Tools::Waiting (0,'There are '.$nbrPages.'p. in queue, from archive '.$firstArch.' on first page since '.$last.'.');
 			fwrite($this->fp, Tools::ACK);				// Send ACK to start
-			for ($j=0;$j<$nbrPages;$j++) {
+			for ($j=0; $j<$nbrPages; $j++) {
+				if ( !((time()+10)%300) ) {
+				// la recuperation des archives bloque la lecture des capteurs donc on le fait par petit bout
+					throw new Exception(_('Please retry later to finish, Data sensors must be checked in few second.'));
+				}
 				$Page = fread($this->fp, 267);
-					Tools::Waiting (0,'Download Archive PAGE #'.$j.' since : '.Tools::DMPAFT_GetVP2Date(substr($Page,1+52*($firstArch),4)));
+				Tools::Waiting (0,'Download Archive PAGE #'.$j.' since : '.Tools::DMPAFT_GetVP2Date(substr($Page,1+52*($firstArch),4)));
 				self::VerifAnswersAndCRC($Page, 267);
 				fwrite ($this->fp, Tools::ACK);
 				for ($k=$firstArch; $k<=4; $k++) {			// ignore les 1er valeur hors champ.
 					$ArchiveStrRaw = substr ($Page, 1+52*$k, 52);
 					$ArchDate = Tools::DMPAFT_GetVP2Date(substr($ArchiveStrRaw,0,4));
-					if (strtotime($ArchDate) > strtotime($LastArchDate)) {// ignore les derniere valeur hors champ.
-						$data=self::RawConverter($this->DumpAfter, $ArchiveStrRaw);
-						echo implode("\t",$data)."\n";
-						$DATAS[]=$data;
+					if (strtotime($ArchDate) > strtotime($LastArchDate)) {
+					// ignore les derniere valeur hors champ, car on parcoure une liste circulaire
+					// donc la deniere valeur a extraire precede la plus vielle valleur de cette liste
+						$DATAS[$ArchDate] = self::RawConverter($this->DumpAfter, $ArchiveStrRaw);
 						Tools::Waiting (0,'Page #'.$j.'-'.$k.' of '.$ArchDate.' archived Ok.');
 						$LastArchDate = $ArchDate;
 					}
 					else {
-						Tools::Waiting (0,'Page #'.$j.'-'.$k.' of '.$ArchDate.' Ignored (Out of Range).');
+						throw new Exception(sprintf(_('Page #%d-%d of %s Ignored (Out of Range).'),$j, $k, $ArchDate));
 					}
+					$firstArch=0;
 				}
 			}
+			return $DATAS;
 		}
 		catch (Exception $e) {
 			Tools::Waiting (0, $e->getMessage());
+			return $DATAS;
 		}
-		return array ($LastArchDate => $data);
+		return false;
 	}
-
+	/*
+	@description: functionDescription
+	@return: functionReturn
+	@param: returnValue
+	*/
+	function GetConfig() { //
+		
+		return $CONFS;
+	}
 }
+
 
 
 

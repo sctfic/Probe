@@ -25,13 +25,13 @@ foreach($stationConf as $configKey=>$configValue)
 					echo implode("\t",$retuned)."\n";
 				}*/
 // 				if (($retuned = $station->GetLoop())) {
-// 					$configValue['Last']['Loop'] = date('Y/m/d H:i:s');
-// // 					var_export($retuned);	// OK
+// 					var_export(end($retuned));
+// 					$configValue['Last']['Loop'] = key($retuned);
 // 				}
 				if (($retuned = $station->GetDmpAft($configValue['Last']['_DumpAfter']))) {
-					$configValue['Last']['_DumpAfter'] = $retuned;
+					var_export(end($retuned));	// OK
+					$configValue['Last']['_DumpAfter'] = key($retuned);
 					$configValue['Last']['DumpAfter'] = date('Y/m/d H:i:s');
-// 					var_export($retuned);	// OK
 				}
 // 				if (($retuned = $station->EEBRD_Confs())) {
 // 					$configValue['Last']['AllConfs'] = date('Y/m/d H:i:s');
