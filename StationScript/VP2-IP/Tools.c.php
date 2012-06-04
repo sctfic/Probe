@@ -9,6 +9,7 @@ class Tools
 	const NAK	=	"\x21";		// chr(0x21), Pas Compris
 	const CANCEL	=	"\x18";		// chr(0x18), Bad CRC Code
 	const OK	=	"\n\rOK\n\r";	// Confirm
+	const DBL_NULL	=	"\x00\x00";	// valeur de confirmation d'un CRC
 
 	private static $TABLE = array(
 	0x0,  0x1021,  0x2042,  0x3063,  0x4084,  0x50a5,  0x60c6,  0x70e7,
@@ -129,6 +130,7 @@ class Tools
 	// return value between 0 - 255 into signed -128 - +127...Two's complement
 		return (($val>>7)?(($val ^ 0xFF)+1)*(-1):$val);
 	}
+	/** IL SEMBLE Y AVOIR UN PB ENTRE s2sc et Char2Signed **/
 	public static function s2sc($str) {// String to Signed Char
 		return self::Char2Signed($str);
 	}

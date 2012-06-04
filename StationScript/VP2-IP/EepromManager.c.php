@@ -12,43 +12,6 @@ class dataFetcher extends ConnexionManager
 	function __construct($name, $myConfig)	{
 		parent::__construct($name, $myConfig);
 	}
-	
-	/*
-	@description: functionDescription
-	@return: functionReturn
-	@param: returnValue
-	*/
-	function VerifAnswersAndCRC($data, $len) {
-		if (strlen($data)!=$len){
-			throw new Exception(sprintf(_('Incomplete Data strlen = %d insted of : %d'),strlen($data),$len));
-		}
-		
-		$crc = Tools::CalculateCRC($data);
-		if ($crc != chr(0).chr(0)){
-			throw new Exception(sprintf(_('Wrong CRC, on good data : 0x%X'),$crc));
-		}
-		return true;
-	}
-	/*
-	@description: functionDescription
-	@return: functionReturn
-	@param: returnValue
-	*/
-	function RequestCmd($cmd) { //
-		fwrite ($this->fp, $cmd);
-		$r = fread($this->fp, 1);
-		if ($r == Tools::ACK){
-			return true;
-		}
-		else if ($r == Tools::NAK)
-		{
-			throw new Exception(sprintf(_('Command [%s] not understand'),$cmd));
-		}
-		else {
-			throw new Exception(_('Unknow Error, Reconnection'));
-		}
-	}
-
 	/*
 	@description: functionDescription
 	@return: functionReturn
@@ -66,30 +29,64 @@ class dataFetcher extends ConnexionManager
 					($val['pos']-(int)$val['pos']-0.1)*10,
 					$val['len']);
 			}
-// 			echo $val['fn']." = ";
-			$returnValue = call_user_func($val['fn'], $StrValue);
-// 			$returnValue = eval('return '.$val['fn'].' ($StrValue);');
-// 			echo $returnValue."\n";
-			$x[]=$returnValue;
+
+			if ($val['fn']) {
+				$x[$key] = call_user_func($val['fn'], $StrValue);
+			}
+			else {
+				$x[$key] = $StrValue;
+			}
 		}
-		
 		return $x;
 	}
-
+	/*
+	@description: functionDescription
+	@return: functionReturn
+	@param: returnValue
+	*/
+	function GetConfig() { //
+		$CONFS = false;
+		 try {
+			Tools::Waiting (0,'[EEBRD] : Download the current Config');
+			
+// 			$P=str_pad(strtoupper(dechex(0)),3,'0',STR_PAD_LEFT);
+// 			$L=str_pad(strtoupper(dechex(177)),2,'0',STR_PAD_LEFT);
+			self::RequestCmd("EEBRD 000 B1\n");
+			$data = fread($this->fp, 177+2);
+			self::VerifAnswersAndCRC($data, 177+2);
+			
+// 			$P=str_pad(strtoupper(dechex(4092)),3,'0',STR_PAD_LEFT);
+// 			$L=str_pad(strtoupper(dechex(1)),2,'0',STR_PAD_LEFT);
+			self::RequestCmd("EEBRD FFC 01\n");
+			$data2 = fread($this->fp, 1+2);
+			self::VerifAnswersAndCRC($data2, 1+2);
+				$v = end($this->EEPROM);
+				$v['pos'] = 1;
+				$k = key($this->EEPROM);
+			$CONFS[date('Y/m/d H:i:s')] = array_merge (
+				self::RawConverter($this->EEPROM, $data),
+				self::RawConverter(array($k => $v), $data2));
+		}
+		catch (Exception $e) {
+			Tools::Waiting (0, $e->getMessage());
+		}
+		return $CONFS;
+	}
 	/*
 	@description: functionDescription
 	@return: functionReturn
 	@param: returnValue
 	*/
 	function GetLoop ($nbr=1) {
-		$_NBR = $nbr;	
+		$_NBR = $nbr;
+		$LOOPS = false;
 		try {
 			self::RequestCmd("LOOP $nbr\n");
 			while ($nbr-- > 0) {
 				$data = fread($this->fp, 99);
 				self::VerifAnswersAndCRC($data, 99);
 				Tools::Waiting (0,'[LOOP] : Download the current Values');
-				$LOOPS[date('Y/m/d H:i:s')]=self::RawConverter($this->Loop, $data);
+				$LOOPS[date('Y/m/d H:i:s')] = self::RawConverter($this->Loop, $data);
 				echo implode("\t",$LOOPS[0])."\n";
 			}
 		}
@@ -104,8 +101,8 @@ class dataFetcher extends ConnexionManager
 	@param: returnValue
 	*/
 	function GetDmpAft($last='2012/01/01 00:00:00') { //
+		$DATAS=false;
 		try {
-			$DATAS=false;
 			$firstDate2Get=Tools::is_date($last);
 			self::RequestCmd("DMPAFT\n");
 			$RawDate = Tools::DMPAFT_SetVP2Date($firstDate2Get);
@@ -146,24 +143,79 @@ class dataFetcher extends ConnexionManager
 					$firstArch=0;
 				}
 			}
-			return $DATAS;
 		}
 		catch (Exception $e) {
 			Tools::Waiting (0, $e->getMessage());
-			return $DATAS;
 		}
-		return false;
+		return $DATAS;
 	}
 	/*
-	@description: functionDescription
-	@return: functionReturn
-	@param: returnValue
+	@description: Lis l'heure de la station
+	@return: retourne l'heure de la station ou FALSE en cas d'echec
+	@param: none
 	*/
-	function GetConfig() { //
-		
-		return $CONFS;
+	function fetchStationTime() {// 0x35 16 00 1d 0c 6f  0x7c 44  ==  2011/12/29 00:22:53
+		$TIME = False;
+		try {
+			self::RequestCmd("GETTIME\n");
+			$TIME = fread($this->fp, 8);
+			self::VerifAnswersAndCRC($TIME, 8);
+			$TIME = (ord($TIME[5])+1900)
+				.'/'.str_pad(ord($TIME[4]),2,'0',STR_PAD_LEFT)
+				.'/'.str_pad(ord($TIME[3]),2,'0',STR_PAD_LEFT)
+				.' '.str_pad(ord($TIME[2]),2,'0',STR_PAD_LEFT)
+				.':'.str_pad(ord($TIME[1]),2,'0',STR_PAD_LEFT)
+				.':'.str_pad(ord($TIME[0]),2,'0',STR_PAD_LEFT);
+			Tools::Waiting (0, 'Real : '.date('Y/m/d H:i:s').' vs VP2 : '.$TIME);
+			return $TIME;
+		}
+		catch (Exception $e) {
+			Tools::Waiting (0, $e->getMessage());
+		}
+		return $TIME;
 	}
-}
+	/*
+	@description: compare l'heure de la station a celle du serveur web et lance la synchro si besoin
+	@return: renvoi TRUE si deja a l'heure , renvoi l'heure en cas de Synchro reuci et FALSE en cas d'echec
+	@param: maxLag est la valeur maxi toleré pour le decalage, force==TRUE ignorera le decalage.
+	*/
+	function clockSync($maxLag, $force=false) {
+		$TIME = False;
+		$realLag = abs(strtotime($this->fetchStationTime()) - strtotime(date('Y/m/d H:i:s')));
+		if ($realLag > $maxLag || $force) {
+			Tools::Waiting( 0, sprintf( _('[Infos] Default Clock synchronize : %ssec'), $realLag) );
+			if ($realLag < 3600-$maxLag || $realLag > 3600*12 || $force) {	// OK
+				if ($TIME = $this->updateStationTime()) {							// OK
+					Tools::Waiting (0,_('[Infos] Clock synchronizing.'));					// OK
+				}
+				else Tools::Waiting( 0, _( '[Echec] Clock synch.'));
+			}
+			else Tools::Waiting( 0, sprintf( _('[Infos] So mutch Default : %ssec. Please change it manualy'), $realLag) );
+		}
+		else return true;
+		return $TIME;
+	}
+	/*
+	@description: Force l´heure de la station a la meme heure que le serveur web
+	@return: renvoi la nouvelle heure ou FALSE en cas d'echec
+	@param: none
+	*/
+	function updateStationTime() {// 0x35 16 00 1d 0c 6f  0x7c 44  ==  2011/12/29 00:22:53
+		try {
+			self::RequestCmd("SETTIME\n");
+			list($_date, $_clock) = explode(' ', date('Y/m/d H:i:s'));
+			list($y,$m,$d) = explode('/', $_date);
+			list($h,$i,$s) = explode(':', $_clock);
+			self::RequestCmd (chr($s).chr($i).chr($h).chr($d).chr($m).chr($y-1900) . Tools::CalculateCRC($TIME));
+			Tools::Waiting (0,'[SETTIME] : '.$_date.' '.$_clock);
+			return $_date.' '.$_clock;
+		}
+		catch (Exception $e) {
+			Tools::Waiting (0, $e->getMessage());
+		}
+		return False;
+	}
+} 
 
 
 

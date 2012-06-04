@@ -19,30 +19,28 @@ foreach($stationConf as $configKey=>$configValue)
 				$configValue['Last']['Connected'] = date('Y/m/d H:i:s');
 				Tools::Waiting( 0, _( sprintf('[Succès] Ouverture de la connexion à %s', $configKey) ) );
 
-/*				if (($retuned = $station->get_HILOWS())) {
-					$configValue['Last']['HiLows'] = date('Y/m/d H:i:s');
-// 					var_export($retuned);	// OK
-					echo implode("\t",$retuned)."\n";
-				}*/
+// // 				if (($retuned = $station->get_HILOWS())) {
+// // 					$configValue['Last']['HiLows'] = date('Y/m/d H:i:s');
+// // // 					var_export($retuned);	// OK
+// // 					echo implode("\t",$retuned)."\n";
+// // 				}
 // 				if (($retuned = $station->GetLoop())) {
 // 					var_export(end($retuned));
 // 					$configValue['Last']['Loop'] = key($retuned);
 // 				}
-				if (($retuned = $station->GetDmpAft($configValue['Last']['_DumpAfter']))) {
-					var_export(end($retuned));	// OK
-					$configValue['Last']['_DumpAfter'] = key($retuned);
-					$configValue['Last']['DumpAfter'] = date('Y/m/d H:i:s');
+// 				if (($retuned = $station->GetDmpAft($configValue['Last']['_DumpAfter']))) {
+// 					var_export(end($retuned));	// OK
+// 					$configValue['Last']['_DumpAfter'] = key($retuned);
+// 					$configValue['Last']['DumpAfter'] = date('Y/m/d H:i:s');
+// 				}
+// 				if (($retuned = $station->GetConfig())) {
+// 					var_export(end($retuned));
+// 					$configValue['Last']['AllConfs'] = key($retuned);
+// 				}
+				if (($retuned = $station->clockSync(5))) {
+					var_export($retuned);	// OK
+					$configValue['Last']['ClockSync'] = $retuned;
 				}
-// 				if (($retuned = $station->EEBRD_Confs())) {
-// 					$configValue['Last']['AllConfs'] = date('Y/m/d H:i:s');
-// // 					var_export($retuned);	// OK
-// 					echo implode("\t",$retuned)."\n";
-// 				}
-// 				if (($retuned = $station->clockSync(5))) {
-// 					$configValue['Last']['ClockSync'] = date('Y/m/d H:i:s');
-// // 					var_export($retuned);	// OK
-// 					echo implode("\t",$retuned)."\n";
-// 				}
 
 				if ($station->closeConnection())
 					Tools::Waiting( 0, sprintf( _('[Succès] Fermeture de %s correcte.'), $configKey ) );

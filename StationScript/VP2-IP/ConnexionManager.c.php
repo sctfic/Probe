@@ -79,67 +79,43 @@ class ConnexionManager {
 			return TRUE;
 		else return FALSE;
 	}
-
-
-	function fetchStationTime()	{// 0x35 16 00 1d 0c 6f  0x7c 44  ==  2011/12/29 00:22:53
-		fwrite ($this->fp, "GETTIME\n");
+	/*
+	@description: functionDescription
+	@return: functionReturn
+	@param: returnValue
+	*/
+	function VerifAnswersAndCRC($data, $len) {
+		if (strlen($data)!=$len){
+			throw new Exception(sprintf(_('Incomplete Data strlen = %d insted of : %d'),strlen($data),$len));
+		}
+		
+		$crc = Tools::CalculateCRC($data);
+		if ($crc != Tools::DBL_NULL /* chr(0).(0) "\x00\x00" */ ){
+			throw new Exception(sprintf(_('Wrong CRC, on good data : crc=0x%X 0x%X , strlen=%d'),
+											$crc[0], $crc[1],
+												strlen($data)));
+		}
+		return true;
+	}
+	/*
+	@description: functionDescription
+	@return: functionReturn
+	@param: returnValue
+	*/
+	function RequestCmd($cmd) { //
+		fwrite ($this->fp, $cmd);
 		$r = fread($this->fp, 1);
-		if ($r == Tools::ACK)
-		{
-			$GETTIME = fread($this->fp, 8);
-			if (strlen($GETTIME)==8 && Tools::CalculateCRC($GETTIME)==0x0000)
-			{
-				$GETTIME = (ord($GETTIME[5])+1900).'/'.str_pad(ord($GETTIME[4]),2,'0',STR_PAD_LEFT).'/'.str_pad(ord($GETTIME[3]),2,'0',STR_PAD_LEFT).' '.str_pad(ord($GETTIME[2]),2,'0',STR_PAD_LEFT).':'.str_pad(ord($GETTIME[1]),2,'0',STR_PAD_LEFT).':'.str_pad(ord($GETTIME[0]),2,'0',STR_PAD_LEFT);
-				$this->Waiting (0, 'Real Time : '.date('Y/m/d H:i:s').' vs GETTIME : '.$GETTIME);
-				return $GETTIME;
-			}
-			else
-				$this->Waiting (0,'[GETTIME] : Erreur de CRC');
+		if ($r == Tools::ACK){
+			return true;
 		}
-		else
+		else if ($r == Tools::NAK)
 		{
-			fread($this->fp, 666);
-				$this->Waiting (0,'[GETTIME] : unknown Error '.ord($r).'='.ord(Tools::ACK));
+			throw new Exception(sprintf(_('Command [%s] not understand'),$cmd));
 		}
-		return FALSE;
-	}
-	function updateStationTime()	{// 0x35 16 00 1d 0c 6f  0x7c 44  ==  2011/12/29 00:22:53
-		fwrite ($this->fp, "SETTIME\n");
-		$r = fread($this->fp, 1);
-		if ($r == Tools::ACK)
-		{
-			list($_date, $_clock) = explode(' ', date('Y/m/d H:i:s'));
-			list($y,$m,$d) = explode('/', $_date);
-			list($h,$i,$s) = explode(':', $_clock);
-			$SETTIME = chr($s).chr($i).chr($h).chr($d).chr($m).chr($y-1900);
-			$crc = Tools::CalculateCRC($SETTIME);
-			fwrite ($this->fp, $SETTIME.$crc);
-			$r = fread($this->fp, 1);
-			if ($r == Tools::ACK)
-			{
-				$this->Waiting (0,'[SETTIME] : '.$_date.' '.$_clock);
-				return $_date.' '.$_clock;
-			}
-			else
-				$this->Waiting (0,'[SETTIME] : invalid date.');
-		}
-		else
-		{
-			fread($this->fp, 666);
-				$this->Waiting (0,'[SETTIME] : unknown Error');
-		}
-		return FALSE;
-	}
-	function clockSync($maxLag)	{
-		$realLag = abs(strtotime($this->fetchStationTime()) - strtotime(date('Y/m/d H:i:s')));
-		if ($realLag > $maxLag) {	// OK
-			$this->Waiting( 0, sprintf( _('[Infos] Default Clock synchronize : %ssec'), $realLag) );
-			if ($this->updateStationTime())								// OK
-				$this->Waiting (0,_('[Infos] Clock synchronizing.'));					// OK
-			else $this->Waiting( 0, _( '[Echec] Clock synch.'));
+		else {
+			throw new Exception(_('Unknow Error, Reconnection'));
 		}
 	}
-
 
 }
 ?>
