@@ -32,6 +32,57 @@ class dataFetcher extends ConnexionManager
 
 			if ($val['fn']) {
 				$x[$key] = call_user_func($val['fn'], $StrValue);
+				
+// I benchmarked the comparison in speed between variable functions, call_user_func, and eval.  My results are below:
+// 
+// Variable functions took 0.125958204269 seconds.
+// call_user_func took 0.485446929932 seconds.
+// eval took 2.78526711464 seconds.
+// 
+// This was run on a Compaq Proliant server, 180MHz Pentium Pro 256MB RAM.  Code is as follows:
+// 
+// <?php
+// 
+// function fa () { return 1; }
+// function fb () { return 1; }
+// function fc () { return 1; }
+// 
+// $calla = 'fa';
+// $callb = 'fb';
+// $callc = 'fc';
+// 
+// $time = microtime( true );
+// for( $i = 5000; $i--; ) {
+//     $x = 0;
+//     $x += $calla();
+//     $x += $callb();
+//     $x += $callc();
+//     if( $x != 3 ) die( 'Bad numbers' );
+// }
+// echo( "Variable functions took " . (microtime( true ) - $time) . " seconds.<br />" );
+// 
+// $time = microtime( true );
+// for( $i = 5000; $i--; ) {
+//     $x = 0;
+//     $x += call_user_func('fa', '');
+//     $x += call_user_func('fb', '');
+//     $x += call_user_func('fc', '');
+//     if( $x != 3 ) die( 'Bad numbers' );
+// }
+// echo( "call_user_func took " . (microtime( true ) - $time) . " seconds.<br />" );
+// 
+// $time = microtime( true );
+// for( $i = 5000; $i--; ) {
+//     $x = 0;
+//     eval( '$x += ' . $calla . '();' );
+//     eval( '$x += ' . $callb . '();' );
+//     eval( '$x += ' . $callc . '();' );
+//     if( $x != 3 ) die( 'Bad numbers' );
+// }
+// echo( "eval took " . (microtime( true ) - $time) . " seconds.<br />" );
+// 
+// ?>
+				
 			}
 			else {
 				$x[$key] = $StrValue;
@@ -40,9 +91,10 @@ class dataFetcher extends ConnexionManager
 		return $x;
 	}
 	/*
-	@description: functionDescription
-	@return: functionReturn
-	@param: returnValue
+	@description: Lis les config courante disponible sur la station
+	@return: retourne un tableau de la forme :
+		array ('Date Heure' => array ( Conf1, Conf2, ... ));
+	@param: none
 	*/
 	function GetConfig() { //
 		$CONFS = false;
@@ -73,9 +125,13 @@ class dataFetcher extends ConnexionManager
 		return $CONFS;
 	}
 	/*
-	@description: functionDescription
-	@return: functionReturn
-	@param: returnValue
+	@description: Lis les valeur courante de tous les capteur disponible sur la station
+	@return: retourne un tableau de tableau de la forme :
+		array (
+			'Date Heure_0' => array ( Data1, Data2, ... ),
+			'Date Heure_0 + 2.5sec ' => array ( Data1, Data2, ... ),
+			... );
+	@param: Nombre de cycle CURRENT a relever (Par defaut 1 seul).
 	*/
 	function GetLoop ($nbr=1) {
 		$_NBR = $nbr;
@@ -96,9 +152,13 @@ class dataFetcher extends ConnexionManager
 		return $LOOPS;
 	}
 	/*
-	@description: functionDescription
-	@return: functionReturn
-	@param: returnValue
+	@description: Lis les valeur d´archive a partir d´une date
+	@return: retourne un tableau de la forme :
+		array (
+			'Date Heure_0' => array ( Arch1, Arch2, ... ),
+			'Date Heure_1' => array ( Arch1, Arch2, ... ),
+			... );
+	@param: Date de la 1ere archive a lire (par defaut : 2012/01/01 00:00:00)
 	*/
 	function GetDmpAft($last='2012/01/01 00:00:00') { //
 		$DATAS=false;
