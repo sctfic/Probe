@@ -6,10 +6,44 @@
 /// uses the old format. Rev "B" firmware dated on or after April 24, 2002 uses the new format. The
 /// fields up to ET are identical for both formats. The only differences are in the Soil, Leaf, Extra
 // ##############################################################################################
+/**
+Convention de nomage :
+> Debut de chaine '/^'
+> Type de Donnes en base :
+			TA :
+			TR :
+			NO : valeur non stocket en DB
+> 1er separeteur le ':'
+> Famille de donnée (precédé du type de Table sur 2 caractere en MAJUSCULE) :
+			Config = Config user (unité, reglage, ...),
+			Arch = Valeur ou etat du relevé d´archive,
+			Current = Valeur ou etat actuelle qui etende les données d´archive TA_Arch,
+			Sensor = valeur associé a un capteur ex:etalonnage, valeur de declanchement d'alarme,
+			Factory = Valeur Usine,
+			Other = différente infos fournie par la station.
+			Current = Valeur ou etat actuelle qui n´ont d´importance qu´au moment de la lecture ex: valeur d´alarme en cour de depassement.
+
+> 2ieme separeteur le ':'
+> Type de donnée :
+			Hum = Humidité  
+			Temp = Temperature (<!> il en existe 3 format)
+			Rain = Pluviometrie
+			ET = evapotranspiration
+			SoilMoisture = Soil Moisture - l’humidité superficielle du sol
+			LeafWetness = Leaf wetness - l’humidité residuelle sur le feuillage
+			Various = pour les autres données, vent pression, UV, ...
+> 3ieme separateur le ':'
+> Nom du capteur :
+			sur quelques lettres ex : inside, outside, #2, #3, #4...
+> 4ieme separateur ':'
+> Descriptif valeur :
+			infos sur la valeur relevée ex : Wind:Dir, Wind:Speed, Wind:10mSpeedAvg
+>Fin de chaine '$/'
+**/
 
 	$this->DumpAfter = array (
-	'Archive.none:Date'			=>	array( 'pos' => 0,	'len' => 2,	'fn'=>'Tools::Raw2Date',	'SI'=>'UTC',	'min'=>0,	'max'=>0xFFFF,	'err'=>0xFFFF,	'unit'=> 'Date'	),
-	'Archive.none:Time'			=>	array( 'pos' => 2,	'len' => 2,	'fn'=>'Tools::Raw2Time',	'SI'=>'UTC',	'min'=>0,	'max'=>0xFFFF,	'err'=>0xFFFF,	'unit'=> 'Time'	),
+	'Archive:UTC'			=>	array( 'pos' => 0,	'len' => 4,	'fn'=>'Tools::DMPAFT_GetVP2Date',	'SI'=>'UTC',	'min'=>0,	'max'=>0xFFFF,	'err'=>0xFFFF,	'unit'=> 'Date'	),
+//	'Archive.none:Time'			=>	array( 'pos' => 2,	'len' => 2,	'fn'=>'Tools::Raw2Time',	'SI'=>'UTC',	'min'=>0,	'max'=>0xFFFF,	'err'=>0xFFFF,	'unit'=> 'Time'	),
 
 	'Archive.Temp:Avg_Out'			=>	array( 'pos' => 4,	'len' => 2,	'fn'=>'Tools::Temp',		'SI'=>'tempSI',	'min'=>0,	'max'=>150,	'err'=>32767,	'unit'=> '°F'	),
 	'Archive.Temp:High_Out'			=>	array( 'pos' => 6,	'len' => 2,	'fn'=>'Tools::Temp',		'SI'=>'tempSI',	'min'=>0,	'max'=>150,	'err'=>-32768,	'unit'=> '°F'	),

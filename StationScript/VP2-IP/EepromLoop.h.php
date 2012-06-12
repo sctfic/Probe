@@ -7,6 +7,40 @@
 /// information on the current status of all Vantage Alarm conditions, battery status, weather
 /// forecasts, and sunrise and sunset times.
 // ##############################################################################################
+/**
+Convention de nomage :
+> Debut de chaine '/^'
+> Type de Donnes en base :
+			TA :
+			TR :
+			NO : valeur non stocket en DB
+> 1er separeteur le ':'
+> Famille de donnée (precédé du type de Table sur 2 caractere en MAJUSCULE) :
+			Config = Config user (unité, reglage, ...),
+			Arch = Valeur ou etat du relevé d´archive,
+			Current = Valeur ou etat actuelle qui etende les données d´archive TA_Arch,
+			Sensor = valeur associé a un capteur ex:etalonnage, valeur de declanchement d'alarme,
+			Factory = Valeur Usine,
+			Other = différente infos fournie par la station.
+			Current = Valeur ou etat actuelle qui n´ont d´importance qu´au moment de la lecture ex: valeur d´alarme en cour de depassement.
+
+> 2ieme separeteur le ':'
+> Type de donnée :
+			Hum = Humidité  
+			Temp = Temperature (<!> il en existe 3 format)
+			Rain = Pluviometrie
+			ET = evapotranspiration
+			SoilMoisture = Soil Moisture - l’humidité superficielle du sol
+			LeafWetness = Leaf wetness - l’humidité residuelle sur le feuillage
+			Various = pour les autres données, vent pression, UV, ...
+> 3ieme separateur le ':'
+> Nom du capteur :
+			sur quelques lettres ex : inside, outside, #2, #3, #4...
+> 4ieme separateur ':'
+> Descriptif valeur :
+			infos sur la valeur relevée ex : Wind:Dir, Wind:Speed, Wind:10mSpeedAvg
+>Fin de chaine '$/'
+**/
 
 	$this->Loop = array (
 // 	'L'				=>	array( 'pos' => 0,	'len' => 1,	'fn'=>'',		'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>0,	'unit'=> ''	),
@@ -79,110 +113,110 @@
 	'Current.Wetnesses:Leaf#4'	=>	array( 'pos' => 69,	'len' => 1,	'fn'=>'Tools::Wetnesses',	'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
 
 ///						*********** Alarm start ***********					///
-	'Alarm.Statut:Press_3hTrend_Rise'=>	array( 'pos' => 70.1,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:Press_3hTrend_Fall'=>	array( 'pos' => 70.2,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:Temp:Low_In'	=>	array( 'pos' => 70.3,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:Temp:Hight_In'	=>	array( 'pos' => 70.4,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:Hum:Low_In'	=>	array( 'pos' => 70.5,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:Hum:High_In'	=>	array( 'pos' => 70.6,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:Time'		=>	array( 'pos' => 70.7,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Press_3hTrend_Rise'=>	array( 'pos' => 70.1,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Press_3hTrend_Fall'=>	array( 'pos' => 70.2,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Temp:Low_In'	=>	array( 'pos' => 70.3,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Temp:Hight_In'	=>	array( 'pos' => 70.4,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Hum:Low_In'	=>	array( 'pos' => 70.5,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Hum:High_In'	=>	array( 'pos' => 70.6,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Time'		=>	array( 'pos' => 70.7,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
 
-	'Alarm.Statut:RainRate'		=>	array( 'pos' => 71.1,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:Rain15min'	=>	array( 'pos' => 71.2,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:Rain24h'		=>	array( 'pos' => 71.3,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:RainStorm'	=>	array( 'pos' => 71.4,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:EtDay'		=>	array( 'pos' => 71.5,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:RainRate'		=>	array( 'pos' => 71.1,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Rain15min'	=>	array( 'pos' => 71.2,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Rain24h'		=>	array( 'pos' => 71.3,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:RainStorm'	=>	array( 'pos' => 71.4,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:EtDay'		=>	array( 'pos' => 71.5,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
 
-	'Alarm.Statut:Temp:Low_Out'	=>	array( 'pos' => 72.1,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:Temp:Hight_Out'	=>	array( 'pos' => 72.2,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:Speed'		=>	array( 'pos' => 72.3,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:Speed10min'	=>	array( 'pos' => 72.4,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:DewPt_Low'	=>	array( 'pos' => 72.5,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:DewPt_High'	=>	array( 'pos' => 72.6,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:Heat_High'	=>	array( 'pos' => 72.7,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:Chill_Low'	=>	array( 'pos' => 72.8,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Temp:Low_Out'	=>	array( 'pos' => 72.1,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Temp:Hight_Out'	=>	array( 'pos' => 72.2,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Speed'		=>	array( 'pos' => 72.3,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Speed10min'	=>	array( 'pos' => 72.4,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:DewPt_Low'	=>	array( 'pos' => 72.5,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:DewPt_High'	=>	array( 'pos' => 72.6,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Heat_High'	=>	array( 'pos' => 72.7,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Chill_Low'	=>	array( 'pos' => 72.8,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
 
-	'Alarm.Statut:Thsw_High'	=>	array( 'pos' => 73.1,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:Solar_High'	=>	array( 'pos' => 73.2,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:Uv_High'		=>	array( 'pos' => 73.3,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:UvDose'		=>	array( 'pos' => 73.4,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:UvDose_Enabled'	=>	array( 'pos' => 73.5,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Thsw_High'	=>	array( 'pos' => 73.1,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Solar_High'	=>	array( 'pos' => 73.2,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Uv_High'		=>	array( 'pos' => 73.3,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:UvDose'		=>	array( 'pos' => 73.4,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:UvDose_Enabled'	=>	array( 'pos' => 73.5,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
 
 ///						*********** Alarm Out Temp ***********					///
-	'Alarm.Statut:Hum:Low_Out'	=>	array( 'pos' => 74.1,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:Hum:High_Out'	=>	array( 'pos' => 74.2,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Hum:Low_Out'	=>	array( 'pos' => 74.1,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Hum:High_Out'	=>	array( 'pos' => 74.2,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
 
-	'Alarm.Statut:Temp:Low#2'	=>	array( 'pos' => 75.1,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:Temp:Hight#2'	=>	array( 'pos' => 75.2,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:Hum:Low#2'	=>	array( 'pos' => 75.3,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:Hum:High#2'	=>	array( 'pos' => 75.4,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Temp:Low#2'	=>	array( 'pos' => 75.1,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Temp:Hight#2'	=>	array( 'pos' => 75.2,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Hum:Low#2'	=>	array( 'pos' => 75.3,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Hum:High#2'	=>	array( 'pos' => 75.4,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
 
-	'Alarm.Statut:Temp:Low#3'	=>	array( 'pos' => 76.1,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:Temp:Hight#3'	=>	array( 'pos' => 76.2,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:Hum:Low#3'	=>	array( 'pos' => 76.3,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:Hum:High#3'	=>	array( 'pos' => 76.4,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Temp:Low#3'	=>	array( 'pos' => 76.1,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Temp:Hight#3'	=>	array( 'pos' => 76.2,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Hum:Low#3'	=>	array( 'pos' => 76.3,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Hum:High#3'	=>	array( 'pos' => 76.4,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
 
-	'Alarm.Statut:Temp:Low#4'	=>	array( 'pos' => 77.1,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:Temp:Hight#4'	=>	array( 'pos' => 77.2,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:Hum:Low#4'	=>	array( 'pos' => 77.3,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:Hum:High#4'	=>	array( 'pos' => 77.4,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Temp:Low#4'	=>	array( 'pos' => 77.1,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Temp:Hight#4'	=>	array( 'pos' => 77.2,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Hum:Low#4'	=>	array( 'pos' => 77.3,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Hum:High#4'	=>	array( 'pos' => 77.4,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
 
-	'Alarm.Statut:Temp:Low#5'	=>	array( 'pos' => 78.1,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:Temp:Hight#5'	=>	array( 'pos' => 78.2,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:Hum:Low#5'	=>	array( 'pos' => 78.3,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:Hum:High#5'	=>	array( 'pos' => 78.4,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Temp:Low#5'	=>	array( 'pos' => 78.1,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Temp:Hight#5'	=>	array( 'pos' => 78.2,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Hum:Low#5'	=>	array( 'pos' => 78.3,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Hum:High#5'	=>	array( 'pos' => 78.4,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
 
-	'Alarm.Statut:Temp:Low#6'	=>	array( 'pos' => 79.1,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:Temp:Hight#6'	=>	array( 'pos' => 79.2,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:Hum:Low#6'	=>	array( 'pos' => 79.3,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:Hum:High#6'	=>	array( 'pos' => 79.4,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Temp:Low#6'	=>	array( 'pos' => 79.1,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Temp:Hight#6'	=>	array( 'pos' => 79.2,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Hum:Low#6'	=>	array( 'pos' => 79.3,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Hum:High#6'	=>	array( 'pos' => 79.4,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
 
-	'Alarm.Statut:Temp:Low#7'	=>	array( 'pos' => 80.1,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:Temp:Hight#7'	=>	array( 'pos' => 80.2,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:Hum:Low#7'	=>	array( 'pos' => 80.3,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:Hum:High#7'	=>	array( 'pos' => 80.4,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Temp:Low#7'	=>	array( 'pos' => 80.1,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Temp:Hight#7'	=>	array( 'pos' => 80.2,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Hum:Low#7'	=>	array( 'pos' => 80.3,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Hum:High#7'	=>	array( 'pos' => 80.4,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
 
-	'Alarm.Statut:Temp:Low#8'	=>	array( 'pos' => 81.1,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:Temp:Hight#8'	=>	array( 'pos' => 81.2,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:Hum:Low#8'	=>	array( 'pos' => 81.3,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:Hum:High#8'	=>	array( 'pos' => 81.4,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Temp:Low#8'	=>	array( 'pos' => 81.1,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Temp:Hight#8'	=>	array( 'pos' => 81.2,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Hum:Low#8'	=>	array( 'pos' => 81.3,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Hum:High#8'	=>	array( 'pos' => 81.4,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
 
 ///						*********** Alarm Out Soil&Leaf ***********					///
-	'Alarm.Statut:Wetnesses:Leaf_Low#1'	=>	array( 'pos' => 82.1,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:Wetnesses:Leaf_High#1'	=>	array( 'pos' => 82.2,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:Moisture:Soil_Low#1'	=>	array( 'pos' => 82.3,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:Moisture:Soil_High#1'	=>	array( 'pos' => 82.4,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:Temp:Low_Leaf#1'		=>	array( 'pos' => 82.5,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:Temp:Hight_Leaf#1'	=>	array( 'pos' => 82.6,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:Temp:Low_soil#1'		=>	array( 'pos' => 82.7,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:Temp:Hight_soil#1'	=>	array( 'pos' => 82.8,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Wetnesses:Leaf_Low#1'	=>	array( 'pos' => 82.1,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Wetnesses:Leaf_High#1'	=>	array( 'pos' => 82.2,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Moisture:Soil_Low#1'	=>	array( 'pos' => 82.3,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Moisture:Soil_High#1'	=>	array( 'pos' => 82.4,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Temp:Low_Leaf#1'		=>	array( 'pos' => 82.5,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Temp:Hight_Leaf#1'	=>	array( 'pos' => 82.6,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Temp:Low_soil#1'		=>	array( 'pos' => 82.7,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Temp:Hight_soil#1'	=>	array( 'pos' => 82.8,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
 
-	'Alarm.Statut:Wetnesses:Leaf_Low#2'	=>	array( 'pos' => 83.1,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:Wetnesses:Leaf_High#2'	=>	array( 'pos' => 83.2,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:Moisture:Soil_Low#2'	=>	array( 'pos' => 83.3,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:Moisture:Soil_High#2'	=>	array( 'pos' => 83.4,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:Temp:Low_Leaf#2'		=>	array( 'pos' => 83.5,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:Temp:Hight_Leaf#2'	=>	array( 'pos' => 83.6,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:Temp:Low_soil#2'		=>	array( 'pos' => 83.7,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:Temp:Hight_soil#2'	=>	array( 'pos' => 83.8,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Wetnesses:Leaf_Low#2'	=>	array( 'pos' => 83.1,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Wetnesses:Leaf_High#2'	=>	array( 'pos' => 83.2,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Moisture:Soil_Low#2'	=>	array( 'pos' => 83.3,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Moisture:Soil_High#2'	=>	array( 'pos' => 83.4,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Temp:Low_Leaf#2'		=>	array( 'pos' => 83.5,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Temp:Hight_Leaf#2'	=>	array( 'pos' => 83.6,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Temp:Low_soil#2'		=>	array( 'pos' => 83.7,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Temp:Hight_soil#2'	=>	array( 'pos' => 83.8,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
 
-	'Alarm.Statut:Wetnesses:Leaf_Low#3'	=>	array( 'pos' => 84.1,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:Wetnesses:Leaf_High#3'	=>	array( 'pos' => 84.2,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:Moisture:Soil_Low#3'	=>	array( 'pos' => 84.3,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:Moisture:Soil_High#3'	=>	array( 'pos' => 84.4,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:Temp:Low_Leaf#3'		=>	array( 'pos' => 84.5,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:Temp:Hight_Leaf#3'	=>	array( 'pos' => 84.6,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:Temp:Low_soil#3'		=>	array( 'pos' => 84.7,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:Temp:Hight_soil#3'	=>	array( 'pos' => 84.8,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Wetnesses:Leaf_Low#3'	=>	array( 'pos' => 84.1,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Wetnesses:Leaf_High#3'	=>	array( 'pos' => 84.2,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Moisture:Soil_Low#3'	=>	array( 'pos' => 84.3,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Moisture:Soil_High#3'	=>	array( 'pos' => 84.4,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Temp:Low_Leaf#3'		=>	array( 'pos' => 84.5,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Temp:Hight_Leaf#3'	=>	array( 'pos' => 84.6,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Temp:Low_soil#3'		=>	array( 'pos' => 84.7,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Temp:Hight_soil#3'	=>	array( 'pos' => 84.8,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
 
-	'Alarm.Statut:Wetnesses:Leaf_Low#4'	=>	array( 'pos' => 85.1,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:Wetnesses:Leaf_High#4'	=>	array( 'pos' => 85.2,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:Moisture:Soil_Low#4'	=>	array( 'pos' => 85.3,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:Moisture:Soil_High#4'	=>	array( 'pos' => 85.4,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:Temp:Low_Leaf#4'		=>	array( 'pos' => 85.5,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:Temp:Hight_Leaf#4'	=>	array( 'pos' => 85.6,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:Temp:Low_soil#4'		=>	array( 'pos' => 85.7,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
-	'Alarm.Statut:Temp:Hight_soil#4'	=>	array( 'pos' => 85.8,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Wetnesses:Leaf_Low#4'	=>	array( 'pos' => 85.1,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Wetnesses:Leaf_High#4'	=>	array( 'pos' => 85.2,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Moisture:Soil_Low#4'	=>	array( 'pos' => 85.3,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Moisture:Soil_High#4'	=>	array( 'pos' => 85.4,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Temp:Low_Leaf#4'		=>	array( 'pos' => 85.5,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Temp:Hight_Leaf#4'	=>	array( 'pos' => 85.6,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Temp:Low_soil#4'		=>	array( 'pos' => 85.7,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
+	'Current.Alarm:Temp:Hight_soil#4'	=>	array( 'pos' => 85.8,	'len' => 1,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>255,	'unit'=> ''	),
 
 // 	'TransmitterBatteryStatus'=>	array( 'pos' => 86,	'len' => 1,	'fn'=>'',		'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
 

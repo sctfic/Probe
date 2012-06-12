@@ -78,12 +78,12 @@ class GETER extends abstract_VP2_Tools
 	}
 
 	function EEBRD($Pos=0, $Len=177)	{
-		$P=str_pad(strtoupper(dechex($Pos)),3,'0',STR_PAD_LEFT);
-		$L=str_pad(strtoupper(dechex($Len)),2,'0',STR_PAD_LEFT);
-		fwrite ($this->fp, "EEBRD $P $L\n");
-		$r = fread($this->fp, 1);
-		if ($r == Tools::symb['ACK'])
-		{
+// 		$P=str_pad(strtoupper(dechex($Pos)),3,'0',STR_PAD_LEFT);
+// 		$L=str_pad(strtoupper(dechex($Len)),2,'0',STR_PAD_LEFT);
+// 		fwrite ($this->fp, "EEBRD $P $L\n");
+// 		$r = fread($this->fp, 1);
+// 		if ($r == Tools::symb['ACK'])
+// 		{
 			$StrEE = fread($this->fp, $Len);
 			$CRC = fread($this->fp, 2);
 			if (strlen($StrEE)==$Len && $CRC==Tools::CalculateCRC($StrEE))

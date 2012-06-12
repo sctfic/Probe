@@ -81,7 +81,7 @@ class dataFetcher extends ConnexionManager
 // }
 // echo( "eval took " . (microtime( true ) - $time) . " seconds.<br />" );
 // 
-// ?>
+// ? >
 				
 			}
 			else {
