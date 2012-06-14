@@ -36,13 +36,13 @@ Convention de nomage :
 **/
 
 	$this->EEPROM = array (
-	'TR:Sensor:Bar:Calibration:Gain'		=>	array( 'pos' => 1,	'len' => 2,	'w'=>false,	'fn'=>'Tools::Gain',		'SI'=>NULL,	'min'=>0,	'max'=>0xFFFF,	'err'=>255,	'unit'=> ''	),
-	'TR:Sensor:Bar:Calibration:Offset'		=>	array( 'pos' => 3,	'len' => 2,	'w'=>false,	'fn'=>'Tools::Offset',		'SI'=>NULL,	'min'=>0,	'max'=>0xFFFF,	'err'=>255,	'unit'=> ''	),
-	'TR:Sensor:Bar:Calibration:Cal'		=>	array( 'pos' => 5,	'len' => 2,	'w'=>false,	'fn'=>'Tools::Cal',		'SI'=>NULL,	'min'=>0,	'max'=>0xFFFF,	'err'=>255,	'unit'=> ''	),
-	'TR:Sensor:Hum:Calibration:@33%'	=>	array( 'pos' => 7,	'len' => 2,	'w'=>false,	'fn'=>'Tools::Offset',		'SI'=>NULL,	'min'=>0,	'max'=>0xFFFF,	'err'=>255,	'unit'=> ''	),
-	'TR:Sensor:Hum:Calibration:Hum@80%'	=>	array( 'pos' => 9,	'len' => 2,	'w'=>false,	'fn'=>'Tools::Offset',		'SI'=>NULL,	'min'=>0,	'max'=>0xFFFF,	'err'=>255,	'unit'=> ''	),
-	'TR:Config:Geo:Latitude:Nord'	=>	array( 'pos' => 11,	'len' => 2,	'w'=>false,	'fn'=>'Tools::GPS',		'SI'=>NULL,	'min'=>0,	'max'=>0xFFFF,	'err'=>255,	'unit'=> '°N'	),
-	'TR:Config:Geo:Longitude:Est'	=>	array( 'pos' => 13,	'len' => 2,	'w'=>false,	'fn'=>'Tools::GPS',		'SI'=>NULL,	'min'=>0,	'max'=>0xFFFF,	'err'=>255,	'unit'=> '°E'	),
+	'TR:Config:Bar:Calibration:Gain'	=>	array( 'pos' => 1,	'len' => 2,	'w'=>false,	'fn'=>'Tools::Gain',		'SI'=>NULL,	'min'=>0,	'max'=>0xFFFF,	'err'=>255,	'unit'=> ''	),
+	'TR:Config:Bar:Calibration:Offset'	=>	array( 'pos' => 3,	'len' => 2,	'w'=>false,	'fn'=>'Tools::Offset',		'SI'=>NULL,	'min'=>0,	'max'=>0xFFFF,	'err'=>255,	'unit'=> ''	),
+	'TR:Config:Bar:Calibration:Cal'		=>	array( 'pos' => 5,	'len' => 2,	'w'=>false,	'fn'=>'Tools::Cal',		'SI'=>NULL,	'min'=>0,	'max'=>0xFFFF,	'err'=>255,	'unit'=> ''	),
+	'TR:Config:Hum:Calibration:@33%'	=>	array( 'pos' => 7,	'len' => 2,	'w'=>false,	'fn'=>'Tools::Offset',		'SI'=>NULL,	'min'=>0,	'max'=>0xFFFF,	'err'=>255,	'unit'=> ''	),
+	'TR:Config:Hum:Calibration:Hum@80%'	=>	array( 'pos' => 9,	'len' => 2,	'w'=>false,	'fn'=>'Tools::Offset',		'SI'=>NULL,	'min'=>0,	'max'=>0xFFFF,	'err'=>255,	'unit'=> ''	),
+	'TR:Config:Geo:Latitude:Nord'		=>	array( 'pos' => 11,	'len' => 2,	'w'=>false,	'fn'=>'Tools::GPS',		'SI'=>NULL,	'min'=>0,	'max'=>0xFFFF,	'err'=>255,	'unit'=> '°N'	),
+	'TR:Config:Geo:Longitude:Est'		=>	array( 'pos' => 13,	'len' => 2,	'w'=>false,	'fn'=>'Tools::GPS',		'SI'=>NULL,	'min'=>0,	'max'=>0xFFFF,	'err'=>255,	'unit'=> '°E'	),
 	'TR:Config:Geo:Elevation:Ocean'		=>	array( 'pos' => 15,	'len' => 2,	'w'=>false,	'fn'=>'Tools::Alt',		'SI'=>'metric',	'min'=>0,	'max'=>0xFFFF,	'err'=>255,	'unit'=> 'feet'	),
 	'TR:Config:Geo:Time:Zone'		=>	array( 'pos' => 17,	'len' => 1,	'w'=>false,	'fn'=>'Tools::s2uc',		'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
 	'TR:Config:Daylight:Savings:Manual'	=>	array( 'pos' => 18,	'len' => 1,	'w'=>false,	'fn'=>'Tools::Bool',		'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
@@ -61,8 +61,8 @@ Convention de nomage :
 	'Other:StationList7'		=>	array( 'pos' => 37,	'len' => 2,	'w'=>false,	'fn'=>'Tools::Station',	'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
 	'Other:StationList8'		=>	array( 'pos' => 39,	'len' => 2,	'w'=>false,	'fn'=>'Tools::Station',	'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),*/
 
-	'TR:Config:Bar::Unit'		=>	array( 'pos' => 41.1,	'len' => 2,	'w'=>false,	'fn'=>false,	'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
-	'TR:Config:Temp:Display:Unit'	=>	array( 'pos' => 41.3,	'len' => 2,	'w'=>false,	'fn'=>false,	'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'TR:Config:Bar::Unit'			=>	array( 'pos' => 41.1,	'len' => 2,	'w'=>false,	'fn'=>false,	'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'TR:Config:Temp:Display:Unit'		=>	array( 'pos' => 41.3,	'len' => 2,	'w'=>false,	'fn'=>false,	'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
 	'TR:Config:Geo:Elevation:Unit'		=>	array( 'pos' => 41.5,	'len' => 1,	'w'=>false,	'fn'=>false,	'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
 	'TR:Config:Rain:Display:Unit'		=>	array( 'pos' => 41.6,	'len' => 1,	'w'=>false,	'fn'=>false,	'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
 	'TR:Config:Wind:Display:Unit'		=>	array( 'pos' => 41.7,	'len' => 2,	'w'=>false,	'fn'=>false,	'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
@@ -76,7 +76,7 @@ Convention de nomage :
 	'TR:Config:Geo:Latitude:North'		=>	array( 'pos' => 43.7,	'len' => 1,	'w'=>false,	'fn'=>false,	'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
 	'TR:Config:Geo:Longitude:East'		=>	array( 'pos' => 43.8,	'len' => 1,	'w'=>false,	'fn'=>false,	'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
 
-	'TR:Config:Rain::SeasonStart'	=>	array( 'pos' => 44,	'len' => 1,	'w'=>false,	'fn'=>'Tools::s2uc',		'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> 'Month'	),
+	'TR:Config:Rain::SeasonStart'		=>	array( 'pos' => 44,	'len' => 1,	'w'=>false,	'fn'=>'Tools::s2uc',		'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> 'Month'	),
 	'TR:Config:Time:Archive:Period'		=>	array( 'pos' => 45,	'len' => 1,	'w'=>false,	'fn'=>'Tools::s2uc',		'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> 'min'	),
 
 	'TR:Sensor:Temp:In:Offset'		=>	array( 'pos' => 50,	'len' => 1,	'w'=>false,	'fn'=>'Tools::Temp',		'SI'=>'tempSI',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
@@ -121,19 +121,19 @@ Convention de nomage :
 	'TR:Sensor:Time:Clock:Alarm'			=>	array( 'pos' => 84,	'len' => 2,	'w'=>false,	'fn'=>'Tools::Raw2Time',	'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
 // 	'Other:TimeComp'		=>	array( 'pos' => 86,	'len' => 2,	'w'=>false,	'fn'=>'Tools::s2uc',		'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
 
-	'TR:Sensor:Temp:In:LowAlarm'	=>	array( 'pos' => 88,	'len' => 1,	'w'=>false,	'fn'=>'Tools::SmallTemp',	'SI'=>'tempSI',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
-	'TR:Sensor:Temp:In:HighAlarm'	=>	array( 'pos' => 89,	'len' => 1,	'w'=>false,	'fn'=>'Tools::SmallTemp',	'SI'=>'tempSI',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'TR:Sensor:Temp:In:LowAlarm'		=>	array( 'pos' => 88,	'len' => 1,	'w'=>false,	'fn'=>'Tools::SmallTemp',	'SI'=>'tempSI',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'TR:Sensor:Temp:In:HighAlarm'		=>	array( 'pos' => 89,	'len' => 1,	'w'=>false,	'fn'=>'Tools::SmallTemp',	'SI'=>'tempSI',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
 
-	'TR:Sensor:Temp:Out:LowAlarm'	=>	array( 'pos' => 90,	'len' => 1,	'w'=>false,	'fn'=>'Tools::SmallTemp',	'SI'=>'tempSI',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
-	'TR:Sensor:Temp:Out:HighAlarm'	=>	array( 'pos' => 91,	'len' => 1,	'w'=>false,	'fn'=>'Tools::SmallTemp',	'SI'=>'tempSI',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'TR:Sensor:Temp:Out:LowAlarm'		=>	array( 'pos' => 90,	'len' => 1,	'w'=>false,	'fn'=>'Tools::SmallTemp',	'SI'=>'tempSI',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'TR:Sensor:Temp:Out:HighAlarm'		=>	array( 'pos' => 91,	'len' => 1,	'w'=>false,	'fn'=>'Tools::SmallTemp',	'SI'=>'tempSI',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
 
-	'TR:Sensor:Temp:#2:LowAlarm'	=>	array( 'pos' => 92,	'len' => 1,	'w'=>false,	'fn'=>'Tools::SmallTemp',	'SI'=>'tempSI',	'min'=>-90,	'max'=>165,	'err'=>NULL,	'unit'=> ''	),
-	'TR:Sensor:Temp:#3:LowAlarm'	=>	array( 'pos' => 93,	'len' => 1,	'w'=>false,	'fn'=>'Tools::SmallTemp',	'SI'=>'tempSI',	'min'=>-90,	'max'=>165,	'err'=>NULL,	'unit'=> ''	),
-	'TR:Sensor:Temp:#4:LowAlarm'	=>	array( 'pos' => 94,	'len' => 1,	'w'=>false,	'fn'=>'Tools::SmallTemp',	'SI'=>'tempSI',	'min'=>-90,	'max'=>165,	'err'=>NULL,	'unit'=> ''	),
-	'TR:Sensor:Temp:#5:LowAlarm'	=>	array( 'pos' => 95,	'len' => 1,	'w'=>false,	'fn'=>'Tools::SmallTemp',	'SI'=>'tempSI',	'min'=>-90,	'max'=>165,	'err'=>NULL,	'unit'=> ''	),
-	'TR:Sensor:Temp:#6:LowAlarm'	=>	array( 'pos' => 96,	'len' => 1,	'w'=>false,	'fn'=>'Tools::SmallTemp',	'SI'=>'tempSI',	'min'=>-90,	'max'=>165,	'err'=>NULL,	'unit'=> ''	),
-	'TR:Sensor:Temp:#7:LowAlarm'	=>	array( 'pos' => 97,	'len' => 1,	'w'=>false,	'fn'=>'Tools::SmallTemp',	'SI'=>'tempSI',	'min'=>-90,	'max'=>165,	'err'=>NULL,	'unit'=> ''	),
-	'TR:Sensor:Temp:#8:LowAlarm'	=>	array( 'pos' => 98,	'len' => 1,	'w'=>false,	'fn'=>'Tools::SmallTemp',	'SI'=>'tempSI',	'min'=>-90,	'max'=>165,	'err'=>NULL,	'unit'=> ''	),
+	'TR:Sensor:Temp:#2:LowAlarm'		=>	array( 'pos' => 92,	'len' => 1,	'w'=>false,	'fn'=>'Tools::SmallTemp',	'SI'=>'tempSI',	'min'=>-90,	'max'=>165,	'err'=>NULL,	'unit'=> ''	),
+	'TR:Sensor:Temp:#3:LowAlarm'		=>	array( 'pos' => 93,	'len' => 1,	'w'=>false,	'fn'=>'Tools::SmallTemp',	'SI'=>'tempSI',	'min'=>-90,	'max'=>165,	'err'=>NULL,	'unit'=> ''	),
+	'TR:Sensor:Temp:#4:LowAlarm'		=>	array( 'pos' => 94,	'len' => 1,	'w'=>false,	'fn'=>'Tools::SmallTemp',	'SI'=>'tempSI',	'min'=>-90,	'max'=>165,	'err'=>NULL,	'unit'=> ''	),
+	'TR:Sensor:Temp:#5:LowAlarm'		=>	array( 'pos' => 95,	'len' => 1,	'w'=>false,	'fn'=>'Tools::SmallTemp',	'SI'=>'tempSI',	'min'=>-90,	'max'=>165,	'err'=>NULL,	'unit'=> ''	),
+	'TR:Sensor:Temp:#6:LowAlarm'		=>	array( 'pos' => 96,	'len' => 1,	'w'=>false,	'fn'=>'Tools::SmallTemp',	'SI'=>'tempSI',	'min'=>-90,	'max'=>165,	'err'=>NULL,	'unit'=> ''	),
+	'TR:Sensor:Temp:#7:LowAlarm'		=>	array( 'pos' => 97,	'len' => 1,	'w'=>false,	'fn'=>'Tools::SmallTemp',	'SI'=>'tempSI',	'min'=>-90,	'max'=>165,	'err'=>NULL,	'unit'=> ''	),
+	'TR:Sensor:Temp:#8:LowAlarm'		=>	array( 'pos' => 98,	'len' => 1,	'w'=>false,	'fn'=>'Tools::SmallTemp',	'SI'=>'tempSI',	'min'=>-90,	'max'=>165,	'err'=>NULL,	'unit'=> ''	),
 
 	'TR:Sensor:Temp:Soil#1:LowAlarm'	=>	array( 'pos' => 99,	'len' => 1,	'w'=>false,	'fn'=>'Tools::SmallTemp',	'SI'=>'tempSI',	'min'=>-90,	'max'=>165,	'err'=>NULL,	'unit'=> ''	),
 	'TR:Sensor:Temp:Soil#2:LowAlarm'	=>	array( 'pos' => 100,	'len' => 1,	'w'=>false,	'fn'=>'Tools::SmallTemp',	'SI'=>'tempSI',	'min'=>-90,	'max'=>165,	'err'=>NULL,	'unit'=> ''	),
@@ -185,35 +185,35 @@ Convention de nomage :
 	'TR:Sensor:Hum:#7:LowAlarm'	=>	array( 'pos' => 132,	'len' => 1,	'w'=>false,	'fn'=>'Tools::Rate',	'SI'=>NULL,	'min'=>0,	'max'=>100,	'err'=>255,	'unit'=> ''	),
 	'TR:Sensor:Hum:#8:LowAlarm'	=>	array( 'pos' => 132,	'len' => 1,	'w'=>false,	'fn'=>'Tools::Rate',	'SI'=>NULL,	'min'=>0,	'max'=>100,	'err'=>255,	'unit'=> ''	),
 
-	'TR:Sensor:Temp:DewPt:LowAlarm'	=>	array( 'pos' => 140,	'len' => 1,	'w'=>false,	'fn'=>'Tools::SmallTemp120',	'SI'=>'tempSI',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
-	'TR:Sensor:Temp:DewPt:HighAlarm'=>	array( 'pos' => 141,	'len' => 1,	'w'=>false,	'fn'=>'Tools::SmallTemp120',	'SI'=>'tempSI',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
-	'TR:Sensor:Temp:Chill:LowAlarm'	=>	array( 'pos' => 142,	'len' => 1,	'w'=>false,	'fn'=>'Tools::SmallTemp120',	'SI'=>'tempSI',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
-	'TR:Sensor:Temp:Heat:HighAlarm'	=>	array( 'pos' => 143,	'len' => 1,	'w'=>false,	'fn'=>'Tools::SmallTemp',	'SI'=>'tempSI',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
-	'TR:Sensor:Temp:Thsw:HighAlarm'	=>	array( 'pos' => 144,	'len' => 1,	'w'=>false,	'fn'=>'Tools::SmallTemp',	'SI'=>'tempSI',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
-	'TR:Sensor:Wind::CurrentSpeed.HighAlarm'		=>	array( 'pos' => 145,	'len' => 1,	'w'=>false,	'fn'=>'Tools::Speed',		'SI'=>'mBySec',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'TR:Sensor:Temp:DewPt:LowAlarm'		=>	array( 'pos' => 140,	'len' => 1,	'w'=>false,	'fn'=>'Tools::SmallTemp120',	'SI'=>'tempSI',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'TR:Sensor:Temp:DewPt:HighAlarm'	=>	array( 'pos' => 141,	'len' => 1,	'w'=>false,	'fn'=>'Tools::SmallTemp120',	'SI'=>'tempSI',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'TR:Sensor:Temp:Chill:LowAlarm'		=>	array( 'pos' => 142,	'len' => 1,	'w'=>false,	'fn'=>'Tools::SmallTemp120',	'SI'=>'tempSI',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'TR:Sensor:Temp:Heat:HighAlarm'		=>	array( 'pos' => 143,	'len' => 1,	'w'=>false,	'fn'=>'Tools::SmallTemp',	'SI'=>'tempSI',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'TR:Sensor:Temp:Thsw:HighAlarm'		=>	array( 'pos' => 144,	'len' => 1,	'w'=>false,	'fn'=>'Tools::SmallTemp',	'SI'=>'tempSI',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'TR:Sensor:Wind::CurrentSpeed.HighAlarm'=>	array( 'pos' => 145,	'len' => 1,	'w'=>false,	'fn'=>'Tools::Speed',		'SI'=>'mBySec',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
 	'TR:Sensor:Wind::10minSpeed.HighAlarm'	=>	array( 'pos' => 146,	'len' => 1,	'w'=>false,	'fn'=>'Tools::Speed',		'SI'=>'mBySec',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
 	'TR:Sensor:UV::HighAlarm'		=>	array( 'pos' => 147,	'len' => 1,	'w'=>false,	'fn'=>'Tools::UV',		'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
 
 ///						*********** Alarm Out Soil&Leaf ***********					///
-	'TR:Sensor:SoilMoisture:#1:LowAlarm'	=>	array( 'pos' => 149,	'len' => 1,	'w'=>false,	'fn'=>'Tools::Moistures',	'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
-	'TR:Sensor:SoilMoisture:#2:LowAlarm'	=>	array( 'pos' => 150,	'len' => 1,	'w'=>false,	'fn'=>'Tools::Moistures',	'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
-	'TR:Sensor:SoilMoisture:#3:LowAlarm'	=>	array( 'pos' => 151,	'len' => 1,	'w'=>false,	'fn'=>'Tools::Moistures',	'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
-	'TR:Sensor:SoilMoisture:#4:LowAlarm'	=>	array( 'pos' => 152,	'len' => 1,	'w'=>false,	'fn'=>'Tools::Moistures',	'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'TR:Sensor:SoilMoisture:Soil#1:LowAlarm'	=>	array( 'pos' => 149,	'len' => 1,	'w'=>false,	'fn'=>'Tools::Moistures',	'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'TR:Sensor:SoilMoisture:Soil#2:LowAlarm'	=>	array( 'pos' => 150,	'len' => 1,	'w'=>false,	'fn'=>'Tools::Moistures',	'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'TR:Sensor:SoilMoisture:Soil#3:LowAlarm'	=>	array( 'pos' => 151,	'len' => 1,	'w'=>false,	'fn'=>'Tools::Moistures',	'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'TR:Sensor:SoilMoisture:Soil#4:LowAlarm'	=>	array( 'pos' => 152,	'len' => 1,	'w'=>false,	'fn'=>'Tools::Moistures',	'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
 
-	'TR:Sensor:SoilMoisture:#1:HighAlarm'	=>	array( 'pos' => 153,	'len' => 1,	'w'=>false,	'fn'=>'Tools::Moistures',	'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
-	'TR:Sensor:SoilMoisture:#2:HighAlarm'	=>	array( 'pos' => 154,	'len' => 1,	'w'=>false,	'fn'=>'Tools::Moistures',	'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
-	'TR:Sensor:SoilMoisture:#3:HighAlarm'	=>	array( 'pos' => 155,	'len' => 1,	'w'=>false,	'fn'=>'Tools::Moistures',	'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
-	'TR:Sensor:SoilMoisture:#4:HighAlarm'	=>	array( 'pos' => 156,	'len' => 1,	'w'=>false,	'fn'=>'Tools::Moistures',	'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'TR:Sensor:SoilMoisture:Soil#1:HighAlarm'	=>	array( 'pos' => 153,	'len' => 1,	'w'=>false,	'fn'=>'Tools::Moistures',	'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'TR:Sensor:SoilMoisture:Soil#2:HighAlarm'	=>	array( 'pos' => 154,	'len' => 1,	'w'=>false,	'fn'=>'Tools::Moistures',	'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'TR:Sensor:SoilMoisture:Soil#3:HighAlarm'	=>	array( 'pos' => 155,	'len' => 1,	'w'=>false,	'fn'=>'Tools::Moistures',	'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'TR:Sensor:SoilMoisture:Soil#4:HighAlarm'	=>	array( 'pos' => 156,	'len' => 1,	'w'=>false,	'fn'=>'Tools::Moistures',	'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
 
-	'TR:Sensor:LeafWetnesses:#1:LowAlarm'	=>	array( 'pos' => 157,	'len' => 1,	'w'=>false,	'fn'=>'Tools::Wetnesses',	'SI'=>NULL,	'min'=>0,	'max'=>15,	'err'=>255,	'unit'=> ''	),
-	'TR:Sensor:LeafWetnesses:#2:LowAlarm'	=>	array( 'pos' => 158,	'len' => 1,	'w'=>false,	'fn'=>'Tools::Wetnesses',	'SI'=>NULL,	'min'=>0,	'max'=>15,	'err'=>255,	'unit'=> ''	),
-	'TR:Sensor:LeafWetnesses:#3:LowAlarm'	=>	array( 'pos' => 159,	'len' => 1,	'w'=>false,	'fn'=>'Tools::Wetnesses',	'SI'=>NULL,	'min'=>0,	'max'=>15,	'err'=>255,	'unit'=> ''	),
-	'TR:Sensor:LeafWetnesses:#4:LowAlarm'	=>	array( 'pos' => 160,	'len' => 1,	'w'=>false,	'fn'=>'Tools::Wetnesses',	'SI'=>NULL,	'min'=>0,	'max'=>15,	'err'=>255,	'unit'=> ''	),
+	'TR:Sensor:LeafWetnesses:Leaf#1:LowAlarm'	=>	array( 'pos' => 157,	'len' => 1,	'w'=>false,	'fn'=>'Tools::Wetnesses',	'SI'=>NULL,	'min'=>0,	'max'=>15,	'err'=>255,	'unit'=> ''	),
+	'TR:Sensor:LeafWetnesses:Leaf#2:LowAlarm'	=>	array( 'pos' => 158,	'len' => 1,	'w'=>false,	'fn'=>'Tools::Wetnesses',	'SI'=>NULL,	'min'=>0,	'max'=>15,	'err'=>255,	'unit'=> ''	),
+	'TR:Sensor:LeafWetnesses:Leaf#3:LowAlarm'	=>	array( 'pos' => 159,	'len' => 1,	'w'=>false,	'fn'=>'Tools::Wetnesses',	'SI'=>NULL,	'min'=>0,	'max'=>15,	'err'=>255,	'unit'=> ''	),
+	'TR:Sensor:LeafWetnesses:Leaf#4:LowAlarm'	=>	array( 'pos' => 160,	'len' => 1,	'w'=>false,	'fn'=>'Tools::Wetnesses',	'SI'=>NULL,	'min'=>0,	'max'=>15,	'err'=>255,	'unit'=> ''	),
 
-	'TR:Sensor:LeafWetnesses:#1:HighAlarm'	=>	array( 'pos' => 161,	'len' => 1,	'w'=>false,	'fn'=>'Tools::Wetnesses',	'SI'=>NULL,	'min'=>0,	'max'=>15,	'err'=>255,	'unit'=> ''	),
-	'TR:Sensor:LeafWetnesses:#2:HighAlarm'	=>	array( 'pos' => 162,	'len' => 1,	'w'=>false,	'fn'=>'Tools::Wetnesses',	'SI'=>NULL,	'min'=>0,	'max'=>15,	'err'=>255,	'unit'=> ''	),
-	'TR:Sensor:LeafWetnesses:#3:HighAlarm'	=>	array( 'pos' => 163,	'len' => 1,	'w'=>false,	'fn'=>'Tools::Wetnesses',	'SI'=>NULL,	'min'=>0,	'max'=>15,	'err'=>255,	'unit'=> ''	),
-	'TR:Sensor:LeafWetnesses:#4:HighAlarm'	=>	array( 'pos' => 164,	'len' => 1,	'w'=>false,	'fn'=>'Tools::Wetnesses',	'SI'=>NULL,	'min'=>0,	'max'=>15,	'err'=>255,	'unit'=> ''	),
+	'TR:Sensor:LeafWetnesses:Leaf#1:HighAlarm'	=>	array( 'pos' => 161,	'len' => 1,	'w'=>false,	'fn'=>'Tools::Wetnesses',	'SI'=>NULL,	'min'=>0,	'max'=>15,	'err'=>255,	'unit'=> ''	),
+	'TR:Sensor:LeafWetnesses:Leaf#2:HighAlarm'	=>	array( 'pos' => 162,	'len' => 1,	'w'=>false,	'fn'=>'Tools::Wetnesses',	'SI'=>NULL,	'min'=>0,	'max'=>15,	'err'=>255,	'unit'=> ''	),
+	'TR:Sensor:LeafWetnesses:Leaf#3:HighAlarm'	=>	array( 'pos' => 163,	'len' => 1,	'w'=>false,	'fn'=>'Tools::Wetnesses',	'SI'=>NULL,	'min'=>0,	'max'=>15,	'err'=>255,	'unit'=> ''	),
+	'TR:Sensor:LeafWetnesses:Leaf#4:HighAlarm'	=>	array( 'pos' => 164,	'len' => 1,	'w'=>false,	'fn'=>'Tools::Wetnesses',	'SI'=>NULL,	'min'=>0,	'max'=>15,	'err'=>255,	'unit'=> ''	),
 
 
 	'TR:Sensor:Solar::HighAlarm'	=>	array( 'pos' => 165,	'len' => 2,	'w'=>false,	'fn'=>'Tools::Radiation',	'SI'=>NULL,	'min'=>0,	'max'=>2000,	'err'=>0xffff,	'unit'=> ''	),
@@ -221,10 +221,10 @@ Convention de nomage :
 	'TR:Sensor:Rain::15minAlarm'	=>	array( 'pos' => 169,	'len' => 2,	'w'=>false,	'fn'=>'Tools::Samples',	'SI'=>NULL,	'min'=>0,	'max'=>65,	'err'=>0xffff,	'unit'=> ''	),
 	'TR:Sensor:Rain::24hAlarm'		=>	array( 'pos' => 171,	'len' => 2,	'w'=>false,	'fn'=>'Tools::Samples',	'SI'=>NULL,	'min'=>0,	'max'=>650,	'err'=>0xffff,	'unit'=> ''	),
 	'TR:Sensor:Rain::StormAlarm'	=>	array( 'pos' => 173,	'len' => 2,	'w'=>false,	'fn'=>'Tools::Samples',	'SI'=>NULL,	'min'=>0,	'max'=>650,	'err'=>0xffff,	'unit'=> ''	),
-	'TR:Sensor:Et::DayAlarm'		=>	array( 'pos' => 175,	'len' => 2,	'w'=>false,	'fn'=>'Tools::ET1000',		'SI'=>NULL,	'min'=>0,	'max'=>0xfffe,	'err'=>0xffff,	'unit'=> ''	),
+	'TR:Sensor:Et::DayAlarm'	=>	array( 'pos' => 175,	'len' => 2,	'w'=>false,	'fn'=>'Tools::ET1000',		'SI'=>NULL,	'min'=>0,	'max'=>0xfffe,	'err'=>0xffff,	'unit'=> ''	),
 // 	'Other:GraphPointer'		=>	array( 'pos' => 177,	'len' => 8,	'w'=>false,	'fn'=>'Tools::Temp',		'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
 // 	'Other:GraphData'		=>	array( 'pos' => 185,	'len' => 3898,	'w'=>false,	'fn'=>'Tools::Temp',		'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
 	'TR:Config:Temp:Log:Average'	=>	array( 'pos' => 4092,	'len' => 1,	'w'=>true,	'fn'=>'Tools::Bool',		'SI'=>NULL,	'min'=>0,	'max'=>1,	'err'=>255,	'unit'=> ''	),
 	);
-
+//var_export(array_keys($EEPROM));
 ?>
