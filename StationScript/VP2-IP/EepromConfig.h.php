@@ -40,7 +40,7 @@ Convention de nomage :
 	'TR:Config:Bar:Calibration:Offset'	=>	array( 'pos' => 3,	'len' => 2,	'w'=>false,	'fn'=>'Tools::Offset',		'SI'=>NULL,	'min'=>0,	'max'=>0xFFFF,	'err'=>255,	'unit'=> ''	),
 	'TR:Config:Bar:Calibration:Cal'		=>	array( 'pos' => 5,	'len' => 2,	'w'=>false,	'fn'=>'Tools::Cal',		'SI'=>NULL,	'min'=>0,	'max'=>0xFFFF,	'err'=>255,	'unit'=> ''	),
 	'TR:Config:Hum:Calibration:@33%'	=>	array( 'pos' => 7,	'len' => 2,	'w'=>false,	'fn'=>'Tools::Offset',		'SI'=>NULL,	'min'=>0,	'max'=>0xFFFF,	'err'=>255,	'unit'=> ''	),
-	'TR:Config:Hum:Calibration:Hum@80%'	=>	array( 'pos' => 9,	'len' => 2,	'w'=>false,	'fn'=>'Tools::Offset',		'SI'=>NULL,	'min'=>0,	'max'=>0xFFFF,	'err'=>255,	'unit'=> ''	),
+	'TR:Config:Hum:Calibration:@80%'	=>	array( 'pos' => 9,	'len' => 2,	'w'=>false,	'fn'=>'Tools::Offset',		'SI'=>NULL,	'min'=>0,	'max'=>0xFFFF,	'err'=>255,	'unit'=> ''	),
 	'TR:Config:Geo:Latitude:Nord'		=>	array( 'pos' => 11,	'len' => 2,	'w'=>false,	'fn'=>'Tools::GPS',		'SI'=>NULL,	'min'=>0,	'max'=>0xFFFF,	'err'=>255,	'unit'=> '°N'	),
 	'TR:Config:Geo:Longitude:Est'		=>	array( 'pos' => 13,	'len' => 2,	'w'=>false,	'fn'=>'Tools::GPS',		'SI'=>NULL,	'min'=>0,	'max'=>0xFFFF,	'err'=>255,	'unit'=> '°E'	),
 	'TR:Config:Geo:Elevation:Ocean'		=>	array( 'pos' => 15,	'len' => 2,	'w'=>false,	'fn'=>'Tools::Alt',		'SI'=>'metric',	'min'=>0,	'max'=>0xFFFF,	'err'=>255,	'unit'=> 'feet'	),
@@ -49,7 +49,7 @@ Convention de nomage :
 	'TR:Config:Daylight:Savings:Enable'	=>	array( 'pos' => 19,	'len' => 1,	'w'=>false,	'fn'=>'Tools::Bool',		'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
 	'TR:Config:Time:Gmt:Offset'		=>	array( 'pos' => 20,	'len' => 2,	'w'=>false,	'fn'=>'Tools::GMT',		'SI'=>NULL,	'min'=>0,	'max'=>0xFFFF,	'err'=>255,	'unit'=> ''	),
 	'TR:Config:Time:Gmt:Enable'		=>	array( 'pos' => 22,	'len' => 1,	'w'=>false,	'fn'=>'Tools::Bool',		'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
-	'NO:Other:::Usetx'			=>	array( 'pos' => 23,	'len' => 1,	'w'=>false,	'fn'=>'Tools::s2uc',		'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'NO:Other:::UseTx'			=>	array( 'pos' => 23,	'len' => 1,	'w'=>false,	'fn'=>'Tools::s2uc',		'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
 	'NO:Other:::ReTransmitTx'		=>	array( 'pos' => 24,	'len' => 1,	'w'=>false,	'fn'=>'Tools::s2uc',		'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
 
 /*	'Other:StationList1'		=>	array( 'pos' => 25,	'len' => 2,	'w'=>false,	'fn'=>'Tools::Station',	'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
