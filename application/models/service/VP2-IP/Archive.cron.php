@@ -1,14 +1,15 @@
 <?php // clear;php5 -f WsWds/Archie.cron.php
 // StationScript
 $workingFolder = dirname(__FILE__).DIRECTORY_SEPARATOR;
+$daoFolder = $workingFolder.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'dao'.DIRECTORY_SEPARATOR.'VP2-IP'.DIRECTORY_SEPARATOR;
 require_once($workingFolder.'../config/rwConf.c.php');
 $stationConf = configManager::readConfig('station');
 // var_export($stationConf);
 foreach($stationConf as $configKey=>$configValue)
 {
 	$stationFolder = $configValue['type']; // folder with class related to the given station model
-	require_once sprintf( "%s/%s/ConnexionManager.c.php", $workingFolder, $stationFolder ); // load correct station class so it can be instantiated later
-	require_once sprintf( "%s/%s/EepromManager.c.php", $workingFolder, $stationFolder ); // load correct station class so it can be instantiated later
+	require_once sprintf( '%sConnexionManager.c.php', $daoFolder ); // load correct station class so it can be instantiated later
+	require_once sprintf( '%sEepromManager.c.php', $daoFolder ); // load correct station class so it can be instantiated later
 
 	switch ($configValue['type'])
 	{
@@ -28,8 +29,8 @@ foreach($stationConf as $configKey=>$configValue)
 					$configValue['Last']['_DumpAfter'] = key($retuned);
 					$configValue['Last']['DumpAfter'] = date('Y/m/d H:i:s');
 					foreach ($retuned as $h=>$arch) {
-						$folder = '/var/www/data/'.$configKey.'/'.substr($h, 0, 4).'/'.substr($h, 5, 2);
-						$file = $folder.'/'.substr($h, 8, 2).'.txt';
+						$folder = $workingFolder.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.$configKey.DIRECTORY_SEPARATOR.substr($h, 0, 4).'/'.substr($h, 5, 2);
+						$file = $folder.DIRECTORY_SEPARATOR.substr($h, 8, 2).'.txt';
 						if (is_file($file)) {
 							file_put_contents($file,
 								implode("\t",$arch)."\n", FILE_APPEND);
