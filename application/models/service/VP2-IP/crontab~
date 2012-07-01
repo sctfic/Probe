@@ -1,5 +1,0 @@
-# http://www.thegeekstuff.com/2011/07/php-cron-job/
-
-MAILTO=alban.lopez+cron@gmail.com
-01 */2 * * * cd /var/www/StationScript/; php5 -f /var/www/StationScript/Archive.cron.php > log.txt
-

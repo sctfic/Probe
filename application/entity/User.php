@@ -1,117 +1,135 @@
 <?php
-require_once APPPATH."/entity/Adresse.php";
+// require_once APPPATH."/entity/Address.php";
 
 /**
- * Pour être stocké en session, l'utilisateur sera sérialisé car PHP ne permet pas de stocker directement des objets en session
+ * Pour être stocké en session, l'user sera sérialisé car PHP ne permet pas de stocker directement des objets en session
  * @author jerep6
- * @ORM\Entity(table=TA_UTILISATEUR)
+ * @ORM\Entity(table=TA_USER)
  */
-class Utilisateur implements Serializable {
+class User implements Serializable {
 	/**
 	 * Identifiant technique
-     * @ORM\Column(name=UTI_ID, type=Integer)
+     * @ORM\Column(name=USR_ID, type=Integer)
      */
-	private $techid;
-	
+	private $techId;
+
 	/**
-     * @ORM\Column(name=UTI_PRENOM)
+     * @ORM\Column(name=USR_LOGIN)
      */
-	private $prenom;
-	
-	/**
-	 * @ORM\Column(name=UTI_NOM)
-	 */
-	private $nom;
-	
-	private $authentifie;
-	
-	private $adresse;
-	
+	private $login;
+
+    /**
+     * @ORM\Column(name=USR_NAME)
+     */
+    private $name;
+
+    /**
+     * @ORM\Column(name=USR_PWD)
+     */
+    private $pwd;
+
+    /**
+     * @ORM\Column(name=USR_MAIL)
+     */
+    private $mail;
+
+    /**
+     * @ORM\Column(name=ROL_ID)
+     */
+    private $roleId;
+
+	private $authentified;
+
 	public function __construct() { }
 
-	
+
 	public function serialize() {
 		return serialize(array(
-                'techid' => $this->techid,
-                'prenom' => $this->prenom,				
-				'nom' => $this->nom,
-                'authentifie' => $this->authentifie
+                'techId' => $this->techId,
+                'login' => $this->login,
+                'name' => $this->name,
+                'mail' => $this->mail,
+                'roleId' => $this->roleId,
+                'authentified' => $this->authentified
             ));
 	}
 	public function unserialize($data) {
 		$d = unserialize($data);
-		$this->setTechid($d['techid']);
-		$this->setPrenom($d['prenom']);
-		$this->setNom($d['nom']);
-		$this->setAuthentifie($d['authentifie']);
+		$this->setTechId($d['techId']);
+		$this->setPrename($d['login']);
+		$this->setNom($d['name']);
+		$this->setAuthentified($d['authentified']);
 	}
-	
+
 	public function getClassVars() {
 		return get_class_vars(get_class($this));
 	}
-	
+
 	/**
-	 * Crée une instance d'utilisateur à partir d'un résultat de requete SQL. Les noms des champs ne doivent
+	 * Crée une instance d'user à partir d'un résultat de requete SQL. Les names des champs ne doivent
 	 * pas avoir été modifié via des "AS"
 	 * @param objet $objetResultat ligne correspondant à un résultat
-	 * @return objet utilisateur
+	 * @return objet user
 	 */
 	public static function fromBD($objetResultat) {
-		$u = MyORM::asObject("Utilisateur", $objetResultat);
-		
-// 		$adresse = new Adresse();
-// 		$adresse->setTechid($objetResultat->ADR_ID);
-// 		$adresse->setVille($objetResultat->ADR_VILLE);
-// 		$u->setAdresse($adresse);
+		$u = MyORM::asObject("User", $objetResultat);
+
+// 		$mail = new Mail();
+// 		$mail->setTechId($objetResultat->ADR_ID);
+// 		$mail->setVille($objetResultat->ADR_VILLE);
+// 		$u->setMail($mail);
 
 		return $u;
 	}
-	
-	
-	
-	
-	
-	
-	
-	public function setAdresse($adresse) {
-	    $this->adresse = $adresse;
+
+
+
+
+
+
+
+	public function setMail($mail) {
+	    $this->mail = $mail;
 	}
-	
-	public function getAdresse() {
-	    return $this->adresse;
+
+	public function getMail() {
+	    return $this->mail;
 	}
-	
-	public function setTechid($techid) {
-	    $this->techid = $techid;
+
+	public function setTechId($techId) {
+	    $this->techId = $techId;
 	}
-	public function getTechid() {
-	    return $this->techid;
+	public function getTechId() {
+	    return $this->techId;
 	}
-	
-	public function setPrenom($prenom) {
-	    $this->prenom = $prenom;
+
+	public function setLogin($name) {
+	    $this->login = $login;
 	}
-	public function getPrenom() {
-	    return $this->prenom;
+
+	public function getLogin() {
+	    return $this->login;
 	}
-	
-	public function setNom($nom) {
-	    $this->nom = $nom;
+
+	public function setName($login) {
+	    $this->name = $name;
 	}
-	public function getNom() {
-	    return $this->nom;
+	public function getName() {
+	    return $this->name;
 	}
-	public function isAuthentifie() {
-	    return $this->authentifie;
+
+	public function isAuthentified() {
+	    return $this->authentified;
 	}
-	public function setAuthentifie($authentifie) {
-		$this->authentifie = $authentifie;
+
+	public function setAuthentified($authentified) {
+		$this->authentified = $authentified;
 	}
-	
+
 	public function __toString() {
-		return "$this->techid -- $this->prenom $this->nom";
+		return "$this->techId -- $this->login $this->name";
 	}
-	
+
 	public function __sleep() {
 		return array('server', 'username', 'password', 'db');
 	}

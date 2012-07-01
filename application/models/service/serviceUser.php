@@ -1,24 +1,24 @@
 <?php
 require_once APPPATH."models/service/service.php";
 
-class ServiceUtilisateur extends Service {
+class ServiceUser extends Service {
     function __construct() {
         parent::__construct();
-        
+
         //Daos
-        $this->load->model('dao/daoutilisateur');
+        $this->load->model('dao/daoUser');
     }
-    
+
     public function authentifier($login, $mdp) {
     	$mdpCrypte = md5($mdp);
-    	$utilisateur = $this->daoutilisateur->lire($login, $mdpCrypte);
-    	
-    	if($utilisateur == NULL) {
+    	$user = $this->daoUser->lire($login, $mdpCrypte);
+
+    	if($user == NULL) {
     		throw new BusinessException('Login ou mot de passe incorrect');
     	}
 
-    	$utilisateur->setAuthentifie(true);
-    	return $utilisateur;
+    	$user->setAuthentifie(true);
+    	return $user;
     }
 
 }

@@ -2,67 +2,67 @@
 
 abstract class Authentification extends CI_Controller {
 	/**
-	 * Url sur laquelle l'utilisateur sera redirigé s'il n'est pas loggué.
+	 * Url sur laquelle l'user sera redirigé s'il n'est pas loggué.
 	 * Les classes filles peuvent la redéfinir. Par défaut, la redirection se fait sur "base_url"
 	 * @var String
 	 */
 	protected $urlConnexion = NULL;
-	
-	
+
+
 	/**
-	 * Utilisateur connecté
-	 * @var utilisateur
+	 * User connecté
+	 * @var user
 	 */
-	protected $utilisateur = NULL;
-	
-	
+	protected $user = NULL;
+
+
 	/**
 	 * Vérifie que le client est loggué. S'il ne l'ai pas redirige vers la page de login définie dans le fichier de config 'authentification_url'
 	 */
-	public function __construct() {		
+	public function __construct() {
 		parent::__construct();
-		
+
 		// Si url pas redéfini par les classes fille alors url par défaut
 		if($this->urlConnexion == NULL) {
 			$this->urlConnexion = $this->config->item('base_url');
 		}
-		
-		//Récupération de l'utilisateur en session
-		$this->utilisateur = unserialize($this->session->userdata('utilisateur'));
-		
+
+		//Récupération de l'user en session
+		$this->user = unserialize($this->session->userdata('user'));
+
 	}
-	
+
 	/**
-	 * Vérifie que l'utilisateur est connecté. S'il ne l'ai pas, redirige vers la page prévu à cet effet.
-	 * Ne vérifie pas l'authent sur la page affichant le formulaire "connexion"
+	 * Vérifie que l'user est connecté. S'il ne l'ai pas, redirige vers la page prévu à cet effet.
+	 * Ne vérifie pas l'authe sur la page affichant le formulaire "connexion"
 	 */
 	public function verificationConnexion() {
 		$methode = $this->router->fetch_method();
-		
+
 		if($methode != "connexion" && $methode != "connecter") {
-			if($this->utilisateur == NULL || !$this->utilisateur->isAuthentifie()) {
+			if($this->user == NULL || !$this->user->isAuthentified()) {
 				redirect($this->urlConnexion);
 				exit();
 			}
 		}
 	}
-	
-	
+
+
 	/**
 	 * Affiche le formulaire de login
 	 */
 	public abstract function connexion();
-	
+
 	/**
-	 * Permet d'authentifier l'utilisateur sur le système.
+	 * Permet d'authentifier l'user sur le système.
 	 */
 	public abstract function connecter();
-	
+
 	/**
-	 * Permet de déconnecter l'utilisateur du système et redirige vers l'url d'accueil du site "base_url"
+	 * Permet de déconnecter l'user du système et redirige vers l'url d'accueil du site "base_url"
 	 */
 	public function deconnecter() {
-		$this->session->unset_userdata("utilisateur");
+		$this->session->unset_userdata("user");
 		redirect($this->config->item('base_url'));
 	}
 }
