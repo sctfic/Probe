@@ -50,9 +50,9 @@ $active_record = TRUE;
 
 $db['default']['hostname'] = 'mysql:host=localhost';
 //$db['default']['hostname'] = 'localhost';
-$db['default']['username'] = 'WsWds';
-$db['default']['password'] = 'WsWds';
-$db['default']['database'] = 'WsWds';
+$db['default']['username'] = 'wswds';
+$db['default']['password'] = 'wswds';
+$db['default']['database'] = 'wswds';
 $db['default']['dbdriver'] = 'pdo';
 $db['default']['dbprefix'] = '';
 $db['default']['pconnect'] = TRUE;
@@ -64,6 +64,24 @@ $db['default']['dbcollat'] = 'utf8_general_ci';
 $db['default']['swap_pre'] = '';
 $db['default']['autoinit'] = TRUE;
 $db['default']['stricton'] = FALSE;
+
+
+$db['ws-template']['hostname']      = $db['default']['hostname']
+//$db['ws-template']['hostname']    = 'localhost';
+$db['ws-template']['username']      = $db['default']['username']
+$db['ws-template']['password']       = $db['default']['password']
+$db['ws-template']['database']       = 'ws-template';
+$db['ws-template']['dbdriver']         = $db['default']['dbdriver']
+$db['ws-template']['dbprefix']         = $db['default']['dbprefix']
+$db['ws-template']['pconnect']       = $db['default']['pconnect']
+$db['ws-template']['db_debug']      = $db['default']['db_debug']
+$db['ws-template']['cache_on']      = $db['default']['cache_on']
+$db['ws-template']['cachedir']        = $db['default']['cachedir']
+$db['ws-template']['char_set']        = $db['default']['char_set']
+$db['ws-template']['dbcollat']         = $db['default']['dbcollat']
+$db['ws-template']['swap_pre']       = $db['default']['swap_pre']
+$db['ws-template']['autoinit']          = $db['default']['autoinit']
+$db['ws-template']['stricton']          = $db['default']['stricton']
 
 
 /* End of file database.php */
