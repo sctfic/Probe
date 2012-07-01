@@ -48,8 +48,8 @@
 $active_group = 'default';
 $active_record = TRUE;
 
-// $db['default']['hostname'] = "sqlite:/home/jerep6/public_html/WsWds/WsWds.sq3";
 $db['default']['hostname'] = 'mysql:host=localhost';
+//$db['default']['hostname'] = 'localhost';
 $db['default']['username'] = 'WsWds';
 $db['default']['password'] = 'WsWds';
 $db['default']['database'] = 'WsWds';

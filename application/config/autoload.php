@@ -52,7 +52,11 @@ $autoload['packages'] = array();
 |	$autoload['libraries'] = array('database', 'session', 'xmlrpc');
 */
 
-$autoload['libraries'] = array("session");
+$autoload['libraries'] = array(
+    'i18n',
+    'session',
+    'encrypt'
+);
 
 
 /*
@@ -64,7 +68,10 @@ $autoload['libraries'] = array("session");
 |	$autoload['helper'] = array('url', 'file');
 */
 
-$autoload['helper'] = array("url");
+$autoload['helper'] = array(
+    'language',
+    'toolbox'
+);
 
 
 /*
@@ -80,7 +87,10 @@ $autoload['helper'] = array("url");
 |
 */
 
-$autoload['config'] = array("configWsWds");
+$autoload['config'] = array(
+    'wswds',
+    'configWsWds' // jerep6
+);
 
 
 /*
