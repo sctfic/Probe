@@ -183,7 +183,7 @@ $config['directory_trigger']    = 'd'; // experimental not currently in use
 | your log files will fill up very fast.
 |
 */
-$config['log_threshold'] = 2;
+$config['log_threshold'] = 4;
 
 /*
 |--------------------------------------------------------------------------
@@ -228,7 +228,6 @@ $config['cache_path'] = '';
 |
 */
 $config['encryption_key'] = '$2a$07$WsWds.0cEzRZZaN/PX8M0w';
-$config['encryption_key'] = "WsWds_key"; // jerep6
 
 /*
 |--------------------------------------------------------------------------
