@@ -108,8 +108,8 @@ $config['enable_hooks'] = FALSE;
 |
 */
 $config['subclass_prefix'] = 'WS_'; // to use
-$config['subclass_prefix'] = 'WSWDS_'; // ed
-$config['subclass_prefix'] = 'WsWds_'; // jerep6
+// $config['subclass_prefix'] = 'WSWDS_'; // ed
+// $config['subclass_prefix'] = 'WsWds_'; // jerep6
 
 
 /*

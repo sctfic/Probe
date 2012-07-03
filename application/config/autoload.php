@@ -88,8 +88,8 @@ $autoload['helper'] = array(
 */
 
 $autoload['config'] = array(
-    'wswds',
-    'configWsWds' // jerep6
+    'wswds'
+    , 'configWsWds' // jerep6
 );
 
 

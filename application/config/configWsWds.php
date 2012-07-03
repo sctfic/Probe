@@ -6,7 +6,7 @@ $config['admin_connexion']	= "/admin/admin/connexion";		// Page de connexion de 
 
 
 $config['require_directories']	= array("entity", "exceptions");
-
+$config['require_blacklist'] = array( "Address");
 
 
 
@@ -15,15 +15,29 @@ $config['require_directories']	= array("entity", "exceptions");
 
 
 //###################################### REQUIRES ######################################
-$absoluteAppPath = str_replace(end(explode('/', $_SERVER['SCRIPT_FILENAME'])), '', $_SERVER['SCRIPT_FILENAME']).''.APPPATH;
+$absoluteAppPath = str_replace(
+        end(explode('/', $_SERVER['SCRIPT_FILENAME'])),
+        '',
+        $_SERVER['SCRIPT_FILENAME']
+    )
+    .''.APPPATH;
+// echo $absoluteAppPath."<br/>";
+
+
 foreach($config['require_directories'] as $unDossier) {
-	require_once_file_autoload($absoluteAppPath."".$unDossier);
+	require_once_file_autoload($absoluteAppPath."".$unDossier , $config['require_blacklist']);
 }
-function require_once_file_autoload($chemin) {
+
+
+function require_once_file_autoload($chemin , $exclude = array() ) {
+
 	$contenuDossier = scandir($chemin);
 	foreach ($contenuDossier as $unElt) {
 		$unEltComplet = "$chemin/$unElt";
-		if($unElt != "." && $unElt != "..") {
+
+		if (  $unElt != "."
+		&& $unElt != ".."
+		&& !in_array($unElt.".php", $exclude) ) {
 			if(is_dir($unEltComplet)) {
 				a($unEltComplet);
 			}
