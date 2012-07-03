@@ -1,5 +1,5 @@
 <?php
-use WsWsd\annotation\AnnotationReader;
+use wswds\annotation\AnnotationReader;
 require_once APPPATH."annotation/AnnotationReader.php";
 
 /**
@@ -21,10 +21,10 @@ class MyORM {
 				$object->{"set".ucfirst($attributeName)}($value);
 			}
 		}
-		
+
 		return $object;
 	}
-	
+
 	/**
 	 * Retourne un tableau contenant la chaine de caractère représentant la requête d'insertion et les paramètres
 	 * de la reqûete.
@@ -34,13 +34,13 @@ class MyORM {
 	public static function generateParameterInsert($object) {
 		$reflec = new ReflectionObject($object);
 		$className = AnnotationReader::getParamValueAnnotation($reflec, "@ORM\Entity", "table");
-		
+
 		$requeteFinale = "";
 		$insert = "INSERT INTO $className (";
 		$values = " VALUES (";
 		$parameters = array();
-		
-		
+
+
 		//Pour chaque attribut récupère le nom de la colonne en BD
 		foreach($reflec->getProperties() as $property) {
 			$property->setAccessible(true);
@@ -51,13 +51,13 @@ class MyORM {
 				$values = "$values?,";
 				array_push($parameters, $property->getValue($object));
 			}
-			
+
 		}
 		//Supprime la dernière virgule et rajoute la parenthèse fermante
 		$requeteFinale = substr("$insert", 0, -1).")".substr("$values", 0, -1).");";
 		return array($requeteFinale, $parameters);
 	}
-	
+
 	/**
 	 * Retourne un tableau contenant la chaine de caractère représentant la requête de mise à jour et les paramètres
 	 * de la reqûete.
@@ -68,10 +68,10 @@ class MyORM {
 	public static function generateParameterUpdate($object, $where) {
 		$reflec = new ReflectionObject($object);
 		$className = AnnotationReader::getParamValueAnnotation($reflec, "@ORM\Entity", "table");
-		
+
 		$requete = "UPDATE $className SET";
 		$parameters = array();
-		
+
 		//Pour chaque attribut récupère le nom de la colonne en BD
 		foreach($reflec->getProperties() as $property) {
 			$property->setAccessible(true);
@@ -81,7 +81,7 @@ class MyORM {
 				$requete = "$requete $columnName=?,";
 				array_push($parameters, $property->getValue($object));
 			}
-				
+
 		}
 		//Supprime la dernière virgule
 		$requete = substr("$requete", 0, -1);

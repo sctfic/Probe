@@ -1,10 +1,10 @@
 <?php
-namespace WsWsd\annotation;
+namespace wswds\annotation;
 /**
- * 
+ *
  * @author jerep6
  */
-class AnnotationReader {	
+class AnnotationReader {
 	/**
 	 * Retourne la valeur de l'annotation passée dans le dernier paramètre. La valeur signifie le contenu entre crochets
 	 * @param string $comment commentaire à analyser
@@ -12,10 +12,10 @@ class AnnotationReader {
 	 */
 	public static function getPropertyAnnotation($comment, $annotationName) {
 		$annotationName = addslashes($annotationName);
-		
+
 		//Split selon le saut de ligne
  		$comments = preg_split('#\n#', $comment);
-		
+
  		$contenu = "";
  		//Détermine la ligne ayant l'annotation souhaitée
 		foreach($comments as $comment_line) {
@@ -25,7 +25,7 @@ class AnnotationReader {
 		}
 		return $contenu;
 	}
-	
+
 	/**
 	 * Retourne la valeur du champ de l'annotation de la propriété passé en paramètre
 	 * @param \ReflectionProperty $property attribut de classe
@@ -36,10 +36,10 @@ class AnnotationReader {
 		$contenu = AnnotationReader::getPropertyAnnotation($reflectionElement->getDocComment(), $annotationName);
 		return AnnotationReader::extract($contenu, $nameOfParam);
 	}
-	
+
 	private static function extract($contenu, $nameOfParam) {
 		$retour = NULL;
-		
+
 		if(preg_match_all("#(\w*)=(\w*)#", $contenu, $matches, PREG_SET_ORDER)) {
 			foreach($matches as $unMatch) {
 				if($unMatch[1] == $nameOfParam) {
@@ -47,12 +47,12 @@ class AnnotationReader {
 				}
 			}
 		}
-		
+
 		return $retour;
 	}
-	
-	
-	
+
+
+
 	/**
 	 * Retourne le nom de l'attribut ayant la valeur du paramètre spécifié
 	 * @param string $nameOfClass nom de la classe dans laquelle chercher
@@ -61,7 +61,7 @@ class AnnotationReader {
 	 * @param string $valueOfParam valeur du paramètre cherché
 	 */
 	public static function getAttributeName($nameOfClass, $annotationName, $nameOfParam, $valueOfParam) {
-		$reflection = new \ReflectionClass($nameOfClass);		
+		$reflection = new \ReflectionClass($nameOfClass);
 		foreach($reflection->getProperties() as $property) {
 			//Extraction du contenu de l'annotation
 			$contenu = AnnotationReader::getPropertyAnnotation($property->getDocComment(), $annotationName);
@@ -72,8 +72,8 @@ class AnnotationReader {
 			}
 		}
 	}
-	
-	
+
+
 }
 
 ?>
