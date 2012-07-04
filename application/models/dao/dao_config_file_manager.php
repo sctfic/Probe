@@ -3,7 +3,7 @@
 require_once APPPATH."models/dao/daoConfigFileManager.php";
 require_once APPPATH."annotation/MyORM.php";
 
-class DaoConfigFileManager extends DaoFile {
+class Dao_config_file_manager extends DaoFile {
     private $_configFile = null;
 
 

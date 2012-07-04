@@ -1,12 +1,12 @@
 <?php
 require_once APPPATH."models/service/service.php";
 
-class ServiceUser extends Service {
+class Service_User extends Service {
     function __construct() {
         parent::__construct();
 
         //Daos
-        $this->load->model('dao/daoUser');
+        $this->load->model('dao/Dao_User');
     }
 
     public function authentifier($login, $mdp) {

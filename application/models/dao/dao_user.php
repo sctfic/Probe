@@ -1,9 +1,9 @@
 <?php
 
-require_once APPPATH."models/dao/daodatabase.php";
+require_once APPPATH."models/dao/dao_database.php";
 require_once APPPATH."annotation/MyORM.php";
 
-class DaoUtilisateur extends DaoDatabase {
+class Dao_User extends Dao_Database {
     function __construct() {
         parent::__construct();
     }

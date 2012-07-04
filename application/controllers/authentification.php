@@ -22,6 +22,8 @@ abstract class Authentification extends CI_Controller {
 	public function __construct() {
 		parent::__construct();
 
+		$this->load->helper('url');
+
 		// Si url pas redéfini par les classes fille alors url par défaut
 		if($this->urlConnexion == NULL) {
 			$this->urlConnexion = $this->config->item('base_url');

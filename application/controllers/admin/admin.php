@@ -17,7 +17,7 @@ class Admin extends Authentification {
 		$this->encrypt->set_cipher(MCRYPT_BLOWFISH);
 
 		//Modèles
-		$this->load->model('service/ServiceUser');
+		$this->load->model('service/Service_User');
 
 		//Redéfinition de l'url de redirection si pas connecté
 		$this->urlConnexion = $this->config->item('admin_connexion');
@@ -48,7 +48,7 @@ class Admin extends Authentification {
 
 		try {
 			//Chercher l'user correspondant au couple login/mdp
-		  $user = $this->ServiceUser->authentifier($login, $mdp);
+		  $user = $this->Service_User->authentifier($login, $mdp);
 			$this->session->set_userdata("user", serialize($user));
 		}
 		catch(BusinessException $be) {
