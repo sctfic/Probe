@@ -3,17 +3,17 @@ SetEnv MAGIC_QUOTES 0
 SetEnv ZEND_OPTIMIZER 1
 SetEnv PHP_VER 5
 
-Options -Indexes
+# Options -Indexes
 
 # Le serveur doit suivre les liens symboliques :
-Options +FollowSymlinks
+# Options +FollowSymlinks
 
 # Activation du module de réécriture d'URL :
-RewriteEngine on
+# RewriteEngine on
 
 #--------------------------------------------------
 # Règles de réécriture d'URL :
 #--------------------------------------------------
 
-RewriteCond $1 !^(index\.php|images|robots\.txt)
-RewriteRule ^(.*)$ /index.php/$1 [L]
+#RewriteCond $1 !^(index\.php|images|themes|resources|robots\.txt)
+# RewriteRule ^(.*)$ /index.php/$1 [L]
