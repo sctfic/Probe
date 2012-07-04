@@ -1,6 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 require_once APPPATH."/controllers/authentification.php";
+require_once APPPATH."/controllers/pages.php";
 class Admin extends Authentification {
 
 	/**
@@ -8,7 +9,7 @@ class Admin extends Authentification {
 	 * Les classes filles peuvent la redéfinir. Par défaut, la redirection se fait sur "base_url"
 	 * @var String
 	 */
-	protected $urlConnecte= NULL;
+	protected $urlWhenLogged= NULL;
 
 	public function __construct() {
 		parent::__construct();
@@ -21,7 +22,7 @@ class Admin extends Authentification {
 
 		//Redéfinition de l'url de redirection si pas connecté
 		$this->urlConnexion = $this->config->item('admin_connexion');
-		$this->urlConnecte 	= $this->config->item('admin_accueil');
+		$this->urlWhenLogged 	= $this->config->item('admin_accueil');
 		$this->verificationConnexion();
 	}
 
@@ -36,7 +37,19 @@ class Admin extends Authentification {
 				'msg' => $this->session->userdata("msg")
 		);
 		$this->session->set_userdata("msg", NULL);
-		$this->load->view('admin_login', $data);
+
+// 		$this->load->view('admin_login', $data); // j6
+		$this->load->helper('pages');
+		$data = pageFetchConfig('login');
+		$data = $data+array("msg" => $this->session->userdata("msg"));
+
+    $this->load->helper(array('form', 'url'));
+    $this->load->library('form_validation');
+
+    $this->form_validation->set_rules('username', i18n('Username'), 'required');
+    $this->form_validation->set_rules('password', i18n('Password'), 'required');
+    $this->form_validation->set_rules('confirm', i18n('Password Confirmation'), 'required');		$pages = new Pages();
+		$pages->view('login', $data);
 	}
 
 	/*
@@ -56,6 +69,6 @@ class Admin extends Authentification {
 			$this->session->set_userdata("msg", $be->getMessage());
 		}
 
-		redirect($this->urlConnecte);
+		redirect($this->urlWhenLogged);
 	}
 }
