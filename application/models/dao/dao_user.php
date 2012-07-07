@@ -9,17 +9,17 @@ class Dao_User extends Dao_Database {
     }
 
     public function lire($login, $mdp) {
-    	$utilisateur = NULL;
+    	$user = NULL;
     	$sql = "SELECT * FROM TA_UTILISATEUR WHERE UTI_LOGIN=:login AND UTI_MDP=:mdp";
     	$res = $this->wswdspdo->query($sql, array(":login" => $login, ":mdp" => $mdp));
 
-    	// Si un utilisateur correspond à ces identifiants
+    	// Si un user correspond à ces identifiants
          if($res->rowCount() > 0) {
     		$u = $res->firstRow();
-         	$utilisateur = User::fromBD($u);
+         	$user = User::fromBD($u);
          }
 
-        return $utilisateur;
+        return $user;
     }
 
 }
