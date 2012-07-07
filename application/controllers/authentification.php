@@ -61,7 +61,7 @@ abstract class Authentification extends CI_Controller {
 	/**
 	 * Permet d'authentifier l'user sur le système.
 	 */
-	public abstract function connecter();
+	public abstract function connect();
 
 	/**
 	 * Permet de déconnecter l'user du système et redirige vers l'url d'accueil du site "base_url"
