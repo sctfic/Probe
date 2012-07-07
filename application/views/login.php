@@ -6,7 +6,7 @@
 	<input type="submit" value="connexion" />
 </form>-->
 
-<?=form_open('admin/login/valid', array('class' => 'login', 'id' => 'authentification'))?>
+<?=form_open('admin/admin/connect', array('class' => 'login', 'id' => 'authentification'))?>
     <fieldset>
 <?php
 
