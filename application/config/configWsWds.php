@@ -20,12 +20,12 @@ $absoluteAppPath = str_replace(
         '',
         $_SERVER['SCRIPT_FILENAME']
     )
-    .''.APPPATH;
+    .APPPATH;
 // echo $absoluteAppPath."<br/>";
 
 
 foreach($config['require_directories'] as $unDossier) {
-	require_once_file_autoload($absoluteAppPath."".$unDossier , $config['require_blacklist']);
+	require_once_file_autoload($absoluteAppPath.$unDossier , $config['require_blacklist']);
 }
 
 

@@ -1,15 +1,15 @@
-<?php // clear;php5 -f WsWds/Archie.cron.php
-// StationScript
-$workingFolder = dirname(__FILE__).'/';
-$daoFolder = $workingFolder.'../../dao/VP2-IP/';
-require_once($workingFolder.'../config/rwConf.c.php');
+<?php // clear;php5 -f /var/www/WsWds/cli.php 'hello/index'
+
+$daoFolder = APPPATH.'models/dao/';
+
+require_once(APPPATH.'/config/rwConf.c.php');
 $stationConf = configManager::readConfig('station');
-// var_export($stationConf);
+
 foreach($stationConf as $configKey=>$configValue)
 {
 	$stationFolder = $configValue['type']; // folder with class related to the given station model
-	require_once sprintf( '%sConnexionManager.c.php', $daoFolder ); // load correct station class so it can be instantiated later
-	require_once sprintf( '%sEepromManager.c.php', $daoFolder ); // load correct station class so it can be instantiated later
+	require_once sprintf( '%sVP2-IP/ConnexionManager.c.php', $daoFolder ); // load correct station class so it can be instantiated later
+	require_once sprintf( '%sVP2-IP/EepromManager.c.php', $daoFolder ); // load correct station class so it can be instantiated later
 
 	switch ($configValue['type'])
 	{
