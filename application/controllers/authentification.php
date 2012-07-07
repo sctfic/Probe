@@ -38,7 +38,7 @@ abstract class Authentification extends CI_Controller {
 	 * Vérifie que l'user est connecté. S'il ne l'ai pas, redirige vers la page prévu à cet effet.
 	 * Ne vérifie pas l'authe sur la page affichant le formulaire "connexion"
 	 */
-	public function verificationConnexion() {
+	public function checkConnexionStatus() {
 		$methode = $this->router->fetch_method();
 
 		if($methode != "connexion" && $methode != "connecter") {

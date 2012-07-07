@@ -9,7 +9,7 @@ class Admin extends Authentification {
 	 * Les classes filles peuvent la redéfinir. Par défaut, la redirection se fait sur "base_url"
 	 * @var String
 	 */
-	protected $urlWhenLogged= NULL;
+	protected $urlWhenLogged= NULL; # when user is authentified go to this URL
 
 	public function __construct() {
 		parent::__construct();
@@ -23,7 +23,7 @@ class Admin extends Authentification {
 		//Redéfinition de l'url de redirection si pas connecté
 		$this->urlConnexion = $this->config->item('admin_connexion');
 		$this->urlWhenLogged 	= $this->config->item('admin_dashboard');
-		$this->verificationConnexion();
+		$this->checkConnexionStatus();
 	}
 
 	public function index(){
