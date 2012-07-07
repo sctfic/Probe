@@ -13,7 +13,7 @@ $config['ws:locale'] = 'fr';
 
 
 // Url de redirection de la partie admin
-$config['admin_accueil']	= "/admin/admin/";				// Page d'accueil de l'admin une fois l'authentification reussit
+$config['admin_home']	= "/admin/admin/";				// Page d'accueil de l'admin une fois l'authentification reussit
 $config['admin_connexion']	= "/admin/admin/connexion";		// Page de connexion de l'admin. L'utilisateur sera redirigé vers cette page s'il tente d'accéder à une page de l'admin
 
 

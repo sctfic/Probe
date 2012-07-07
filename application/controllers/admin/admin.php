@@ -22,7 +22,7 @@ class Admin extends Authentification {
 
 		//Redéfinition de l'url de redirection si pas connecté
 		$this->urlConnexion = $this->config->item('admin_connexion');
-		$this->urlWhenLogged 	= $this->config->item('admin/dashboard');
+		$this->urlWhenLogged 	= $this->config->item('admin_dashboard');
 		$this->verificationConnexion();
 	}
 
