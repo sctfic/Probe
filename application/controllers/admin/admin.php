@@ -33,6 +33,10 @@ class Admin extends Authentification {
 		echo "PAGE ACCUEIL ADMIN : ".$this->lang->line('admin.bienvenue');
 	}
 
+	/*
+	* Login interface for unknown/authentified user
+	* see Authentification.php for the abstract class
+	*/
 	public function connexion() {
 		// requirements
 		$this->load->helper('pages');
@@ -42,6 +46,7 @@ class Admin extends Authentification {
 		// build view data
 		$data = pageFetchConfig('login'); // fetch information to build the HTML header
 		$data['msg'] = $this->session->userdata("msg"); // message to display in the page
+		$data['username'] = NULL;
 
 		$this->session->set_userdata("msg", NULL); // reset session message
 
@@ -56,9 +61,10 @@ class Admin extends Authentification {
 	}
 
 	/*
-	 * Redirect user depending on its credentials validation
-	 */
-	public function connecter() {
+	* Redirect user depending on its credentials validation
+	* see Authentification.php for the abstract class
+	*/
+	public function connect() {
 		$login 	=  	$this->input->get('login');
 		$mdp 	=  	$this->input->get('mdp');
 
