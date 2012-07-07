@@ -127,7 +127,7 @@ class User implements Serializable {
 	}
 
 	public function __toString() {
-		return "$this->techId -- $this->login $this->name";
+		return "{$this->techId} -- {$this->login} {$this->name}";
 	}
 
 	public function __sleep() {
