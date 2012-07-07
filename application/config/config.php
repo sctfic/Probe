@@ -247,8 +247,8 @@ $config['encryption_key'] = '$2a$07$WsWds.0cEzRZZaN/PX8M0w';
 | 'sess_time_to_update'     = how many seconds between CI refreshing Session Information
 |
 */
-$config['sess_cookie_name']     = 'ws-session';
 $config['sess_cookie_name']		= 'WsWds'; // jerep6
+$config['sess_cookie_name']     = 'ws-session';
 $config['sess_expiration']		= 7200;
 $config['sess_expire_on_close']	= FALSE;
 $config['sess_encrypt_cookie']	= FALSE;
