@@ -1,7 +1,7 @@
 <?php // clear;php5 -f WsWds/Archie.cron.php
 // StationScript
-$workingFolder = dirname(__FILE__).DIRECTORY_SEPARATOR;
-$daoFolder = $workingFolder.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'dao'.DIRECTORY_SEPARATOR.'VP2-IP'.DIRECTORY_SEPARATOR;
+$workingFolder = dirname(__FILE__).'/';
+$daoFolder = $workingFolder.'../../dao/VP2-IP/';
 require_once($workingFolder.'../config/rwConf.c.php');
 $stationConf = configManager::readConfig('station');
 // var_export($stationConf);
@@ -29,8 +29,8 @@ foreach($stationConf as $configKey=>$configValue)
 					$configValue['Last']['_DumpAfter'] = key($retuned);
 					$configValue['Last']['DumpAfter'] = date('Y/m/d H:i:s');
 					foreach ($retuned as $h=>$arch) {
-						$folder = $workingFolder.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.$configKey.DIRECTORY_SEPARATOR.substr($h, 0, 4).'/'.substr($h, 5, 2);
-						$file = $folder.DIRECTORY_SEPARATOR.substr($h, 8, 2).'.txt';
+						$folder = $workingFolder.'../../../../data/'.$configKey.'/'.substr($h, 0, 4).'/'.substr($h, 5, 2);
+						$file = $folder.'/'.substr($h, 8, 2).'.txt';
 						if (is_file($file)) {
 							file_put_contents($file,
 								implode("\t",$arch)."\n", FILE_APPEND);
