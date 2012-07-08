@@ -89,7 +89,6 @@ $autoload['helper'] = array(
 
 $autoload['config'] = array(
     'wswds'
-    , 'configWsWds' // jerep6
 );
 
 

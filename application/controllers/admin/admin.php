@@ -9,7 +9,7 @@ class Admin extends Authentification {
 	 * Les classes filles peuvent la redéfinir. Par défaut, la redirection se fait sur "base_url"
 	 * @var String
 	 */
-	protected $urlWhenLogged= NULL;
+	protected $urlWhenLogged= NULL; # when user is authentified go to this URL
 
 	public function __construct() {
 		parent::__construct();
@@ -20,42 +20,51 @@ class Admin extends Authentification {
 		//Modèles
 		$this->load->model('service/Service_User');
 
-		//Redéfinition de l'url de redirection si pas connecté
+		// set URL to login page (not yet authentified)
 		$this->urlConnexion = $this->config->item('admin_connexion');
-		$this->urlWhenLogged 	= $this->config->item('admin_accueil');
-		$this->verificationConnexion();
+		// set URL to redirect to when user is authentified
+		$this->urlWhenLogged 	= $this->config->item('admin_dashboard');
+		$this->checkConnexionStatus();
 	}
 
-	public function index(){
+	public function index() {
 		$this->lang->load('admin', 'french');
 
 		echo "PAGE ACCUEIL ADMIN : ".$this->lang->line('admin.bienvenue');
 	}
 
+	/*
+	* Login interface for unknown/authentified user
+	* see Authentification.php for the abstract class
+	*/
 	public function connexion() {
-		$data = array(
-				'msg' => $this->session->userdata("msg")
-		);
-		$this->session->set_userdata("msg", NULL);
-
-// 		$this->load->view('admin_login', $data); // j6
+		// requirements
 		$this->load->helper('pages');
-		$data = pageFetchConfig('login');
-		$data = $data+array("msg" => $this->session->userdata("msg"));
+		$this->load->helper(array('form', 'url'));
+		$this->load->library('form_validation');
 
-    $this->load->helper(array('form', 'url'));
-    $this->load->library('form_validation');
+		// build view data
+		$data = pageFetchConfig('login'); // fetch information to build the HTML header
+		$data['msg'] = $this->session->userdata("msg"); // message to display in the page
+		$data['username'] = NULL;
 
-    $this->form_validation->set_rules('username', i18n('Username'), 'required');
-    $this->form_validation->set_rules('password', i18n('Password'), 'required');
-    $this->form_validation->set_rules('confirm', i18n('Password Confirmation'), 'required');		$pages = new Pages();
+		$this->session->set_userdata("msg", NULL); // reset session message
+
+		// form control
+		$this->form_validation->set_rules('username', i18n('Username'), 'required');
+		$this->form_validation->set_rules('password', i18n('Password'), 'required');
+		$this->form_validation->set_rules('confirm', i18n('Password Confirmation'), 'required');
+
+		// display the view
+		$pages = new Pages();
 		$pages->view('login', $data);
 	}
 
 	/*
-	 * Redirect user depending on its credentials validation
-	 */
-	public function connecter() {
+	* Redirect user depending on its credentials validation
+	* see Authentification.php for the abstract class
+	*/
+	public function connect() {
 		$login 	=  	$this->input->get('login');
 		$mdp 	=  	$this->input->get('mdp');
 

@@ -7,6 +7,7 @@
 @return: functionReturn
 */
 function pageFetchConfig($page) { //
+	$data = array();
     $data['page'] = $page;
     $data['title'] = _($page.':title');
     $data['description'] = _($page.':description');

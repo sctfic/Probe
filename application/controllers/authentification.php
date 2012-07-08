@@ -38,9 +38,12 @@ abstract class Authentification extends CI_Controller {
 	 * Vérifie que l'user est connecté. S'il ne l'ai pas, redirige vers la page prévu à cet effet.
 	 * Ne vérifie pas l'authe sur la page affichant le formulaire "connexion"
 	 */
-	public function verificationConnexion() {
+	public function checkConnexionStatus() {
+		// Detect the method that called this one
+		// see: Codeigniter: Redirecting from construct in Controller http://stackoverflow.com/a/3364878
 		$methode = $this->router->fetch_method();
 
+		// when user is unknown/NULL, we redirect him to the login page
 		if($methode != "connexion" && $methode != "connecter") {
 			if($this->user == NULL || !$this->user->isAuthentified()) {
 				redirect($this->urlConnexion);
@@ -58,7 +61,7 @@ abstract class Authentification extends CI_Controller {
 	/**
 	 * Permet d'authentifier l'user sur le système.
 	 */
-	public abstract function connecter();
+	public abstract function connect();
 
 	/**
 	 * Permet de déconnecter l'user du système et redirige vers l'url d'accueil du site "base_url"
