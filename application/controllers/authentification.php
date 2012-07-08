@@ -44,7 +44,7 @@ abstract class Authentification extends CI_Controller {
 		$methode = $this->router->fetch_method();
 
 		// when user is unknown/NULL, we redirect him to the login page
-		if($methode != "connexion" && $methode != "connecter") {
+		if($methode != "connexion" && $methode != "connect") {
 			if($this->user == NULL || !$this->user->isAuthentified()) {
 				redirect($this->urlConnexion);
 				exit();
