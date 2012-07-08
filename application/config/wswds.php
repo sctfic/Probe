@@ -12,9 +12,13 @@ $config['ws:password'] = '';
 $config['ws:locale'] = 'fr';
 
 
-// Url de redirection de la partie admin
-$config['admin_home']	= "/admin/admin/";				// Page d'accueil de l'admin une fois l'authentification reussit
-$config['admin_connexion']	= "/admin/admin/connexion";		// Page de connexion de l'admin. L'utilisateur sera redirigé vers cette page s'il tente d'accéder à une page de l'admin
+/*
+*redirection URLs for the admin area
+*/
+// landing page after user is successfully authentified
+$config['admin_dashboard']	= "/admin/admin/";
+// Login page, un-authentified users will land on this page to provide their credentials
+$config['admin_connexion']	= "/admin/admin/connexion";
 
 
 $config['require_directories']	= array("entity", "exceptions");
