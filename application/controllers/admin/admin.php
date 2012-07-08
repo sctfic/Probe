@@ -65,12 +65,12 @@ class Admin extends Authentification {
 	* see Authentification.php for the abstract class
 	*/
 	public function connect() {
-		$login 	=  	$this->input->get('login');
-		$mdp 	=  	$this->input->get('mdp');
+		$username 	=  	$this->input->get('username');
+		$pwd 			=  	$this->input->get('password');
 
 		try {
-			//Chercher l'user correspondant au couple login/mdp
-		  $user = $this->Service_User->authentifier($login, $mdp);
+			//Chercher l'user correspondant au couple login/pwd
+		  $user = $this->Service_User->authentify($username, $pwd);
 			$this->session->set_userdata("user", serialize($user));
 		}
 		catch(BusinessException $be) {

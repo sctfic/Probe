@@ -9,12 +9,15 @@ class Service_User extends Service {
         $this->load->model('dao/Dao_User');
     }
 
-    public function authentifier($login, $mdp) {
-    	$mdpCrypte = md5($mdp);
-    	$user = $this->daoUser->lire($login, $mdpCrypte);
+	/*
+	* return an User object when for authentified user, otherwise throw an error
+	*/
+    public function authentify($username, $pwd) {
+    	$encryptedPwd = md5($pwd);
+    	$user = $this->Dao_User->lire($username, $encryptedPwd);
 
     	if($user == NULL) {
-    		throw new BusinessException('Login ou mot de passe incorrect');
+    		throw new BusinessException( i18n('login.fail.username.password.incorrect') );
     	}
 
     	$user->setAuthentifie(true);
