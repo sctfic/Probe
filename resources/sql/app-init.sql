@@ -28,13 +28,13 @@ DROP TABLE IF EXISTS `wswds`.`TA_USER` ;
 
 CREATE  TABLE IF NOT EXISTS `wswds`.`TA_USER` (
   `USR_ID` INT NOT NULL AUTO_INCREMENT ,
-  `USR_LOGIN` VARCHAR(32) NOT NULL ,
+  `USR_USERNAME` VARCHAR(32) NOT NULL ,
   `USR_PWD` VARCHAR(64) NOT NULL ,
-  `USR_NAME` VARCHAR(45) NULL ,
-  `USR_MAIL` VARCHAR(45) NULL ,
+  `USR_FIRST_NAME` VARCHAR(45) NULL ,
+  `USR_EMAIL` VARCHAR(45) NULL ,
   `ROL_ID` INT NOT NULL ,
+  `USR_FAMILY_NAME` VARCHAR(45) NULL ,
   PRIMARY KEY (`USR_ID`) ,
-  INDEX `IDX_FK_USR_ROL` (`ROL_ID` ASC) ,
   CONSTRAINT `FK_USR_ROL`
     FOREIGN KEY (`ROL_ID` )
     REFERENCES `wswds`.`TR_ROLE` (`ROL_ID` )
@@ -42,23 +42,7 @@ CREATE  TABLE IF NOT EXISTS `wswds`.`TA_USER` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-
--- -----------------------------------------------------
--- Table `wswds`.`TR_STATION`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `wswds`.`TR_STATION` ;
-
-CREATE  TABLE IF NOT EXISTS `wswds`.`TR_STATION` (
-  `STA_ID` TINYINT NOT NULL AUTO_INCREMENT ,
-  `STA_Port` INT NULL ,
-  `STA_IP` VARCHAR(60) NOT NULL ,
-  `STA_Name` VARCHAR(45) NULL ,
-  `STA_Modele` VARCHAR(45) NULL ,
-  `STA_DBName` VARCHAR(128) NULL ,
-  PRIMARY KEY (`STA_ID`) )
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COMMENT = 'cette table liste nos differente station, l\'ip, le port, le ' /* comment truncated */;
+CREATE INDEX `IDX_FK_USR_ROL` ON `wswds`.`TA_USER` (`ROL_ID` ASC) ;
 
 
 -- -----------------------------------------------------
@@ -68,22 +52,17 @@ DROP TABLE IF EXISTS `wswds`.`TR_CONFIG` ;
 
 CREATE  TABLE IF NOT EXISTS `wswds`.`TR_CONFIG` (
   `CFG_ID` INT NOT NULL AUTO_INCREMENT ,
-  `CFG_CODE` VARCHAR(32) NOT NULL ,
-  `CFG_LABEL` VARCHAR(64) NULL ,
-  `CFG_VALUE` VARCHAR(45) NOT NULL ,
+  `CFG_STATION_ID` TINYINT NULL ,
+  `CFG_CODE` TINYINT NOT NULL ,
+  `CFG_LABEL` TINYTEXT NULL ,
+  `CFG_VALUE` TINYTEXT NOT NULL ,
   `CFG_LAST_READ` DATETIME NULL ,
   `CFG_LAST_WRITE` DATETIME NULL ,
-  `STA_ID` TINYINT NULL ,
-  PRIMARY KEY (`CFG_ID`) ,
-  UNIQUE INDEX `IDX_UNI_CFG_CODE` (`CFG_CODE` ASC) ,
-  INDEX `fk_TR_CONFIG_1` (`STA_ID` ASC) ,
-  CONSTRAINT `fk_TR_CONFIG_1`
-    FOREIGN KEY (`STA_ID` )
-    REFERENCES `wswds`.`TR_STATION` (`STA_ID` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+  PRIMARY KEY (`CFG_ID`) )
 ENGINE = InnoDB
 COMMENT = 'Ici on stoque chaque config, ca valeur et les date d\'accé';
+
+CREATE UNIQUE INDEX `IDX_UNI_CFG_CODE` ON `wswds`.`TR_CONFIG` (`CFG_CODE` ASC) ;
 
 
 -- -----------------------------------------------------
@@ -93,17 +72,12 @@ DROP TABLE IF EXISTS `wswds`.`TA_LOG` ;
 
 CREATE  TABLE IF NOT EXISTS `wswds`.`TA_LOG` (
   `LOG_ID` INT NOT NULL ,
-  `LOG_Name` VARCHAR(45) NULL ,
-  `LOG_Value` TINYTEXT NULL ,
+  `LOG_STATION_ID` TINYINT NULL ,
+  `LOG_CODE` TINYINT NULL ,
+  `LOG_LABEL` TINYTEXT NULL ,
+  `LOG_Value` MEDIUMTEXT NULL ,
   `LOG_Date` DATETIME NULL ,
-  `STA_ID` TINYINT NULL ,
-  PRIMARY KEY (`LOG_ID`) ,
-  INDEX `FK_Log_Station` (`STA_ID` ASC) ,
-  CONSTRAINT `FK_Log_Station`
-    FOREIGN KEY (`STA_ID` )
-    REFERENCES `wswds`.`TR_STATION` (`STA_ID` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+  PRIMARY KEY (`LOG_ID`) )
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COMMENT = 'Ici on log les different accée a chaque station ainsi qu\'une' /* comment truncated */;
@@ -123,9 +97,10 @@ CREATE  TABLE IF NOT EXISTS `ws-template`.`TR_SENSOR` (
   `SEN_MAX` FLOAT NULL COMMENT 'Maximum value' ,
   `SEN_ERROR` FLOAT NULL COMMENT 'Measure error' ,
   `SEN_UNITE_SIGN` INT NULL ,
-  PRIMARY KEY (`SEN_ID`) ,
-  UNIQUE INDEX `IDX_UNI_SEN_CODE` (`SEN_CODE` ASC) )
+  PRIMARY KEY (`SEN_ID`) )
 ENGINE = InnoDB;
+
+CREATE UNIQUE INDEX `IDX_UNI_SEN_CODE` ON `ws-template`.`TR_SENSOR` (`SEN_CODE` ASC) ;
 
 
 -- -----------------------------------------------------
@@ -138,13 +113,14 @@ CREATE  TABLE IF NOT EXISTS `ws-template`.`TA_WETNESSES` (
   `WET_VALUE` VARCHAR(45) NULL ,
   `SEN_ID` INT NOT NULL ,
   PRIMARY KEY (`WET_ID`) ,
-  INDEX `IDX_FK_WET_SEN` (`SEN_ID` ASC) ,
   CONSTRAINT `IDX_FK_WET_SEN`
     FOREIGN KEY (`SEN_ID` )
     REFERENCES `ws-template`.`TR_SENSOR` (`SEN_ID` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
+
+CREATE INDEX `IDX_FK_WET_SEN` ON `ws-template`.`TA_WETNESSES` (`SEN_ID` ASC) ;
 
 
 -- -----------------------------------------------------
@@ -181,13 +157,14 @@ CREATE  TABLE IF NOT EXISTS `ws-template`.`TA_TEMPERATURE` (
   `TEM_VALUE` VARCHAR(45) NULL ,
   `SEN_ID` INT NOT NULL ,
   PRIMARY KEY (`TEM_ID`) ,
-  INDEX `IDX_FK_TEM_SEN` (`SEN_ID` ASC) ,
   CONSTRAINT `IDX_FK_TEM_SEN`
     FOREIGN KEY (`SEN_ID` )
     REFERENCES `ws-template`.`TR_SENSOR` (`SEN_ID` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
+
+CREATE INDEX `IDX_FK_TEM_SEN` ON `ws-template`.`TA_TEMPERATURE` (`SEN_ID` ASC) ;
 
 
 -- -----------------------------------------------------
@@ -200,13 +177,14 @@ CREATE  TABLE IF NOT EXISTS `ws-template`.`TA_MOISTURE` (
   `MOI_VALUE` VARCHAR(45) NULL ,
   `SEN_ID` INT NOT NULL ,
   PRIMARY KEY (`MOI_ID`) ,
-  INDEX `IDX_FK_MOI_SEN` (`SEN_ID` ASC) ,
   CONSTRAINT `IDX_FK_MOI_SEN`
     FOREIGN KEY (`SEN_ID` )
     REFERENCES `ws-template`.`TR_SENSOR` (`SEN_ID` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
+
+CREATE INDEX `IDX_FK_MOI_SEN` ON `ws-template`.`TA_MOISTURE` (`SEN_ID` ASC) ;
 
 
 -- -----------------------------------------------------
@@ -219,13 +197,14 @@ CREATE  TABLE IF NOT EXISTS `ws-template`.`TA_HUMIDITY` (
   `HUM_VALUE` VARCHAR(45) NULL ,
   `SEN_ID` INT NOT NULL ,
   PRIMARY KEY (`HUM_ID`) ,
-  INDEX `IDX_FK_HUM_SEN` (`SEN_ID` ASC) ,
   CONSTRAINT `IDX_FK_HUM_SEN`
     FOREIGN KEY (`SEN_ID` )
     REFERENCES `ws-template`.`TR_SENSOR` (`SEN_ID` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
+
+CREATE INDEX `IDX_FK_HUM_SEN` ON `ws-template`.`TA_HUMIDITY` (`SEN_ID` ASC) ;
 
 
 
