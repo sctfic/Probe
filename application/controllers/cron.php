@@ -1,19 +1,24 @@
-<?php // clear;php5 -f /var/www/WsWds/cli.php 'hello/index'
+<?php // clear;php5 -f /var/www/WsWds/cli.php 'cron'
+class Cron extends CI_Controller {
+	function __construct() {
+		if (isset($_SERVER['REMOTE_ADDR'])) { // n'est pas definie en php5-cli
+			die();
+		}
+		parent::__construct();
+	}
+	
+	// la fonction qui ce lancera par defaut dans cette classe 
+	// clear;php5 -f /var/www/WsWds/cli.php 'cron'
+	function index() {
+// 		$this->config->load('station', TRUE);
+// 		$this->config->set_item('language');
+// 		$stationConf = $this->config->item('station');
 
-$daoFolder = APPPATH.'models/dao/';
-
-require_once(APPPATH.'/config/rwConf.c.php');
-$stationConf = configManager::readConfig('station');
-
-foreach($stationConf as $configKey=>$configValue)
-{
-	$stationFolder = $configValue['type']; // folder with class related to the given station model
-	require_once sprintf( '%sVP2-IP/ConnexionManager.c.php', $daoFolder ); // load correct station class so it can be instantiated later
-	require_once sprintf( '%sVP2-IP/EepromManager.c.php', $daoFolder ); // load correct station class so it can be instantiated later
-
-	switch ($configValue['type'])
-	{
-		case 'VP2-IP':
+		foreach($stationConf as $configKey=>$configValue)
+		{
+			require_once (APPPATH.'models/dao/'.$configValue['type'].'/ConnexionManager.c.php');
+			require_once (APPPATH.'models/dao/'.$configValue['type'].'/EepromManager.c.php');
+			
 			echo sprintf ("\n%'+40s %16s %'+40s\n", "", $configKey, "");
 			$station = new dataFetcher($configKey, $configValue);
 			if ($station->initConnection()){
@@ -29,7 +34,7 @@ foreach($stationConf as $configKey=>$configValue)
 					$configValue['Last']['_DumpAfter'] = key($retuned);
 					$configValue['Last']['DumpAfter'] = date('Y/m/d H:i:s');
 					foreach ($retuned as $h=>$arch) {
-						$folder = $workingFolder.'../../../../data/'.$configKey.'/'.substr($h, 0, 4).'/'.substr($h, 5, 2);
+						$folder = APPPATH.'../data/'.$configKey.'/'.substr($h, 0, 4).'/'.substr($h, 5, 2);
 						$file = $folder.'/'.substr($h, 8, 2).'.txt';
 						if (is_file($file)) {
 							file_put_contents($file,
@@ -50,11 +55,11 @@ foreach($stationConf as $configKey=>$configValue)
 			}
 			else
 				Tools::Waiting( 0, sprintf( _('[Échec] Impossible de se connecter à %s par %s:%s.'), $configKey, $configValue['IP'], $configValue['Port']) );
-			break;
-		default :
+		}
 	}
-	$stationConf[$configKey]=$configValue;
-	configManager::writeConfig('station', $stationConf);
+	// clear;php5 -f /var/www/WsWds/cli.php 'cron/UTC_Arch'
+	function UTC_Arch() {
+		
+	}
+
 }
-// echo "\n\n\n\n";
-?>
