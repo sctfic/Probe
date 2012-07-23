@@ -5,15 +5,16 @@ class Cron extends CI_Controller {
 			die();
 		}
 		parent::__construct();
-	}
-	
+	}	
 	// la fonction qui ce lancera par defaut dans cette classe 
 	// clear;php5 -f /var/www/WsWds/cli.php 'cron'
 	function index() {
+		echo CI_VERSION." - ".ENVIRONMENT." - ".EXT." - ".FCPATH." - ".SELF." - ".BASEPATH." - ".APPPATH."\n";
 // 		$this->config->load('station', TRUE);
-// 		$this->config->set_item('language');
 // 		$stationConf = $this->config->item('station');
-
+	}
+	// clear;php5 -f /var/www/WsWds/cli.php 'cron/AutoArch'
+	function Read() {
 		foreach($stationConf as $configKey=>$configValue)
 		{
 			require_once (APPPATH.'models/dao/'.$configValue['type'].'/ConnexionManager.c.php');
@@ -24,7 +25,6 @@ class Cron extends CI_Controller {
 			if ($station->initConnection()){
 				$configValue['Last']['Connected'] = date('Y/m/d H:i:s');
 				Tools::Waiting( 0, _( sprintf('[Succès] Ouverture de la connexion à %s', $configKey) ) );
-
 				if (($retuned = $station->clockSync(5))) {
 					var_export($retuned);	// OK
 					$configValue['Last']['ClockSync'] = $retuned;
@@ -56,10 +56,6 @@ class Cron extends CI_Controller {
 			else
 				Tools::Waiting( 0, sprintf( _('[Échec] Impossible de se connecter à %s par %s:%s.'), $configKey, $configValue['IP'], $configValue['Port']) );
 		}
+// 		$this->config->set_item('station');
 	}
-	// clear;php5 -f /var/www/WsWds/cli.php 'cron/UTC_Arch'
-	function UTC_Arch() {
-		
-	}
-
 }

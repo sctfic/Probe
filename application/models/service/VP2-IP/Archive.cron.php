@@ -1,4 +1,4 @@
-<?php // clear;php5 -f /var/www/WsWds/cli.php 'hello/index'
+<?php // Use the controller tu run it
 
 $daoFolder = APPPATH.'models/dao/';
 
@@ -8,8 +8,8 @@ $stationConf = configManager::readConfig('station');
 foreach($stationConf as $configKey=>$configValue)
 {
 	$stationFolder = $configValue['type']; // folder with class related to the given station model
-	require_once sprintf( '%sVP2-IP/ConnexionManager.c.php', $daoFolder ); // load correct station class so it can be instantiated later
-	require_once sprintf( '%sVP2-IP/EepromManager.c.php', $daoFolder ); // load correct station class so it can be instantiated later
+	require_once $daoFolder.'VP2-IP/ConnexionManager.c.php'; // load correct station class so it can be instantiated later
+	require_once $daoFolder.'VP2-IP/EepromManager.c.php'; // load correct station class so it can be instantiated later
 
 	switch ($configValue['type'])
 	{
@@ -29,7 +29,7 @@ foreach($stationConf as $configKey=>$configValue)
 					$configValue['Last']['_DumpAfter'] = key($retuned);
 					$configValue['Last']['DumpAfter'] = date('Y/m/d H:i:s');
 					foreach ($retuned as $h=>$arch) {
-						$folder = $workingFolder.'../../../../data/'.$configKey.'/'.substr($h, 0, 4).'/'.substr($h, 5, 2);
+						$folder = APPPATH.'/../data/'.$configKey.'/'.substr($h, 0, 4).'/'.substr($h, 5, 2);
 						$file = $folder.'/'.substr($h, 8, 2).'.txt';
 						if (is_file($file)) {
 							file_put_contents($file,
