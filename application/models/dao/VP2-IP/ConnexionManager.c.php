@@ -28,8 +28,7 @@ class ConnexionManager {
 		$errno = 0;
 		$this->fp = @fsockopen (
 			$this->conf['IP'],
-			$this->conf['Port'],
-			&$errno
+			$this->conf['Port']
 		);
 		if ($this->fp && $errno==0) {
 			stream_set_timeout ($this->fp, 0, 2500000);

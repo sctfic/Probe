@@ -50,8 +50,8 @@ $active_record = TRUE;
 
 $db['default']['hostname'] = 'mysql:host=localhost';
 //$db['default']['hostname'] = 'localhost';
-$db['default']['username'] = 'wswds';
-$db['default']['password'] = 'wswds';
+$db['default']['username'] = 'root';
+$db['default']['password'] = 'nbv4023';
 $db['default']['database'] = 'wswds';
 $db['default']['dbdriver'] = 'pdo';
 $db['default']['dbprefix'] = '';
@@ -65,23 +65,39 @@ $db['default']['swap_pre'] = '';
 $db['default']['autoinit'] = TRUE;
 $db['default']['stricton'] = FALSE;
 
+// $db['config']['hostname'] = 'localhost';
+// $db['config']['username'] = 'root';
+// $db['config']['password'] = '';
+// $db['config']['database'] = 'wswds';
+// $db['config']['dbdriver'] = 'mysql';
+// $db['config']['dbprefix'] = '';
+// $db['config']['pconnect'] = FALSE;
+// $db['config']['db_debug'] = TRUE;
+// $db['config']['cache_on'] = FALSE;
+// $db['config']['cachedir'] = '';
+// $db['config']['char_set'] = 'utf8';
+// $db['config']['dbcollat'] = 'utf8_general_ci';
+// $db['config']['swap_pre'] = '';
+// $db['config']['autoinit'] = TRUE;
+// $db['config']['stricton'] = FALSE;
 
-$db['ws-template']['hostname']      = $db['default']['hostname'];
-//$db['ws-template']['hostname']    = 'localhost';
-$db['ws-template']['username']      = $db['default']['username'];
-$db['ws-template']['password']       = $db['default']['password'];
-$db['ws-template']['database']       = 'ws-template';
-$db['ws-template']['dbdriver']         = $db['default']['dbdriver'];
-$db['ws-template']['dbprefix']         = $db['default']['dbprefix'];
-$db['ws-template']['pconnect']       = $db['default']['pconnect'];
-$db['ws-template']['db_debug']      = $db['default']['db_debug'];
-$db['ws-template']['cache_on']      = $db['default']['cache_on'];
-$db['ws-template']['cachedir']        = $db['default']['cachedir'];
-$db['ws-template']['char_set']        = $db['default']['char_set'];
-$db['ws-template']['dbcollat']         = $db['default']['dbcollat'];
-$db['ws-template']['swap_pre']       = $db['default']['swap_pre'];
-$db['ws-template']['autoinit']          = $db['default']['autoinit'];
-$db['ws-template']['stricton']          = $db['default']['stricton'];
+
+$db['ws-template']['hostname']		= $db['default']['hostname'];
+//$db['ws-template']['hostname']	= 'localhost';
+$db['ws-template']['username']		= $db['default']['username'];
+$db['ws-template']['password']		= $db['default']['password'];
+$db['ws-template']['database']		= 'ws-template';
+$db['ws-template']['dbdriver']		= $db['default']['dbdriver'];
+$db['ws-template']['dbprefix']		= $db['default']['dbprefix'];
+$db['ws-template']['pconnect']		= $db['default']['pconnect'];
+$db['ws-template']['db_debug']		= $db['default']['db_debug'];
+$db['ws-template']['cache_on']		= $db['default']['cache_on'];
+$db['ws-template']['cachedir']		= $db['default']['cachedir'];
+$db['ws-template']['char_set']		= $db['default']['char_set'];
+$db['ws-template']['dbcollat']		= $db['default']['dbcollat'];
+$db['ws-template']['swap_pre']		= $db['default']['swap_pre'];
+$db['ws-template']['autoinit']		= $db['default']['autoinit'];
+$db['ws-template']['stricton']		= $db['default']['stricton'];
 
 
 /* End of file database.php */
