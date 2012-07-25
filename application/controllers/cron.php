@@ -49,12 +49,13 @@ class Cron extends CI_Controller {
 
 	// clear;php5 -f /var/www/WsWds/cli.php 'cron/ReadArch'
 	function ReadArch() {
+		$this->load->model('service/VP2-IP/archive');
 		foreach($this->Stations as $configKey=>$configValue)
 		{
-			require_once	(APPPATH.'models/service/'.$configValue['Type'].'/Archive.php');
-			$data=run ($configKey, $configValue);
-			fileSave($data, $configKey);
-			dbSave($data, $configKey);
+// 			require_once	(APPPATH.'models/service/'.$configValue['Type'].'/Archive.php');
+			$data = $this->archive->get ($configKey, $configValue);
+			$this->archive->fileSave($data, $configKey);
+			$this->archive->dbSave($data, $configKey);
 		}
 // 		$this->config->set_item('station');
 	}
