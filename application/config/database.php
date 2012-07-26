@@ -1,13 +1,12 @@
-<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+/** http://codeigniter.com/user_guide/database/configuration.html **/
+
+	if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /*
 | -------------------------------------------------------------------
 | DATABASE CONNECTIVITY SETTINGS
 | -------------------------------------------------------------------
 | This file will contain the settings needed to access your database.
-|
-| For complete instructions please consult the 'Database Connection'
-| page of the User Guide.
-|
 | -------------------------------------------------------------------
 | EXPLANATION OF VARIABLES
 | -------------------------------------------------------------------
@@ -49,7 +48,6 @@ $active_group = 'default';
 $active_record = TRUE;
 
 $db['default']['hostname'] = 'mysql:host=localhost';
-//$db['default']['hostname'] = 'localhost';
 $db['default']['username'] = 'root';
 $db['default']['password'] = 'nbv4023';
 $db['default']['database'] = 'wswds';
@@ -65,25 +63,7 @@ $db['default']['swap_pre'] = '';
 $db['default']['autoinit'] = TRUE;
 $db['default']['stricton'] = FALSE;
 
-// $db['config']['hostname'] = 'localhost';
-// $db['config']['username'] = 'root';
-// $db['config']['password'] = '';
-// $db['config']['database'] = 'wswds';
-// $db['config']['dbdriver'] = 'mysql';
-// $db['config']['dbprefix'] = '';
-// $db['config']['pconnect'] = FALSE;
-// $db['config']['db_debug'] = TRUE;
-// $db['config']['cache_on'] = FALSE;
-// $db['config']['cachedir'] = '';
-// $db['config']['char_set'] = 'utf8';
-// $db['config']['dbcollat'] = 'utf8_general_ci';
-// $db['config']['swap_pre'] = '';
-// $db['config']['autoinit'] = TRUE;
-// $db['config']['stricton'] = FALSE;
-
-
 $db['ws-template']['hostname']		= $db['default']['hostname'];
-//$db['ws-template']['hostname']	= 'localhost';
 $db['ws-template']['username']		= $db['default']['username'];
 $db['ws-template']['password']		= $db['default']['password'];
 $db['ws-template']['database']		= 'ws-template';

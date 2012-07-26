@@ -6,12 +6,12 @@ class Archive extends CI_Model {
 	function __construct()
 	{
 		parent::__construct();
-		require_once	(APPPATH.'models/dao/'.$conf['Type'].'/ConnexionManager.c.php');
-		require_once	(APPPATH.'models/dao/'.$conf['Type'].'/EepromManager.c.php');
 	}
 
-	function run($name, $conf) {
+	function get($name, $conf) {
 		echo sprintf ("\n%'+40s %16s %'+40s\n", "", $name, "");
+		require_once	(APPPATH.'models/dao/'.$conf['Type'].'/ConnexionManager.c.php');
+		require_once	(APPPATH.'models/dao/'.$conf['Type'].'/EepromManager.c.php');
 		
 		$station = new dataFetcher($name, $conf);
 		if ($station->initConnection()){
@@ -20,7 +20,7 @@ class Archive extends CI_Model {
 			if (($clock = $station->clockSync(5))) {
 				$conf['Last']['ClockSync'] = $clock;
 			}
-		$LastGetArch = '2012/07/23 16:20:00'; // cette valeur doit etre lu sur la derniere ligne de la base principale
+		$LastGetArch = '2012/07/24 16:20:00'; // cette valeur doit etre lu sur la derniere ligne de la base principale
 			$this->data = $station->GetDmpAft($LastGetArch);
 //			var_export(end($retuned));	// OK
 			if ($station->closeConnection())
