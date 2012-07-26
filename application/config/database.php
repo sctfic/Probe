@@ -46,10 +46,11 @@
 
 $active_group = 'default';
 $active_record = TRUE;
+$this->load->library('WS_password');
 
 $db['default']['hostname'] = 'mysql:host=localhost';
 $db['default']['username'] = 'root';
-$db['default']['password'] = 'nbv4023';
+$db['default']['password'] = decode($db['default']['username'],);
 $db['default']['database'] = 'wswds';
 $db['default']['dbdriver'] = 'pdo';
 $db['default']['dbprefix'] = '';

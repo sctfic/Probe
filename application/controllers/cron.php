@@ -42,6 +42,7 @@ class Cron extends CI_Controller {
 	// la fonction qui ce lancera par defaut dans cette classe 
 	// clear;php5 -f /var/www/WsWds/cli.php 'cron'
 	function index() { // affiche la liste des stations presente en DB
+	
 		print_r($this->Stations);
 	}
 
