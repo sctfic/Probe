@@ -55,7 +55,6 @@ $autoload['packages'] = array();
 $autoload['libraries'] = array(
     'i18n',
     'session',
-    'encrypt'
 );
 
 

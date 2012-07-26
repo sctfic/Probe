@@ -5,22 +5,36 @@
  * Cette classe permet de coder ou décoder une chaïne
  * de caractères
 
-	include('cryptage_decryptage.php');
-	$toto = new RevCrypt('clef');
-	$resultat = $toto->code('alpha');
+	include(APPPATH.'libraries/WS_rev_crypt.php');
+	$crypt = new WS_rev_crypt('database_root');
+//	$crypt->write('P@$$w0rd');
+	$config['ws:db.root.password'] = $crypt->read();
+	unset($crypt);
+
+	WARNING WARNING WARNING 
+	add *.credential in ~/.gitignore
+	$ cat ~/.gitignore
+		.*.*~
+		*~
+		*.kate-swp
+		*.old
+		*.bak
+		*.credential
+	WARNING WARNING WARNING 
 
  * @author CrazyCat <crazycat@c-p-f.org>
  * @copyright 2007 http://www.g33k-zone.org
  * @package Mephisto
  **/
 
-class Rev_crypt {
+class WS_rev_crypt {
 	
 	/**
 	 * Clé utilisée pour générer le cryptage
 	 * @var string
 	 */
 	public $key;
+	public $file;
 	
 	/**
 	 * Données à crypter
@@ -32,8 +46,9 @@ class Rev_crypt {
 	 * Constructeur de l'objet
 	 * @param string $key Clé utilisée pour générer l'encodage
 	 */
-	public function __construct($key) {
-		$this->key = sha1($key);
+	public function __construct($file) {
+		$this->file = APPPATH.'passwords/'.$file.'.credential';
+		$this->key = sha1($file);
 	}
 	
 	/**
@@ -65,5 +80,49 @@ class Rev_crypt {
 		}
 		return $this->data;
 	}
+	/**
+	 * lit decode et retourne la Chaîne contenue dans le fichier credential
+	 * @param string $string Chaîne à décoder
+	 * @return string
+	 */
+	public function read() {
+		if (is_file($this->file)){
+			return $this->decode (file_get_contents ($this->file));
+		}
+		return false;
+	}
+	/**
+	 * code et ecrit la chaine dans le fichier credential
+	 * @param string $string Chaîne à décoder
+	 * @return string
+	 */
+	public function write($string) {
+		return file_put_contents ($this->file, $this->code($string));
+	}
 }
-?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

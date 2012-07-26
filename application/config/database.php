@@ -46,11 +46,14 @@
 
 $active_group = 'default';
 $active_record = TRUE;
-$this->load->library('WS_password');
+
 
 $db['default']['hostname'] = 'mysql:host=localhost';
 $db['default']['username'] = 'root';
-$db['default']['password'] = decode($db['default']['username'],);
+	include(APPPATH.'libraries/WS_rev_crypt.php');
+	$crypt = new WS_rev_crypt('database_root');
+	$db['default']['password'] = $crypt->read();
+		unset($crypt);
 $db['default']['database'] = 'wswds';
 $db['default']['dbdriver'] = 'pdo';
 $db['default']['dbprefix'] = '';

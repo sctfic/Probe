@@ -11,8 +11,10 @@ $config['ws:password'] = '';
 // Locale/language to use for the interface
 $config['ws:locale'] = 'fr';
 
-
-/*
+// 	include(APPPATH.'libraries/WS_rev_crypt.php');
+// 	$crypt = new WS_rev_crypt('database_root');
+// 	$config['ws:db.root.password'] = $crypt->read();
+	/*
 *redirection URLs for the admin area
 */
 // landing page after user is successfully authentified
