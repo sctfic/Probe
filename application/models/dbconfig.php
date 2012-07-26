@@ -6,15 +6,7 @@ class dbconfig extends CI_Model {
 	function __construct()
 	{
 		parent::__construct();
-		try{	//to connect
-			$this->DBConf = $this->load->database('default', TRUE); // on se connecte a notre table (via pdo)
-			$this->list_stations();
-//			$DBConf->close();
-//			unset($DBConf); 
-		}
-		catch(PDOException $e) {
-			echo 'Please contact Admin: '.$e->getMessage();
-		}
+		$this->list_stations();
 	}
 
 	/**
@@ -24,7 +16,7 @@ class dbconfig extends CI_Model {
 	function list_stations()
 	{
 		// on demande la liste des NOM des stations meteo et les ID associé
-		$lst = $this->DBConf->query( 
+		$lst = $this->db->query( 
 			'SELECT `CFG_STATION_ID`, `CFG_VALUE` 
 			FROM `TR_CONFIG` 
 			WHERE `CFG_CODE`=1 
@@ -58,7 +50,7 @@ class dbconfig extends CI_Model {
 
 		foreach($lst as $id => $item)
 		{ // pour chaque station meteo on dresse la liste des configs
-			$CurentStation = $this->DBConf->query(
+			$CurentStation = $this->db->query(
 				'SELECT * 
 				FROM `TR_CONFIG` 
 				WHERE `CFG_STATION_ID`='.$id.' 

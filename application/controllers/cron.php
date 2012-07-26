@@ -6,27 +6,28 @@ class Cron extends CI_Controller {
 			die();
 		}
 		parent::__construct();
-		$this->load->model('dbconfig');
+		/**
+		on charge notre modele avec le 3ieme parametre a TRUE pour qu'il charge la base par defaut
+		elle sera disponible sous la denominatiosn : $this->db->*
+		**/
+		$this->load->model('dbconfig', '', true);
 	}
 
 	// la fonction qui ce lancera par defaut dans cette classe 
 	// clear;php5 -f /var/www/WsWds/cli.php 'cron'
 	function index() { // affiche la liste des stations presente en DB
-		$this->Stations = $this->dbconfig->dbconfs2arrays(1);
-		print_r($this->Stations);
-		$this->load->model('station', '', FALSE, $this->Stations);
+
 	}
 
 	// clear;php5 -f /var/www/WsWds/cli.php 'cron/ReadArch'
 	function ReadArch() {
-		$this->Stations = $this->dbconfig->dbconfs2arrays();
-		foreach($this->Stations as $configKey => $configValue)
-		{
-// 			require_once	(APPPATH.'models/service/'.$configValue['Type'].'/Archive.php');
-			$data = $this->archive->get ($configKey, $configValue);
-			$this->archive->fileSave($data, $configKey);
-			$this->archive->dbSave($data, $configKey);
+// 		$StaConfs = $this->dbconfig->dbconfs2arrays();
+		foreach($this->dbconfig->lst as $id => $name){
+			$conf = $this->dbconfig->dbconfs2arrays($name);
+			$this->load->model(
+						'station', '', FALSE,
+						$conf[$name]	);
+			$this->station->get_archives();
 		}
-// 		$this->config->set_item('station');
 	}
 }
