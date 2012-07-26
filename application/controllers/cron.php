@@ -1,4 +1,5 @@
-<?php // clear;php5 -f /var/www/WsWds/cli.php 'cron'
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+// clear;php5 -f /var/www/WsWds/cli.php 'cron'
 class Cron extends CI_Controller {
 
 	function __construct() {
