@@ -65,7 +65,7 @@ class dbconfig extends CI_Model {
 				LIMIT 0 , 100');
 			foreach($CurentStation->result() as $val)
 			{ // on integre chacune des configs dans un tableau a 2 dimensions qui sera utilisé par la suite
-				$confs[$item][$val->CFG_LABEL]=$val->CFG_VALUE;
+				$confs[$item][strtolower($val->CFG_LABEL)]=$val->CFG_VALUE;
 			}
 		}
 		return $confs;

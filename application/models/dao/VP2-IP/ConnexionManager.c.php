@@ -78,7 +78,7 @@ class ConnexionManager {
 			return TRUE;
 		else return FALSE;
 	}
-	/*
+	/**
 	@description: functionDescription
 	@return: functionReturn
 	@param: returnValue
@@ -96,7 +96,7 @@ class ConnexionManager {
 		}
 		return true;
 	}
-	/*
+	/**
 	@description: functionDescription
 	@return: functionReturn
 	@param: returnValue

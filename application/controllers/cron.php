@@ -7,18 +7,18 @@ class Cron extends CI_Controller {
 		}
 		parent::__construct();
 		$this->load->model('dbconfig');
-		$this->load->model('station');
 	}
 
 	// la fonction qui ce lancera par defaut dans cette classe 
 	// clear;php5 -f /var/www/WsWds/cli.php 'cron'
 	function index() { // affiche la liste des stations presente en DB
-	
+		$this->Stations = $this->dbconfig->dbconfs2arrays(1);
+		$this->load->model('station', $this->Stations);
 	}
 
 	// clear;php5 -f /var/www/WsWds/cli.php 'cron/ReadArch'
 	function ReadArch() {
-		$this->Stations = $this->dbconfig->dbconfs2arrays()
+		$this->Stations = $this->dbconfig->dbconfs2arrays();
 		foreach($this->Stations as $configKey => $configValue)
 		{
 // 			require_once	(APPPATH.'models/service/'.$configValue['Type'].'/Archive.php');
