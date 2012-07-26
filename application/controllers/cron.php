@@ -13,7 +13,8 @@ class Cron extends CI_Controller {
 	// clear;php5 -f /var/www/WsWds/cli.php 'cron'
 	function index() { // affiche la liste des stations presente en DB
 		$this->Stations = $this->dbconfig->dbconfs2arrays(1);
-		$this->load->model('station', $this->Stations);
+		print_r($this->Stations);
+		$this->load->model('station', '', FALSE, $this->Stations);
 	}
 
 	// clear;php5 -f /var/www/WsWds/cli.php 'cron/ReadArch'
