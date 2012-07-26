@@ -7,14 +7,18 @@
 $config['ws:username'] = '';
 // $config['wswds:password'] = 'edouard.lopez';
 $config['ws:password'] = '';
+/**
+	include(APPPATH.'libraries/WS_rev_crypt.php');
+	$crypt = new WS_rev_crypt('database_root');
+//	$crypt->write('P@$$w0rd');
+	$config['ws:password'] = $crypt->read();
+	unset($crypt);
+**/
 
 // Locale/language to use for the interface
 $config['ws:locale'] = 'fr';
 
-// 	include(APPPATH.'libraries/WS_rev_crypt.php');
-// 	$crypt = new WS_rev_crypt('database_root');
-// 	$config['ws:db.root.password'] = $crypt->read();
-	/*
+/*
 *redirection URLs for the admin area
 */
 // landing page after user is successfully authentified
