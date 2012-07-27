@@ -26,12 +26,23 @@ class Cron extends CI_Controller {
 		foreach($this->dbconfig->lst as $id => $name){
 			$this->benchmark->mark('code_start');
 			$conf = $this->dbconfig->dbconfs2arrays($name);
-			$this->load->model(
-						'station', '', FALSE,
-						$conf[$name]	);
+			$this->load->model(	'station', '', FALSE,	$conf[$name]);
 			$this->station->get_archives();
+			$this->station->fileSave();
 			$this->benchmark->mark('code_end');
-			echo $this->benchmark->elapsed_time('code_start', 'code_end');
+			echo $this->benchmark->elapsed_time('code_start', 'code_end')."\n";
+		}
+	}
+	function ReadConf() {
+// 		$StaConfs = $this->dbconfig->dbconfs2arrays();
+		foreach($this->dbconfig->lst as $id => $name){
+			$this->benchmark->mark('code_start');
+			$conf = $this->dbconfig->dbconfs2arrays($name);
+			$this->load->model(	'station', '', FALSE,	$conf[$name]);
+			$this->station->get_confs();
+			$this->station->fileSave();
+			$this->benchmark->mark('code_end');
+			echo $this->benchmark->elapsed_time('code_start', 'code_end')."\n";
 		}
 	}
 }

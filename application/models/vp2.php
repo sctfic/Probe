@@ -1,5 +1,5 @@
 <?php // clear;php5 -f /var/www/WsWds/cli.php 'cron'
-class vp2 extends CI_Model {
+class vp2 extends station {
 	protected $fp=NULL;	// Pointer of VP2 Connection
 	protected $backLightScreen=FALSE; // actual state of backlight screen
 //	protected $table = null;
@@ -13,7 +13,6 @@ class vp2 extends CI_Model {
 		require (APPPATH.'models/vp2/EepromConfig.h.php');	
 	}
 	public function initConnection()	{
-// 		for ($i=1;$i>=0;$i--){
 		$errno = 0;
 		$this->fp = @fsockopen (
 			$this->station->conf['ip'],
@@ -29,13 +28,12 @@ class vp2 extends CI_Model {
 				fclose($this->fp);
 			}
 		}
-// 		}
 		return FALSE;
 	}
 	/**
 	@description: compare l'heure de la station a celle du serveur web et lance la synchro si besoin
 	@return: renvoi TRUE si deja a l'heure , renvoi l'heure en cas de Synchro reuci et FALSE en cas d'echec
-	@param: maxLag est la valeur maxi toleré pour le decalage, force==TRUE ignorera le decalage.
+	@param: maxLag est la valeur maxi toleré pour le decalage, force==TRUE ignorera le decalage et force l'heure serveur'.
 	*/
 	function clockSync($maxLag, $force=false) {
 		$TIME = False;
