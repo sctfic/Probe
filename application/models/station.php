@@ -30,7 +30,7 @@ class station extends CI_Model {
 			if (($clock = $this->Current_Station->clockSync(5))) {
 // 				$conf['Last']['ClockSync'] = $clock;
 			}
-		$LastGetArch = '2012/07/26 16:20:00'; // cette valeur doit etre lu sur la derniere ligne de la base principale
+		$LastGetArch = '2012/07/27 01:20:00'; // cette valeur doit etre lu sur la derniere ligne de la base principale
 			$this->data = $this->Current_Station->GetDmpAft($LastGetArch);
 //			var_export(end($retuned));	// OK
 			if ($this->Current_Station->closeConnection())

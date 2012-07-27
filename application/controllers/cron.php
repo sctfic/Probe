@@ -24,11 +24,14 @@ class Cron extends CI_Controller {
 	function ReadArch() {
 // 		$StaConfs = $this->dbconfig->dbconfs2arrays();
 		foreach($this->dbconfig->lst as $id => $name){
+			$this->benchmark->mark('code_start');
 			$conf = $this->dbconfig->dbconfs2arrays($name);
 			$this->load->model(
 						'station', '', FALSE,
 						$conf[$name]	);
 			$this->station->get_archives();
+			$this->benchmark->mark('code_end');
+			echo $this->benchmark->elapsed_time('code_start', 'code_end');
 		}
 	}
 }

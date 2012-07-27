@@ -12,10 +12,10 @@
 	}
 	/** IL SEMBLE Y AVOIR UN PB ENTRE s2sc et Char2Signed **/
 	function s2sc($str) {// String to Signed Char
-		return self::Char2Signed($str);
+		return Char2Signed($str);
 	}
 	function s2uc($str) {// String to unSigned Char
-		return (self::hexToDec($str));
+		return (hexToDec($str));
 	}
 	function Short2Signed($val) {
 	// Char2Signed http://en.wikipedia.org/wiki/Two%27s_complement
@@ -23,16 +23,16 @@
 		return (($val>>15)?(($val ^ 0xFFFF)+1)*(-1):$val);
 	}
 	function s2sSht($str) {// String to Signed Short
-		return self::Short2Signed(self::hexToDec(strrev($str)));
+		return Short2Signed(hexToDec(strrev($str)));
 	}
 	function s2uSht($str) {// String to unSigned Short
-		return (self::hexToDec(strrev($str)));
+		return (hexToDec(strrev($str)));
 	}
 	function getBits($oct, $bitPos, $nbrBit) { // recupaire dans un octé $oct l´etat des $nbrBit a partir du bit $bitPos
 		return ($oct<<$bitPos)&(pow(2,$nbrBit)-1);
 	}
 // 	function UnitBits($str) {// ...
-// 		$val = self::s2uc($str);
+// 		$val = s2uc($str);
 // 		return array_combine(array("Unit.Wind","Unit.Rain","Unit.Elev","Unit.Temp","Unit.Barom"),
 // 			array(
 // 				!(($val&0xC0)>>6)?"mph":(((($val&0xC0)>>6)==1)?"m/s":(((($val&0xC0)>>6)==2)?"Km/h":"Knots")),
@@ -43,7 +43,7 @@
 // 		));
 // 	}
 // 	function SetupBits($str) {// ...
-// 		$val = self::s2uc($str);
+// 		$val = s2uc($str);
 // 		return array_combine(array("Setup.Longitude","Setup.Latitude","Setup.RainCupSize","Setup.WinCupSize","Setup.DayMonth","Setup.AM/PM","Setup.12/24"),
 // 			array(
 // 				(($val&0x80)>>7)?"East":"West",

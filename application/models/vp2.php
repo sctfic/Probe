@@ -15,7 +15,6 @@ class vp2 extends CI_Model {
 	public function initConnection()	{
 // 		for ($i=1;$i>=0;$i--){
 		$errno = 0;
-		print_r($this->station->conf);
 		$this->fp = @fsockopen (
 			$this->station->conf['ip'],
 			$this->station->conf['port']
@@ -56,7 +55,7 @@ class vp2 extends CI_Model {
 	}
 	protected function wakeUp()	{
 		for ($i=0;$i<=3;$i++) {
-			fwrite ($this->fp, LF);
+			@fwrite ($this->fp, LF);
 			if (fread($this->fp,6)==LFCR)
 				return TRUE;
 			usleep(1200000);
