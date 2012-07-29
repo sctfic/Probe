@@ -66,7 +66,7 @@ class dbconfig extends CI_Model {
 	function arrays2dbconfs($id, $conf)
 	{
 		$conf = array_merge($conf, array('test'=>'truc', 'toto'=>'truc much','toto1'=>'truc1 much','toto2'=>'truc2 much', ));
-		$query = 'INSERT INTO `TR_CONFIG` (CFG_STATION_ID, CFG_LABEL, CFG_VALUE, CFG_LAST_WRITE) VALUES (?, ?, ?, ?);';
+		$query = 'REPLACE INTO `TR_CONFIG` (CFG_STATION_ID, CFG_LABEL, CFG_VALUE, CFG_LAST_WRITE) VALUES (?, ?, ?, ?);';
 		$prep = $this->db->prepare($query);
 		foreach ($conf as $label => $value) {
 			//Associer des valeurs aux place holders

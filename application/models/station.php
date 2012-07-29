@@ -41,7 +41,7 @@ class station extends CI_Model {
 				Waiting( 0, sprintf( _('[Échec] Fermeture de %s.'), $this->name ) );
 		}
 		else
-			Waiting( 0, sprintf( _('[Échec] Impossible de se connecter à %s par %s:%s.'), $this->name, $conf['ip'], $conf['port']) );
+			Waiting( 0, sprintf( _('[Échec] Impossible de se connecter à %s par %s:%s.'), $this->name, $this->conf['ip'], $this->conf['port']) );
 	}
 
 	function get_confs()
@@ -57,7 +57,7 @@ class station extends CI_Model {
 				Waiting( 0, sprintf( _('[Échec] Fermeture de %s.'), $this->name ) );
 		}
 		else
-			Waiting( 0, sprintf( _('[Échec] Impossible de se connecter à %s par %s:%s.'), $this->name, $conf['ip'], $conf['port']) );
+			Waiting( 0, sprintf( _('[Échec] Impossible de se connecter à %s par %s:%s.'), $this->name, $this->conf['ip'], $this->conf['port']) );
 	}
 	
 	function dbSave() {
