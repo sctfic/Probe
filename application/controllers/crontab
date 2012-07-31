@@ -1,0 +1,5 @@
+# http://www.thegeekstuff.com/2011/07/php-cron-job/
+
+MAILTO=alban.lopez+cron@gmail.com
+
+01 */2 * * * php5 -f /var/www/WsWds/cli.php 'cron/ReadArch' > /var/www/WsWds/data/cron.log
