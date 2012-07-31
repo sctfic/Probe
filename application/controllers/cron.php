@@ -23,6 +23,7 @@ class Cron extends CI_Controller {
 	// clear;php5 -f /var/www/WsWds/cli.php 'cron/ReadArch'
 	function ReadArch() {
 // 		$StaConfs = $this->dbconfig->dbconfs2arrays();
+    log_message('error', 'Some variable did not contain a value.');
 $this->dbconfig->lst=array(2=>'VP2-Outside');
 // $this->dbconfig->lst=array(1=>'VP2-Inside'); // reste a gerer les exceptions
 		foreach($this->dbconfig->lst as $id => $name){
