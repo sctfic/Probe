@@ -37,5 +37,23 @@ define('FOPEN_WRITE_CREATE_STRICT',				'xb');
 define('FOPEN_READ_WRITE_CREATE_STRICT',		'x+b');
 
 
+/*
+|--------------------------------------------------------------------------
+| VP2 CONSTANT
+|--------------------------------------------------------------------------
+|
+| These constant are used to test result of telnet VP2 dialog
+|
+*/
+const CR	=	"\r";		// chr(0x0D)
+const LF	=	"\n";		// chr(0x0A)
+const LFCR	=	"\n\r";		// chr(0x0A).chr(0x0D)
+const ESC	=	"\x1b";		// chr(0x1b), Echap
+const ACK	=	"\x06";		// chr(0x06), Compris
+const NAK	=	"\x21";		// chr(0x21), Pas Compris
+const CANCEL	=	"\x18";		// chr(0x18), Bad CRC Code
+const OK	=	"\n\rOK\n\r";	// Confirm
+const DBL_NULL	=	"\x00\x00";	// valeur de confirmation d'un CRC
+
 /* End of file constants.php */
 /* Location: ./application/config/constants.php */

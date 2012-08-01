@@ -193,7 +193,9 @@ $config['log_threshold'] = 9;
 | Verbose Threshold
 |--------------------------------------------------------------------------
 |   report to Error Logging Threshold
-|   
+|   but never display 1 and 2
+|      1 = Error Messages (including PHP errors)
+|      2 = Debug Messages
 */
 $config['verbose_threshold'] = 9;
 /*
