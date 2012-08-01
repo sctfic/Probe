@@ -22,7 +22,7 @@ class Cron extends CI_Controller {
 // 	log_message('error', '€€€€€€€€€€€€€€€€.');
 // 	log_message('debug', '####################.');
 // 	log_message('info', '¤¤¤¤¤¤¤¤¤¤¤¤¤¤.');
-print_r(get_config());
+// print_r(get_config());
 	}
 
 	// clear;php5 -f /var/www/WsWds/cli.php 'cron/ReadArch'
