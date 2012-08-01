@@ -177,14 +177,25 @@ $config['directory_trigger']    = 'd'; // experimental not currently in use
 |   1 = Error Messages (including PHP errors)
 |   2 = Debug Messages
 |   3 = Informational Messages
-|   4 = All Messages
+|   4 = Cron Messages
+|   5 = WSWDS Messages
+|   8 = Other personnal Messages
+|   9 = All Messages
 |
 | For a live site you'll usually only enable Errors (1) to be logged otherwise
 | your log files will fill up very fast.
 |
 */
-$config['log_threshold'] = 4;
+$config['log_threshold'] = 9;
 
+/*
+|--------------------------------------------------------------------------
+| Verbose Threshold
+|--------------------------------------------------------------------------
+|   report to Error Logging Threshold
+|   
+*/
+$config['verbose_threshold'] = 9;
 /*
 |--------------------------------------------------------------------------
 | Error Logging Directory Path

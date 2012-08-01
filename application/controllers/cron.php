@@ -19,9 +19,14 @@ class Cron extends CI_Controller {
 	function index() { // affiche la liste des stations presente en DB
 // 	show_error('message'); // HTTP Message, not avaible on CLI
 
-// 	log_message('error', '€€€€€€€€€€€€€€€€.');
-// 	log_message('debug', '####################.');
-// 	log_message('info', '¤¤¤¤¤¤¤¤¤¤¤¤¤¤.');
+ 	log_message('error', '€€€€€€€€€€€€€€€€.');
+ 	log_message('debug', '####################.');
+ 	log_message('info', '¤¤¤¤¤¤¤¤¤¤¤¤¤¤.');
+	log_message('test', '789878987899878987.');
+ 	log_message('wswds', '123212321232123212321232123.');
+ 	log_message('autre', '%%%%%%%%%%%%%%%%%%%%%.');
+	log_message('all', '.....................');
+
 // print_r(get_config());
 	}
 
