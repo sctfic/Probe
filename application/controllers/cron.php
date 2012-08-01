@@ -17,13 +17,17 @@ class Cron extends CI_Controller {
 	// la fonction qui ce lancera par defaut dans cette classe 
 	// clear;php5 -f /var/www/WsWds/cli.php 'cron'
 	function index() { // affiche la liste des stations presente en DB
+// 	show_error('message'); // HTTP Message, not avaible on CLI
 
+// 	log_message('error', '€€€€€€€€€€€€€€€€.');
+// 	log_message('debug', '####################.');
+// 	log_message('info', '¤¤¤¤¤¤¤¤¤¤¤¤¤¤.');
+print_r(get_config());
 	}
 
 	// clear;php5 -f /var/www/WsWds/cli.php 'cron/ReadArch'
 	function ReadArch() {
 // 		$StaConfs = $this->dbconfig->dbconfs2arrays();
-    log_message('error', 'Some variable did not contain a value.');
 $this->dbconfig->lst=array(2=>'VP2-Outside');
 // $this->dbconfig->lst=array(1=>'VP2-Inside'); // reste a gerer les exceptions
 		foreach($this->dbconfig->lst as $id => $name){

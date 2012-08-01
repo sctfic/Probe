@@ -98,6 +98,11 @@ class CI_Log {
 
 		$message .= $level.' '.(($level == 'INFO') ? ' -' : '-').' '.date($this->_date_fmt). ' --> '.$msg."\n";
 
+		if ( preg_match('Total execution time:', $msg) )
+		{
+			$message .= "\nEND\n\nNEW\n";
+		}
+
 		flock($fp, LOCK_EX);
 		fwrite($fp, $message);
 		flock($fp, LOCK_UN);
