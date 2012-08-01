@@ -84,7 +84,7 @@ class CI_Log {
 		$message .= $level."\t- ".date($this->_date_fmt). ' --> '.$msg."\n";
 		
 		if ($this->_levels[$level] <= $this->_verbose && $this->_levels[$level] > 2)	{
-			echo $this->_verbose."\t".$message;
+			echo $message;
 		}
 		
 		if ( preg_match('/Total execution time:/', $msg) )	{
