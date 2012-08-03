@@ -12,37 +12,39 @@ class Cron extends CI_Controller {
 		elle sera disponible sous la denominatiosn : $this->db->*
 		**/
 		$this->load->model('dbconfig', '', true);
+		log_message('cron', 'Initialize Cron request.');
 	}
 
 	// la fonction qui ce lancera par defaut dans cette classe 
 	// clear;php5 -f /var/www/WsWds/cli.php 'cron'
-	function index() { // affiche la liste des stations presente en DB
-// 	show_error('message'); // HTTP Message, not avaible on CLI
-
- 	log_message('error', '€€€€€€€€€€€€€€€€.');
- 	log_message('debug', '####################.');
- 	log_message('info', '¤¤¤¤¤¤¤¤¤¤¤¤¤¤.');
-	log_message('test', '789878987899878987.');
- 	log_message('wswds', '123212321232123212321232123.');
- 	log_message('autre', '%%%%%%%%%%%%%%%%%%%%%.');
-	log_message('all', '.....................');
-
-// print_r(get_config());
+	function index() {
 	}
 
 	// clear;php5 -f /var/www/WsWds/cli.php 'cron/ReadArch'
 	function ReadArch() {
-// 		$StaConfs = $this->dbconfig->dbconfs2arrays();
-$this->dbconfig->lst=array(2=>'VP2-Outside');
+// $StaConfs = $this->dbconfig->dbconfs2arrays();
 // $this->dbconfig->lst=array(1=>'VP2-Inside'); // reste a gerer les exceptions
 		foreach($this->dbconfig->lst as $id => $name){
-// 			$this->benchmark->mark('code_start');
-			$conf = $this->dbconfig->dbconfs2arrays($name);
-			$this->load->model(	'station', '', FALSE,	$conf[$name]);
-			$this->station->get_archives();
-			$this->station->fileSave();
-// 			$this->benchmark->mark('code_end');
-// 			echo $this->benchmark->elapsed_time('code_start', 'code_end')."\n";
+			try {
+	// 			$this->benchmark->mark('code_start');
+				$conf = $this->dbconfig->dbconfs2arrays($name);
+				if (	!isset($conf[$name]['ip'])
+				     || !isset($conf[$name]['port'])
+				     || !isset($conf[$name]['type'])) {
+					throw new Exception(sprintf(_('[Échec] Parametre de config erroné pour : %s.'), $name)."\n".print_r($conf[$name],true)."\n");
+				}
+				$this->load->model(	'station', '', FALSE,	$conf[$name]);
+				log_message('cron', "Read Archive for : $name (id:$id)");
+				if (!$this->station->get_archives()) {
+					throw new Exception(sprintf(_('[Échec]  %s.'), $name));
+				}
+				$this->station->fileSave();
+	// 			$this->benchmark->mark('code_end');
+	// 			echo $this->benchmark->elapsed_time('code_start', 'code_end')."\n";
+			}
+			catch (Exception $e) {
+				log_message('warning',  $e->getMessage());
+			}
 		}
 	}
 	function ReadConf() {
@@ -50,6 +52,7 @@ $this->dbconfig->lst=array(2=>'VP2-Outside');
 $this->dbconfig->lst=array(2=>'VP2-Outside');
 // $this->dbconfig->lst=array(1=>'VP2-Inside'); // reste a gerer les exceptions
 		foreach($this->dbconfig->lst as $id => $name){
+			log_message('cron', "Read Config for : $name (id:$id)");
 // 			$this->benchmark->mark('code_start');
 			$conf = $this->dbconfig->dbconfs2arrays($name);
 			$this->load->model(	'station', '', FALSE,	$conf[$name]);

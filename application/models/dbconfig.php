@@ -16,17 +16,18 @@ class dbconfig extends CI_Model {
 	 */
 	function list_stations()
 	{// on demande la liste des NOM des stations meteo et les ID associé
-// 		$lst = $this->db->query( 
-// 			'SELECT `CFG_STATION_ID`, `CFG_VALUE` 
-// 			FROM `TR_CONFIG` 
-// 			WHERE `CFG_LABEL`='name' 
-// 			LIMIT 16');
-		$this->db->select('CFG_STATION_ID, CFG_VALUE')->from('TR_CONFIG')->where('CFG_LABEL','name')->limit(16);
-		$lst = $this->db->get();
-		 // on met en forme les resultat sous forme de tableau
-		foreach($lst->result() as $item)
-			$this->lst[$item->CFG_STATION_ID] = $item->CFG_VALUE;
+		$lst = $this->db->query( 
+			'SELECT `CFG_STATION_ID`, `CFG_VALUE` 
+			FROM `TR_CONFIG` 
+			WHERE `CFG_LABEL`=\'name\' 
+			LIMIT 16');
+// 		$this->db->select('CFG_STATION_ID, CFG_VALUE')->from('TR_CONFIG')->where('CFG_LABEL','name')->limit(16);
+// 		$lst = $this->db->get();
 
+		log_message('db', 'Request list of sation');
+		foreach($lst->result() as $item) { // on met en forme les resultat sous forme de tableau
+			$this->lst[$item->CFG_STATION_ID] = $item->CFG_VALUE;
+		}
 		return $this->lst;
 	}
 
@@ -50,7 +51,8 @@ class dbconfig extends CI_Model {
 		}
 		
 		$query = 'SELECT * FROM `TR_CONFIG` WHERE `CFG_STATION_ID`=? LIMIT 100';
-		
+		log_message('db', 'Request conf for '.count($lst).' sation(s)');
+
 		foreach($lst as $id => $item)
 		{ // pour chaque station meteo on dresse la liste des configs
 			$CurentStation = $this->db->query($query, $id);
@@ -58,7 +60,7 @@ class dbconfig extends CI_Model {
 			{ // on integre chacune des configs dans un tableau a 2 dimensions qui sera utilisé par la suite
 				$confs[$item][strtolower($val->CFG_LABEL)]=$val->CFG_VALUE;
 			}
-			print_r($confs[$item]);
+// 			print_r($confs[$item]);
 		}
 		return $confs;
 	}

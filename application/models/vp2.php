@@ -22,11 +22,20 @@ class vp2 extends station {
 			stream_set_timeout ($this->fp, 0, 2500000);
 			if ($this->wakeUp()) {
 				$this->toggleBacklight (1);
+				log_message('wswds', _( sprintf('[Succès] Ouverture de la connexion à %s', $this->name) ) );
 				return TRUE;
 			}
 			else {
 				fclose($this->fp);
 			}
+		}
+		return FALSE;
+	}
+	function CloseConnection()	{
+		$this->toggleBacklight(0);
+		if (fclose($this->fp)) {
+			log_message('wswds', sprintf( _('[Succès] Fermeture de %s correcte.'), $this->name ) );
+			return TRUE;
 		}
 		return FALSE;
 	}
@@ -42,11 +51,11 @@ class vp2 extends station {
 			Waiting( 0, sprintf( _('[Infos] Default Clock synchronize : %ssec'), $realLag) );
 			if ($realLag < 3600-$maxLag || $realLag > 3600*12 || $force) {	// OK
 				if ($TIME = $this->updateStationTime()) {							// OK
-					Waiting (0,_('[Infos] Clock synchronizing.'));					// OK
+					log_message('wswds', _('[Infos] Clock synchronizing.'));					// OK
 				}
-				else Waiting( 0, _( '[Echec] Clock synch.'));
+				else log_message('warning', _( '[Echec] Clock synch.'));
 			}
-			else Waiting( 0, sprintf( _('[Infos] So mutch Default : %ssec. Please change it manualy'), $realLag) );
+			else log_message('warning', sprintf( _('[Infos] So mutch Default : %ssec. Please change it manualy'), $realLag) );
 		}
 		else return true;
 		return $TIME;
@@ -80,12 +89,6 @@ class vp2 extends station {
 		return FALSE;
 	}
 
-	function CloseConnection()	{
-		$this->toggleBacklight(0);
-		if (fclose($this->fp))
-			return TRUE;
-		else return FALSE;
-	}
 	/**
 	@description: functionDescription
 	@return: functionReturn
@@ -124,7 +127,7 @@ class vp2 extends station {
 		}
 	}
 	
-	/*
+	/**
 	@description: functionDescription
 	@return: functionReturn
 	@param: returnValue
@@ -211,7 +214,7 @@ class vp2 extends station {
 	function GetConfig() { //
 		$CONFS = false;
 		 try {
-			Waiting (0,'[EEBRD] : Download the current Config');
+			log_message('wswds', '[EEBRD] : Download the current Config');
 			
 // 			$P=str_pad(strtoupper(dechex(0)),3,'0',STR_PAD_LEFT);
 // 			$L=str_pad(strtoupper(dechex(177)),2,'0',STR_PAD_LEFT);
@@ -232,7 +235,7 @@ class vp2 extends station {
 				self::RawConverter(array($k => $v), $data2));
 		}
 		catch (Exception $e) {
-			Waiting (0, $e->getMessage());
+			log_message('warning',  $e->getMessage());
 		}
 		return $CONFS;
 	}
@@ -253,13 +256,13 @@ class vp2 extends station {
 			while ($nbr-- > 0) {
 				$data = fread($this->fp, 99);
 				self::VerifAnswersAndCRC($data, 99);
-				Waiting (0,'[LOOP] : Download the current Values');
+				log_message('wswds', '[LOOP] : Download the current Values');
 				$LOOPS[date('Y/m/d H:i:s')] = self::RawConverter($this->Loop, $data);
 				echo implode("\t",$LOOPS[0])."\n";
 			}
 		}
 		catch (Exception $e) {
-			Waiting (0, $e->getMessage());
+			log_message('warning',  $e->getMessage());
 		}
 		return $LOOPS;
 	}
@@ -288,7 +291,7 @@ class vp2 extends station {
 // 			$retry = $this->retry-1;
 			$nbrPages = hexToDec (strrev(substr($data,0,2)));	// Split Bytes in revers order : Nbr of page
 			$firstArch = hexToDec (strrev(substr($data,2,2)));	// Split Bytes in revers order : # of first archived
-				Waiting (0,'There are '.$nbrPages.'p. in queue, from archive '.$firstArch.' on first page since '.$last.'.');
+				log_message('wswds', 'There are '.$nbrPages.'p. in queue, from archive '.$firstArch.' on first page since '.$last.'.');
 			fwrite($this->fp, ACK);				// Send ACK to start
 			for ($j=0; $j<$nbrPages; $j++) {
 				if ( !((time()+10)%300) ) {
@@ -296,7 +299,7 @@ class vp2 extends station {
 					throw new Exception(_('Please retry later to finish, Data sensors must be checked in few second.'));
 				}
 				$Page = fread($this->fp, 267);
-				Waiting (0,'Download Archive PAGE #'.$j.' since : '.DMPAFT_GetVP2Date(substr($Page,1+52*($firstArch),4)));
+				log_message('dl', 'Archive PAGE #'.$j.' since : '.DMPAFT_GetVP2Date(substr($Page,1+52*($firstArch),4)));
 				self::VerifAnswersAndCRC($Page, 267);
 				fwrite ($this->fp, ACK);
 				for ($k=$firstArch; $k<=4; $k++) {			// ignore les 1er valeur hors champ.
@@ -306,7 +309,7 @@ class vp2 extends station {
 					// ignore les derniere valeur hors champ, car on parcoure une liste circulaire
 					// donc la deniere valeur a extraire precede la plus vielle valleur de cette liste
 						$DATAS[$ArchDate] = self::RawConverter($this->DumpAfter, $ArchiveStrRaw);
-						Waiting (0,'Page #'.$j.'-'.$k.' of '.$ArchDate.' archived Ok.');
+						log_message('dl', sprintf(_('Page #%d-%d of %s archived Ok.'),$j, $k, $ArchDate));
 						$LastArchDate = $ArchDate;
 					}
 					else {
@@ -317,7 +320,7 @@ class vp2 extends station {
 			}
 		}
 		catch (Exception $e) {
-			Waiting (0, $e->getMessage());
+			log_message('warning',  $e->getMessage());
 		}
 		return $DATAS;
 	}
@@ -338,11 +341,11 @@ class vp2 extends station {
 				.' '.str_pad(ord($TIME[2]),2,'0',STR_PAD_LEFT)
 				.':'.str_pad(ord($TIME[1]),2,'0',STR_PAD_LEFT)
 				.':'.str_pad(ord($TIME[0]),2,'0',STR_PAD_LEFT);
-			Waiting (0, 'Real : '.date('Y/m/d H:i:s').' vs VP2 : '.$TIME);
+			log_message('wswds',  'Real : '.date('Y/m/d H:i:s').' vs VP2 : '.$TIME);
 			return $TIME;
 		}
 		catch (Exception $e) {
-			Waiting (0, $e->getMessage());
+			log_message('warning',  $e->getMessage());
 		}
 		return $TIME;
 	}
@@ -358,11 +361,11 @@ class vp2 extends station {
 			list($y,$m,$d) = explode('/', $_date);
 			list($h,$i,$s) = explode(':', $_clock);
 			self::RequestCmd (chr($s).chr($i).chr($h).chr($d).chr($m).chr($y-1900) . CalculateCRC($TIME));
-			Waiting (0,'[SETTIME] : '.$_date.' '.$_clock);
+			log_message('wswds', '[SETTIME] : '.$_date.' '.$_clock);
 			return $_date.' '.$_clock;
 		}
 		catch (Exception $e) {
-			Waiting (0, $e->getMessage());
+			log_message('warning',  $e->getMessage());
 		}
 		return False;
 	}
