@@ -237,6 +237,7 @@ class vp2 extends station {
 		}
 		catch (Exception $e) {
 			log_message('warning',  $e->getMessage());
+			return false;
 		}
 		return $CONFS;
 	}
