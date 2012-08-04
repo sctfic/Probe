@@ -47,11 +47,19 @@
 $active_group = 'default';
 $active_record = TRUE;
 
-
+/* Copy the database.default.php to database.php, 
+ * change the credential in the database.php,
+ * run your apps, then remove the line: $crypt->write('YOUR PASSWORD');
+ * So your password is store only encrypted
+ */
 $db['default']['hostname'] = 'mysql:host=localhost';
-$db['default']['username'] = 'root';
+// this is the default user name for the database
+$db['default']['username'] = 'wswds';
 	include(APPPATH.'libraries/WS_rev_crypt.php');
-	$crypt = new WS_rev_crypt('database_root');
+	$crypt = new WS_rev_crypt('db-default');
+// this is the default PASSWORD for the database. 
+// Once you had a successful run, you MUST remove this line 
+
 	$db['default']['password'] = $crypt->read();
 		unset($crypt);
 $db['default']['database'] = 'wswds';
