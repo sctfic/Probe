@@ -47,6 +47,7 @@ class Cron extends CI_Controller {
 			}
 		}
 	}
+
 	function ReadConf() {
 // 		$StaConfs = $this->dbconfig->dbconfs2arrays();
 $this->dbconfig->lst=array(2=>'VP2-Outside');
