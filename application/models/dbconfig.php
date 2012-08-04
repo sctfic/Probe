@@ -6,9 +6,9 @@ class dbconfig extends CI_Model {
 
 	function __construct()
 	{
+		log_message('debug',  '__construct() '.__FILE__);
 		parent::__construct();
 		$this->list_stations();
-		log_message('debug',  '__construct() '.__FILE__);
 	}
 
 	/**
@@ -52,10 +52,10 @@ class dbconfig extends CI_Model {
 		}
 		
 		$query = 'SELECT * FROM `TR_CONFIG` WHERE `CFG_STATION_ID`=? LIMIT 100';
-		log_message('db', 'Request conf for '.count($lst).' sation(s)');
 
 		foreach($lst as $id => $item)
 		{ // pour chaque station meteo on dresse la liste des configs
+			log_message('db', 'Load DB confs for '.$item);
 			$CurentStation = $this->db->query($query, $id);
 			foreach($CurentStation->result() as $val)
 			{ // on integre chacune des configs dans un tableau a 2 dimensions qui sera utilisé par la suite

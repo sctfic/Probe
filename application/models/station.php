@@ -9,6 +9,7 @@ class station extends CI_Model {
 	
 	function __construct($conf)
 	{
+		log_message('debug',  '__construct('.$conf['name'].') '.__FILE__);
 		parent::__construct();
 		/** il faut dissocier l initialisation des variable du chargement de la classe */
 		$this->type = $conf['type'];
@@ -17,12 +18,10 @@ class station extends CI_Model {
 // 			unset ($conf['name']);
 		$this->conf = $conf;
 		$this->load->helper(array('cli_tools','binary','s.i.converter'));
-		/**
-		on charge la classe qui correspond a notre type de station,
-		elle sera disponible sous la denominatiosn : $this->Current_Station->*
-		**/
+		
+		/**	on charge la classe qui correspond a notre type de station,
+			elle sera disponible sous la denominatiosn : $this->Current_Station->*	*/
 		$this->load->model($this->type, 'Current_Station', FALSE, $this->conf);
-		log_message('debug',  '__construct('.$conf['name'].') '.__FILE__);
 	}
 	function get_archives()
 	{
@@ -30,7 +29,7 @@ class station extends CI_Model {
 			if (!$this->Current_Station->initConnection())
 				throw new Exception(sprintf(_('[Échec] Impossible de se connecter à %s par %s:%s'), $this->name, $this->conf['ip'], $this->conf['port']));
 			$clock = $this->Current_Station->clockSync(5);
-			$LastGetArch = '2012/08/03 23:10:00'; // cette valeur doit etre lu sur la derniere ligne de la base principale
+			$LastGetArch = '2012/08/04 14:30:00'; // cette valeur doit etre lu sur la derniere ligne de la base principale
 			$this->data = $this->Current_Station->GetDmpAft($LastGetArch);
 			if (!$this->Current_Station->closeConnection())
 				throw new Exception(sprintf(_('[Échec] Fermeture de %s.'), $this->name));
