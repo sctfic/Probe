@@ -22,6 +22,7 @@ class station extends CI_Model {
 		elle sera disponible sous la denominatiosn : $this->Current_Station->*
 		**/
 		$this->load->model($this->type, 'Current_Station', FALSE, $this->conf);
+		log_message('debug',  '__construct('.$conf['name'].') '.__FILE__);
 	}
 	function get_archives()
 	{

@@ -8,6 +8,7 @@ class dbconfig extends CI_Model {
 	{
 		parent::__construct();
 		$this->list_stations();
+		log_message('debug',  '__construct() '.__FILE__);
 	}
 
 	/**

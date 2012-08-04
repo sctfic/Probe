@@ -12,6 +12,7 @@ class Cron extends CI_Controller {
 		elle sera disponible sous la denominatiosn : $this->db->*
 		**/
 		$this->load->model('dbconfig', '', true);
+		log_message('debug',  '__construct() '.__FILE__);
 		log_message('cron', 'Initialize Cron request.');
 	}
 

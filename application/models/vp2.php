@@ -11,6 +11,7 @@ class vp2 extends station {
 		require (APPPATH.'models/vp2/EepromLoop.h.php');
 		require (APPPATH.'models/vp2/EepromHiLow.h.php');
 		require (APPPATH.'models/vp2/EepromConfig.h.php');	
+		log_message('debug',  '__construct('.$conf['name'].') '.__FILE__);
 	}
 	public function initConnection()	{
 		$errno = 0;
