@@ -66,7 +66,7 @@ class dbconfig extends CI_Model {
 				$confs[$item][strtolower($val->CFG_LABEL)]=$val->CFG_VALUE;
 			}
 			if (!isset($confs[$item]['ip']) || !isset($confs[$item]['port']) || !isset($confs[$item]['type'])) {
-				log_message('warning', 'Missing confs for '.$item);
+				log_message('warning', 'Missing confs for '.$item.' > Skipped!');
 				unset($confs[$item]);
 			}
 		}
@@ -78,19 +78,31 @@ class dbconfig extends CI_Model {
 	
 	function arrays2dbconfs($id, $conf)
 	{
-		$query = 'REPLACE INTO `TR_CONFIG` (CFG_STATION_ID, CFG_LABEL, CFG_VALUE, CFG_LAST_WRITE) VALUES (?, ?, ?, ?);';
-		$prep = $this->db->conn_id->prepare($query);
+// 		$query = 'REPLACE INTO `TR_CONFIG` (CFG_STATION_ID, CFG_LABEL, CFG_VALUE, CFG_LAST_WRITE) VALUES (:id, :label, :val, :now);';
+// 		$query = 'INSERT INTO `TR_CONFIG` (CFG_STATION_ID, CFG_LABEL, CFG_VALUE, CFG_LAST_WRITE) VALUES (:id, :label, :val, :now) ON DUPLICATE KEY UPDATE CFG_VALUE = VALUES(:_val), CFG_LAST_WRITE = VALUES(:_now);';
+// 		$query = 'INSERT INTO `TR_CONFIG` (CFG_STATION_ID, CFG_LABEL, CFG_VALUE, CFG_LAST_WRITE) VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE (CFG_VALUE, CFG_LAST_WRITE) VALUES (?, ?);';
+// 		$prep = $this->db->conn_id->prepare($query);
 		foreach ($conf as $label => $value) {
+			$query = 'INSERT INTO `TR_CONFIG` (CFG_STATION_ID, CFG_LABEL, CFG_VALUE, CFG_LAST_WRITE) VALUES ('.$id.', \''.$label.'\', \''.$this->CI->db->quote($value).'\', \''.date ("Y-m-d H:i:s").'\') 
+			ON DUPLICATE KEY UPDATE CFG_VALUE = \''.$this->CI->db->quote($value).'\', CFG_LAST_WRITE = \''.date ("Y-m-d H:i:s").'\';';
+			$this->db->query($query);
+		
 			//Associer des valeurs aux place holders
-			$prep->bindValue(1, $id, PDO::PARAM_INT);
-			$prep->bindValue(2, $label, PDO::PARAM_STR);
-			$prep->bindValue(3, $value, PDO::PARAM_STR);
-			$prep->bindValue(4, strtotime (date ("Y-m-d H:i:s")), PDO::PARAM_STR);
+// 			$prep->bindValue(1, $id, PDO::PARAM_INT);
+// 			$prep->bindValue(2, $label, PDO::PARAM_STR);
+// 			$prep->bindValue(3, $value, PDO::PARAM_STR);
+// 			$prep->bindValue(4, date ("Y-m-d H:i:s"), PDO::PARAM_STR);
+// 			$prep->bindValue(5, $value, PDO::PARAM_STR);
+// 			$prep->bindValue(6, date ("Y-m-d H:i:s"), PDO::PARAM_STR);
 			//Compiler et exécuter la requête
-			$prep->execute();
+// 			log_message('db',  "\t".$label.' = '.$value.' SQL = '.($prep->execute()?'TRUE':'FALSE'));
+
+// 			$prep->execute();
+// 			$prep->execute(array(':val'=>$value, ':now'=>date ("Y-m-d H:i:s"), ':id'=>$id, ':label'=>$label,':_val'=>$value, ':_now'=>date ("Y-m-d H:i:s")));
 		}
 		//Clore la requête préparée
-		$prep->closeCursor();
-		$prep = NULL;
+// 		$prep->closeCursor();
+// 		$prep = NULL;
+		log_message('db',  'Setting saved in DB');
 	}
 }

@@ -23,7 +23,7 @@ class vp2 extends station {
 			stream_set_timeout ($this->fp, 0, 2500000);
 			if ($this->wakeUp()) {
 				$this->toggleBacklight (1);
-				log_message('wswds', _( sprintf('Ouverture de la connexion à %s', $this->name) ) );
+				log_message('wswds', _( sprintf('Ouverture de la connexion à %s', $this->station->name) ) );
 				return TRUE;
 			}
 			else {
@@ -35,7 +35,7 @@ class vp2 extends station {
 	function CloseConnection()	{
 		$this->toggleBacklight(0);
 		if (fclose($this->fp)) {
-			log_message('wswds', sprintf( _('Fermeture de %s correcte.'), $this->name ) );
+			log_message('wswds', sprintf( _('Fermeture de %s correcte.'), $this->station->name ) );
 			return TRUE;
 		}
 		return FALSE;
