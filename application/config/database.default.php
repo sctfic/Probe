@@ -59,7 +59,7 @@ $db['default']['username'] = 'wswds';
 	$crypt = new WS_rev_crypt('db-default');
 // this is the default PASSWORD for the database. 
 // Once you had a successful run, you MUST remove this line 
-
+	$crypt->write('wswds');
 	$db['default']['password'] = $crypt->read();
 		unset($crypt);
 $db['default']['database'] = 'wswds';
