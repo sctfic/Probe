@@ -4,7 +4,7 @@ class vp2 extends station {
 	protected $backLightScreen=FALSE; // actual state of backlight screen
 //	protected $table = null;
 //	protected $conf = null;
-	public $_version = 0.20;
+	public $_version = 0.22;
 	
 	function __construct($conf) {
 		require (APPPATH.'models/vp2/EepromDumpAfter.h.php');

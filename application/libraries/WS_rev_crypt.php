@@ -25,6 +25,7 @@
  * @author CrazyCat <crazycat@c-p-f.org>
  * @copyright 2007 http://www.g33k-zone.org
  * @package Mephisto
+ * @improve by alopez 2012 add : read(), write()
  **/
 
 class WS_rev_crypt {
@@ -87,8 +88,10 @@ class WS_rev_crypt {
 	 */
 	public function read() {
 		if (is_file($this->file)){
+			log_message('crypt','read password in : '.$this->file);
 			return $this->decode (file_get_contents ($this->file));
 		}
+		log_message('warning','file : '.$this->file.' do not exit');
 		return false;
 	}
 	/**
@@ -97,6 +100,7 @@ class WS_rev_crypt {
 	 * @return string
 	 */
 	public function write($string) {
+		log_message('crypt','write password in : '.$this->file);
 		return file_put_contents ($this->file, $this->code($string));
 	}
 }
