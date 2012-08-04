@@ -23,7 +23,7 @@ class vp2 extends station {
 			stream_set_timeout ($this->fp, 0, 2500000);
 			if ($this->wakeUp()) {
 				$this->toggleBacklight (1);
-				log_message('wswds', _( sprintf('[Succès] Ouverture de la connexion à %s', $this->name) ) );
+				log_message('wswds', _( sprintf('Ouverture de la connexion à %s', $this->name) ) );
 				return TRUE;
 			}
 			else {
@@ -35,7 +35,7 @@ class vp2 extends station {
 	function CloseConnection()	{
 		$this->toggleBacklight(0);
 		if (fclose($this->fp)) {
-			log_message('wswds', sprintf( _('[Succès] Fermeture de %s correcte.'), $this->name ) );
+			log_message('wswds', sprintf( _('Fermeture de %s correcte.'), $this->name ) );
 			return TRUE;
 		}
 		return FALSE;
@@ -49,14 +49,14 @@ class vp2 extends station {
 		$TIME = False;
 		$realLag = abs(strtotime($this->fetchStationTime()) - strtotime(date('Y/m/d H:i:s')));
 		if ($realLag > $maxLag || $force) {
-			Waiting( 0, sprintf( _('[Infos] Default Clock synchronize : %ssec'), $realLag) );
+			Waiting( 0, sprintf( _('Default Clock synchronize : %ssec'), $realLag) );
 			if ($realLag < 3600-$maxLag || $realLag > 3600*12 || $force) {	// OK
 				if ($TIME = $this->updateStationTime()) {							// OK
-					log_message('wswds', _('[Infos] Clock synchronizing.'));					// OK
+					log_message('wswds', _('Clock synchronizing.'));					// OK
 				}
-				else log_message('warning', _( '[Echec] Clock synch.'));
+				else log_message('warning', _( 'Clock synch.'));
 			}
-			else log_message('warning', sprintf( _('[Infos] So mutch Default : %ssec. Please change it manualy'), $realLag) );
+			else log_message('warning', sprintf( _('So mutch Default : %ssec. Please change it manualy'), $realLag) );
 		}
 		else return true;
 		return $TIME;

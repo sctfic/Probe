@@ -27,34 +27,40 @@ class station extends CI_Model {
 	{
 		try {
 			if (!$this->Current_Station->initConnection())
-				throw new Exception(sprintf(_('[Échec] Impossible de se connecter à %s par %s:%s'), $this->name, $this->conf['ip'], $this->conf['port']));
+				throw new Exception(sprintf(_('Impossible de se connecter à %s par %s:%s'), $this->name, $this->conf['ip'], $this->conf['port']));
 			$clock = $this->Current_Station->clockSync(5);
-			$LastGetArch = '2012/08/04 14:30:00'; // cette valeur doit etre lu sur la derniere ligne de la base principale
+			
+			$LastGetArch = '2012/08/04 15:30:00'; // cette valeur doit etre lu sur la derniere ligne de la base principale
 			$this->data = $this->Current_Station->GetDmpAft($LastGetArch);
 			if (!$this->Current_Station->closeConnection())
-				throw new Exception(sprintf(_('[Échec] Fermeture de %s.'), $this->name));
-			return true;
+				throw new Exception(sprintf(_('Fermeture de %s impossible'), $this->name));
 		}
 		catch (Exception $e) {
-			log_message('warning',  $e->getMessage());
+			throw new Exception($e->getMessage());
 		}
-		return False;
+		return true;
 	}
 
 	function get_confs()
 	{
-		if ($this->Current_Station->initConnection()){
-			log_message('wswds', _( sprintf('[Succès] Ouverture de la connexion à %s', $this->name) ) );
-			if ($conf = $this->Current_Station->GetConfig()) {
-				$this->confExtend = end($conf);
-			}
-			if ($this->Current_Station->closeConnection())
-				log_message('wswds', sprintf( _('[Succès] Fermeture de %s correcte.'), $this->name ) );
-			else
-				log_message('warning', sprintf( _('[Échec] Fermeture de %s.'), $this->name ) );
+		try {
+			if (!$this->Current_Station->initConnection())
+				throw new Exception(sprintf(_('Impossible de se connecter à %s par %s:%s'), $this->name, $this->conf['ip'], $this->conf['port']));
+			$conf = $this->Current_Station->GetConfig();
+			if (!$conf)
+				throw new Exception(sprintf(_('Lecture des config de %s impossible'), $this->name));
+			// conf est un array('2012/08/04 15:30:00'=>array(...))
+			// qui ne contiend qu'une seule valeur de niveau 1 mais dont la clef est variable
+			// end() permet de recupere cette valeur quelque soit ca clef.
+			$this->confExtend = end($conf);
+			if (!$this->Current_Station->closeConnection())
+				throw new Exception(sprintf(_('Fermeture de %s impossible'), $this->name));
+			return $this->confExtend;
 		}
-		else
-			log_message('warning', sprintf( _('[Échec] Impossible de se connecter à %s par %s:%s.'), $this->name, $this->conf['ip'], $this->conf['port']) );
+		catch (Exception $e) {
+			throw new Exception($e->getMessage());
+		}
+		return true;
 	}
 	
 	function dbSave() {

@@ -16,8 +16,8 @@ class dbconfig extends CI_Model {
 	 * @return	array (db_ID => Name)
 	 */
 	function list_stations()
-	{// on demande la liste des NOM des stations meteo et les ID associé
-		$lst = $this->db->query( 
+	{// on demande la liste des NOM des stations meteo et les ID assoc
+	$lst = $this->db->query( 
 			'SELECT `CFG_STATION_ID`, `CFG_VALUE` 
 			FROM `TR_CONFIG` 
 			WHERE `CFG_LABEL`=\'name\' 
@@ -28,6 +28,10 @@ class dbconfig extends CI_Model {
 		log_message('db', 'Request list of sation');
 		foreach($lst->result() as $item) { // on met en forme les resultat sous forme de tableau
 			$this->lst[$item->CFG_STATION_ID] = $item->CFG_VALUE;
+		}
+		if (!is_array($this->lst)){
+			log_message('warning', 'List of Weather Station is empty!');
+			return false;
 		}
 		return $this->lst;
 	}
@@ -55,13 +59,19 @@ class dbconfig extends CI_Model {
 
 		foreach($lst as $id => $item)
 		{ // pour chaque station meteo on dresse la liste des configs
-			log_message('db', 'Load DB confs for '.$item);
+			log_message('db', "Load DB confs for : $item (id:$id)");
 			$CurentStation = $this->db->query($query, $id);
 			foreach($CurentStation->result() as $val)
 			{ // on integre chacune des configs dans un tableau a 2 dimensions qui sera utilisé par la suite
 				$confs[$item][strtolower($val->CFG_LABEL)]=$val->CFG_VALUE;
 			}
-// 			print_r($confs[$item]);
+			if (!isset($confs[$item]['ip']) || !isset($confs[$item]['port']) || !isset($confs[$item]['type'])) {
+				log_message('warning', 'Missing confs for '.$item);
+				unset($confs[$item]);
+			}
+		}
+		if (count($confs) == 0){
+			throw new Exception(_('Aucune configuration valide n\'est disponible'));
 		}
 		return $confs;
 	}
