@@ -22,6 +22,7 @@ class station extends CI_Model {
 		/**	on charge la classe qui correspond a notre type de station,
 			elle sera disponible sous la denominatiosn : $this->Current_Station->*	*/
 		$this->load->model($this->type, 'Current_Station', FALSE, $this->conf);
+		$this->Current_Station->__construct($this->conf);
 	}
 	function get_archives()
 	{

@@ -47,7 +47,7 @@ class vp2 extends station {
 	*/
 	function clockSync($maxLag, $force=false) {
 		$TIME = False;
-		$realLag = abs(strtotime($this->fetchStationTime()) - strtotime(date('Y/m/d H:i:s')));
+		$realLag = abs(strtotime($this->fetchStationTime()) - strtotime(date('Y-m-d H:i:s')));
 		if ($realLag > $maxLag || $force) {
 			Waiting( 0, sprintf( _('Default Clock synchronize : %ssec'), $realLag) );
 			if ($realLag < 3600-$maxLag || $realLag > 3600*12 || $force) {	// OK
@@ -231,7 +231,7 @@ class vp2 extends station {
 				$v = end($this->EEPROM);
 				$v['pos'] = 1;
 				$k = key($this->EEPROM);
-			$CONFS[date('Y/m/d H:i:s')] = array_merge (
+			$CONFS[date('Y-m-d H:i:s')] = array_merge (
 				self::RawConverter($this->EEPROM, $data),
 				self::RawConverter(array($k => $v), $data2));
 		}
@@ -259,7 +259,7 @@ class vp2 extends station {
 				$data = fread($this->fp, 99);
 				self::VerifAnswersAndCRC($data, 99);
 				log_message('wswds', '[LOOP] : Download the current Values');
-				$LOOPS[date('Y/m/d H:i:s')] = self::RawConverter($this->Loop, $data);
+				$LOOPS[date('Y-m-d H:i:s')] = self::RawConverter($this->Loop, $data);
 				echo implode("\t",$LOOPS[0])."\n";
 			}
 		}
@@ -277,7 +277,7 @@ class vp2 extends station {
 			... );
 	@param: Date de la 1ere archive a lire (par defaut : 2012/01/01 00:00:00)
 	*/
-	function GetDmpAft($last='2012/01/01 00:00:00') { //
+	function GetDmpAft($last='2012-01-01 00:00:00', $save=true) { //
 		$DATAS=false;
 		try {
 			$firstDate2Get=is_date($last);
@@ -312,6 +312,9 @@ class vp2 extends station {
 					// donc la deniere valeur a extraire precede la plus vielle valleur de cette liste
 						$DATAS[$ArchDate] = self::RawConverter($this->DumpAfter, $ArchiveStrRaw);
 						log_message('dl', sprintf(_('Page #%d-%d of %s archived Ok.'),$j, $k, $ArchDate));
+						if ($save) {
+							($DATAS[$ArchDate]);
+						}
 						$LastArchDate = $ArchDate;
 					}
 					else {
@@ -338,12 +341,12 @@ class vp2 extends station {
 			$TIME = fread($this->fp, 8);
 			self::VerifAnswersAndCRC($TIME, 8);
 			$TIME = (ord($TIME[5])+1900)
-				.'/'.str_pad(ord($TIME[4]),2,'0',STR_PAD_LEFT)
-				.'/'.str_pad(ord($TIME[3]),2,'0',STR_PAD_LEFT)
+				.'-'.str_pad(ord($TIME[4]),2,'0',STR_PAD_LEFT)
+				.'-'.str_pad(ord($TIME[3]),2,'0',STR_PAD_LEFT)
 				.' '.str_pad(ord($TIME[2]),2,'0',STR_PAD_LEFT)
 				.':'.str_pad(ord($TIME[1]),2,'0',STR_PAD_LEFT)
 				.':'.str_pad(ord($TIME[0]),2,'0',STR_PAD_LEFT);
-			log_message('wswds',  'Real : '.date('Y/m/d H:i:s').' vs VP2 : '.$TIME);
+			log_message('wswds',  'Real : '.date('Y-m-d H:i:s').' vs VP2 : '.$TIME);
 			return $TIME;
 		}
 		catch (Exception $e) {
@@ -359,8 +362,8 @@ class vp2 extends station {
 	function updateStationTime() {// 0x35 16 00 1d 0c 6f  0x7c 44  ==  2011/12/29 00:22:53
 		try {
 			self::RequestCmd("SETTIME\n");
-			list($_date, $_clock) = explode(' ', date('Y/m/d H:i:s'));
-			list($y,$m,$d) = explode('/', $_date);
+			list($_date, $_clock) = explode(' ', date('Y-m-d H:i:s'));
+			list($y,$m,$d) = explode('-', $_date);
 			list($h,$i,$s) = explode(':', $_clock);
 			self::RequestCmd (chr($s).chr($i).chr($h).chr($d).chr($m).chr($y-1900) . CalculateCRC($TIME));
 			log_message('wswds', '[SETTIME] : '.$_date.' '.$_clock);

@@ -77,7 +77,10 @@ class dbconfig extends CI_Model {
 	}
 	
 	function arrays2dbconfs($id, $conf)
-	{
+	{/** 3 cas sont possible :
+	la conf n'existe pas > INSERT INTO
+	la conf existe mais ne change pas de valeur > on ni change rien !
+	la conf existe mais la valeur et modifier > UPDATE de la valeur et de la date */
 // 		$query = 'REPLACE INTO `TR_CONFIG` (CFG_STATION_ID, CFG_LABEL, CFG_VALUE, CFG_LAST_WRITE) VALUES (:id, :label, :val, :now);';
 // 		$query = 'INSERT INTO `TR_CONFIG` (CFG_STATION_ID, CFG_LABEL, CFG_VALUE, CFG_LAST_WRITE) VALUES (:id, :label, :val, :now) ON DUPLICATE KEY UPDATE CFG_VALUE = VALUES(:_val), CFG_LAST_WRITE = VALUES(:_now);';
 // 		$query = 'INSERT INTO `TR_CONFIG` (CFG_STATION_ID, CFG_LABEL, CFG_VALUE, CFG_LAST_WRITE) VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE (CFG_VALUE, CFG_LAST_WRITE) VALUES (?, ?);';
