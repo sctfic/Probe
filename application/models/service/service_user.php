@@ -13,7 +13,9 @@ class Service_User extends Service {
 	* return an User object when for authentified user, otherwise throw an error
 	*/
     public function authentify($username, $pwd) {
-    	$encryptedPwd = md5($pwd);
+    	include_once(APPPATH.'libraries/WS_rev_crypt.php');
+    	$crypt = new WS_rev_crypt('db-default');
+    	$encryptedPwd = $crypt->code($pwd);
     	$user = $this->Dao_User->lire($username, $encryptedPwd);
 
     	if($user == NULL) {
