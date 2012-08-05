@@ -13,25 +13,30 @@ class User implements Serializable {
      */
 	private $techId;
 
-	/**
-     * @ORM\Column(name=USR_LOGIN)
+    /**
+     * @ORM\Column(name=USR_USERNAME)
      */
-	private $login;
+    private $userName;
 
     /**
-     * @ORM\Column(name=USR_NAME)
+     * @ORM\Column(name=USR_FIRST_NAME)
      */
-    private $name;
-
+    private $firstName;
+    
+    /**
+     * @ORM\Column(name=USR_FAMILY_NAME)
+     */
+    private $familyName;
+    
     /**
      * @ORM\Column(name=USR_PWD)
      */
     private $pwd;
 
     /**
-     * @ORM\Column(name=USR_MAIL)
+     * @ORM\Column(name=USR_EMAIL)
      */
-    private $mail;
+    private $email;
 
     /**
      * @ORM\Column(name=ROL_ID)
@@ -45,19 +50,29 @@ class User implements Serializable {
 
 	public function serialize() {
 		return serialize(array(
-                'techId' => $this->techId,
-                'login' => $this->login,
-                'name' => $this->name,
-                'mail' => $this->mail,
-                'roleId' => $this->roleId,
-                'authentified' => $this->authentified
-            ));
+			'techId' => $this->techId,
+			'userName' => $this->userName,
+			'firstName' => $this->firstName,
+			'familyName' => $this->familyName,
+			'email' => $this->email,
+			'pwd' => $this->pwd,
+			'roleId' => $this->roleId,
+			'authentified' => $this->authentified
+		));
 	}
+
+	/*
+	 * data come from @see ./dao/dao_user.php
+	 */
 	public function unserialize($data) {
 		$d = unserialize($data);
 		$this->setTechId($d['techId']);
-		$this->setPrename($d['login']);
-		$this->setNom($d['name']);
+		$this->setUsername($d['userName']);
+		$this->setFirstName($d['firstName']);
+		$this->setFamilyName($d['familyName']);
+		$this->setEmail($d['email']);
+// 		$this->setPwd($d['pwd']);
+// 		$this->setRoleId($d['roleId']);
 		$this->setAuthentified($d['authentified']);
 	}
 
@@ -74,10 +89,10 @@ class User implements Serializable {
 	public static function fromBD($objetResultat) {
 		$u = MyORM::asObject("User", $objetResultat);
 
-// 		$mail = new Mail();
-// 		$mail->setTechId($objetResultat->ADR_ID);
-// 		$mail->setVille($objetResultat->ADR_VILLE);
-// 		$u->setMail($mail);
+// 		$email = new email();
+// 		$email->setTechId($objetResultat->ADR_ID);
+// 		$email->setVille($objetResultat->ADR_VILLE);
+// 		$u->setemail($email);
 
 		return $u;
 	}
@@ -88,14 +103,6 @@ class User implements Serializable {
 
 
 
-	public function setMail($mail) {
-	    $this->mail = $mail;
-	}
-
-	public function getMail() {
-	    return $this->mail;
-	}
-
 	public function setTechId($techId) {
 	    $this->techId = $techId;
 	}
@@ -103,21 +110,49 @@ class User implements Serializable {
 	    return $this->techId;
 	}
 
-	public function setLogin($name) {
-	    $this->login = $login;
+	public function setUsername($userName) {
+		$this->userName = $userName;
+	}
+	public function getUsername() {
+		return $this->userName;
+	}
+	
+	public function setFamilyName($familyName) {
+		$this->familyName = $familyName;
+	}
+	public function getFamilyName() {
+		return $this->familyName;
+	}
+	
+	public function setFirstName($firstName) {
+	    $this->firstName = $firstName;
+	}
+	public function getFirstName() {
+	    return $this->firstName;
 	}
 
-	public function getLogin() {
-	    return $this->login;
+	public function setPwd($pwd	) {
+	    $this->pwd = $pwd;
+	}
+	public function getPwd() {
+	    return $this->pwd;
+	}
+	
+	public function setRoleId($roleId	) {
+	    $this->roleId = $roleId;
+	}
+	public function getRoleId() {
+	    return $this->roleId;
 	}
 
-	public function setName($login) {
-	    $this->name = $name;
+	public function setEmail($email) {
+		$this->email = $email;
 	}
-	public function getName() {
-	    return $this->name;
+	public function getEmail() {
+		return $this->email;
 	}
-
+	
+	
 	public function isAuthentified() {
 	    return $this->authentified;
 	}
@@ -131,7 +166,7 @@ class User implements Serializable {
 	}
 
 	public function __sleep() {
-		return array('server', 'username', 'password', 'db');
+		return array('server', 'userName', 'password', 'db');
 	}
 }
 

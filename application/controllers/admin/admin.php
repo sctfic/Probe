@@ -77,8 +77,8 @@ class Admin extends Authentification {
 			$this->session->set_userdata("msg", $be->getMessage());
 		}
 
-			var_dump($user);
-			exit();
+// 			var_dump($user);
+// 			exit();
 		redirect($this->urlWhenLogged);
 	}
 }
