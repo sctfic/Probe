@@ -8,10 +8,14 @@ class Dao_User extends Dao_Database {
         parent::__construct();
     }
 
-    public function lire($username, $pwd) {
+    public function read($username, $pwd) {
     	$user = NULL;
     	$sql = "SELECT * FROM TA_USER WHERE USR_USERNAME=:username AND USR_PWD=:pwd";
-    	$res = $this->wswdspdo->query($sql, array(":username" => $username, ":pwd" => $pwd));
+    	$res = $this->wswdspdo->query($sql, array(
+    			":username" => $username,
+    			":pwd" => $pwd
+			)
+    	);
 
     	// Si un user correspond à ces identifiants
          if($res->rowCount() > 0) {
