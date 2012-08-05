@@ -9,7 +9,9 @@ class station extends CI_Model {
 	
 	function __construct($conf)
 	{
+		log_message('debug',  '__construct('.$conf['name'].') '.__FILE__);
 		parent::__construct();
+		/** il faut dissocier l initialisation des variable du chargement de la classe */
 		$this->type = $conf['type'];
 // 			unset ($conf['type']);
 		$this->name = $conf['name'];
@@ -17,47 +19,49 @@ class station extends CI_Model {
 		$this->conf = $conf;
 		$this->load->helper(array('cli_tools','binary','s.i.converter'));
 		
-		/**
-		on charge la classe qui correspond a notre type de station,
-		elle sera disponible sous la denominatiosn : $this->Current_Station->*
-		**/
+		/**	on charge la classe qui correspond a notre type de station,
+			elle sera disponible sous la denominatiosn : $this->Current_Station->*	*/
 		$this->load->model($this->type, 'Current_Station', FALSE, $this->conf);
-		echo sprintf ("\n%'+40s %16s %'+40s\n", "", $this->name, "");
+		$this->Current_Station->__construct($this->conf);
 	}
 	function get_archives()
 	{
-		if ($this->Current_Station->initConnection()){
-// 			$conf['Last']['Connected'] = date('Y/m/d H:i:s');
-			Waiting( 0, _( sprintf('[Succès] Ouverture de la connexion à %s', $this->name) ) );
-			if (($clock = $this->Current_Station->clockSync(5))) {
-// 				$conf['Last']['ClockSync'] = $clock;
-			}
-		$LastGetArch = '2012/07/31 23:10:00'; // cette valeur doit etre lu sur la derniere ligne de la base principale
+		try {
+			if (!$this->Current_Station->initConnection())
+				throw new Exception(sprintf(_('Impossible de se connecter à %s par %s:%s'), $this->name, $this->conf['ip'], $this->conf['port']));
+			$clock = $this->Current_Station->clockSync(5);
+			
+			$LastGetArch = '2012/08/04 21:30:00'; // cette valeur doit etre lu sur la derniere ligne de la base principale
 			$this->data = $this->Current_Station->GetDmpAft($LastGetArch);
-//			var_export(end($retuned));	// OK
-			if ($this->Current_Station->closeConnection())
-				Waiting( 0, sprintf( _('[Succès] Fermeture de %s correcte.'), $this->name ) );
-			else
-				Waiting( 0, sprintf( _('[Échec] Fermeture de %s.'), $this->name ) );
+			if (!$this->Current_Station->closeConnection())
+				throw new Exception(sprintf(_('Fermeture de %s impossible'), $this->name));
 		}
-		else
-			Waiting( 0, sprintf( _('[Échec] Impossible de se connecter à %s par %s:%s.'), $this->name, $this->conf['ip'], $this->conf['port']) );
+		catch (Exception $e) {
+			throw new Exception($e->getMessage());
+		}
+		return true;
 	}
 
 	function get_confs()
 	{
-		if ($this->Current_Station->initConnection()){
-			Waiting( 0, _( sprintf('[Succès] Ouverture de la connexion à %s', $this->name) ) );
-			if ($conf = $this->Current_Station->GetConfig()) {
-				$this->confExtend = end($conf);
-			}
-			if ($this->Current_Station->closeConnection())
-				Waiting( 0, sprintf( _('[Succès] Fermeture de %s correcte.'), $this->name ) );
-			else
-				Waiting( 0, sprintf( _('[Échec] Fermeture de %s.'), $this->name ) );
+		try {
+			if (!$this->Current_Station->initConnection())
+				throw new Exception(sprintf(_('Impossible de se connecter à %s par %s:%s'), $this->name, $this->conf['ip'], $this->conf['port']));
+			$conf = $this->Current_Station->GetConfig();
+			if (!$conf)
+				throw new Exception(sprintf(_('Lecture des config de %s impossible'), $this->name));
+			// conf est un array('2012/08/04 15:30:00'=>array(...))
+			// qui ne contiend qu'une seule valeur de niveau 1 mais dont la clef est variable
+			// end() permet de recupere cette valeur quelque soit ca clef.
+			$this->confExtend = end($conf);
+			if (!$this->Current_Station->closeConnection())
+				throw new Exception(sprintf(_('Fermeture de %s impossible'), $this->name));
+			return $this->confExtend;
 		}
-		else
-			Waiting( 0, sprintf( _('[Échec] Impossible de se connecter à %s par %s:%s.'), $this->name, $this->conf['ip'], $this->conf['port']) );
+		catch (Exception $e) {
+			throw new Exception($e->getMessage());
+		}
+		return true;
 	}
 	
 	function dbSave() {

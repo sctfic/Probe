@@ -1,31 +1,21 @@
 <?php
-	const CR	=	"\r";		// chr(0x0D)
-	const LF	=	"\n";		// chr(0x0A)
-	const LFCR	=	"\n\r";		// chr(0x0A).chr(0x0D)
-	const ESC	=	"\x1b";		// chr(0x1b), Echap
-	const ACK	=	"\x06";		// chr(0x06), Compris
-	const NAK	=	"\x21";		// chr(0x21), Pas Compris
-	const CANCEL	=	"\x18";		// chr(0x18), Bad CRC Code
-	const OK	=	"\n\rOK\n\r";	// Confirm
-	const DBL_NULL	=	"\x00\x00";	// valeur de confirmation d'un CRC
-
 
 // 	var $WinDir = array('N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSW','SW','WSW','W','WNW','NW','NNW');
 
 	$TREND = array(196=>-2, 236=>-1, 0=>0, 20=>1, 60=>2, 80=>'Rev A');
 
-	/**
+/**
 	#########################################################################################
 	#########		Function for manage Variable and Conf-File		#########
 	#########################################################################################
 **/
 	function is_date ($date) {
 		if (is_string($date)) {
-			if (preg_match('/^20[\d]{2}\/[\d]{2}\/[\d]{2}\s[\d]{2}:[\d]{2}:[\d]{2}$/', $date)==1) {
+			if (preg_match('/^20[\d]{2}-[\d]{2}-[\d]{2}\s[\d]{2}:[\d]{2}:[\d]{2}$/', $date)==1) {
 				return $date;
 			}
 		}
-		return '2012/01/01 00:00:00';
+		return '2012-01-01 00:00:00';
 	}
 	function Raw2Date ($DateStamp){
 	
@@ -33,7 +23,7 @@
 		$y = (($DateStamp & 0xFE00)>>9)+2000;
 		$m = str_pad(($DateStamp & 0x01E0)>>5,2,'0',STR_PAD_LEFT);
 		$d = str_pad($DateStamp & 0x1f,2,'0',STR_PAD_LEFT);
-		return $y.'/'.$m.'/'.$d;
+		return $y.'-'.$m.'-'.$d;
 	}
 	function Raw2Time ($TimeStamp){
 		$TimeStamp = hexToDec(strrev($TimeStamp));
@@ -101,11 +91,11 @@
 	function Waiting ($s=10, $msg = 'Waiting and retry')	{
 		$w = '-\|/';
 		if ($s==0)
-			echo "\r".date('Y/m/d H:i:s u')."\t".$msg;
+			echo "\r".date('Y-m-d H:i:s u')."\t".$msg;
 		for ($j=0;$j<$s;$j++)
 		{
 			usleep(100000);
-			echo "\r".date('Y/m/d H:i:s u')."\t".$msg.' '.$w[$j%4];
+			echo "\r".date('Y-m-d H:i:s u')."\t".$msg.' '.$w[$j%4];
 		}
 		echo "\n";
 	}

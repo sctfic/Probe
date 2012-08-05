@@ -172,13 +172,15 @@ $config['directory_trigger']    = 'd'; // experimental not currently in use
 | determine what gets logged. Threshold options are:
 | You can enable error logging by setting a threshold over zero. The
 | threshold determines what gets logged. Threshold options are:
+| array('ERROR' => 1, 'DEBUG' => 2, 'WARNING' => 3, 'INFO' => 4, 'CRON' => 5, 'WSWDS' => 6, 'ALL' => 9);
 |
 |   0 = Disables logging, Error logging TURNED OFF
 |   1 = Error Messages (including PHP errors)
 |   2 = Debug Messages
-|   3 = Informational Messages
-|   4 = Cron Messages
-|   5 = WSWDS Messages
+|   3 = Warning
+|   4 = Informational Messages
+|   5 = Cron Messages
+|   6 = WSWDS Messages
 |   8 = Other personnal Messages
 |   9 = All Messages
 |
@@ -193,7 +195,9 @@ $config['log_threshold'] = 9;
 | Verbose Threshold
 |--------------------------------------------------------------------------
 |   report to Error Logging Threshold
-|   
+|   but never display 1 and 2
+|      1 = Error Messages (including PHP errors)
+|      2 = Debug Messages
 */
 $config['verbose_threshold'] = 9;
 /*

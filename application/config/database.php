@@ -1,7 +1,7 @@
-<?php
+<?php	if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
 /** http://codeigniter.com/user_guide/database/configuration.html **/
 
-	if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /*
 | -------------------------------------------------------------------
 | DATABASE CONNECTIVITY SETTINGS
@@ -52,6 +52,9 @@ $active_record = TRUE;
  * run your apps, then remove the line: $crypt->write('YOUR PASSWORD');
  * So your password is store only encrypted
  */
+
+/**----------------------------------------------------------------*/
+
 $db['default']['hostname'] = 'mysql:host=localhost';
 // this is the default user name for the database
 $db['default']['username'] = 'wswds';
@@ -59,6 +62,10 @@ $db['default']['username'] = 'wswds';
 	$crypt = new WS_rev_crypt('db-default');
 // this is the default PASSWORD for the database. 
 // Once you had a successful run, you MUST remove this line 
+
+	// cette sintaxe ne fonctionne pas dans ce fichier, CI n'est pas encore chargé !
+	// $this->load->libraries('WS_rev_crypt', 'default');
+	// $this->WS_rev_crypt->read();
 
 	$db['default']['password'] = $crypt->read();
 		unset($crypt);
@@ -74,6 +81,8 @@ $db['default']['dbcollat'] = 'utf8_general_ci';
 $db['default']['swap_pre'] = '';
 $db['default']['autoinit'] = TRUE;
 $db['default']['stricton'] = FALSE;
+
+/**----------------------------------------------------------------*/
 
 $db['ws-template']['hostname']		= $db['default']['hostname'];
 $db['ws-template']['username']		= $db['default']['username'];
@@ -91,6 +100,7 @@ $db['ws-template']['swap_pre']		= $db['default']['swap_pre'];
 $db['ws-template']['autoinit']		= $db['default']['autoinit'];
 $db['ws-template']['stricton']		= $db['default']['stricton'];
 
+/**----------------------------------------------------------------*/
 
 /* End of file database.php */
 /* Location: ./application/config/database.php */
