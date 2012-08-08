@@ -23,6 +23,7 @@ class station extends CI_Model {
 			elle sera disponible sous la denominatiosn : $this->Current_Station->*	*/
 		$this->load->model($this->type, 'Current_Station', FALSE, $this->conf);
 		$this->Current_Station->__construct($this->conf);
+		$this->load->model('dbdata', '', false, 'ws-template');
 	}
 	function get_archives()
 	{
@@ -31,7 +32,7 @@ class station extends CI_Model {
 				throw new Exception(sprintf(_('Impossible de se connecter à %s par %s:%s'), $this->name, $this->conf['ip'], $this->conf['port']));
 			$clock = $this->Current_Station->clockSync(5);
 			
-			$LastGetArch = '2012/08/04 21:30:00'; // cette valeur doit etre lu sur la derniere ligne de la base principale
+			$LastGetArch = $this->get_Last_Date(); // cette valeur doit etre lu sur la derniere ligne de la base principale
 			$this->data = $this->Current_Station->GetDmpAft($LastGetArch);
 			if (!$this->Current_Station->closeConnection())
 				throw new Exception(sprintf(_('Fermeture de %s impossible'), $this->name));
