@@ -28,14 +28,12 @@ class station extends CI_Model {
 	function get_archives()
 	{
 		try {
-			if (!$this->Current_Station->initConnection())
-				throw new Exception(sprintf(_('Impossible de se connecter à %s par %s:%s'), $this->name, $this->conf['ip'], $this->conf['port']));
+			if ( !$this->Current_Station->initConnection() )
+				throw new Exception( sprintf( _('Impossible de se connecter à %s par %s:%s'), $this->name, $this->conf['ip'], $this->conf['port']));
 			$clock = $this->Current_Station->clockSync(5);
-			
-			$LastGetArch = $this->get_Last_Date(); // cette valeur doit etre lu sur la derniere ligne de la base principale
-			$this->data = $this->Current_Station->GetDmpAft($LastGetArch);
-			if (!$this->Current_Station->closeConnection())
-				throw new Exception(sprintf(_('Fermeture de %s impossible'), $this->name));
+			$this->data = $this->Current_Station->GetDmpAft ( $this->dbdata->get_Last_Date() );
+			if ( !$this->Current_Station->closeConnection() )
+				throw new Exception( sprintf( _('Fermeture de %s impossible'), $this->name) );
 		}
 		catch (Exception $e) {
 			throw new Exception($e->getMessage());
@@ -47,20 +45,20 @@ class station extends CI_Model {
 	{
 		try {
 			if (!$this->Current_Station->initConnection())
-				throw new Exception(sprintf(_('Impossible de se connecter à %s par %s:%s'), $this->name, $this->conf['ip'], $this->conf['port']));
+				throw new Exception( sprintf( _('Impossible de se connecter à %s par %s:%s'), $this->name, $this->conf['ip'], $this->conf['port']));
 			$conf = $this->Current_Station->GetConfig();
 			if (!$conf)
-				throw new Exception(sprintf(_('Lecture des config de %s impossible'), $this->name));
+				throw new Exception( sprintf( _('Lecture des config de %s impossible'), $this->name));
 			// conf est un array('2012/08/04 15:30:00'=>array(...))
 			// qui ne contiend qu'une seule valeur de niveau 1 mais dont la clef est variable
 			// end() permet de recupere cette valeur quelque soit ca clef.
 			$this->confExtend = end($conf);
 			if (!$this->Current_Station->closeConnection())
-				throw new Exception(sprintf(_('Fermeture de %s impossible'), $this->name));
+				throw new Exception( sprintf( _('Fermeture de %s impossible'), $this->name));
 			return $this->confExtend;
 		}
 		catch (Exception $e) {
-			throw new Exception($e->getMessage());
+			throw new Exception( $e->getMessage() );
 		}
 		return true;
 	}

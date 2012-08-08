@@ -81,34 +81,15 @@ class dbconfig extends CI_Model {
 	la conf n'existe pas > INSERT INTO
 	la conf existe mais ne change pas de valeur > on ni change rien !
 	la conf existe mais la valeur et modifier > UPDATE de la valeur et de la date */
-// 		$query = 'REPLACE INTO `TR_CONFIG` (CFG_STATION_ID, CFG_LABEL, CFG_VALUE, CFG_LAST_WRITE) VALUES (:id, :label, :val, :now);';
-// 		$query = 'INSERT INTO `TR_CONFIG` (CFG_STATION_ID, CFG_LABEL, CFG_VALUE, CFG_LAST_WRITE) VALUES (:id, :label, :val, :now) ON DUPLICATE KEY UPDATE CFG_VALUE = VALUES(:_val), CFG_LAST_WRITE = VALUES(:_now);';
-// 		$query = 'INSERT INTO `TR_CONFIG` (CFG_STATION_ID, CFG_LABEL, CFG_VALUE, CFG_LAST_WRITE) VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE (CFG_VALUE, CFG_LAST_WRITE) VALUES (?, ?);';
-// 		$prep = $this->db->conn_id->prepare($query);
 		foreach ($conf as $label => $value) {
-// 			$query = 'INSERT INTO `TR_CONFIG` (CFG_STATION_ID, CFG_LABEL, CFG_VALUE, CFG_LAST_WRITE) VALUES ('.$id.', \''.$label.'\', \''.$this->CI->db->quote($value).'\', \''.date ("Y-m-d H:i:s").'\') 
-// 			ON DUPLICATE KEY UPDATE CFG_VALUE = \''.$this->CI->db->quote($value).'\', CFG_LAST_WRITE = \''.date ("Y-m-d H:i:s").'\';';
-// http://codeigniter.com/user_guide/database/queries.html
-			$query = 'INSERT INTO `TR_CONFIG` (CFG_STATION_ID, CFG_LABEL, CFG_VALUE, CFG_LAST_WRITE) VALUES ('.$id.', \''.$label.'\', '.$this->db->escape($value).', \''.date ("Y-m-d H:i:s").'\') 
-			ON DUPLICATE KEY UPDATE CFG_LAST_WRITE = IF('.$this->db->escape($value).' != CFG_VALUE, \''.date ("Y-m-d H:i:s").'\',CFG_LAST_WRITE),  CFG_VALUE = '.$this->db->escape($value).';';
+		// http://codeigniter.com/user_guide/database/queries.html
+			$query = 'INSERT INTO 
+				`TR_CONFIG` (CFG_STATION_ID, CFG_LABEL, CFG_VALUE, CFG_LAST_WRITE) VALUES ('.$id.', \''.$label.'\', '.$this->db->escape($value).', \''.date ("Y-m-d H:i:s").'\') 
+			ON DUPLICATE KEY UPDATE 
+				CFG_LAST_WRITE = IF('.$this->db->escape($value).' != CFG_VALUE, \''.date ("Y-m-d H:i:s").'\',CFG_LAST_WRITE),
+				CFG_VALUE = IF('.$this->db->escape($value).' != CFG_VALUE, '.$this->db->escape($value).',CFG_VALUE);';
 			$this->db->query($query);
-		
-			//Associer des valeurs aux place holders
-// 			$prep->bindValue(1, $id, PDO::PARAM_INT);
-// 			$prep->bindValue(2, $label, PDO::PARAM_STR);
-// 			$prep->bindValue(3, $value, PDO::PARAM_STR);
-// 			$prep->bindValue(4, date ("Y-m-d H:i:s"), PDO::PARAM_STR);
-// 			$prep->bindValue(5, $value, PDO::PARAM_STR);
-// 			$prep->bindValue(6, date ("Y-m-d H:i:s"), PDO::PARAM_STR);
-			//Compiler et exécuter la requête
-// 			log_message('db',  "\t".$label.' = '.$value.' SQL = '.($prep->execute()?'TRUE':'FALSE'));
-
-// 			$prep->execute();
-// 			$prep->execute(array(':val'=>$value, ':now'=>date ("Y-m-d H:i:s"), ':id'=>$id, ':label'=>$label,':_val'=>$value, ':_now'=>date ("Y-m-d H:i:s")));
 		}
-		//Clore la requête préparée
-// 		$prep->closeCursor();
-// 		$prep = NULL;
 		log_message('db',  'Setting saved in DB');
 	}
 }
