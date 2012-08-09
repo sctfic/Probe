@@ -19,14 +19,17 @@ class station extends CI_Model {
 		$this->load->helper(array('cli_tools','binary','s.i.converter'));
 		
 		try {
-			if (!empty($conf['db']))
+			if (!empty($conf['db'])) {
 				$this->load->model('dbdata', '', false, $conf['db']);
+				$this->dbdata->__construct($conf['db']);
+			}
 			else throw new Exception(sprintf( _('Aucune Base de donnee pour cette station : %s'),$this->name));
 		}
 		catch (Exception $e) {
 			log_message('warning',  $e->getMessage());
 		}
-		
+		if ( isset($this->dbdata) )
+			log_message('db',  'la basse sa donné [dbdata] est disponible');
 		/**
 			on charge la classe qui correspond a notre type de station,
 			elle sera disponible sous la denominatiosn : $this->Current_Station->*
