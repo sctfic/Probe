@@ -11,7 +11,6 @@ class station extends CI_Model {
 	{
 		log_message('debug',  '__construct('.$conf['name'].') '.__FILE__);
 		parent::__construct();
-		/** il faut dissocier l initialisation des variable du chargement de la classe */
 		$this->type = $conf['type'];
 // 			unset ($conf['type']);
 		$this->name = $conf['name'];
@@ -19,11 +18,21 @@ class station extends CI_Model {
 		$this->conf = $conf;
 		$this->load->helper(array('cli_tools','binary','s.i.converter'));
 		
-		/**	on charge la classe qui correspond a notre type de station,
-			elle sera disponible sous la denominatiosn : $this->Current_Station->*	*/
+		try {
+			if (!empty($conf['db']))
+				$this->load->model('dbdata', '', false, $conf['db']);
+			else throw new Exception(sprintf( _('Aucune Base de donnee pour cette station : %s'),$this->name));
+		}
+		catch (Exception $e) {
+			log_message('warning',  $e->getMessage());
+		}
+		
+		/**
+			on charge la classe qui correspond a notre type de station,
+			elle sera disponible sous la denominatiosn : $this->Current_Station->*
+		*/
 		$this->load->model($this->type, 'Current_Station', FALSE, $this->conf);
 		$this->Current_Station->__construct($this->conf);
-		$this->load->model('dbdata', '', false, 'ws-template');
 	}
 	function get_archives()
 	{
@@ -63,14 +72,16 @@ class station extends CI_Model {
 		return true;
 	}
 	
-	function dbSave() {
-	
-	}
 	function fileSave() {
+/**
+	sauve un fichier par jour sans doublon de donnée.
+	dans le dossier ./data/ %année% / %mois% / %jour%.tsv
+	Tabulation separated values >> http://fr.wikipedia.org/wiki/Format_TSV
+*/
 // 		$conf['Last']['DumpAfter'] = date('Y/m/d H:i:s');
 		foreach ($this->data as $h=>$arch) {
 			$folder = APPPATH.'../data/'.$this->name.'/'.substr($h, 0, 4).'/'.substr($h, 5, 2);
-			$file = $folder.'/'.substr($h, 8, 2).'.txt';
+			$file = $folder.'/'.substr($h, 8, 2).'.tsv';
 			if (is_file($file) && substr($h, -8, 8)!='00:00:00') {
 				file_put_contents($file,
 					implode("\t",$arch)."\n", FILE_APPEND);
