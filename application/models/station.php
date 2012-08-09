@@ -19,17 +19,28 @@ class station extends CI_Model {
 		$this->load->helper(array('cli_tools','binary','s.i.converter'));
 		
 		try {
-			if (!empty($conf['db'])) {
-				$this->load->model('dbdata', '', false, $conf['db']);
-				$this->dbdata->__construct($conf['db']);
+			if (is_string($conf['db']))
+			{
+				if (file_exists($file_path = APPPATH.'config/database.php'))
+					include($file_path);
+				else if (defined('ENVIRONMENT') and file_exists($file_path = APPPATH.'config/'.ENVIRONMENT.'/database.php'))
+					include($file_path);
+				else
+					throw new Exception( _('Impossible de trouver le fichier : */config/database.php'));
+					
+				if ( isset($db[$conf['db']]) && is_array($db[$conf['db']])) {
+					$this->load->model('dbdata', '', false, $conf['db']);
+					$this->dbdata->__construct($conf['db']);
+					if ( isset($this->dbdata) )
+						log_message('db', sprintf( _('la basse 2 donnée [%s] est deffinie pour : %s'),$conf['db'], $this->name));
+				}
+				else throw new Exception(sprintf( _('Aucune Base 2 donnee definie pour cette station : %s'), $this->name));
 			}
-			else throw new Exception(sprintf( _('Aucune Base de donnee pour cette station : %s'),$this->name));
+			else throw new Exception(sprintf( _('Aucune config vers une Base 2 donnee pour cette station : %s'), $this->name));
 		}
 		catch (Exception $e) {
 			log_message('warning',  $e->getMessage());
 		}
-		if ( isset($this->dbdata) )
-			log_message('db',  'la basse sa donné [dbdata] est disponible');
 		/**
 			on charge la classe qui correspond a notre type de station,
 			elle sera disponible sous la denominatiosn : $this->Current_Station->*

@@ -1,3 +1,4 @@
+<?php if (isset($_SERVER['REMOTE_ADDR'])) {?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -58,5 +59,7 @@ p {
 		<h1><?php echo $heading; ?></h1>
 		<?php echo $message; ?>
 	</div>
+<?php }
+echo $message; ?>
 </body>
 </html>

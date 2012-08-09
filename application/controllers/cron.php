@@ -14,7 +14,8 @@ class Cron extends CI_Controller {
 		elle sera disponible sous la denominatiosn : $this->db->*
 		**/
 		$this->load->model('dbconfig', '', true);
-		log_message('cron', 'Initialize complet');
+
+		log_message('cli', 'Initialize complet');
 	}
 
 	// la fonction qui ce lancera par defaut dans cette classe 
@@ -31,7 +32,7 @@ class Cron extends CI_Controller {
 				$this->load->model('station', '', FALSE,	$conf[$name]);
 				$this->station->__construct($conf[$name]);
 				
-				log_message('cron', "Try to read Archive for : $name");
+				log_message('cli', "Try to read Archive for : $name");
 				$this->station->get_archives();
 				$this->station->fileSave();
 				$this->benchmark->mark('r_end');
@@ -46,7 +47,7 @@ class Cron extends CI_Controller {
 	function ReadConf() {
 		foreach($this->dbconfig->lst as $id => $name){
 			try {
-				log_message('cron', "Read Config for : $name (id:$id)");
+				log_message('cli', "Read Config for : $name (id:$id)");
 				$conf = $this->dbconfig->dbconfs2arrays($name);
 				$this->load->model('station', '', FALSE,	$conf[$name]);
 				$this->station->__construct($conf[$name]);

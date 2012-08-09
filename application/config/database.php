@@ -63,7 +63,7 @@ $db['default']['username'] = 'wswds';
 // this is the default PASSWORD for the database. 
 // Once you had a successful run, you MUST remove this line 
 
-	// cette sintaxe ne fonctionne pas dans ce fichier, CI n'est pas encore chargé !
+	// cette syntaxe ne fonctionne pas dans ce fichier, nous ne somme pas dans le contexte de CI
 	// $this->load->libraries('WS_rev_crypt', 'default');
 	// $this->WS_rev_crypt->read();
 

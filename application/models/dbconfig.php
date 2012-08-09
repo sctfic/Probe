@@ -10,6 +10,12 @@ class dbconfig extends CI_Model {
 		parent::__construct();
 		$this->list_stations();
 	}
+	function __destruct() { 
+		log_message('debug',  '__destruct() '.__FILE__);
+		foreach ($this as $key => $value) {
+			unset($this->$key);
+		}
+	}
 
 	/**
 	 * retourne un tableau de tous les noms et db_ID de toute les stations

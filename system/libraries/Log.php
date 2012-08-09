@@ -28,7 +28,7 @@ class CI_Log {
 	protected $_verbose	= 1;
 	protected $_date_fmt	= 'Y-m-d H:i:s';
 	protected $_enabled	= TRUE;
-	protected $_levels	= array('ERROR' => 1, 'DEBUG' => 2, 'WARNING' => 3, 'INFO' => 4, 'CRON' => 5, 'WSWDS' => 6, 'ALL' => 9);
+	protected $_levels	= array('ERROR' => 1, 'DEBUG' => 2, 'WARNING' => 3, 'INFO' => 4, 'CLI' => 5, 'WSWDS' => 6, 'ALL' => 9);
 
 	public function __construct()
 	{
@@ -65,9 +65,6 @@ class CI_Log {
 		if (!array_key_exists($level, $this->_levels))	{
 			$this->_levels[$level] = 8;
 		}
-		if ( ! isset($this->_levels[$level]) OR ($this->_levels[$level] > $this->_threshold))	{
-			return FALSE;
-		}
 		$filepath = $this->_log_path.'log-'.date('Y-m-d').'.php';
 		
 		$message  = '';
@@ -87,6 +84,9 @@ class CI_Log {
 			echo $message;
 		}
 		
+		if (($this->_levels[$level] > $this->_threshold))	{
+			return FALSE;
+		}
 		if ( preg_match('/Total execution time:/', $msg) )	{
 			$message .= "\tEND\n\n\tNEW\n";
 		}
