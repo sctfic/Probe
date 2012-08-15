@@ -46,6 +46,8 @@ class CI_Log {
 		if ($config['log_date_format'] != '')	{
 			$this->_date_fmt = $config['log_date_format'];
 		}
+		log_message('warning', __class__.">> ne devrai plus etre utiliser, elle est renplacé pas ".APPPATH.'libraries/'.__FILE__);
+
 	}
 
 	/**

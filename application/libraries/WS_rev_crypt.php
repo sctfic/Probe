@@ -42,7 +42,9 @@ class WS_rev_crypt {
 	 * @var string
 	 */
 	public $data;
-	
+
+	protected $inited=false;
+
 	/**
 	 * Constructeur de l'objet
 	 * @param string $key Clé utilisée pour générer l'encodage
@@ -50,7 +52,14 @@ class WS_rev_crypt {
 	public function __construct($file) {
 		$this->file = APPPATH.'passwords/'.$file.'.credential';
 		$this->key = sha1($file);
+//		self::__init($conf);
 	}
+// 	function __init($conf, $force=false)
+// 	{ // initialise le constante de cette classe separement du __construct()
+// 		if (self::inited || !$force) return false;
+// 		log_message('debug',  '__init('.$conf['name'].') '.__FILE__);
+// 		return true;
+// 	}
 	
 	/**
 	 * Encodeur de chaîne

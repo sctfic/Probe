@@ -97,7 +97,7 @@ class CI_Loader {
 	 * List of loaded models
 	 *
 	 * @var array
-	 * @access protected
+	 * @access protected > public by alban.lopez
 	 */
 	protected $_ci_models			= array();
 	/**
@@ -300,14 +300,7 @@ class CI_Loader {
 
 			$model = ucfirst($model);
 
-//			$CI->$name = new $model();
-// improve by alban.lopez
-			    if (func_num_args() > 3) {
-				$refl = new ReflectionClass($model);
-				$CI->$name = $refl->newInstanceArgs(array_slice(func_get_args(), 3));
-			    } else {
-				$CI->$name = new $model();
-			    }
+			$CI->$name = new $model();
 
 			$this->_ci_models[] = $name;
 			return;

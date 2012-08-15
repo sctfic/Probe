@@ -1,8 +1,7 @@
 <?php
 class station extends CI_Model {
 	protected $data = NULL;
-	public $confExtend = NULL;
-	
+	public $confExtend = NULL;	
 	public $type = NULL;
 	public $name = NULL;
 	public $conf = NULL;
@@ -11,12 +10,31 @@ class station extends CI_Model {
 	{
 		log_message('debug',  '__construct('.$conf['name'].') '.__FILE__);
 		parent::__construct();
+		$this->load->helper(array('cli_tools','binary','s.i.converter'));
+
+		self::__init($conf);
+	}
+
+	function __destruct()
+	{
+		log_message('debug',  __FUNCTION__.'('.__CLASS__.') '.__FILE__);
+		unset ($this->load->_ci_models [array_search (__CLASS__, $this->load->_ci_models)]);
+	}
+	
+	function __init($conf, $force=false)
+	{ // initialise le constante de cette classe separement du __construct()
+		if (self::inited || !$force) return false;
 		$this->type = $conf['type'];
 // 			unset ($conf['type']);
 		$this->name = $conf['name'];
 // 			unset ($conf['name']);
 		$this->conf = $conf;
-		$this->load->helper(array('cli_tools','binary','s.i.converter'));
+		/**
+			on charge la classe qui correspond a notre type de station,
+			elle sera disponible sous la denominatiosn : $this->Current_Station->*
+		*/
+		$this->load->model($this->type, 'Current_Station', FALSE, $this->conf);
+		$this->Current_Station->__init($this->conf);
 		
 		try {
 			if (is_string($conf['db']))
@@ -41,13 +59,11 @@ class station extends CI_Model {
 		catch (Exception $e) {
 			log_message('warning',  $e->getMessage());
 		}
-		/**
-			on charge la classe qui correspond a notre type de station,
-			elle sera disponible sous la denominatiosn : $this->Current_Station->*
-		*/
-		$this->load->model($this->type, 'Current_Station', FALSE, $this->conf);
-		$this->Current_Station->__construct($this->conf);
+		
+		log_message('debug',  '__init('.$conf['name'].') '.__FILE__);
+		return true;
 	}
+	
 	function get_archives()
 	{
 		try {

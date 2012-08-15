@@ -2,17 +2,22 @@
 class vp2 extends station {
 	protected $fp=NULL;	// Pointer of VP2 Connection
 	protected $backLightScreen=FALSE; // actual state of backlight screen
-//	protected $table = null;
-//	protected $conf = null;
-	public $_version = 0.22;
+	public $_version = 0.23;
 	
 	function __construct($conf) {
-		log_message('debug',  '__construct('.$conf['name'].') '.__FILE__);
+		log_message('debug',  __FUNCTION__'('.__CLASS__.') '.__FILE__);
 		require (APPPATH.'models/vp2/EepromDumpAfter.h.php');
 		require (APPPATH.'models/vp2/EepromLoop.h.php');
 		require (APPPATH.'models/vp2/EepromHiLow.h.php');
-		require (APPPATH.'models/vp2/EepromConfig.h.php');	
+		require (APPPATH.'models/vp2/EepromConfig.h.php');
 	}
+	
+	function __destruct()
+	{
+		log_message('debug',  __FUNCTION__.'('.__CLASS__.') '.__FILE__);
+		unset ($this->load->_ci_models [array_search (__CLASS__, $this->load->_ci_models)]);
+	}
+
 	public function initConnection()	{
 		$errno = 0;
 		$this->fp = @fsockopen (

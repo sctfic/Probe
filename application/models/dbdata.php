@@ -9,15 +9,31 @@ class dbdata extends CI_Model {
 
 	function __construct($base)
 	{
-		log_message('debug',  '__construct() '.__FILE__);
+		log_message('debug',  __FUNCTION__.'('.__CLASS__.') '.__FILE__);
 		parent::__construct();
 		$this->dataDB = $this->load->database($base, TRUE);
-		$this->prep_EAV = $this->dataDB->conn_id->prepare('REPLACE INTO :table (ID, VALUE, SEN_ID) VALUES (:utc, :val, :sensorID);');
-		$this->prep_SENSOR = $this->dataDB->conn_id->prepare('REPLACE INTO `TR_SENSOR` (SEN_ID, , ) VALUES (:sensorID, :name, :descript, :min, :max, :error, :unit);');
-		$this->prep_ROW = $this->dataDB->conn_id->prepare('REPLACE  INTO `TA_VARIOUS` 
-			(`VAR_ID` ,`VAR_SAMPLE_RAINFALL` ,`VAR_SAMPLE_RAINFALL_HIGHT` ,`VAR_PRESSURE` ,`VAR_SOLAR_RADIATION` ,`VAR_SOLAR_RADIATION_HIGHT` ,`VAR_WIND_SPEED` ,`VAR_WIND_SPEED_HIGHT` ,`VAR_WIND_SPEED_HIGHT_DIR` ,`VAR_WIND_SPEED_DOMINANT_DIR` ,`VAR_UV_INDEX` ,`VAR_UV_INDEX_HIGHT` ,`VAR_FORECAST_RULE` ,`VAR_RAIN`)
-			VALUES (:id, :rainfall, :max_rainfall, :pressure, :srad, :max_srad, :wspeed, :max_wspeed, :dir_higtspeed, :dir_dominant, :uv, :max_uv, :forcast, :rain);');
+		$this->prep_EAV = $this->dataDB->conn_id->prepare(
+			'REPLACE 
+				INTO :table 
+					(ID, VALUE, SEN_ID) 
+				VALUES (:utc, :val, :sensorID);');
+		$this->prep_SENSOR = $this->dataDB->conn_id->prepare(
+			'REPLACE 
+				INTO `TR_SENSOR` 
+					(SEN_ID, , ) 
+				VALUES (:sensorID, :name, :descript, :min, :max, :error, :unit);');
+		$this->prep_ROW = $this->dataDB->conn_id->prepare(
+			'REPLACE 
+				INTO `TA_VARIOUS` 
+					(`VAR_ID` ,`VAR_SAMPLE_RAINFALL` ,`VAR_SAMPLE_RAINFALL_HIGHT` ,`VAR_PRESSURE` ,`VAR_SOLAR_RADIATION` ,`VAR_SOLAR_RADIATION_HIGHT` ,`VAR_WIND_SPEED` ,`VAR_WIND_SPEED_HIGHT` ,`VAR_WIND_SPEED_HIGHT_DIR` ,`VAR_WIND_SPEED_DOMINANT_DIR` ,`VAR_UV_INDEX` ,`VAR_UV_INDEX_HIGHT` ,`VAR_FORECAST_RULE` ,`VAR_RAIN`)
+				VALUES (:id, :rainfall, :max_rainfall, :pressure, :srad, :max_srad, :wspeed, :max_wspeed, :dir_higtspeed, :dir_dominant, :uv, :max_uv, :forcast, :rain);');
 	}
+	function __destruct()
+	{
+		log_message('debug',  __FUNCTION__'('.__CLASS__.') '.__FILE__);
+		unset ($this->load->_ci_models [array_search (__CLASS__, $this->load->_ci_models)]);
+	}
+
 	function parse_Data(){
 	
 	}
