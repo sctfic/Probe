@@ -33,7 +33,29 @@ class WS_Loader extends CI_Loader {
 		parent::__construct();
 		log_message('debug', __class__." Class Initialized extends CI_Loader");
 	}
+	public function unload($item)
+	{
+		if (is_array($item)) {
+			foreach ($item as $babe) {
+				$this->unload($babe);
+			}
+			return;
+		}
 
+		if (empty($item)) {
+			return;
+		}
+		if (in_array($item, $this->_ci_models, TRUE)) {
+			unset ($this->_ci_models [array_search ( $item , $this->_ci_models)]);
+			unset($this->$item);
+			$CI =& get_instance();
+			unset($CI->$item);
+			log_message('debug',  'Unload modele : '.$item);
+			if (in_array($item, $this->_ci_models, TRUE) OR isset($this->$item))
+				echo 'ECHEC'.$this->$item."\n";
+		}
+		else log_message('debug',  'ce modele n\'existe plus : '.$item);
+	}
 	public function model($model, $name = '', $db_conn = FALSE)
 	{
 		if (is_array($model))

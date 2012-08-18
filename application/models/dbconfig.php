@@ -11,11 +11,6 @@ class dbconfig extends CI_Model {
 		$this->load->database(); // charge la base par defaut
 		$this->list_stations();
 	}
-	function __destruct()
-	{
-		log_message('debug',  __FUNCTION__.'('.__CLASS__.') '.__FILE__);
-		unset ($this->load->_ci_models [array_search (__CLASS__, $this->load->_ci_models)]);
-	}
 	/**
 	 * retourne un tableau de tous les noms et db_ID de toute les stations
 	 * @return	array (db_ID => Name)

@@ -8,22 +8,10 @@ class station extends CI_Model {
 	
 	function __construct($conf)
 	{
-		log_message('debug',  '__construct('.$conf['name'].') '.__FILE__);
 		parent::__construct();
+		log_message('debug',  __FUNCTION__.'('.__CLASS__.' ('.$conf['name'].') ) '.__FILE__);
 		$this->load->helper(array('cli_tools','binary','s.i.converter'));
 
-		self::__init($conf);
-	}
-
-	function __destruct()
-	{
-		log_message('debug',  __FUNCTION__.'('.__CLASS__.') '.__FILE__);
-		unset ($this->load->_ci_models [array_search (__CLASS__, $this->load->_ci_models)]);
-	}
-	
-	function __init($conf, $force=false)
-	{ // initialise le constante de cette classe separement du __construct()
-		if (self::inited || !$force) return false;
 		$this->type = $conf['type'];
 // 			unset ($conf['type']);
 		$this->name = $conf['name'];
@@ -34,7 +22,6 @@ class station extends CI_Model {
 			elle sera disponible sous la denominatiosn : $this->Current_Station->*
 		*/
 		$this->load->model($this->type, 'Current_Station', FALSE, $this->conf);
-		$this->Current_Station->__init($this->conf);
 		
 		try {
 			if (is_string($conf['db']))
@@ -60,7 +47,6 @@ class station extends CI_Model {
 			log_message('warning',  $e->getMessage());
 		}
 		
-		log_message('debug',  '__init('.$conf['name'].') '.__FILE__);
 		return true;
 	}
 	

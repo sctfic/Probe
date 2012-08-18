@@ -7,20 +7,30 @@ class Cron extends CI_Controller {
 			die();
 		}
 		parent::__construct();
-		log_message('debug',  '__construct() '.__FILE__);
+		log_message('debug',  __FUNCTION__.'('.__CLASS__.') '.__FILE__);
 		/**
 		on charge notre modele avec le 3ieme parametre a TRUE pour qu'il charge la base par defaut
 		elle sera disponible sous la denominatiosn : $this->db->*
 		**/
 		$this->load->model('dbconfig');
 
-		log_message('debug',  '__init('.$conf['name'].') '.__FILE__);
 		return true;
 	}
 
 	// la fonction qui ce lancera par defaut dans cette classe 
 	// clear;php5 -f /var/www/WsWds/cli.php 'cron'
 	function index() {
+		$this->load->unload('dbconfig');
+		$this->load->model('dbconfig');
+		$this->load->unload('dbconfig');
+		$this->load->model('dbconfig');
+		$this->load->unload('dbconfig');
+		$this->load->model('dbconfig');
+		$this->load->unload('dbconfig');
+		$this->load->model('dbconfig');
+		$this->load->unload('dbconfig');
+		$this->load->model('dbconfig');
+		$this->load->unload('dbconfig');
 	}
 
 	// clear;php5 -f /var/www/WsWds/cli.php 'cron/ReadArch'
