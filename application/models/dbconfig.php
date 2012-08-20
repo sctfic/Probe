@@ -84,9 +84,9 @@ class dbconfig extends CI_Model {
 		foreach ($conf as $label => $value) {
 		// http://codeigniter.com/user_guide/database/queries.html
 			$query = 'INSERT INTO 
-				`TR_CONFIG` (CFG_STATION_ID, CFG_LABEL, CFG_VALUE, CFG_LAST_WRITE) VALUES ('.$id.', \''.$label.'\', '.$this->db->escape($value).', \''.date ("Y-m-d H:i:s").'\') 
+				`TR_CONFIG` (CFG_STATION_ID, CFG_LABEL, CFG_VALUE, CFG_LAST_WRITE) VALUES ('.$id.', \''.$label.'\', '.$this->db->escape($value).', \''.date ("Y/m/d H:i:s").'\') 
 			ON DUPLICATE KEY UPDATE 
-				CFG_LAST_WRITE = IF('.$this->db->escape($value).' != CFG_VALUE, \''.date ("Y-m-d H:i:s").'\',CFG_LAST_WRITE),
+				CFG_LAST_WRITE = IF('.$this->db->escape($value).' != CFG_VALUE, \''.date ("Y/m/d H:i:s").'\',CFG_LAST_WRITE),
 				CFG_VALUE = IF('.$this->db->escape($value).' != CFG_VALUE, '.$this->db->escape($value).',CFG_VALUE);';
 			$this->db->query($query);
 		}

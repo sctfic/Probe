@@ -51,8 +51,6 @@ class WS_Loader extends CI_Loader {
 			$CI =& get_instance();
 			unset($CI->$item);
 			log_message('debug',  'Unload modele : '.$item);
-			if (in_array($item, $this->_ci_models, TRUE) OR isset($this->$item))
-				echo 'ECHEC'.$this->$item."\n";
 		}
 		else log_message('debug',  'ce modele n\'existe plus : '.$item);
 	}

@@ -91,11 +91,11 @@
 	function Waiting ($s=10, $msg = 'Waiting and retry')	{
 		$w = '-\|/';
 		if ($s==0)
-			echo "\r".date('Y-m-d H:i:s u')."\t".$msg;
+			echo "\r".date('Y/m/d H:i:s u')."\t".$msg;
 		for ($j=0;$j<$s;$j++)
 		{
 			usleep(100000);
-			echo "\r".date('Y-m-d H:i:s u')."\t".$msg.' '.$w[$j%4];
+			echo "\r".date('Y/m/d H:i:s u')."\t".$msg.' '.$w[$j%4];
 		}
 		echo "\n";
 	}
