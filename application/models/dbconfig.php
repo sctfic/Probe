@@ -79,15 +79,16 @@ class dbconfig extends CI_Model {
 	function arrays2dbconfs($id, $conf)
 	{/** 3 cas sont possible :
 	la conf n'existe pas > INSERT INTO
-	la conf existe mais ne change pas de valeur > on ni change rien !
+	la conf existe mais ne change pas de valeur > on ni change rien ! ou on reecris la meme valeur.
 	la conf existe mais la valeur et modifier > UPDATE de la valeur et de la date */
 		foreach ($conf as $label => $value) {
+			$val = $this->db->escape($value);
 		// http://codeigniter.com/user_guide/database/queries.html
 			$query = 'INSERT INTO 
-				`TR_CONFIG` (CFG_STATION_ID, CFG_LABEL, CFG_VALUE, CFG_LAST_WRITE) VALUES ('.$id.', \''.$label.'\', '.$this->db->escape($value).', \''.date ("Y/m/d H:i:s").'\') 
+				`TR_CONFIG` (CFG_STATION_ID, CFG_LABEL, CFG_VALUE, CFG_LAST_WRITE) VALUES ('.$id.', \''.$label.'\', '.$val.', \''.date ("Y/m/d H:i:s").'\') 
 			ON DUPLICATE KEY UPDATE 
-				CFG_LAST_WRITE = IF('.$this->db->escape($value).' != CFG_VALUE, \''.date ("Y/m/d H:i:s").'\',CFG_LAST_WRITE),
-				CFG_VALUE = IF('.$this->db->escape($value).' != CFG_VALUE, '.$this->db->escape($value).',CFG_VALUE);';
+				CFG_LAST_WRITE = IF('.$val.' != CFG_VALUE, \''.date ("Y/m/d H:i:s").'\',CFG_LAST_WRITE),
+				CFG_VALUE = '.$val.';';
 			$this->db->query($query);
 		}
 		log_message('db',  'Setting saved in DB');

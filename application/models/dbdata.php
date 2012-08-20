@@ -38,31 +38,31 @@ class dbdata extends CI_Model {
 				VALUES (:id, :rainfall, :max_rainfall, :pressure, :srad, :max_srad, :wspeed, :max_wspeed, :dir_higtspeed, :dir_dominant, :uv, :max_uv, :forcast, :rain);');
 	}
 	function save($data){
-		self::$current_data = $data;
-		self::parse_Data();
-		self::insert_VARIOUS();
-// 		self::insert_EAV();
-// 		self::insert_EAV();
-// 		self::insert_EAV();
+		$this->current_data = $data;
+		$this->parse_Data();
+		$this->insert_VARIOUS();
+// 		$this->insert_EAV();
+// 		$this->insert_EAV();
+// 		$this->insert_EAV();
 	}
 	function parse_Data(){
-	
+	  $this->current_data;
 	}
 	function insert_Data(){
 
 	}
 	function insert_EAV($value_EAV) {
-		$real_EAV = array_combine($key_EAV, $value_EAV);
+		$real_EAV = array_combine($this->key_EAV, $value_EAV);
 		$this->prep_EAV->execute($real_EAV);
 		
 	}
-	function insert_SENSOR() {
-		$real_SENSOR = array_combine($key_SENSOR, $value_SENSOR);
+	function insert_SENSOR($value_SENSOR) {
+		$real_SENSOR = array_combine($this->key_SENSOR, $value_SENSOR);
 		$this->prep_SENSOR->execute($real_SENSOR);
 		
 	}
-	function insert_VARIOUS() {
-		$real_VARIOUS = array_combine($key_VARIOUS, $value_VARIOUS);
+	function insert_VARIOUS($value_VARIOUS) {
+		$real_VARIOUS = array_combine($this->key_VARIOUS, $value_VARIOUS);
 		$this->prep_SENSOR->execute($real_VARIOUS);
 
 	}
