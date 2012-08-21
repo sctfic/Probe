@@ -29,13 +29,13 @@ class dbdata extends CI_Model {
 		$this->prep_SENSOR = $this->dataDB->conn_id->prepare(
 			'REPLACE 
 				INTO `TR_SENSOR` 
-					(SEN_ID, , ) 
-				VALUES (:sensorID, :name, :descript, :min, :max, :error, :unit);');
+					(SEN_ID, SEN_, SEN_, SEN_, SEN_, SEN_, SEN_) 
+				VALUES ('.implode(', ', $this->key_SENSOR).');');
 		$this->prep_VARIOUS = $this->dataDB->conn_id->prepare(
 			'REPLACE 
 				INTO `TA_VARIOUS` 
 					(`VAR_ID` ,`VAR_SAMPLE_RAINFALL` ,`VAR_SAMPLE_RAINFALL_HIGHT` ,`VAR_PRESSURE` ,`VAR_SOLAR_RADIATION` ,`VAR_SOLAR_RADIATION_HIGHT` ,`VAR_WIND_SPEED` ,`VAR_WIND_SPEED_HIGHT` ,`VAR_WIND_SPEED_HIGHT_DIR` ,`VAR_WIND_SPEED_DOMINANT_DIR` ,`VAR_UV_INDEX` ,`VAR_UV_INDEX_HIGHT` ,`VAR_FORECAST_RULE` ,`VAR_RAIN`)
-				VALUES (:id, :rainfall, :max_rainfall, :pressure, :srad, :max_srad, :wspeed, :max_wspeed, :dir_higtspeed, :dir_dominant, :uv, :max_uv, :forcast, :rain);');
+				VALUES ('.implode(', ', $this->key_VARIOUS).');');
 	}
 	function save($data){
 		$this->current_data = $data;
@@ -45,6 +45,11 @@ class dbdata extends CI_Model {
 // 		$this->insert_EAV();
 // 		$this->insert_EAV();
 	}
+
+	/**
+	 * retourne un tableau de toutes les valeurs sous la forme : 
+	 * @return	array('UTC' => array ( 'SEN_ID' => 'VALUE' ));
+	 */
 	function parse_Data(){
 	  $this->current_data;
 	}
