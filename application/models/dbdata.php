@@ -45,12 +45,33 @@ class dbdata extends CI_Model {
 // 		$this->insert_EAV();
 // 		$this->insert_EAV();
 	}
-
 	/**
 	 * retourne un tableau de toutes les valeurs sous la forme : 
 	 * @return	array('UTC' => array ( 'SEN_ID' => 'VALUE' ));
 	 */
-	function parse_Data(){
+	function parse_Data($type){
+		$lst_type = array(	'TEMP'	=> array(':Temp:'),
+					'HUM'	=> array(':Hum:',''),
+					'LEAF'	=> array(':LeafWetnesses:',''),
+					'SOIL'	=> array(':SoilMoisture:',''),
+					'SENSOR'=> array(':Alarm:',''),
+					'VARIOUS'=>array(':Rain:',':Various:'),);
+		$type = strtoupper($type);
+
+/*		switch ($type) {
+		case 'TEMP':
+			
+			break;
+		case 'HUM':
+			
+			break;
+		case 'LEAF':
+			
+			break;
+		case 'SOIL':
+			
+			break;
+		}*/
 	  $this->current_data;
 	}
 	function insert_Data(){
