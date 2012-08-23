@@ -7,7 +7,7 @@ class dbdata extends CI_Model {
 	protected $key_EAV = array(':table', ':utc', ':val', ':sensorID');
 
 	protected $prep_SENSOR = NULL;
-	protected $key_SENSOR = array(':sensorID', ':name', ':descript', ':min', ':max', ':error', ':unit');
+	protected $key_SENSOR = array(':ID', ':NAME', ':HUMAN_NAME', ':DESCRIPT', ':MIN_REAL', ':MAX_REAL', ':UNITE_SIGN', ':DEF_PLOT', ':MAX_ALARM', ':MIN_ALARM', ':LAST_CALIBRATE', ':CALIBRATE_PERIOD');
 
 	protected $prep_VARIOUS = NULL;
 	protected $key_VARIOUS = array(':id', ':rainfall', ':max_rainfall', ':pressure', ':srad', ':max_srad', ':wspeed', ':max_wspeed', ':dir_higtspeed', ':dir_dominant', ':uv', ':max_uv', ':forcast', ':rain');
@@ -29,7 +29,7 @@ class dbdata extends CI_Model {
 		$this->prep_SENSOR = $this->dataDB->conn_id->prepare(
 			'REPLACE 
 				INTO `TR_SENSOR` 
-					(SEN_ID, SEN_, SEN_, SEN_, SEN_, SEN_, SEN_) 
+					(SEN_ID, SEN_NAME, SEN_HUMAN_NAME, SEN_DESCRIPTIF, SEN_MIN_REALISTIC, SEN_MAX_REALISTIC, SEN_UNITE_SIGN, SEN_DEF_PLOT, SEN_MAX_ALARM, SEN_MIN_ALARM, SEN_LAST_CALIBRATE, SEN_CALIBRATE_PERIOD) 
 				VALUES ('.implode(', ', $this->key_SENSOR).');');
 		$this->prep_VARIOUS = $this->dataDB->conn_id->prepare(
 			'REPLACE 
