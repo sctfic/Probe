@@ -57,7 +57,7 @@ class dbdata extends CI_Model {
 					'SENSOR'=> array(':Alarm:',''),
 					'VARIOUS'=>array(':Rain:',':Various:'),);
 		$type = strtoupper($type);
-
+		foreach($this->current_data as $SEN_)
 /*		switch ($type) {
 		case 'TEMP':
 			
