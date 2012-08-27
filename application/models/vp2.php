@@ -312,7 +312,7 @@ class vp2 extends station {
 						$DATAS[$ArchDate] = self::RawConverter($this->DumpAfter, $ArchiveStrRaw);
 						log_message('dl', sprintf(_('Page #%d-%d of %s archived Ok.'),$j, $k, $ArchDate));
 						if ($save) {
-							$this->dbdata->save($DATAS[$ArchDate]);
+							$this->dbdata->save_Archive($DATAS[$ArchDate]);
 						}
 						$LastArchDate = $ArchDate;
 					}
