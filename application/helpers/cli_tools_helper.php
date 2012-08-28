@@ -11,11 +11,11 @@
 **/
 	function is_date ($date) {
 		if (is_string($date)) {
-			if (preg_match('/^20[\d]{2}-[\d]{2}-[\d]{2}\s[\d]{2}:[\d]{2}:[\d]{2}$/', $date)==1) {
+			if (preg_match('/^20[\d]{2}\/[\d]{2}\/[\d]{2}\s[\d]{2}:[\d]{2}:[\d]{2}$/', $date)==1) {
 				return $date;
 			}
 		}
-		return '2012-01-01 00:00:00';
+		return '2012/01/01 00:00:00';
 	}
 	function Raw2Date ($DateStamp){
 	
@@ -23,7 +23,7 @@
 		$y = (($DateStamp & 0xFE00)>>9)+2000;
 		$m = str_pad(($DateStamp & 0x01E0)>>5,2,'0',STR_PAD_LEFT);
 		$d = str_pad($DateStamp & 0x1f,2,'0',STR_PAD_LEFT);
-		return $y.'-'.$m.'-'.$d;
+		return $y.'/'.$m.'/'.$d;
 	}
 	function Raw2Time ($TimeStamp){
 		$TimeStamp = hexToDec(strrev($TimeStamp));
