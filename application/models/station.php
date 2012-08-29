@@ -56,6 +56,7 @@ class station extends CI_Model {
 			if ( !$this->Current_Station->initConnection() )
 				throw new Exception( sprintf( _('Impossible de se connecter à %s par %s:%s'), $this->name, $this->conf['ip'], $this->conf['port']));
 			$clock = $this->Current_Station->clockSync(5);
+			echo $this->dbdata->get_Last_Date()."\n\n";
 			$this->data = $this->Current_Station->GetDmpAft ( $this->dbdata->get_Last_Date() );
 			if ( !$this->Current_Station->closeConnection() )
 				throw new Exception( sprintf( _('Fermeture de %s impossible'), $this->name) );

@@ -4,7 +4,7 @@ class dbdata extends CI_Model {
 // http://www.codeigniter.fr/user_guide/database/connecting.html
 	
 	protected $prep_EAV = NULL;
-	protected $key_EAV = array(':table', ':id', ':val', ':sensorID');
+	protected $key_EAV = array(':id', ':val', ':sensorID');
 
 	protected $prep_SENSOR = NULL;
 	protected $key_SENSOR = array(':ID', ':NAME', ':HUMAN_NAME', ':DESCRIPT', ':MIN_REAL', ':MAX_REAL', ':UNITE_SIGN', ':DEF_PLOT', ':MAX_ALARM', ':MIN_ALARM', ':LAST_CALIBRATE', ':CALIBRATE_PERIOD');
@@ -21,10 +21,21 @@ class dbdata extends CI_Model {
 		parent::__construct();
 		log_message('debug',  __FUNCTION__.'('.__CLASS__.' ('.$base.') ) '.__FILE__);
 		$this->dataDB = $this->load->database($base, TRUE);
-		$this->prep_EAV = $this->dataDB->conn_id->prepare(
+		$this->prep_EAV_T = $this->dataDB->conn_id->prepare(
 			'REPLACE 
-				INTO :table 
-					(ID, VALUE, SEN_ID) 
+				INTO TA_TEMPERATURE (ID, VALUE, SEN_ID) 
+				VALUES (:id, :val, :sensorID);');
+		$this->prep_EAV_H = $this->dataDB->conn_id->prepare(
+			'REPLACE 
+				INTO TA_HUMIDITY (ID, VALUE, SEN_ID) 
+				VALUES (:id, :val, :sensorID);');
+		$this->prep_EAV_W = $this->dataDB->conn_id->prepare(
+			'REPLACE 
+				INTO TA_WETNESSES (ID, VALUE, SEN_ID) 
+				VALUES (:id, :val, :sensorID);');
+		$this->prep_EAV_M = $this->dataDB->conn_id->prepare(
+			'REPLACE 
+				INTO TA_MOISTURE (ID, VALUE, SEN_ID) 
 				VALUES (:id, :val, :sensorID);');
 		$this->prep_SENSOR = $this->dataDB->conn_id->prepare(
 			'REPLACE 
@@ -60,16 +71,12 @@ class dbdata extends CI_Model {
 		$id_arch = $this->dataDB->insert_id();//query('SELECT LAST_INSERT_ID();');
 		foreach ($data as $name => $val) {
 			if (($table = $this->get_TABLE_Dest($name)) != 'TA_VARIOUS') {
-				$this->insert_EAV(array($table, $id_arch, $val, $this->get_SEN_ID($name)));
+				$eav = 'prep_EAV_'.$table[3];
+				$this->$eav->execute(array_combine($this->key_EAV, array($id_arch, $val, $this->get_SEN_ID($name))));
 			}
 		}
 	}
 
-	function insert_EAV($value_EAV) {
-		$real_EAV = array_combine($this->key_EAV, $value_EAV);
-		$this->prep_EAV->execute($real_EAV);
-		
-	}
 	function insert_SENSOR($value_SENSOR) {
 		$real_SENSOR = array_combine($this->key_SENSOR, $value_SENSOR);
 		$this->prep_SENSOR->execute($real_SENSOR);
@@ -102,14 +109,14 @@ class dbdata extends CI_Model {
 				INTO `TR_SENSOR` 
 					(SEN_NAME, SEN_DEF_PLOT, SEN_MAX_ALARM, SEN_MIN_ALARM, SEN_LAST_CALIBRATE, SEN_CALIBRATE_PERIOD) 
 				VALUES 
-					(\''.$name.'\', \'Default_Plot\', 1999, -199, \'2012/01/01 00:00:00\', 600)');
+					(\''.$name.'\', \'Default_Plot\', 1999, -199, \'2012/01/01 00:00:01\', \'0000/06/00 00:00:00\')');
 			return $this->dataDB->insert_id();//query('SELECT LAST_INSERT_ID();');
 		}
 		log_message('warning', 'Trop de resultat : '.print_r($id));
 	}
 	
 	function get_Last_Date() {
-		$date = $this->dataDB->query('SELECT MAX(VAR_DATE) FROM  `TA_VARIOUS` LIMIT 3');
+		$date = $this->dataDB->query('SELECT MAX(VAR_DATE) FROM `TA_VARIOUS` LIMIT 3');
 		if (count($date->result_array())==1) {
 			return end($date->result_array[0]);
 		}
