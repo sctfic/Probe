@@ -11,7 +11,7 @@
 **/
 	function is_date ($date) {
 		if (is_string($date)) {
-			if (preg_match('/^20[\d]{2}\/[\d]{2}\/[\d]{2}\s[\d]{2}:[\d]{2}:[\d]{2}$/', $date)==1) {
+			if (preg_match('/^20[\d]{2}(\/|-)[\d]{2}(\/|-)[\d]{2}(\s|T)[\d]{2}:[\d]{2}:[\d]{2}(\+[\d]{4})?$/', $date)) {
 				return $date;
 			}
 		}

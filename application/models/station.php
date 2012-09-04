@@ -21,25 +21,28 @@ class station extends CI_Model {
 			on charge la classe qui correspond a notre type de station,
 			elle sera disponible sous la denominatiosn : $this->Current_Station->*
 		*/
-		$this->load->model($this->type, 'Current_Station', FALSE, $this->conf);
+// 		$this->load->model($this->type, 'Current_Station', FALSE, $this->conf);
+		include_once(APPPATH.'models/'.strtolower($this->type).'.php');
+		$this->Current_Station = new $this->type($this->conf);
 		
 		try {
 			if (is_string($conf['db']))
 			{
+				global $db, $active_group, $active_record;
 				if (file_exists($file_path = APPPATH.'config/database.php'))
-					include($file_path);
-				else if (defined('ENVIRONMENT') and file_exists($file_path = APPPATH.'config/'.ENVIRONMENT.'/database.php'))
-					include($file_path);
+					include_once($file_path);
 				else
 					throw new Exception( _('Impossible de trouver le fichier : */config/database.php'));
-					
-				if ( isset($db[$conf['db']]) && is_array($db[$conf['db']])) {
-					$this->load->model('dbdata', '', false, $conf['db']);
-					$this->dbdata->__construct($conf['db']);
+
+				if ( isset($db[$this->conf['db']]) && is_array($db[$this->conf['db']])) {
+					include_once(APPPATH.'models/dbdata.php');
+					$this->dbdata = new dbdata($this->conf['db']);
+// 					$this->load->model('dbdata', '', false, $conf['db']);
+// 					$this->dbdata->__construct($conf['db']);
 					if ( isset($this->dbdata) )
-						log_message('db', sprintf( _('la basse 2 donnée [%s] est deffinie pour : %s'),$conf['db'], $this->name));
+						log_message('db', sprintf( _('la basse 2 donnée [%s] est deffinie pour : %s'),$this->conf['db'], $this->name));
 				}
-				else throw new Exception(sprintf( _('Aucune Base 2 donnee definie pour cette station : %s'), $this->name));
+				else throw new Exception(sprintf( _('Aucune Base 2 donnee definie pour cette station : %s (%s)'), $this->name, $this->conf['db']));
 			}
 			else throw new Exception(sprintf( _('Aucune config vers une Base 2 donnee pour cette station : %s'), $this->name));
 		}
@@ -56,7 +59,7 @@ class station extends CI_Model {
 			if ( !$this->Current_Station->initConnection() )
 				throw new Exception( sprintf( _('Impossible de se connecter à %s par %s:%s'), $this->name, $this->conf['ip'], $this->conf['port']));
 			$clock = $this->Current_Station->clockSync(5);
-			echo $this->dbdata->get_Last_Date()."\n\n";
+			echo ">> ".$this->dbdata->get_Last_Date()." <<\n\n";
 			$this->data = $this->Current_Station->GetDmpAft ( $this->dbdata->get_Last_Date() );
 			if ( !$this->Current_Station->closeConnection() )
 				throw new Exception( sprintf( _('Fermeture de %s impossible'), $this->name) );
@@ -96,18 +99,20 @@ class station extends CI_Model {
 	Tabulation separated values >> http://fr.wikipedia.org/wiki/Format_TSV
 */
 // 		$conf['Last']['DumpAfter'] = date('Y/m/d H:i:s');
-		foreach ($this->data as $h=>$arch) {
-			$folder = APPPATH.'../data/'.$this->name.'/'.substr($h, 0, 4).'/'.substr($h, 5, 2);
-			$file = $folder.'/'.substr($h, 8, 2).'.tsv';
-			if (is_file($file) && substr($h, -8, 8)!='00:00:00') {
-				file_put_contents($file,
-					implode("\t",$arch)."\n", FILE_APPEND);
-			}
-			else {
-				if (!file_exists($folder))
-					mkdir($folder, 0777, true);
-				file_put_contents($file,
-					implode("\t",array_keys($arch))."\n".implode("\t",$arch)."\n");
+		if (is_array($this->data)) {
+			foreach ($this->data as $h=>$arch) {
+				$folder = APPPATH.'../data/'.$this->name.'/'.substr($h, 0, 4).'/'.substr($h, 5, 2);
+				$file = $folder.'/'.substr($h, 8, 2).'.tsv';
+				if (is_file($file) && substr($h, -8, 8)!='00:00:00') {
+					file_put_contents($file,
+						implode("\t",$arch)."\n", FILE_APPEND);
+				}
+				else {
+					if (!file_exists($folder))
+						mkdir($folder, 0777, true);
+					file_put_contents($file,
+						implode("\t",array_keys($arch))."\n".implode("\t",$arch)."\n");
+				}
 			}
 		}
 	}

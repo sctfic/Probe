@@ -18,7 +18,7 @@ class dbdata extends CI_Model {
 
 	function __construct($base)
 	{
-		parent::__construct();
+// 		parent::__construct();
 		log_message('debug',  __FUNCTION__.'('.__CLASS__.' ('.$base.') ) '.__FILE__);
 		$this->dataDB = $this->load->database($base, TRUE);
 		$this->prep_EAV_T = $this->dataDB->conn_id->prepare(

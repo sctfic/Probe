@@ -12,25 +12,15 @@ class Cron extends CI_Controller {
 		on charge notre modele avec le 3ieme parametre a TRUE pour qu'il charge la base par defaut
 		elle sera disponible sous la denominatiosn : $this->db->*
 		**/
-		$this->load->model('dbconfig');
-
-		return true;
+		include_once(BASEPATH.'core/Model.php'); // need for load models manualy
+		include_once(APPPATH.'models/dbconfig.php');
+		include_once(APPPATH.'models/station.php');
+		$this->dbconfig = new dbconfig();
 	}
 
 	// la fonction qui ce lancera par defaut dans cette classe 
 	// clear;php5 -f /var/www/WsWds/cli.php 'cron'
 	function index() {
-		$this->load->unload('dbconfig');
-		$this->load->model('dbconfig');
-		$this->load->unload('dbconfig');
-		$this->load->model('dbconfig');
-		$this->load->unload('dbconfig');
-		$this->load->model('dbconfig');
-		$this->load->unload('dbconfig');
-		$this->load->model('dbconfig');
-		$this->load->unload('dbconfig');
-		$this->load->model('dbconfig');
-		$this->load->unload('dbconfig');
 	}
 
 	// clear;php5 -f /var/www/WsWds/cli.php 'cron/ReadArch'
@@ -39,9 +29,8 @@ class Cron extends CI_Controller {
 			try {
 				$this->benchmark->mark('r_start');
 				$conf = $this->dbconfig->dbconfs2arrays($name);
-				$this->load->model('station', '', FALSE,	$conf[$name]);
-				$this->station->__construct($conf[$name]);
-				
+				$this->station = new station($conf[$name]);
+
 				log_message('cli', "Try to read Archive for : $name");
 				$this->station->get_archives();
 				$this->station->fileSave();
@@ -59,8 +48,7 @@ class Cron extends CI_Controller {
 			try {
 				log_message('cli', "Read Config for : $name (id:$id)");
 				$conf = $this->dbconfig->dbconfs2arrays($name);
-				$this->load->model('station', '', FALSE,	$conf[$name]);
-				$this->station->__construct($conf[$name]);
+				$this->station = new station($conf[$name]);
 				
 				$this->station->get_confs();
 				foreach ($this->station->confExtend as $key => $val) {

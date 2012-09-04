@@ -47,6 +47,7 @@
 $active_group = 'default';
 $active_record = TRUE;
 
+
 /* Copy the database.default.php to database.php, 
  * change the credential in the database.php,
  * run your apps, then remove the line: $crypt->write('YOUR PASSWORD');
@@ -54,51 +55,13 @@ $active_record = TRUE;
  */
 
 /**----------------------------------------------------------------*/
-
-$db['default']['hostname'] = 'mysql:host=localhost';
-// this is the default user name for the database
-$db['default']['username'] = 'wswds';
+// 	echo __FILE__.' : '.__LINE__."\n";
 	include_once(APPPATH.'libraries/WS_rev_crypt.php');
-	$crypt = new WS_rev_crypt('db-default');
-// this is the default PASSWORD for the database. 
-// Once you had a successful run, you MUST remove this line 
 
-	// cette syntaxe ne fonctionne pas dans ce fichier, nous ne somme pas dans le contexte de CI
-	// $this->load->libraries('WS_rev_crypt', 'default');
-	// $this->WS_rev_crypt->read();
-
-	$db['default']['password'] = $crypt->read();
-		unset($crypt);
-$db['default']['database'] = 'wswds';
-$db['default']['dbdriver'] = 'pdo';
-$db['default']['dbprefix'] = '';
-$db['default']['pconnect'] = TRUE;
-$db['default']['db_debug'] = TRUE;
-$db['default']['cache_on'] = FALSE;
-$db['default']['cachedir'] = '';
-$db['default']['char_set'] = 'utf8';
-$db['default']['dbcollat'] = 'utf8_general_ci';
-$db['default']['swap_pre'] = '';
-$db['default']['autoinit'] = TRUE;
-$db['default']['stricton'] = FALSE;
-
-/**----------------------------------------------------------------*/
-
-$db['ws-template']['hostname']		= $db['default']['hostname'];
-$db['ws-template']['username']		= $db['default']['username'];
-$db['ws-template']['password']		= $db['default']['password'];
-$db['ws-template']['database']		= 'ws-template';
-$db['ws-template']['dbdriver']		= $db['default']['dbdriver'];
-$db['ws-template']['dbprefix']		= $db['default']['dbprefix'];
-$db['ws-template']['pconnect']		= $db['default']['pconnect'];
-$db['ws-template']['db_debug']		= $db['default']['db_debug'];
-$db['ws-template']['cache_on']		= $db['default']['cache_on'];
-$db['ws-template']['cachedir']		= $db['default']['cachedir'];
-$db['ws-template']['char_set']		= $db['default']['char_set'];
-$db['ws-template']['dbcollat']		= $db['default']['dbcollat'];
-$db['ws-template']['swap_pre']		= $db['default']['swap_pre'];
-$db['ws-template']['autoinit']		= $db['default']['autoinit'];
-$db['ws-template']['stricton']		= $db['default']['stricton'];
+	foreach (glob(APPPATH.'config/db-*.php') as $filename) {
+		log_message('db', sprintf( _('Chargement des configs de DataBase : %s'), $filename));
+		include_once($filename);
+	}
 
 /**----------------------------------------------------------------*/
 

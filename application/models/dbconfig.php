@@ -6,9 +6,10 @@ class dbconfig extends CI_Model {
 	
 	function __construct()
 	{
-		parent::__construct();
+// 		parent::__construct();
 		log_message('debug',  __FUNCTION__.'('.__CLASS__.') '.__FILE__);
 		$this->load->database(); // charge la base par defaut
+		print_r($CI->db);
 		$this->list_stations();
 	}
 	/**
