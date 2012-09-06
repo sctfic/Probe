@@ -43,6 +43,7 @@
 | The $active_record variables lets you determine whether or not to load
 | the active record class
 */
+global $db, $active_group, $active_record;
 
 $active_group = 'default';
 $active_record = TRUE;

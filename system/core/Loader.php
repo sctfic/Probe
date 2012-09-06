@@ -242,6 +242,7 @@ class CI_Loader {
 		if ($model == '')
 		{
 			return;
+			
 		}
 
 		$path = '';

@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 // clear;php5 -f /var/www/WsWds/cli.php 'cron'
-class Cron extends CI_Controller {
+class dataCollector extends CI_Controller {
 	function __construct() {
 		if (isset($_SERVER['REMOTE_ADDR'])) { // n'est pas definie en php5-cli
 			log_message('warning',  'CLI script access allowed only');
@@ -23,7 +23,17 @@ class Cron extends CI_Controller {
 	// clear;php5 -f /var/www/WsWds/cli.php 'cron'
 	function index() {
 	}
+	// clear;php5 -f /var/www/WsWds/cli.php 'cron/dataCollector'
+	function dataCollector() {
+		foreach($this->dbconfig->lst as $id => $name){
+			try {
 
+			}
+			catch (Exception $e) {
+				log_message('warning',  $e->getMessage());
+			}
+		}
+	}
 	// clear;php5 -f /var/www/WsWds/cli.php 'cron/ReadArch'
 	function ReadArch() {
 		foreach($this->dbconfig->lst as $id => $name){
