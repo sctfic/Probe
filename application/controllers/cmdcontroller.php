@@ -21,7 +21,7 @@ class cmdController extends CI_Controller {
 	// la fonction qui ce lancera par defaut dans cette classe 
 	// clear;php5 -f /var/www/WsWds/cli.php 'cmdcontroller'
 	function index() {
-		$this->dataCollectors();
+		$this->configCollectors();
 	}
 	
 	// clear;php5 -f /var/www/WsWds/cli.php 'cmdcontroller/dataCollectors'
@@ -52,23 +52,32 @@ class cmdController extends CI_Controller {
 	
 	
 
-	function ReadConf() {
-		foreach($this->dbconfig->lst as $id => $name){
-			try {
-				log_message('cli', "Read Config for : $name (id:$id)");
-				$conf = $this->dbconfig->dbconfs2arrays($name);
-				$this->station = new station($conf[$name]);
-				
-				$this->station->get_confs();
-				foreach ($this->station->confExtend as $key => $val) {
-					if (strpos($key, 'TR:Config:')!==FALSE)
-						$conf[$name][str_replace('TR:Config:', '', $key)] = $val;
-				}
-				$this->dbconfig->arrays2dbconfs($id, $conf[$name]);
+	function configCollectors($station = null) {
+		if (is_array($station)) {
+			foreach ($station as $item) {
+				// on rapelle cette meme fonction mais individuellement pour chaque station
+				$this->configCollectors($item);
 			}
-			catch (Exception $e) {
-				log_message('warning',  $e->getMessage());
+			return ;
+		}
+		elseif (empty($station)) {
+			// on rapelle cette meme fonction mais avec de vrai paarametre : Toutes les stations
+			$this->configCollectors (array_keys ($this->WS->lst));
+			return ;
+		}
+		try {
+			$conf = end($this->WS->config($station));			
+			$fullconf = $this->WS->ConfCollector($conf);
+		print_r('>>>'.$fullconf."\n");
+			foreach ($fullconf as $key => $val) {
+				if (strpos($key, 'TR:Config:')!==FALSE)
+					$conf[str_replace('TR:Config:', '', $key)] = $val;
 			}
+			print_r($conf);
+//				$this->dbconfig->arrays2dbconfs($id, $conf[$name]);
+		}
+		catch (Exception $e) {
+			log_message('warning',  $e->getMessage());
 		}
 	}
 }

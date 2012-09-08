@@ -149,41 +149,32 @@ class weatherstation extends CI_Model {
 		return true;
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	function get_confs()
+	function ConfCollector($conf)
 	{
+		$type = strtolower($conf['type']);
+		include_once(APPPATH.'models/'.$type.'.php');
+		$Current_WS = new $type($conf);
 		try {
-			if (!$this->Current_Station->initConnection())
-				throw new Exception( sprintf( _('Impossible de se connecter à %s par %s:%s'), $this->name, $this->conf['ip'], $this->conf['port']));
-			$conf = $this->Current_Station->GetConfig();
-			if (!$conf)
-				throw new Exception( sprintf( _('Lecture des config de %s impossible'), $this->name));
+			if ( !$Current_WS->initConnection() )
+				throw new Exception( sprintf( _('Impossible de se connecter à %s par %s:%s'), $conf['name'], $conf['ip'], $conf['port']));
+	
+			if (!($realconf=end($Current_WS->GetConfig())));
+				throw new Exception( sprintf( _('Lecture des config de %s impossible'),$conf['name']));
 			// conf est un array('2012/08/04 15:30:00'=>array(...))
 			// qui ne contiend qu'une seule valeur de niveau 1 mais dont la clef est variable
 			// end() permet de recupere cette valeur quelque soit ca clef.
-			$this->confExtend = end($conf);
-			if (!$this->Current_Station->closeConnection())
-				throw new Exception( sprintf( _('Fermeture de %s impossible'), $this->name));
-			return $this->confExtend;
+			if ( !$Current_WS->closeConnection() )
+				throw new Exception( sprintf( _('Fermeture de %s impossible'), $conf['name']) );
 		}
 		catch (Exception $e) {
 			throw new Exception( $e->getMessage() );
 		}
-		return true;
+		return $conf;
 	}
 	
-
 	
+	
+		
 	function arrays2dbconfs($id, $conf)
 	{/** 3 cas sont possible :
 	la conf n'existe pas > INSERT INTO
