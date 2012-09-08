@@ -12,59 +12,136 @@ class weatherstation extends CI_Model {
 	function __construct()
 	{
 		parent::__construct();
-		log_message('debug',  __FUNCTION__.'('.__CLASS__.') '.__FILE__);
+		log_message('init',  __FUNCTION__.'('.__CLASS__.")\n".__FILE__.' ['.__LINE__.']');
 		$this->load->database(); // charge la base par defaut
-		$this->type = $conf['type'];
-// 			unset ($conf['type']);
-		$this->name = $conf['name'];
-// 			unset ($conf['name']);
-		$this->conf = $conf;
-		/**
-			on charge la classe qui correspond a notre type de station,
-			elle sera disponible sous la denominatiosn : $this->Current_Station->*
-		*/
-// 		$this->load->model($this->type, 'Current_Station', FALSE, $this->conf);
-		include_once(APPPATH.'models/'.strtolower($this->type).'.php');
-		$this->Current_Station = new $this->type($this->conf);
+		$this->lst = $this->lstNames();
 		
-		try {
-			if (is_string($conf['db']))
-			{
-				global $db, $active_group, $active_record;
-				if (file_exists($file_path = APPPATH.'config/database.php'))
-					include_once($file_path);
-				else
-					throw new Exception( _('Impossible de trouver le fichier : */config/database.php'));
-
-				if ( isset($db[$this->conf['db']]) && is_array($db[$this->conf['db']])) {
-					include_once(APPPATH.'models/dbdata.php');
-					$this->dbdata = new dbdata($this->conf['db']);
-// 					$this->load->model('dbdata', '', false, $conf['db']);
-// 					$this->dbdata->__construct($conf['db']);
-					if ( isset($this->dbdata) )
-						log_message('db', sprintf( _('la basse 2 donnée [%s] est deffinie pour : %s'),$this->conf['db'], $this->name));
-				}
-				else throw new Exception(sprintf( _('Aucune Base 2 donnee definie pour cette station : %s (%s)'), $this->name, $this->conf['db']));
-			}
-			else throw new Exception(sprintf( _('Aucune config vers une Base 2 donnee pour cette station : %s'), $this->name));
-		}
-		catch (Exception $e) {
-			log_message('warning',  $e->getMessage());
-		}
-		
-		return true;
+// 		$this->type = $conf['type'];
+// // 			unset ($conf['type']);
+// 		$this->name = $conf['name'];
+// // 			unset ($conf['name']);
+// 		$this->conf = $conf;
+// 		/**
+// 			on charge la classe qui correspond a notre type de station,
+// 			elle sera disponible sous la denominatiosn : $this->Current_Station->*
+// 		*/
+// // 		$this->load->model($this->type, 'Current_Station', FALSE, $this->conf);
+// 		include_once(APPPATH.'models/'.strtolower($this->type).'.php');
+// 		$this->Current_Station = new $this->type($this->conf);
+// 		
+// 		try {
+// 			if (is_string($conf['db']))
+// 			{
+// 				global $db, $active_group, $active_record;
+// 				if (file_exists($file_path = APPPATH.'config/database.php'))
+// 					include_once($file_path);
+// 				else
+// 					throw new Exception( _('Impossible de trouver le fichier : */config/database.php'));
+// 
+// 				if ( isset($db[$this->conf['db']]) && is_array($db[$this->conf['db']])) {
+// 					include_once(APPPATH.'models/dbdata.php');
+// 					$this->dbdata = new dbdata($this->conf['db']);
+// // 					$this->load->model('dbdata', '', false, $conf['db']);
+// // 					$this->dbdata->__construct($conf['db']);
+// 					if ( isset($this->dbdata) )
+// 						log_message('db', sprintf( _('la basse 2 donnée [%s] est deffinie pour : %s'),$this->conf['db'], $this->name));
+// 				}
+// 				else throw new Exception(sprintf( _('Aucune Base 2 donnee definie pour cette station : %s (%s)'), $this->name, $this->conf['db']));
+// 			}
+// 			else throw new Exception(sprintf( _('Aucune config vers une Base 2 donnee pour cette station : %s'), $this->name));
+// 		}
+// 		catch (Exception $e) {
+// 			log_message('warning',  $e->getMessage());
+// 		}
+// 		
+// 		return true;
 	}
 	
-	function get_archives()
+	/**
+	 * retourne un tableau de tous les noms et db_ID de toute les stations
+	 * @return	array (db_ID => Name)
+	 */
+	function lstNames()
+	{// on demande la liste des NOM des stations meteo et les ID assoc
+	$lst = $this->db->query( 
+			'SELECT `CFG_STATION_ID`, `CFG_VALUE` 
+			FROM `TR_CONFIG` 
+			WHERE `CFG_LABEL`=\'name\' 
+			LIMIT 16');
+
+		log_message('db', 'Request list of sation');
+		foreach($lst->result() as $item) { // on met en forme les resultat sous forme de tableau
+			$this->lst[$item->CFG_STATION_ID] = $item->CFG_VALUE;
+		}
+		if (!is_array($this->lst)){
+			log_message('warning', 'List of Weather Station is empty!');
+			return false;
+		}
+		return $this->lst;
+	}
+	/**
+	 * recupere sous forme de table l'ensemble des configs d'une ou de toutes les station
+	 * @var item
+		item peut etre le Numero db_ID ou le nom de la station dont on veut les confs
+		si item est homis alors toutes les conf de toutes les stations sont retourné
+	 * @return array ('name' => array (configs))
+	 */
+	function config($item = null)
 	{
+		if (!empty($item)) {
+			if (is_numeric($item) && array_key_exists($item, $this->lst))
+			//dans le cas ou je connais deja de ID de ma station
+				$lst[$item]=$this->lst[$item];
+			elseif (in_array($item, $this->lst))
+			//dans le cas ou je ne connais que le nom
+				$lst[array_search($item, $this->lst)]=$item;
+		}
+		else {
+			$lst=$this->lst;
+		}
+		
+		$query = 'SELECT * FROM `TR_CONFIG` WHERE `CFG_STATION_ID`=? LIMIT 100';
+		log_message('Step',  __FUNCTION__.'('.__CLASS__.")\n".__FILE__.' ['.__LINE__.']');
+
+		foreach($lst as $id => $item)
+		{ // pour chaque station meteo on dresse la liste des configs
+			log_message('db', "Load DB confs for : $item (id:$id)");
+			$CurentStation = $this->db->query($query, $id);
+			$confs[$item]['id'] = $id;
+			foreach($CurentStation->result() as $val)
+			{ // on integre chacune des configs dans un tableau a 2 dimensions qui sera utilisé par la suite
+				$confs[$item][strtolower($val->CFG_LABEL)]=$val->CFG_VALUE;
+			}
+			if (!isset($confs[$item]['ip']) || !isset($confs[$item]['port']) || !isset($confs[$item]['type'])) {
+				log_message('warning', 'Missing confs for '.$item.' > Skipped!');
+				unset($confs[$item]);
+			}
+		}
+		if (count($confs) == 0){
+			throw new Exception(_('Aucune configuration valide n\'est disponible'));
+		}
+		return $confs;
+	}
+	
+	/**
+	 * recupere sous forme de table l'ensemble des configs d'une ou de toutes les station
+	 * @var item
+		item peut etre le Numero db_ID ou le nom de la station dont on veut les confs
+		si item est homis alors toutes les conf de toutes les stations sont retourné
+	 * @return array ('name' => array (configs))
+	 */
+	function ArchCollector($conf)
+	{
+		$type = strtolower($conf['type']);
+		include_once(APPPATH.'models/'.$type.'.php');
+		$Current_WS = new $type($conf);
 		try {
-			if ( !$this->Current_Station->initConnection() )
-				throw new Exception( sprintf( _('Impossible de se connecter à %s par %s:%s'), $this->name, $this->conf['ip'], $this->conf['port']));
-			$clock = $this->Current_Station->clockSync(5);
-			echo ">> ".$this->dbdata->get_Last_Date()." <<\n\n";
-			$this->data = $this->Current_Station->GetDmpAft ( $this->dbdata->get_Last_Date() );
-			if ( !$this->Current_Station->closeConnection() )
-				throw new Exception( sprintf( _('Fermeture de %s impossible'), $this->name) );
+			if ( !$Current_WS->initConnection() )
+				throw new Exception( sprintf( _('Impossible de se connecter à %s par %s:%s'), $conf['name'], $conf['ip'], $conf['port']));
+			$clock = $Current_WS->clockSync(5);
+			$this->data = $Current_WS->GetDmpAft ( $Current_WS->get_Last_Date() );
+			if ( !$Current_WS->closeConnection() )
+				throw new Exception( sprintf( _('Fermeture de %s impossible'), $conf['name']) );
 		}
 		catch (Exception $e) {
 			throw new Exception($e->getMessage());
@@ -72,6 +149,17 @@ class weatherstation extends CI_Model {
 		return true;
 	}
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	function get_confs()
 	{
 		try {
@@ -94,70 +182,7 @@ class weatherstation extends CI_Model {
 		return true;
 	}
 	
-	/**
-	 * retourne un tableau de tous les noms et db_ID de toute les stations
-	 * @return	array (db_ID => Name)
-	 */
-	function lstNames()
-	{// on demande la liste des NOM des stations meteo et les ID assoc
-	$lst = $this->db->query( 
-			'SELECT `CFG_STATION_ID`, `CFG_VALUE` 
-			FROM `TR_CONFIG` 
-			WHERE `CFG_LABEL`=\'name\' 
-			LIMIT 16');
-// 		$this->db->select('CFG_STATION_ID, CFG_VALUE')->from('TR_CONFIG')->where('CFG_LABEL','name')->limit(16);
-// 		$lst = $this->db->get();
 
-		log_message('db', 'Request list of sation');
-		foreach($lst->result() as $item) { // on met en forme les resultat sous forme de tableau
-			$this->lst[$item->CFG_STATION_ID] = $item->CFG_VALUE;
-		}
-		if (!is_array($this->lst)){
-			log_message('warning', 'List of Weather Station is empty!');
-			return false;
-		}
-		return $this->lst;
-	}
-
-	/**
-	 * recupere sous forme de table l'ensemble des configs d'une ou de toutes les station
-	 * @var item
-		item peut etre le Numero db_ID ou le nom de la station dont on veut les confs
-		si item est homis alors toutes les conf de toutes les stations sont retourné
-	 * @return array ('name' => array (configs))
-	 */
-	function dbconfs2arrays($item = null)
-	{
-		if (!empty($item)) {
-			if (is_numeric($item) && array_key_exists($item, $this->lst))
-				$lst[$item]=$this->lst[$item];
-			elseif (in_array($item, $this->lst))
-				$lst[array_search($item, $this->lst)]=$item;
-		}
-		else {
-			$lst=$this->lst;
-		}
-		
-		$query = 'SELECT * FROM `TR_CONFIG` WHERE `CFG_STATION_ID`=? LIMIT 100';
-
-		foreach($lst as $id => $item)
-		{ // pour chaque station meteo on dresse la liste des configs
-			log_message('db', "Load DB confs for : $item (id:$id)");
-			$CurentStation = $this->db->query($query, $id);
-			foreach($CurentStation->result() as $val)
-			{ // on integre chacune des configs dans un tableau a 2 dimensions qui sera utilisé par la suite
-				$confs[$item][strtolower($val->CFG_LABEL)]=$val->CFG_VALUE;
-			}
-			if (!isset($confs[$item]['ip']) || !isset($confs[$item]['port']) || !isset($confs[$item]['type'])) {
-				log_message('warning', 'Missing confs for '.$item.' > Skipped!');
-				unset($confs[$item]);
-			}
-		}
-		if (count($confs) == 0){
-			throw new Exception(_('Aucune configuration valide n\'est disponible'));
-		}
-		return $confs;
-	}
 	
 	function arrays2dbconfs($id, $conf)
 	{/** 3 cas sont possible :

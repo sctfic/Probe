@@ -1,4 +1,6 @@
-<?php	if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+include_once(APPPATH.'libraries/WS_rev_crypt.php');
 
 $db['default']['hostname'] = 'mysql:host=localhost';
 // this is the default user name for the database

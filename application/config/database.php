@@ -56,13 +56,9 @@ $active_record = TRUE;
  */
 
 /**----------------------------------------------------------------*/
-// 	echo __FILE__.' : '.__LINE__."\n";
-	include_once(APPPATH.'libraries/WS_rev_crypt.php');
 
-	foreach (glob(APPPATH.'config/db-*.php') as $filename) {
-		log_message('db', sprintf( _('Chargement des configs de DataBase : %s'), $filename));
-		include_once($filename);
-	}
+include_once(APPPATH.'config/db-default.php');
+include_once(APPPATH.'config/db-ws-template.php');
 
 /**----------------------------------------------------------------*/
 

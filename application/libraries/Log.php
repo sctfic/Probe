@@ -77,8 +77,7 @@ class CI_Log {
 		if ( ! $fp = @fopen($filepath, FOPEN_WRITE_CREATE))	{
 			return FALSE;
 		}
-		
-		$message .= $level."\t- ".date($this->_date_fmt). ' --> '.$msg."\n";
+		$message .= $level."\t- ".date($this->_date_fmt). ' --> '.str_replace ("\n", "\n\t\t\t\t > ", $msg)."\n";
 		
 		if ($this->_levels[$level] <= $this->_verbose && $this->_levels[$level] > 2)	{
 			echo $message;

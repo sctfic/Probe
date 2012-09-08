@@ -8,6 +8,8 @@ class station extends CI_Model {
 	
 	function __construct($conf)
 	{
+		log_message('Work',  __FUNCTION__.'('.__CLASS__.') '.__FILE__.'['.__LINE__.']');
+	return ;
 		parent::__construct();
 		log_message('debug',  __FUNCTION__.'('.__CLASS__.' ('.$conf['name'].') ) '.__FILE__);
 		$this->load->helper(array('cli_tools','binary','s.i.converter'));

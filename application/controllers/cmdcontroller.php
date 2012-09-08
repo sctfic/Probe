@@ -1,5 +1,5 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-// clear;php5 -f /var/www/WsWds/cli.php 'cron'
+// clear;php5 -f /var/www/WsWds/cli.php 'cmdcontroller'
 class cmdController extends CI_Controller {
 	function __construct() {
 		if (isset($_SERVER['REMOTE_ADDR'])) { // n'est pas definie en php5-cli
@@ -7,7 +7,7 @@ class cmdController extends CI_Controller {
 			die();
 		}
 		parent::__construct();
-		log_message('debug',  __FUNCTION__.'('.__CLASS__.') '.__FILE__);
+		log_message('init',  __FUNCTION__.'('.__CLASS__.")\n".__FILE__.' ['.__LINE__.']');
 		/**
 		on charge notre modele avec le 3ieme parametre a TRUE pour qu'il charge la base par defaut
 		elle sera disponible sous la denominatiosn : $this->db->*
@@ -19,44 +19,38 @@ class cmdController extends CI_Controller {
 	}
 
 	// la fonction qui ce lancera par defaut dans cette classe 
-	// clear;php5 -f /var/www/WsWds/cli.php 'cron'
+	// clear;php5 -f /var/www/WsWds/cli.php 'cmdcontroller'
 	function index() {
-	
+		$this->dataCollectors();
 	}
 	
-	// clear;php5 -f /var/www/WsWds/cli.php 'cron/dataCollector'
-	function dataCollector($station = null) {
+	// clear;php5 -f /var/www/WsWds/cli.php 'cmdcontroller/dataCollectors'
+	function dataCollectors($station = null) {
 		if (is_array($station)) {
 			foreach ($station as $item) {
-				$this->dataCollector($item);
+				// on rapelle cette meme fonction mais individuellement pour chaque station
+				$this->dataCollectors($item);
 			}
 			return ;
 		}
 		elseif (empty($station)) {
-			$this->dataCollector (array_keys ($this->WS->lst));
+			// on rapelle cette meme fonction mais avec de vrai paarametre : Toutes les stations
+			$this->dataCollectors (array_keys ($this->WS->lst));
+			return ;
 		}
-		
 		try {
-			$this->WS->dbconfs2arrays($station);
+			// on recupere les confs de $station
+			$conf = end($this->WS->config($station)); // $station est le ID ou le nom
+			
+			// on lance la recup des Archives de cette station
+			$this->WS->ArchCollector($conf);
 		}
 		catch (Exception $e) {
 			log_message('warning',  $e->getMessage());
 		}
-
 	}
-	// clear;php5 -f /var/www/WsWds/cli.php 'cron/ReadArch'
-	function ReadArch() {
-		foreach($this->dbconfig->lst as $id => $name){
-			try {
-				$conf = $this->dbconfig->dbconfs2arrays($name);
-				$this->station = new station($conf[$name]);
-				$this->station->get_archives();
-			}
-			catch (Exception $e) {
-				log_message('warning',  $e->getMessage());
-			}
-		}
-	}
+	
+	
 
 	function ReadConf() {
 		foreach($this->dbconfig->lst as $id => $name){
