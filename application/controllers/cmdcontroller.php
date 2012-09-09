@@ -21,7 +21,7 @@ class cmdController extends CI_Controller {
 	// la fonction qui ce lancera par defaut dans cette classe 
 	// clear;php5 -f /var/www/WsWds/cli.php 'cmdcontroller'
 	function index() {
-		$this->configCollectors();
+// 		$this->configCollectors();
 		$this->dataCollectors();
 	}
 	

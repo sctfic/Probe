@@ -1,5 +1,8 @@
 # http://www.thegeekstuff.com/2011/07/php-cron-job/
 
+# inform me when cron problem.
 MAILTO=alban.lopez+cron@gmail.com
 
-01 */2 * * * php5 -f /var/www/WsWds/cli.php 'cron/ReadArch' > /var/www/WsWds/data/cron.log
+# run every 5 minutes with 1 minute offset
+1-59/5 * * * * php5 -f /var/www/WsWds/cli.php 'cmdcontroller' > /var/www/WsWds/logs/cron.log
+
