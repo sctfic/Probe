@@ -20,7 +20,7 @@ class vp2 extends CI_Model {
 	function __construct($conf)
 	{
 		parent::__construct();
-		log_message('init',  __FUNCTION__.'('.__CLASS__.' ('.$conf['name'].':'.($base = $conf['db']).') '.")\n".__FILE__.' ['.__LINE__.']');
+		log_message('init',  __FUNCTION__.'('.__CLASS__.' ('.$conf['_name'].':'.($base = $conf['_db']).') '.")\n".__FILE__.' ['.__LINE__.']');
 		$this->conf = $conf;
 		require (APPPATH.'models/vp2/EepromDumpAfter.h.php');
 		require (APPPATH.'models/vp2/EepromLoop.h.php');
@@ -60,14 +60,14 @@ class vp2 extends CI_Model {
 	public function initConnection()	{
 		$errno = 0;
 		$this->fp = @fsockopen (
-			$this->conf['ip'],
-			$this->conf['port']
+			$this->conf['_ip'],
+			$this->conf['_port']
 		);
 		if ($this->fp && $errno==0) {
 			stream_set_timeout ($this->fp, 0, 2500000);
 			if ($this->wakeUp()) {
 				$this->toggleBacklight (1);
-				log_message('wswds', _( sprintf('Ouverture de la connexion à %s', $this->conf['name']) ) );
+				log_message('wswds', _( sprintf('Ouverture de la connexion à %s', $this->conf['_name']) ) );
 				return TRUE;
 			}
 			else {
@@ -79,7 +79,7 @@ class vp2 extends CI_Model {
 	function CloseConnection()	{
 		$this->toggleBacklight(0);
 		if (fclose($this->fp)) {
-			log_message('wswds', sprintf( _('Fermeture de %s correcte.'), $this->conf['name'] ) );
+			log_message('wswds', sprintf( _('Fermeture de %s correcte.'), $this->conf['_name'] ) );
 			return TRUE;
 		}
 		return FALSE;

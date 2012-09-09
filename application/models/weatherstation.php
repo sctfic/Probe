@@ -15,46 +15,6 @@ class weatherstation extends CI_Model {
 		log_message('init',  __FUNCTION__.'('.__CLASS__.")\n".__FILE__.' ['.__LINE__.']');
 		$this->load->database(); // charge la base par defaut
 		$this->lst = $this->lstNames();
-		
-// 		$this->type = $conf['type'];
-// // 			unset ($conf['type']);
-// 		$this->name = $conf['name'];
-// // 			unset ($conf['name']);
-// 		$this->conf = $conf;
-// 		/**
-// 			on charge la classe qui correspond a notre type de station,
-// 			elle sera disponible sous la denominatiosn : $this->Current_Station->*
-// 		*/
-// // 		$this->load->model($this->type, 'Current_Station', FALSE, $this->conf);
-// 		include_once(APPPATH.'models/'.strtolower($this->type).'.php');
-// 		$this->Current_Station = new $this->type($this->conf);
-// 		
-// 		try {
-// 			if (is_string($conf['db']))
-// 			{
-// 				global $db, $active_group, $active_record;
-// 				if (file_exists($file_path = APPPATH.'config/database.php'))
-// 					include_once($file_path);
-// 				else
-// 					throw new Exception( _('Impossible de trouver le fichier : */config/database.php'));
-// 
-// 				if ( isset($db[$this->conf['db']]) && is_array($db[$this->conf['db']])) {
-// 					include_once(APPPATH.'models/dbdata.php');
-// 					$this->dbdata = new dbdata($this->conf['db']);
-// // 					$this->load->model('dbdata', '', false, $conf['db']);
-// // 					$this->dbdata->__construct($conf['db']);
-// 					if ( isset($this->dbdata) )
-// 						log_message('db', sprintf( _('la basse 2 donnée [%s] est deffinie pour : %s'),$this->conf['db'], $this->name));
-// 				}
-// 				else throw new Exception(sprintf( _('Aucune Base 2 donnee definie pour cette station : %s (%s)'), $this->name, $this->conf['db']));
-// 			}
-// 			else throw new Exception(sprintf( _('Aucune config vers une Base 2 donnee pour cette station : %s'), $this->name));
-// 		}
-// 		catch (Exception $e) {
-// 			log_message('warning',  $e->getMessage());
-// 		}
-// 		
-// 		return true;
 	}
 	
 	/**
@@ -66,7 +26,7 @@ class weatherstation extends CI_Model {
 	$lst = $this->db->query( 
 			'SELECT `CFG_STATION_ID`, `CFG_VALUE` 
 			FROM `TR_CONFIG` 
-			WHERE `CFG_LABEL`=\'name\' 
+			WHERE `CFG_LABEL`=\'_name\' 
 			LIMIT 16');
 
 		log_message('db', 'Request list of sation');
@@ -107,12 +67,12 @@ class weatherstation extends CI_Model {
 		{ // pour chaque station meteo on dresse la liste des configs
 			log_message('db', "Load DB confs for : $item (id:$id)");
 			$CurentStation = $this->db->query($query, $id);
-			$confs[$item]['id'] = $id;
+			$confs[$item]['_id'] = $id;
 			foreach($CurentStation->result() as $val)
 			{ // on integre chacune des configs dans un tableau a 2 dimensions qui sera utilisé par la suite
 				$confs[$item][strtolower($val->CFG_LABEL)]=$val->CFG_VALUE;
 			}
-			if (!isset($confs[$item]['ip']) || !isset($confs[$item]['port']) || !isset($confs[$item]['type'])) {
+			if (!isset($confs[$item]['_ip']) || !isset($confs[$item]['_port']) || !isset($confs[$item]['_type'])) {
 				log_message('warning', 'Missing confs for '.$item.' > Skipped!');
 				unset($confs[$item]);
 			}
@@ -132,16 +92,16 @@ class weatherstation extends CI_Model {
 	 */
 	function ArchCollector($conf)
 	{
-		$type = strtolower($conf['type']);
+		$type = strtolower($conf['_type']);
 		include_once(APPPATH.'models/'.$type.'.php');
 		$Current_WS = new $type($conf);
 		try {
 			if ( !$Current_WS->initConnection() )
-				throw new Exception( sprintf( _('Impossible de se connecter à %s par %s:%s'), $conf['name'], $conf['ip'], $conf['port']));
+				throw new Exception( sprintf( _('Impossible de se connecter à %s par %s:%s'), $conf['_name'], $conf['_ip'], $conf['_port']));
 			$clock = $Current_WS->clockSync(5);
 			$this->data = $Current_WS->GetDmpAft ( $Current_WS->get_Last_Date() );
 			if ( !$Current_WS->closeConnection() )
-				throw new Exception( sprintf( _('Fermeture de %s impossible'), $conf['name']) );
+				throw new Exception( sprintf( _('Fermeture de %s impossible'), $conf['_name']) );
 		}
 		catch (Exception $e) {
 			throw new Exception($e->getMessage());
@@ -151,25 +111,25 @@ class weatherstation extends CI_Model {
 
 	function ConfCollector($conf)
 	{
-		$type = strtolower($conf['type']);
+		$type = strtolower($conf['_type']);
 		include_once(APPPATH.'models/'.$type.'.php');
 		$Current_WS = new $type($conf);
 		try {
 			if ( !$Current_WS->initConnection() )
-				throw new Exception( sprintf( _('Impossible de se connecter à %s par %s:%s'), $conf['name'], $conf['ip'], $conf['port']));
+				throw new Exception( sprintf( _('Impossible de se connecter à %s par %s:%s'), $conf['_name'], $conf['_ip'], $conf['_port']));
 	
-			if (!($realconf=end($Current_WS->GetConfig())));
-				throw new Exception( sprintf( _('Lecture des config de %s impossible'),$conf['name']));
+			if (!($realconf = end($Current_WS->GetConfig())))
+				throw new Exception( sprintf( _('Lecture des config de %s impossible'),$conf['_name']));
 			// conf est un array('2012/08/04 15:30:00'=>array(...))
 			// qui ne contiend qu'une seule valeur de niveau 1 mais dont la clef est variable
 			// end() permet de recupere cette valeur quelque soit ca clef.
 			if ( !$Current_WS->closeConnection() )
-				throw new Exception( sprintf( _('Fermeture de %s impossible'), $conf['name']) );
+				throw new Exception( sprintf( _('Fermeture de %s impossible'), $conf['_name']) );
 		}
 		catch (Exception $e) {
 			throw new Exception( $e->getMessage() );
 		}
-		return $conf;
+		return $realconf;
 	}
 	
 	

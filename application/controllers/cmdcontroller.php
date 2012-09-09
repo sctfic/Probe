@@ -22,6 +22,7 @@ class cmdController extends CI_Controller {
 	// clear;php5 -f /var/www/WsWds/cli.php 'cmdcontroller'
 	function index() {
 		$this->configCollectors();
+		$this->dataCollectors();
 	}
 	
 	// clear;php5 -f /var/www/WsWds/cli.php 'cmdcontroller/dataCollectors'
@@ -33,7 +34,7 @@ class cmdController extends CI_Controller {
 			}
 			return ;
 		}
-		elseif (empty($station)) {
+		elseif ($station===null && is_array($this->WS->lst)) {
 			// on rapelle cette meme fonction mais avec de vrai paarametre : Toutes les stations
 			$this->dataCollectors (array_keys ($this->WS->lst));
 			return ;
@@ -67,14 +68,12 @@ class cmdController extends CI_Controller {
 		}
 		try {
 			$conf = end($this->WS->config($station));			
-			$fullconf = $this->WS->ConfCollector($conf);
-		print_r('>>>'.$fullconf."\n");
-			foreach ($fullconf as $key => $val) {
+			$readconf = $this->WS->ConfCollector($conf);
+			foreach ($readconf as $key => $val) {
 				if (strpos($key, 'TR:Config:')!==FALSE)
-					$conf[str_replace('TR:Config:', '', $key)] = $val;
+					$ToStoreConfig[str_replace('TR:Config:', '', $key)] = $val;
 			}
-			print_r($conf);
-//				$this->dbconfig->arrays2dbconfs($id, $conf[$name]);
+			$this->WS->arrays2dbconfs($conf['_id'], $ToStoreConfig);
 		}
 		catch (Exception $e) {
 			log_message('warning',  $e->getMessage());
