@@ -13,6 +13,8 @@ class vp2 extends CI_Model {
 
 	protected $prep_VARIOUS = NULL;
 	protected $key_VARIOUS = array(':UTC_date', ':rainfall', ':max_rainfall', ':pressure', ':srad', ':max_srad', ':wspeed', ':max_wspeed', ':dir_higtspeed', ':dir_dominant', ':uv', ':max_uv', ':forecast', ':et');
+
+	protected $T_12H = NULL;
 	
 	protected $dataDB = NULL;
 	protected $current_data = NULL;
@@ -55,6 +57,9 @@ class vp2 extends CI_Model {
 				INTO `TA_VARIOUS` 
 					(`VAR_DATE`, `VAR_SAMPLE_RAINFALL`, `VAR_SAMPLE_RAINFALL_HIGHT`, `VAR_PRESSURE`, `VAR_SOLAR_RADIATION`, `VAR_SOLAR_RADIATION_HIGHT`, `VAR_WIND_SPEED`, `VAR_WIND_SPEED_HIGHT`, `VAR_WIND_SPEED_HIGHT_DIR`, `VAR_WIND_SPEED_DOMINANT_DIR`, `VAR_UV_INDEX`, `VAR_UV_INDEX_HIGHT`, `VAR_FORECAST_RULE`, `VAR_ET`)
 				VALUES ('.implode(', ', $this->key_VARIOUS).');');
+		$this->T_12H = 'SELECT AVG(`VALUE`) as T_AVG 
+					FROM `TA_TEMPERATURE` 
+					WHERE `SEN_ID`=? AND `VAR_DATE` > ? ;';
 	}
 	
 	public function initConnection()	{
@@ -420,9 +425,24 @@ class vp2 extends CI_Model {
 		}
 		return False;
 	}
+	function P_Barometric($data) {
+		$date = new DateTime($data['TA:Arch:Various:Time:UTC']);
+		$date->sub(new DateInterval('PT12H00M'));
+		$T_AVG = $this->dataDB->query($this->T_12H, array(1, $date->format('Y-m-d H:i:s')));
+		$T_Avg12H_F = end(end($T_AVG->result()));
+		
+		$Elevation = 240;
+		$Constant_L_in_F = 11 * $Elevation/8000;
+		$T_Virtuelle_F = $T_Avg12H_F + 460 + $Constant_L_in_F + $C_in_table;
+		$Exponent = $Elevation / (122.8943111 * $T_Virtuelle_F);
+		$Ratio = 10^$Exponent;
+		$P_alt0 = $P_VP2_Sensor * ($Ratio);
+	}
 
+	
 	function save_Archive($data){
 		$this->current_data = $data;
+//		$this->P_Barometric($data);
 		$this->insert_VARIOUS(array(
 			$data['TA:Arch:Various:Time:UTC'], 
 			$data['TA:Arch:Rain:RainFall:Sample'], 
@@ -441,7 +461,7 @@ class vp2 extends CI_Model {
 			$data['TA:Arch:Various::ForecastRule'],
 			$data['TA:Arch:Various:ET:Hour']
 			));
-		$id_arch = $this->dataDB->insert_id();//query('SELECT LAST_INSERT_ID();');
+		$id_arch = $this->dataDB->insert_id(); // query('SELECT LAST_INSERT_ID();');
 		foreach ($data as $name => $val) {
 			if (($table = $this->get_TABLE_Dest($name)) != 'TA_VARIOUS') {
 				$eav = 'prep_EAV_'.$table[3];
@@ -489,13 +509,11 @@ class vp2 extends CI_Model {
 	}
 	
 	function get_Last_Date() {
-		$date = $this->dataDB->query('SELECT MAX(VAR_DATE) FROM `TA_VARIOUS` LIMIT 3');
+		$date = $this->dataDB->query('SELECT MAX(VAR_DATE) as LAST_ARCH FROM `TA_VARIOUS`;');
 		if (count($date->result_array())==1) {
 			return end($date->result_array[0]);
 		}
-		else if (count($date->result_array())==0) {
-			return '2012/01/01 00:00:00';
-		}
-		log_message('warning', 'Trop de resultat : '.print_r($date));
+		log_message('warning', 'Resultat inutilisable : '.print_r($date));
+		return '2012/01/01 00:00:00';
 	}
 }
