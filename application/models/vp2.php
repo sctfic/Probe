@@ -9,7 +9,7 @@ class vp2 extends CI_Model {
 	protected $key_EAV = array(':id', ':val', ':sensorID');
 
 	protected $prep_SENSOR = NULL;
-	protected $key_SENSOR = array(':ID', ':NAME', ':HUMAN_NAME', ':DESCRIPT', ':MIN_REAL', ':MAX_REAL', ':UNITE_SIGN', ':DEF_PLOT', ':MAX_ALARM', ':MIN_ALARM', ':LAST_CALIBRATE', ':CALIBRATE_PERIOD');
+	protected $key_SENSOR = array(':NAME', ':HUMAN_NAME', ':DESCRIPT', ':MIN_REAL', ':MAX_REAL', ':UNITE_SIGN', ':DEF_PLOT', ':MAX_ALARM', ':MIN_ALARM', ':LAST_CALIBRATE', ':CALIBRATE_PERIOD');
 
 	protected $prep_VARIOUS = NULL;
 	protected $key_VARIOUS = array(':UTC_date', ':rainfall', ':max_rainfall', ':pressure', ':srad', ':max_srad', ':wspeed', ':max_wspeed', ':dir_higtspeed', ':dir_dominant', ':uv', ':max_uv', ':forecast', ':et');
@@ -59,10 +59,8 @@ class vp2 extends CI_Model {
 				VALUES ('.implode(', ', $this->key_VARIOUS).');');
 		$this->T_12H = 'SELECT (AVG(  `VALUE` ) -32) *5 /9 AS AVG_TEMP_IN_CELSIUS FROM `TA_TEMPERATURE` 
 				INNER JOIN `TA_VARIOUS` ON `ID` = `VAR_ID` 
-				INNER JOIN `TR_SENSOR` ON `TR_SENSOR`.`SEN_ID` = `TA_TEMPERATURE`.`SEN_ID` 
-				WHERE `VAR_DATE` >= :SINCE AND `SEN_NAME` =:SENSOR_NAME ;';
+				WHERE `VAR_DATE` >= :SINCE AND `SEN_ID` =:SENSOR_ID ;';
 	}
-	
 	public function initConnection()	{
 		$errno = 0;
 		$this->fp = @fsockopen (
@@ -141,7 +139,6 @@ class vp2 extends CI_Model {
 		}
 		return FALSE;
 	}
-
 	/**
 	@description: functionDescription
 	@return: functionReturn
@@ -179,7 +176,6 @@ class vp2 extends CI_Model {
 			throw new Exception(_('Unknow Error, Reconnection'));
 		}
 	}
-	
 	/**
 	@description: functionDescription
 	@return: functionReturn
@@ -227,6 +223,8 @@ class vp2 extends CI_Model {
 //     $x += $callc();
 //     if( $x != 3 ) die( 'Bad numbers' );
 // }
+/** Variable functions took 0.125958204269 seconds. **/
+//
 // echo( "Variable functions took " . (microtime( true ) - $time) . " seconds.<br />" );
 // 
 // $time = microtime( true );
@@ -238,6 +236,7 @@ class vp2 extends CI_Model {
 //     if( $x != 3 ) die( 'Bad numbers' );
 // }
 // echo( "call_user_func took " . (microtime( true ) - $time) . " seconds.<br />" );
+/** call_user_func took 0.485446929932 seconds. **/
 // 
 // $time = microtime( true );
 // for( $i = 5000; $i--; ) {
@@ -248,9 +247,9 @@ class vp2 extends CI_Model {
 //     if( $x != 3 ) die( 'Bad numbers' );
 // }
 // echo( "eval took " . (microtime( true ) - $time) . " seconds.<br />" );
+/** eval took 2.78526711464 seconds. **/
 // 
 // ? >
-				
 			}
 			else {
 				$x[$key] = $StrValue;
@@ -429,7 +428,7 @@ class vp2 extends CI_Model {
 	function P_Barometric($data) {
 		$date = new DateTime($data['TA:Arch:Various:Time:UTC']);
 		$date->sub(new DateInterval('PT12H00M'));
-		$T_AVG = $this->dataDB->query($this->T_12H, array(1, $date->format('Y-m-d H:i:s')));
+		$T_AVG = $this->dataDB->query($this->T_12H, array(':SINCE' => $date->format('Y-m-d H:i:s'), ':SENSOR_ID' => $this->get_SEN_ID('TA:Arch:Temp:Out:Average')));
 		$T_Avg12H_F = end(end($T_AVG->result()));
 		
 		$Elevation = 240;
@@ -439,8 +438,6 @@ class vp2 extends CI_Model {
 		$Ratio = 10^$Exponent;
 		$P_alt0 = $P_VP2_Sensor * ($Ratio);
 	}
-
-	
 	function save_Archive($data){
 		$this->current_data = $data;
 //		$this->P_Barometric($data);
@@ -464,9 +461,10 @@ class vp2 extends CI_Model {
 			));
 		$id_arch = $this->dataDB->insert_id(); // query('SELECT LAST_INSERT_ID();');
 		foreach ($data as $name => $val) {
+			$Sensor = $this->get_SEN_ID($name);
 			if (($table = $this->get_TABLE_Dest($name)) != 'TA_VARIOUS') {
 				$eav = 'prep_EAV_'.$table[3];
-				$this->$eav->execute(array_combine($this->key_EAV, array($id_arch, $val, $this->get_SEN_ID($name))));
+				$this->$eav->execute(array_combine($this->key_EAV, array($id_arch, $val, $Sensor['SENSOR_ID'])));
 			}
 		}
 	}
@@ -493,26 +491,28 @@ class vp2 extends CI_Model {
 		else
 			return 'TA_VARIOUS';
 	}
-	function get_SEN_ID($name) {
-		$id = $this->dataDB->query('SELECT SEN_ID FROM `TR_SENSOR` WHERE SEN_NAME=\''.$name.'\' LIMIT 3');
+	function get_SEN_ID($name, $recursive = true) {
+		$id = $this->dataDB->query('SELECT SEN_ID AS SENSOR_ID, SEN_MIN_REALISTIC AS MIN, SEN_MAX_REALISTIC AS MAX FROM `TR_SENSOR` WHERE SEN_NAME=\''.$name.'\' ;');
 		if (count($id->result_array())==1) {
-			return end($id->result_array[0]);
+			return $id->result_array[0];
 		}
-		else if (count($id->result_array())==0) {
-			$this->dataDB->query('INSERT 
+		else if (count($id->result_array())==0 and $recursive==TRUE) {
+			$this->insert_SENSOR(array($name, 'HUMAN NAME is more than '.$name, 'DESCRIPT', 0, 65535, 'unkow', 'standard', 32000, 0, date ("Y/m/d H:i:s"), 'P0Y6M0DT0H0M0S'));
+/*			$this->dataDB->query('INSERT 
 				INTO `TR_SENSOR` 
 					(SEN_NAME, SEN_DEF_PLOT, SEN_MAX_ALARM, SEN_MIN_ALARM, SEN_LAST_CALIBRATE, SEN_CALIBRATE_PERIOD) 
 				VALUES 
-					(\''.$name.'\', \'Default_Plot\', 1999, -199, \'2012/01/01 00:00:01\', \'0000/06/00 00:00:00\')');
-			return $this->dataDB->insert_id();//query('SELECT LAST_INSERT_ID();');
+					(\''.$name.'\', \'Default_Plot\', 1999, -199, \'2012/01/01 00:00:01\', \'0000/06/00 00:00:00\')');*/
+			return $this->get_SEN_ID($name, false); // dataDB->insert_id(); // query('SELECT LAST_INSERT_ID();');
 		}
-		log_message('warning', 'Trop de resultat : '.print_r($id));
+		print_r($id->result_array);
+		log_message('warning', 'Resultat inutilisable ('.$name.') : elseif ('.((count($id->result_array())==0 and $recursive==TRUE)?'TRUE':'FALSE').')');
 	}
 	
 	function get_Last_Date() {
-		$date = $this->dataDB->query('SELECT MAX(VAR_DATE) as LAST_ARCH FROM `TA_VARIOUS`;');
+		$date = $this->dataDB->query('SELECT MAX(VAR_DATE) as LAST_ARCH_DATETIME FROM `TA_VARIOUS`;');
 		if (count($date->result_array())==1) {
-			return end($date->result_array[0]);
+			return $date->result_array[0]['LAST_ARCH_DATETIME'];
 		}
 		log_message('warning', 'Resultat inutilisable : '.print_r($date));
 		return '2012/01/01 00:00:00';

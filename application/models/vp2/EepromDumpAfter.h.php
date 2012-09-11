@@ -58,7 +58,7 @@ Convention de nomage :
 	'TA:Arch:Hum:In:Current'		=>	array( 'pos' => 22,	'len' => 1,	'fn'=>'Rate',		'SI'=>NULL,	'min'=>0,	'max'=>100,	'err'=>255,	'unit'=> '%'	),
 	'TA:Arch:Hum:Out:Current'		=>	array( 'pos' => 23,	'len' => 1,	'fn'=>'Rate',		'SI'=>NULL,	'min'=>0,	'max'=>100,	'err'=>255,	'unit'=> '%'	),
 
-	'TA:Arch:Various:Wind:SpeedAvg'		=>	array( 'pos' => 24,	'len' => 1,	'fn'=>'Speed',		'SI'=>'mBySec',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> 'mph'	),
+	'TA:Arch:Various:Wind:SpeedAvg'	=>	array( 'pos' => 24,	'len' => 1,	'fn'=>'Speed',		'SI'=>'mBySec',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> 'mph'	),
 	'TA:Arch:Various:Wind:HighSpeed'	=>	array( 'pos' => 25,	'len' => 1,	'fn'=>'Speed',		'SI'=>'mBySec',	'min'=>0,	'max'=>0xFF,	'err'=>0,	'unit'=> 'mph'	),
 	'TA:Arch:Various:Wind:HighSpeedDirection'=>	array( 'pos' => 26,	'len' => 1,	'fn'=>'Angle16',	'SI'=>NULL,	'min'=>0,	'max'=>16,	'err'=>255,	'unit'=> '°'	),
 	'TA:Arch:Various:Wind:DominantDirection'=>	array( 'pos' => 27,	'len' => 1,	'fn'=>'Angle16',	'SI'=>NULL,	'min'=>0,	'max'=>16,	'err'=>255,	'unit'=> '°'	),
