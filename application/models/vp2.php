@@ -430,7 +430,12 @@ class vp2 extends CI_Model {
 		$date->sub(new DateInterval('PT12H00M'));
 		$T_AVG = $this->dataDB->query($this->T_12H, array(':SINCE' => $date->format('Y-m-d H:i:s'), ':SENSOR_ID' => $this->get_SEN_ID('TA:Arch:Temp:Out:Average')));
 		$T_Avg12H_F = end(end($T_AVG->result()));
-		
+//		http://en.wikipedia.org/wiki/Atmospheric_pressure#Altitude_atmospheric_pressure_variation
+//		http://san.hufs.ac.kr/~gwlee/session3/sealev1calc.html
+//		http://fr.wikipedia.org/wiki/Champ_de_gravit%C3%A9#.C3.89valuation_de_la_pesanteur_terrestre
+//		$gravity = 9.780318*(1+0.0053024*sin²($latitude)+0.0000059+sin²(2*$latitude)-0.000000315*$Elevation_m)
+//		gn = 9,80665 m/s2
+
 		$Elevation = 240;
 		$Constant_L_in_F = 11 * $Elevation/8000;
 		$T_Virtuelle_F = $T_Avg12H_F + 460 + $Constant_L_in_F + $C_in_table;
