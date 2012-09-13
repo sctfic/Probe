@@ -50,7 +50,7 @@ class vp2 extends CI_Model {
 		$this->prep_SENSOR = $this->dataDB->conn_id->prepare(
 			'REPLACE 
 				INTO `TR_SENSOR` 
-					(SEN_ID, SEN_NAME, SEN_HUMAN_NAME, SEN_DESCRIPTIF, SEN_MIN_REALISTIC, SEN_MAX_REALISTIC, SEN_UNITE_SIGN, SEN_DEF_PLOT, SEN_MAX_ALARM, SEN_MIN_ALARM, SEN_LAST_CALIBRATE, SEN_CALIBRATE_PERIOD) 
+					(SEN_NAME, SEN_HUMAN_NAME, SEN_DESCRIPTIF, SEN_MIN_REALISTIC, SEN_MAX_REALISTIC, SEN_UNITE_SIGN, SEN_DEF_PLOT, SEN_MAX_ALARM, SEN_MIN_ALARM, SEN_LAST_CALIBRATE, SEN_CALIBRATE_PERIOD) 
 				VALUES ('.implode(', ', $this->key_SENSOR).');');
 		$this->prep_VARIOUS = $this->dataDB->conn_id->prepare(
 			'REPLACE 
@@ -441,28 +441,29 @@ class vp2 extends CI_Model {
 	function save_Archive($data){
 		$this->current_data = $data;
 //		$this->P_Barometric($data);
-		$this->insert_VARIOUS(array(
-			$data['TA:Arch:Various:Time:UTC'], 
-			$data['TA:Arch:Rain:RainFall:Sample'], 
-			$data['TA:Arch:Rain:RainRate:HighSample'], 
-			$data['TA:Arch:Various:Bar:Current'], 
-			$data['TA:Arch:Various:Solar:Radiation'], 
-			
-			$data['TA:Arch:Various:Solar:HighRadiation'], 
-			$data['TA:Arch:Various:Wind:SpeedAvg'], 
-			$data['TA:Arch:Various:Wind:HighSpeed'], 
-			$data['TA:Arch:Various:Wind:HighSpeedDirection'], 
-			$data['TA:Arch:Various:Wind:DominantDirection'], 
-			
-			$data['TA:Arch:Various:UV:IndexAvg'], 
-			$data['TA:Arch:Various:UV:HighIndex'], 
-			$data['TA:Arch:Various::ForecastRule'],
-			$data['TA:Arch:Various:ET:Hour']
-			));
+// 		$this->insert_VARIOUS(array(
+// 			$data['TA:Arch:Various:Time:UTC'], 
+// 			$data['TA:Arch:Rain:RainFall:Sample'], 
+// 			$data['TA:Arch:Rain:RainRate:HighSample'], 
+// 			$data['TA:Arch:Various:Bar:Current'], 
+// 			$data['TA:Arch:Various:Solar:Radiation'], 
+// 			
+// 			$data['TA:Arch:Various:Solar:HighRadiation'], 
+// 			$data['TA:Arch:Various:Wind:SpeedAvg'], 
+// 			$data['TA:Arch:Various:Wind:HighSpeed'], 
+// 			$data['TA:Arch:Various:Wind:HighSpeedDirection'], 
+// 			$data['TA:Arch:Various:Wind:DominantDirection'], 
+// 			
+// 			$data['TA:Arch:Various:UV:IndexAvg'], 
+// 			$data['TA:Arch:Various:UV:HighIndex'], 
+// 			$data['TA:Arch:Various::ForecastRule'],
+// 			$data['TA:Arch:Various:ET:Hour']
+// 			));
 		$id_arch = $this->dataDB->insert_id(); // query('SELECT LAST_INSERT_ID();');
 		foreach ($data as $name => $val) {
-			$Sensor = $this->get_SEN_ID($name);
-			if (($table = $this->get_TABLE_Dest($name)) != 'TA_VARIOUS') {
+			$table = $this->get_TABLE_Dest($name);
+			$Sensor = $this->get_SEN_ID($name,$table);
+			if ($table != 'TA_VARIOUS') {
 				$eav = 'prep_EAV_'.$table[3];
 				$this->$eav->execute(array_combine($this->key_EAV, array($id_arch, $val, $Sensor['SENSOR_ID'])));
 			}
@@ -491,13 +492,16 @@ class vp2 extends CI_Model {
 		else
 			return 'TA_VARIOUS';
 	}
-	function get_SEN_ID($name, $recursive = true) {
+	function get_SEN_ID($name, $table, $recursive = true) {
+		$min = array('TA_TEMPERATURE'=>-50,'TA_HUMIDITY'=>0,'TA_WETNESSES'=>0,'TA_MOISTURE'=>0,'TA_VARIOUS'=>0);
+		$max = array('TA_TEMPERATURE'=>80,'TA_HUMIDITY'=>100,'TA_WETNESSES'=>100,'TA_MOISTURE'=>100,'TA_VARIOUS'=>65000);
 		$id = $this->dataDB->query('SELECT SEN_ID AS SENSOR_ID, SEN_MIN_REALISTIC AS MIN, SEN_MAX_REALISTIC AS MAX FROM `TR_SENSOR` WHERE SEN_NAME=\''.$name.'\' ;');
 		if (count($id->result_array())==1) {
 			return $id->result_array[0];
 		}
-		else if (count($id->result_array())==0 and $recursive==TRUE) {
-			$this->insert_SENSOR(array($name, 'HUMAN NAME is more than '.$name, 'DESCRIPT', 0, 65535, 'unkow', 'standard', 32000, 0, date ("Y/m/d H:i:s"), 'P0Y6M0DT0H0M0S'));
+		else if (count($id->result_array())==0 and $recursive==TRUE) { // $id->num_rows();
+		log_message('warning', 'Add new SENSOR');
+			$this->insert_SENSOR(array($name, 'HUMAN NAME is more than '.$name, 'DESCRIPT', $min[$table], $max[$table], 'unkow', 'standard', 32000, 0, date ("Y/m/d H:i:s"), 'P0Y6M0DT0H0M0S'));
 /*			$this->dataDB->query('INSERT 
 				INTO `TR_SENSOR` 
 					(SEN_NAME, SEN_DEF_PLOT, SEN_MAX_ALARM, SEN_MIN_ALARM, SEN_LAST_CALIBRATE, SEN_CALIBRATE_PERIOD) 
@@ -506,7 +510,7 @@ class vp2 extends CI_Model {
 			return $this->get_SEN_ID($name, false); // dataDB->insert_id(); // query('SELECT LAST_INSERT_ID();');
 		}
 		print_r($id->result_array);
-		log_message('warning', 'Resultat inutilisable ('.$name.') : elseif ('.((count($id->result_array())==0 and $recursive==TRUE)?'TRUE':'FALSE').')');
+		log_message('warning', 'Resultat inutilisable ('.$name.')');
 	}
 	
 	function get_Last_Date() {
