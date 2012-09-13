@@ -433,6 +433,9 @@ class vp2 extends CI_Model {
 		$T_Avg12H_F = end(end($T_AVG->result()));
 //		http://en.wikipedia.org/wiki/Atmospheric_pressure#Altitude_atmospheric_pressure_variation
 //		http://san.hufs.ac.kr/~gwlee/session3/sealev1calc.html
+//		http://fr.wikipedia.org/wiki/Champ_de_gravit%C3%A9#.C3.89valuation_de_la_pesanteur_terrestre
+//		$gravity = 9.780318*(1+0.0053024*sin²($latitude)+0.0000059+sin²(2*$latitude)-0.000000315*$Elevation_m)
+//		gn = 9,80665 m/s2
 
 		$Elevation = 240;
 		$Constant_L_in_F = 11 * $Elevation/8000;
