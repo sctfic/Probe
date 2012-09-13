@@ -362,7 +362,7 @@ class vp2 extends CI_Model {
 					// ignore les derniere valeur hors champ, car on parcoure une liste circulaire
 					// donc la deniere valeur a extraire precede la plus vielle valleur de cette liste
 						$DATAS[$ArchDate] = self::RawConverter($this->DumpAfter, $ArchiveStrRaw);
-						log_message('dl', sprintf(_('Page #%d-%d of %s archived Ok.'),$j, $k, $ArchDate));
+						log_message('save', sprintf(_('Page #%d-%d of %s archived Ok.'),$j, $k, $ArchDate));
 						if ($save) {
 							$this->save_Archive($DATAS[$ArchDate]);
 						}
@@ -425,45 +425,29 @@ class vp2 extends CI_Model {
 		}
 		return False;
 	}
-	function P_Barometric($data) {
-		$date = new DateTime($data['TA:Arch:Various:Time:UTC']);
-		$date->sub(new DateInterval('PT12H00M'));
-		$T_AVG = $this->dataDB->query($this->T_12H, array(':SINCE' => $date->format('Y-m-d H:i:s'), ':SENSOR_ID' => $this->get_SEN_ID('TA:Arch:Temp:Out:Average')));
-		$T_Avg12H_F = end(end($T_AVG->result()));
-//		http://en.wikipedia.org/wiki/Atmospheric_pressure#Altitude_atmospheric_pressure_variation
-//		http://san.hufs.ac.kr/~gwlee/session3/sealev1calc.html
-//		http://fr.wikipedia.org/wiki/Champ_de_gravit%C3%A9#.C3.89valuation_de_la_pesanteur_terrestre
-//		$gravity = 9.780318*(1+0.0053024*sin²($latitude)+0.0000059+sin²(2*$latitude)-0.000000315*$Elevation_m)
-//		gn = 9,80665 m/s2
 
-		$Elevation = 240;
-		$Constant_L_in_F = 11 * $Elevation/8000;
-		$T_Virtuelle_F = $T_Avg12H_F + 460 + $Constant_L_in_F + $C_in_table;
-		$Exponent = $Elevation / (122.8943111 * $T_Virtuelle_F);
-		$Ratio = 10^$Exponent;
-		$P_alt0 = $P_VP2_Sensor * ($Ratio);
-	}
+
 	function save_Archive($data){
 		$this->current_data = $data;
-//		$this->P_Barometric($data);
-// 		$this->insert_VARIOUS(array(
-// 			$data['TA:Arch:Various:Time:UTC'], 
-// 			$data['TA:Arch:Rain:RainFall:Sample'], 
-// 			$data['TA:Arch:Rain:RainRate:HighSample'], 
-// 			$data['TA:Arch:Various:Bar:Current'], 
-// 			$data['TA:Arch:Various:Solar:Radiation'], 
-// 			
-// 			$data['TA:Arch:Various:Solar:HighRadiation'], 
-// 			$data['TA:Arch:Various:Wind:SpeedAvg'], 
-// 			$data['TA:Arch:Various:Wind:HighSpeed'], 
-// 			$data['TA:Arch:Various:Wind:HighSpeedDirection'], 
-// 			$data['TA:Arch:Various:Wind:DominantDirection'], 
-// 			
-// 			$data['TA:Arch:Various:UV:IndexAvg'], 
-// 			$data['TA:Arch:Various:UV:HighIndex'], 
-// 			$data['TA:Arch:Various::ForecastRule'],
-// 			$data['TA:Arch:Various:ET:Hour']
-// 			));
+// 		$this->P_Barometric($data);
+		$this->insert_VARIOUS(array(
+			$data['TA:Arch:Various:Time:UTC'], 
+			$data['TA:Arch:Rain:RainFall:Sample'], 
+			$data['TA:Arch:Rain:RainRate:HighSample'], 
+			$data['TA:Arch:Various:Bar:Current'], 
+			$data['TA:Arch:Various:Solar:Radiation'], 
+			
+			$data['TA:Arch:Various:Solar:HighRadiation'], 
+			$data['TA:Arch:Various:Wind:SpeedAvg'], 
+			$data['TA:Arch:Various:Wind:HighSpeed'], 
+			$data['TA:Arch:Various:Wind:HighSpeedDirection'], 
+			$data['TA:Arch:Various:Wind:DominantDirection'], 
+			
+			$data['TA:Arch:Various:UV:IndexAvg'], 
+			$data['TA:Arch:Various:UV:HighIndex'], 
+			$data['TA:Arch:Various::ForecastRule'],
+			$data['TA:Arch:Various:ET:Hour']
+			));
 		$id_arch = $this->dataDB->insert_id(); // query('SELECT LAST_INSERT_ID();');
 		foreach ($data as $name => $val) {
 			$table = $this->get_TABLE_Dest($name);
@@ -474,7 +458,6 @@ class vp2 extends CI_Model {
 			}
 		}
 	}
-
 	function insert_SENSOR($value_SENSOR) {
 		$real_SENSOR = array_combine($this->key_SENSOR, $value_SENSOR);
 		$this->prep_SENSOR->execute($real_SENSOR);
@@ -505,7 +488,6 @@ class vp2 extends CI_Model {
 			return $id->result_array[0];
 		}
 		else if (count($id->result_array())==0 and $recursive==TRUE) { // $id->num_rows();
-		log_message('warning', 'Add new SENSOR');
 			$this->insert_SENSOR(array($name, 'HUMAN NAME is more than '.$name, 'DESCRIPT', $min[$table], $max[$table], 'unkow', 'standard', 32000, 0, date ("Y/m/d H:i:s"), 'P0Y6M0DT0H0M0S'));
 /*			$this->dataDB->query('INSERT 
 				INTO `TR_SENSOR` 

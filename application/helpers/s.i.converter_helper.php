@@ -5,6 +5,26 @@
 		################	Function for RAW data convertion	#################
 		#################################################################################
 **/
+	function P_Alt0($Elevation_in_m, $Virtual_Temp_in_K) {
+		$date = new DateTime($data['TA:Arch:Various:Time:UTC']);
+		$date->sub(new DateInterval('PT12H00M'));
+		$T_AVG = $this->dataDB->query($this->T_12H, array(':SINCE' => $date->format('Y-m-d H:i:s'), ':SENSOR_ID' => $this->get_SEN_ID('TA:Arch:Temp:Out:Average')));
+		$T_Avg12H_F = end(end($T_AVG->result()));
+//		http://en.wikipedia.org/wiki/Atmospheric_pressure#Altitude_atmospheric_pressure_variation
+//		http://san.hufs.ac.kr/~gwlee/session3/sealev1calc.html
+
+
+	}
+	function Gravity($Elevation_in_meter, $latitude_in_degres = 45) {
+//		http://fr.wikipedia.org/wiki/Champ_de_gravitee#.C3.89valuation_de_la_pesanteur_terrestre
+		return 9.780318* ((1+0.0053024*SqareSin($latitude_in_degres) - 0.0000059*SqareSin(2*$latitude_in_degres)) - 0.000000315*$Elevation_in_meter);
+//		$Normal_gravity = 9,80665 m/s2
+// 		return 9.80665;
+	}
+	function SqareSin($x){
+// 		1/2(1-cos2x)=sin²x
+		return 1/2*(1-cos(2*deg2rad($x)));
+	}
 	function Gain($str) {// ...
 		return hexToDec(strrev($str))/1000;
 	}

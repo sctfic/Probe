@@ -67,7 +67,7 @@ Convention de nomage :
 	'TA:Arch:Various:ET:Hour'		=>	array( 'pos' => 29,	'len' => 1,	'fn'=>'ET_h',		'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>0,	'unit'=> 'mm'	),
 	'TA:Arch:Various:Solar:HighRadiation'	=>	array( 'pos' => 30,	'len' => 2,	'fn'=>'Radiation',	'SI'=>NULL,	'min'=>0,	'max'=>2000,	'err'=>0,	'unit'=> 'W/m²'	),
 	'TA:Arch:Various:UV:HighIndex'		=>	array( 'pos' => 32,	'len' => 1,	'fn'=>'UV',		'SI'=>NULL,	'min'=>0,	'max'=>25,	'err'=>255,	'unit'=> 'W/m²'	),
-	'TA:Arch:Various::ForecastRule'		=>	array( 'pos' => 33,	'len' => 1,	'fn'=>'Forecast',	'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>193,	'unit'=> '-'	),
+	'TA:Arch:Various::ForecastRule'	=>	array( 'pos' => 33,	'len' => 1,	'fn'=>'Forecast',	'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>193,	'unit'=> '-'	),
 
 	'TA:Arch:Temp:Leaf#1:Current'		=>	array( 'pos' => 34,	'len' => 1,	'fn'=>'SmallTemp',	'SI'=>'tempSI',	'min'=>-90,	'max'=>164,	'err'=>255,	'unit'=> '°F'	),
 	'TA:Arch:Temp:Leaf#2:Current'		=>	array( 'pos' => 35,	'len' => 1,	'fn'=>'SmallTemp',	'SI'=>'tempSI',	'min'=>-90,	'max'=>164,	'err'=>255,	'unit'=> '°F'	),
