@@ -431,7 +431,9 @@ class vp2 extends CI_Model {
 		$date->sub(new DateInterval('PT12H00M'));
 		$T_AVG = $this->dataDB->query($this->T_12H, array(1, $date->format('Y-m-d H:i:s')));
 		$T_Avg12H_F = end(end($T_AVG->result()));
-		
+//		http://en.wikipedia.org/wiki/Atmospheric_pressure#Altitude_atmospheric_pressure_variation
+//		http://san.hufs.ac.kr/~gwlee/session3/sealev1calc.html
+
 		$Elevation = 240;
 		$Constant_L_in_F = 11 * $Elevation/8000;
 		$T_Virtuelle_F = $T_Avg12H_F + 460 + $Constant_L_in_F + $C_in_table;
