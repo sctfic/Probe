@@ -11,6 +11,7 @@
 		$T_AVG = $this->dataDB->query($this->T_12H, array(':SINCE' => $date->format('Y-m-d H:i:s'), ':SENSOR_ID' => $this->get_SEN_ID('TA:Arch:Temp:Out:Average')));
 		$T_Avg12H_F = end(end($T_AVG->result()));
 //		http://en.wikipedia.org/wiki/Atmospheric_pressure#Altitude_atmospheric_pressure_variation
+//		http://san.hufs.ac.kr/~gwlee/session3/session3.html
 //		http://san.hufs.ac.kr/~gwlee/session3/sealev1calc.html
 
 
