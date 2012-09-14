@@ -144,14 +144,15 @@
 		return round(($val+459.67)*5/9, 2);
 	}
 	function mBySec($val){ // convert milles per hour speed 
-		return round($val/2.2369362920544, 3); // (3600/((5280*12)*0.0254));
+		return round($val/2.23693629, 3); // (3600/((5280*12)*0.0254));
 	}
 	function kmByh($val){ // convert milles per hour speed 
 		return round($val*1,609.345, 2); // (3600/((5280*12)*0.0254));
 	}
-	function barSI ($val){
-	return $val;
+	function inHg2hPa ($val){
+//		http://www.sensorsone.co.uk/pressure-measurement-glossary/inhg-inch-of-mercury-0-deg-c-pressure-unit.html#factors
+		return 33.8639*$val;
 	}
 	function UTC ($val){
-	return strtotime($val);
+		return strtotime($val);
 	}
