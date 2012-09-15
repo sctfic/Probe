@@ -22,8 +22,8 @@ class cmdController extends CI_Controller {
 	// clear;php5 -f /var/www/WsWds/cli.php 'cmdcontroller'
 	function index() {
 // 		$this->configCollectors();
-		echo Gravity(73,44)."\n";
-// 		$this->dataCollectors();
+// 		echo Gravity(4807,45)."\n";
+		$this->dataCollectors();
 	}
 	
 	// clear;php5 -f /var/www/WsWds/cli.php 'cmdcontroller/dataCollectors'
