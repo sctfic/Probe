@@ -11,8 +11,13 @@
 		$T_AVG = $this->dataDB->query($this->T_12H, array(':SINCE' => $date->format('Y-m-d H:i:s'), ':SENSOR_ID' => $this->get_SEN_ID('TA:Arch:Temp:Out:Average')));
 		$T_Avg12H_F = end(end($T_AVG->result()));
 //		http://en.wikipedia.org/wiki/Atmospheric_pressure#Altitude_atmospheric_pressure_variation
+		$P_alt0 = $P_VP2 * pow((1-(0.0065*$Elevation_in_m)/$Virtual_Temp_in_K), ($gravity*0.0289644)/(8.31447*0.0065));
+
+//		http://san.hufs.ac.kr/~gwlee/session3/session3.html
 //		http://san.hufs.ac.kr/~gwlee/session3/sealev1calc.html
 
+//		masse molumique de l'air humide
+//		http://fr.wikipedia.org/wiki/Masse_volumique_de_l%27air
 
 	}
 	function Gravity($Elevation_in_meter, $latitude_in_degres = 45) {
@@ -143,14 +148,15 @@
 		return round(($val+459.67)*5/9, 2);
 	}
 	function mBySec($val){ // convert milles per hour speed 
-		return round($val/2.2369362920544, 3); // (3600/((5280*12)*0.0254));
+		return round($val/2.23693629, 3); // (3600/((5280*12)*0.0254));
 	}
 	function kmByh($val){ // convert milles per hour speed 
 		return round($val*1,609.345, 2); // (3600/((5280*12)*0.0254));
 	}
-	function barSI ($val){
-	return $val;
+	function inHg2hPa ($val){
+//		http://www.sensorsone.co.uk/pressure-measurement-glossary/inhg-inch-of-mercury-0-deg-c-pressure-unit.html#factors
+		return 33.8639*$val;
 	}
 	function UTC ($val){
-	return strtotime($val);
+		return strtotime($val);
 	}
