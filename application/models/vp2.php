@@ -12,7 +12,7 @@ class vp2 extends CI_Model {
 	protected $key_SENSOR = array(':NAME', ':HUMAN_NAME', ':DESCRIPT', ':MIN_REAL', ':MAX_REAL', ':UNITE_SIGN', ':DEF_PLOT', ':MAX_ALARM', ':MIN_ALARM', ':LAST_CALIBRATE', ':CALIBRATE_PERIOD');
 
 	protected $prep_VARIOUS = NULL;
-	protected $key_VARIOUS = array(':UTC_date', ':rainfall', ':max_rainfall', ':pressure', ':srad', ':max_srad', ':wspeed', ':max_wspeed', ':dir_higtspeed', ':dir_dominant', ':uv', ':max_uv', ':forecast', ':et');
+	protected $key_VARIOUS = array(':UTC_date', ':rainfall', ':max_rainfall', ':P0', ':srad', ':max_srad', ':wspeed', ':max_wspeed', ':dir_higtspeed', ':dir_dominant', ':uv', ':max_uv', ':forecast', ':et');
 
 	protected $T_12H = NULL;
 	
@@ -24,6 +24,46 @@ class vp2 extends CI_Model {
 		parent::__construct();
 		log_message('init',  __FUNCTION__.'('.__CLASS__.' ('.$conf['_name'].':'.($base = $conf['_db']).') '.")\n".__FILE__.' ['.__LINE__.']');
 		$this->conf = $conf;
+		$this->load->helper(array('binary','s.i.converter'));
+		global $auge, $altitude, $latitude, $longitude, $Zone, $WindCup;
+		$auge = $conf['rain:collector:size'];
+		$WindCup = $conf['wind:cup:large'];
+		$altitude = $conf['geo:elevation:ocean'];
+		$latitude = $conf['geo:latitude:nordvalue'];
+		$longitude = $conf['geo:longitude:estvalue'];
+		$Zone = $conf['geo:time:zone'];
+		
+	/**
+	[bar::unit] => 0
+	[bar:calibration:cal] => 0.004
+	[bar:calibration:gain] => 0
+	[bar:calibration:offset] => -36
+	[daylight:savings:enable] => 0
+	[daylight:savings:manual] => 1
+	[geo:elevation:ocean] => 240
+	[geo:elevation:unit] => 0
+>	[geo:latitude:nord] => 44.5
+? >	[geo:latitude:north] => 0
+? >	[geo:longitude:east] => 0
+>	[geo:longitude:est] => 0.3
+	[geo:time:zone] => 21
+	[hum:calibration:@33%] => -1
+	[hum:calibration:@80%] => -1
+	[rain::seasonstart] => 1
+	[rain:collector:size] => 0
+	[rain:display:unit] => 0
+	[temp:display:unit] => 0
+	[temp:log:average] => 1
+	[time:archive:period] => 5
+	[time:format:day/month] => 0
+	[time:gmt:enable] => 1
+	[time:gmt:offset] => 2:00
+	[time:mode:am/pm] => 0
+	[time:mode:isam] => 0
+	[wind:cup:large] => 0
+	[wind:display:unit] => 0
+	**/
+
 		require (APPPATH.'models/vp2/EepromDumpAfter.h.php');
 		require (APPPATH.'models/vp2/EepromLoop.h.php');
 		require (APPPATH.'models/vp2/EepromHiLow.h.php');
@@ -55,7 +95,7 @@ class vp2 extends CI_Model {
 		$this->prep_VARIOUS = $this->dataDB->conn_id->prepare(
 			'REPLACE 
 				INTO `TA_VARIOUS` 
-					(`VAR_DATE`, `VAR_SAMPLE_RAINFALL`, `VAR_SAMPLE_RAINFALL_HIGHT`, `VAR_PRESSURE`, `VAR_SOLAR_RADIATION`, `VAR_SOLAR_RADIATION_HIGHT`, `VAR_WIND_SPEED`, `VAR_WIND_SPEED_HIGHT`, `VAR_WIND_SPEED_HIGHT_DIR`, `VAR_WIND_SPEED_DOMINANT_DIR`, `VAR_UV_INDEX`, `VAR_UV_INDEX_HIGHT`, `VAR_FORECAST_RULE`, `VAR_ET`)
+					(`VAR_DATE`, `VAR_SAMPLE_RAINFALL`, `VAR_SAMPLE_RAINFALL_HIGHT`, `VAR_PRESSURE_ALT0`, `VAR_SOLAR_RADIATION`, `VAR_SOLAR_RADIATION_HIGHT`, `VAR_WIND_SPEED`, `VAR_WIND_SPEED_HIGHT`, `VAR_WIND_SPEED_HIGHT_DIR`, `VAR_WIND_SPEED_DOMINANT_DIR`, `VAR_UV_INDEX`, `VAR_UV_INDEX_HIGHT`, `VAR_FORECAST_RULE`, `VAR_ET`)
 				VALUES ('.implode(', ', $this->key_VARIOUS).');');
 		$this->T_12H = 'SELECT (AVG(  `VALUE` ) -32) *5 /9 AS AVG_TEMP_IN_CELSIUS FROM `TA_TEMPERATURE` 
 				INNER JOIN `TA_VARIOUS` ON `ID` = `VAR_ID` 
@@ -181,82 +221,94 @@ class vp2 extends CI_Model {
 	@return: functionReturn
 	@param: returnValue
 	*/
-	function RawConverter($DataModele, $RawStr) { //
-		$x = array();
-		foreach($DataModele as $key=>$val) {
-			if (is_int($val['pos'])) {
-				$StrValue = substr ($RawStr, $val['pos'], $val['len']);
-			}
-			else {
-				$StrValue = getBits(
-					substr ($RawStr, (int)$val['pos'],1),
-					($val['pos']-(int)$val['pos']-0.1)*10,
-					$val['len']);
-			}
-
-			if ($val['fn']) {
-				$x[$key] = call_user_func($val['fn'], $StrValue);
-				
-// I benchmarked the comparison in speed between variable functions, call_user_func, and eval.  My results are below:
-// 
-// Variable functions took 0.125958204269 seconds.
-// call_user_func took 0.485446929932 seconds.
-// eval took 2.78526711464 seconds.
-// 
-// This was run on a Compaq Proliant server, 180MHz Pentium Pro 256MB RAM.  Code is as follows:
-// 
-// <?php
-// 
-// function fa () { return 1; }
-// function fb () { return 1; }
-// function fc () { return 1; }
-// 
-// $calla = 'fa';
-// $callb = 'fb';
-// $callc = 'fc';
-// 
-// $time = microtime( true );
-// for( $i = 5000; $i--; ) {
-//     $x = 0;
-//     $x += $calla();
-//     $x += $callb();
-//     $x += $callc();
-//     if( $x != 3 ) die( 'Bad numbers' );
-// }
-/** Variable functions took 0.125958204269 seconds. **/
-//
-// echo( "Variable functions took " . (microtime( true ) - $time) . " seconds.<br />" );
-// 
-// $time = microtime( true );
-// for( $i = 5000; $i--; ) {
-//     $x = 0;
-//     $x += call_user_func('fa', '');
-//     $x += call_user_func('fb', '');
-//     $x += call_user_func('fc', '');
-//     if( $x != 3 ) die( 'Bad numbers' );
-// }
-// echo( "call_user_func took " . (microtime( true ) - $time) . " seconds.<br />" );
-/** call_user_func took 0.485446929932 seconds. **/
-// 
-// $time = microtime( true );
-// for( $i = 5000; $i--; ) {
-//     $x = 0;
-//     eval( '$x += ' . $calla . '();' );
-//     eval( '$x += ' . $callb . '();' );
-//     eval( '$x += ' . $callc . '();' );
-//     if( $x != 3 ) die( 'Bad numbers' );
-// }
-// echo( "eval took " . (microtime( true ) - $time) . " seconds.<br />" );
-/** eval took 2.78526711464 seconds. **/
-// 
-// ? >
-			}
-			else {
-				$x[$key] = $StrValue;
-			}
+	function subRaw($RawStr, $val) {
+		if (is_int($val['pos'])) {
+			// si la donnée est sur un nombre entier d'octés de la chaine RAW
+			return substr ($RawStr, $val['pos'], $val['len']);
 		}
-		return $x;
+		else {
+			// dans le cas ou la donnée n'est que sur quelques bits
+// 			echo decbin(hexToDec(substr ($RawStr, 41, 3)))."\n";
+// 			echo decbin(hexToDec(substr ($RawStr, (int)$val['pos'],1))).' > '.(int)$val['pos']."\n";
+			return getBits(
+				hexToDec(substr ($RawStr, (int)$val['pos'],1)),
+				((($val['pos']*10)-((int)$val['pos'])*10)-1),
+				$val['len']);
+		}
 	}
+	function convertRaw($StrValue, $val) {
+		if (is_callable($val['fn'])) {
+// 				$x[$key] = call_user_func($val['fn'], $StrValue);
+			return $val['fn']($StrValue);
+		}
+		return $StrValue;
+	}
+	function convertUnit($Value, $val) {
+		if (is_callable($val['SI'])) {
+// 				$x[$key] = call_user_func($val['fn'], $StrValue);
+			return $val['SI']($Value);
+		}
+		return $Value;
+	}
+	function RawConverter($DataModele, $RawStr) { //
+		$data = array();
+		foreach($DataModele as $key=>$val)
+			$data[$key] = $this->convertUnit( $this->convertRaw( $this->subRaw( $RawStr, $val), $val), $val);
+		return $data;
+	}
+/*I benchmarked the comparison in speed between variable functions, call_user_func, and eval.  My results are below:
+
+Variable functions took 0.125958204269 seconds.
+call_user_func took 0.485446929932 seconds.
+eval took 2.78526711464 seconds.
+
+This was run on a Compaq Proliant server, 180MHz Pentium Pro 256MB RAM.  Code is as follows:
+
+<?php
+
+function fa () { return 1; }
+function fb () { return 1; }
+function fc () { return 1; }
+
+$calla = 'fa';
+$callb = 'fb';
+$callc = 'fc';
+
+$time = microtime( true );
+for( $i = 5000; $i--; ) {
+    $x = 0;
+    $x += $calla();
+    $x += $callb();
+    $x += $callc();
+    if( $x != 3 ) die( 'Bad numbers' );
+}
+* Variable functions took 0.125958204269 seconds. *
+
+echo( "Variable functions took " . (microtime( true ) - $time) . " seconds.<br />" );
+
+$time = microtime( true );
+for( $i = 5000; $i--; ) {
+    $x = 0;
+    $x += call_user_func('fa', '');
+    $x += call_user_func('fb', '');
+    $x += call_user_func('fc', '');
+    if( $x != 3 ) die( 'Bad numbers' );
+}
+echo( "call_user_func took " . (microtime( true ) - $time) . " seconds.<br />" );
+* call_user_func took 0.485446929932 seconds. *
+
+$time = microtime( true );
+for( $i = 5000; $i--; ) {
+    $x = 0;
+    eval( '$x += ' . $calla . '();' );
+    eval( '$x += ' . $callb . '();' );
+    eval( '$x += ' . $callc . '();' );
+    if( $x != 3 ) die( 'Bad numbers' );
+}
+echo( "eval took " . (microtime( true ) - $time) . " seconds.<br />" );
+* eval took 2.78526711464 seconds. *
+
+? >*/
 	/**
 	@description: Lis les config courante disponible sur la station
 	@return: retourne un tableau de la forme :
@@ -332,13 +384,13 @@ class vp2 extends CI_Model {
 		$DATAS=false;
 		try {
 			$firstDate2Get=is_date($last);
-			self::RequestCmd("DMPAFT\n");
+			$this->RequestCmd("DMPAFT\n");
 			$RawDate = DMPAFT_SetVP2Date($firstDate2Get);
 			fwrite($this->fp, $RawDate);				// Send this date (parametre #1)
 			$crc = CalculateCRC($RawDate);			// define the CRC of my date
-			self::RequestCmd($crc);					// Send the CRC (parametre #2)
+			$this->RequestCmd($crc);					// Send the CRC (parametre #2)
 			$data = fread($this->fp, 6);				// we read the properties : item count and first item position
-			self::VerifAnswersAndCRC($data, 6);
+			$this->VerifAnswersAndCRC($data, 6);
 // 			$nbrArch=0;
 			$LastArchDate = 0;
 // 			$retry = $this->retry-1;
@@ -353,7 +405,7 @@ class vp2 extends CI_Model {
 				}
 				$Page = fread($this->fp, 267);
 				log_message('dl', 'Archive PAGE #'.$j.' since : '.DMPAFT_GetVP2Date(substr($Page,1+52*($firstArch),4)));
-				self::VerifAnswersAndCRC($Page, 267);
+				$this->VerifAnswersAndCRC($Page, 267);
 				fwrite ($this->fp, ACK);
 				for ($k=$firstArch; $k<=4; $k++) {			// ignore les 1er valeur hors champ.
 					$ArchiveStrRaw = substr ($Page, 1+52*$k, 52);
@@ -361,10 +413,10 @@ class vp2 extends CI_Model {
 					if (strtotime($ArchDate) > strtotime($LastArchDate)) {
 					// ignore les derniere valeur hors champ, car on parcoure une liste circulaire
 					// donc la deniere valeur a extraire precede la plus vielle valleur de cette liste
-						$DATAS[$ArchDate] = self::RawConverter($this->DumpAfter, $ArchiveStrRaw);
-						log_message('save', sprintf(_('Page #%d-%d of %s archived Ok.'),$j, $k, $ArchDate));
+						$DATAS = $this->RawConverter($this->DumpAfter, $ArchiveStrRaw);
 						if ($save) {
-							$this->save_Archive($DATAS[$ArchDate]);
+							$this->save_Archive($DATAS);
+							log_message('save', sprintf(_('Page #%d-%d of %s archived Ok.'),$j, $k, $ArchDate));
 						}
 						$LastArchDate = $ArchDate;
 					}
@@ -377,8 +429,9 @@ class vp2 extends CI_Model {
 		}
 		catch (Exception $e) {
 			log_message('warning',  $e->getMessage());
+			return true;
 		}
-		return $DATAS;
+		return false;
 	}
 	/**
 	@description: Lis l'heure de la station
@@ -425,11 +478,8 @@ class vp2 extends CI_Model {
 		}
 		return False;
 	}
-
-
 	function save_Archive($data){
 		$this->current_data = $data;
-// 		$this->P_Barometric($data);
 		$this->insert_VARIOUS(array(
 			$data['TA:Arch:Various:Time:UTC'], 
 			$data['TA:Arch:Rain:RainFall:Sample'], 
@@ -449,23 +499,28 @@ class vp2 extends CI_Model {
 			$data['TA:Arch:Various:ET:Hour']
 			));
 		$id_arch = $this->dataDB->insert_id(); // query('SELECT LAST_INSERT_ID();');
+
 		foreach ($data as $name => $val) {
 			$table = $this->get_TABLE_Dest($name);
 			$Sensor = $this->get_SEN_ID($name,$table);
 			if ($table != 'TA_VARIOUS') {
 				$eav = 'prep_EAV_'.$table[3];
 				$this->$eav->execute(array_combine($this->key_EAV, array($id_arch, $val, $Sensor['SENSOR_ID'])));
+// 				log_message('save', 'real_EAV');
 			}
 		}
 	}
 	function insert_SENSOR($value_SENSOR) {
 		$real_SENSOR = array_combine($this->key_SENSOR, $value_SENSOR);
+// 		log_message('save', 'real_SENSOR');
 		$this->prep_SENSOR->execute($real_SENSOR);
 	}
 	function insert_VARIOUS($value_VARIOUS) {
 		$real_VARIOUS = array_combine($this->key_VARIOUS, $value_VARIOUS);
+// 		log_message('save', 'real_VARIOUS');
 // 		print_r($real_VARIOUS);
 // 		echo $this->prep_VARIOUS->queryString;
+// 		log_message('sql', 'insert_VARIOUS');
 		$this->prep_VARIOUS->execute($real_VARIOUS);
 	}
 	function get_TABLE_Dest($name) {

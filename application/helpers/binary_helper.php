@@ -29,7 +29,8 @@
 		return (hexToDec(strrev($str)));
 	}
 	function getBits($oct, $bitPos, $nbrBit) { // recupaire dans un octé $oct l´etat des $nbrBit a partir du bit $bitPos
-		return ($oct<<$bitPos)&(pow(2,$nbrBit)-1);
+// 		echo decbin($oct).' > '.$bitPos.','.$nbrBit.' = '.decbin($oct>>$bitPos).' & '.decbin(pow(2,$nbrBit)-1).' => '.decbin(($oct>>$bitPos)&(pow(2,$nbrBit)-1))."\n";
+		return ($oct>>$bitPos)&(pow(2,$nbrBit)-1);
 	}
 // 	function UnitBits($str) {// ...
 // 		$val = s2uc($str);

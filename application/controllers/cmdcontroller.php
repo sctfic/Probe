@@ -14,7 +14,8 @@ class cmdController extends CI_Controller {
 		**/
 		include_once(BASEPATH.'core/Model.php'); // need for load models manualy
 		include_once(APPPATH.'models/weatherstation.php');
-		$this->load->helper(array('cli_tools','binary','s.i.converter'));
+		$this->load->helper('cli_tools');
+
 		$this->WS = new weatherstation();
 	}
 
@@ -22,7 +23,6 @@ class cmdController extends CI_Controller {
 	// clear;php5 -f /var/www/WsWds/cli.php 'cmdcontroller'
 	function index() {
 // 		$this->configCollectors();
-// 		echo Gravity(4807,45)."\n";
 		$this->dataCollectors();
 	}
 	

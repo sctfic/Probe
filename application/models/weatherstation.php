@@ -70,7 +70,7 @@ class weatherstation extends CI_Model {
 			$confs[$item]['_id'] = $id;
 			foreach($CurentStation->result() as $val)
 			{ // on integre chacune des configs dans un tableau a 2 dimensions qui sera utilisé par la suite
-				$confs[$item][strtolower($val->CFG_LABEL)]=$val->CFG_VALUE;
+				$confs[$item][strtolower($val->CFG_LABEL)] = $val->CFG_VALUE;
 			}
 			if (!isset($confs[$item]['_ip']) || !isset($confs[$item]['_port']) || !isset($confs[$item]['_type'])) {
 				log_message('warning', 'Missing confs for '.$item.' > Skipped!');
