@@ -97,9 +97,9 @@ class vp2 extends CI_Model {
 				INTO `TA_VARIOUS` 
 					(`VAR_DATE`, `VAR_SAMPLE_RAINFALL`, `VAR_SAMPLE_RAINFALL_HIGHT`, `VAR_PRESSURE_ALT0`, `VAR_SOLAR_RADIATION`, `VAR_SOLAR_RADIATION_HIGHT`, `VAR_WIND_SPEED`, `VAR_WIND_SPEED_HIGHT`, `VAR_WIND_SPEED_HIGHT_DIR`, `VAR_WIND_SPEED_DOMINANT_DIR`, `VAR_UV_INDEX`, `VAR_UV_INDEX_HIGHT`, `VAR_FORECAST_RULE`, `VAR_ET`)
 				VALUES ('.implode(', ', $this->key_VARIOUS).');');
-		$this->T_12H = 'SELECT (AVG(  `VALUE` ) -32) *5 /9 AS AVG_TEMP_IN_CELSIUS FROM `TA_TEMPERATURE` 
-				INNER JOIN `TA_VARIOUS` ON `ID` = `VAR_ID` 
-				WHERE `VAR_DATE` >= :SINCE AND `SEN_ID` =:SENSOR_ID ;';
+// 		$this->T_12H = 'SELECT (AVG(  `VALUE` ) -32) *5 /9 AS AVG_TEMP_IN_CELSIUS FROM `TA_TEMPERATURE` 
+// 				INNER JOIN `TA_VARIOUS` ON `ID` = `VAR_ID` 
+// 				WHERE `VAR_DATE` >= :SINCE AND `SEN_ID` =:SENSOR_ID ;';
 	}
 	public function initConnection()	{
 		$errno = 0;
@@ -226,89 +226,42 @@ class vp2 extends CI_Model {
 			// si la donnée est sur un nombre entier d'octés de la chaine RAW
 			return substr ($RawStr, $val['pos'], $val['len']);
 		}
-		else {
-			// dans le cas ou la donnée n'est que sur quelques bits
-// 			echo decbin(hexToDec(substr ($RawStr, 41, 3)))."\n";
-// 			echo decbin(hexToDec(substr ($RawStr, (int)$val['pos'],1))).' > '.(int)$val['pos']."\n";
+		else {	// dans le cas ou la donnée n'est que sur quelques bits
 			return getBits(
 				hexToDec(substr ($RawStr, (int)$val['pos'],1)),
 				((($val['pos']*10)-((int)$val['pos'])*10)-1),
 				$val['len']);
 		}
 	}
-	function convertRaw($StrValue, $val) {
-		if (is_callable($val['fn'])) {
-// 				$x[$key] = call_user_func($val['fn'], $StrValue);
-			return $val['fn']($StrValue);
+	function convertRaw($StrValue, $limits) {
+	// Retourne la chaine binaire sous la forme Numerique dans l'unité de la VP2
+	// retourne NULL si le capteur retourne la valeur d'erreur
+		if (is_callable($limits['fn'])) {
+			$val = $limits['fn']($StrValue);
+			if ($val == $limits['err'])
+				return NULL;
+			return $val;
 		}
-		return $StrValue;
+		return 'No function to convert !';
 	}
-	function convertUnit($Value, $val) {
-		if (is_callable($val['SI'])) {
-// 				$x[$key] = call_user_func($val['fn'], $StrValue);
-			return $val['SI']($Value);
+	function convertUnit($Value, $limits) {
+	// Retourne la valeur numerique coverti en unité SI
+	// Retourne FALSE si la valeur est incohérante.
+		if (is_callable($limits['SI']) and !is_string($Value)) {
+			$val = $limits['SI']($Value);
+			if ($val >= $limits['max'] or $val <= $limits['min'])
+				return FALSE;
+			return $val;
 		}
 		return $Value;
 	}
 	function RawConverter($DataModele, $RawStr) { //
 		$data = array();
-		foreach($DataModele as $key=>$val)
-			$data[$key] = $this->convertUnit( $this->convertRaw( $this->subRaw( $RawStr, $val), $val), $val);
+		foreach($DataModele as $key=>$limits)
+			$data[$key] = $this->convertUnit( $this->convertRaw( $this->subRaw( $RawStr, $limits), $limits), $limits);
+			print_r($data);
 		return $data;
 	}
-/*I benchmarked the comparison in speed between variable functions, call_user_func, and eval.  My results are below:
-
-Variable functions took 0.125958204269 seconds.
-call_user_func took 0.485446929932 seconds.
-eval took 2.78526711464 seconds.
-
-This was run on a Compaq Proliant server, 180MHz Pentium Pro 256MB RAM.  Code is as follows:
-
-<?php
-
-function fa () { return 1; }
-function fb () { return 1; }
-function fc () { return 1; }
-
-$calla = 'fa';
-$callb = 'fb';
-$callc = 'fc';
-
-$time = microtime( true );
-for( $i = 5000; $i--; ) {
-    $x = 0;
-    $x += $calla();
-    $x += $callb();
-    $x += $callc();
-    if( $x != 3 ) die( 'Bad numbers' );
-}
-* Variable functions took 0.125958204269 seconds. *
-
-echo( "Variable functions took " . (microtime( true ) - $time) . " seconds.<br />" );
-
-$time = microtime( true );
-for( $i = 5000; $i--; ) {
-    $x = 0;
-    $x += call_user_func('fa', '');
-    $x += call_user_func('fb', '');
-    $x += call_user_func('fc', '');
-    if( $x != 3 ) die( 'Bad numbers' );
-}
-echo( "call_user_func took " . (microtime( true ) - $time) . " seconds.<br />" );
-* call_user_func took 0.485446929932 seconds. *
-
-$time = microtime( true );
-for( $i = 5000; $i--; ) {
-    $x = 0;
-    eval( '$x += ' . $calla . '();' );
-    eval( '$x += ' . $callb . '();' );
-    eval( '$x += ' . $callc . '();' );
-    if( $x != 3 ) die( 'Bad numbers' );
-}
-echo( "eval took " . (microtime( true ) - $time) . " seconds.<br />" );
-* eval took 2.78526711464 seconds. *
-
-? >*/
 	/**
 	@description: Lis les config courante disponible sur la station
 	@return: retourne un tableau de la forme :
@@ -322,21 +275,21 @@ echo( "eval took " . (microtime( true ) - $time) . " seconds.<br />" );
 			
 // 			$P=str_pad(strtoupper(dechex(0)),3,'0',STR_PAD_LEFT);
 // 			$L=str_pad(strtoupper(dechex(177)),2,'0',STR_PAD_LEFT);
-			self::RequestCmd("EEBRD 000 B1\n");
+			$this->RequestCmd("EEBRD 000 B1\n");
 			$data = fread($this->fp, 177+2);
-			self::VerifAnswersAndCRC($data, 177+2);
+			$this->VerifAnswersAndCRC($data, 177+2);
 			
 // 			$P=str_pad(strtoupper(dechex(4092)),3,'0',STR_PAD_LEFT);
 // 			$L=str_pad(strtoupper(dechex(1)),2,'0',STR_PAD_LEFT);
-			self::RequestCmd("EEBRD FFC 01\n");
+			$this->RequestCmd("EEBRD FFC 01\n");
 			$data2 = fread($this->fp, 1+2);
-			self::VerifAnswersAndCRC($data2, 1+2);
+			$this->VerifAnswersAndCRC($data2, 1+2);
 				$v = end($this->EEPROM);
 				$v['pos'] = 1;
 				$k = key($this->EEPROM);
 			$CONFS[date('Y/m/d H:i:s')] = array_merge (
-				self::RawConverter($this->EEPROM, $data),
-				self::RawConverter(array($k => $v), $data2));
+				$this->RawConverter($this->EEPROM, $data),
+				$this->RawConverter(array($k => $v), $data2));
 		}
 		catch (Exception $e) {
 			log_message('warning',  $e->getMessage());
@@ -357,12 +310,12 @@ echo( "eval took " . (microtime( true ) - $time) . " seconds.<br />" );
 		$_NBR = $nbr;
 		$LOOPS = false;
 		try {
-			self::RequestCmd("LOOP $nbr\n");
+			$this->RequestCmd("LOOP $nbr\n");
 			while ($nbr-- > 0) {
 				$data = fread($this->fp, 99);
-				self::VerifAnswersAndCRC($data, 99);
+				$this->VerifAnswersAndCRC($data, 99);
 				log_message('wswds', '[LOOP] : Download the current Values');
-				$LOOPS[date('Y/m/d H:i:s')] = self::RawConverter($this->Loop, $data);
+				$LOOPS[date('Y/m/d H:i:s')] = $this->RawConverter($this->Loop, $data);
 				echo implode("\t",$LOOPS[0])."\n";
 			}
 		}
@@ -441,9 +394,9 @@ echo( "eval took " . (microtime( true ) - $time) . " seconds.<br />" );
 	function fetchStationTime() {// 0x35 16 00 1d 0c 6f  0x7c 44  ==  2011/12/29 00:22:53
 		$TIME = False;
 		try {
-			self::RequestCmd("GETTIME\n");
+			$this->RequestCmd("GETTIME\n");
 			$TIME = fread($this->fp, 8);
-			self::VerifAnswersAndCRC($TIME, 8);
+			$this->VerifAnswersAndCRC($TIME, 8);
 			$TIME = (ord($TIME[5])+1900)
 				.'/'.str_pad(ord($TIME[4]),2,'0',STR_PAD_LEFT)
 				.'/'.str_pad(ord($TIME[3]),2,'0',STR_PAD_LEFT)
@@ -465,11 +418,12 @@ echo( "eval took " . (microtime( true ) - $time) . " seconds.<br />" );
 	*/
 	function updateStationTime() {// 0x35 16 00 1d 0c 6f  0x7c 44  ==  2011/12/29 00:22:53
 		try {
-			self::RequestCmd("SETTIME\n");
+			$this->RequestCmd("SETTIME\n");
 			list($_date, $_clock) = explode(' ', date('Y/m/d H:i:s'));
 			list($y,$m,$d) = explode('/', $_date);
 			list($h,$i,$s) = explode(':', $_clock);
-			self::RequestCmd (chr($s).chr($i).chr($h).chr($d).chr($m).chr($y-1900) . CalculateCRC($TIME));
+			$TIME = chr($s).chr($i).chr($h).chr($d).chr($m).chr($y-1900);
+			$this->RequestCmd ($TIME . CalculateCRC($TIME));
 			log_message('wswds', '[SETTIME] : '.$_date.' '.$_clock);
 			return $_date.' '.$_clock;
 		}
@@ -501,12 +455,13 @@ echo( "eval took " . (microtime( true ) - $time) . " seconds.<br />" );
 		$id_arch = $this->dataDB->insert_id(); // query('SELECT LAST_INSERT_ID();');
 
 		foreach ($data as $name => $val) {
-			$table = $this->get_TABLE_Dest($name);
-			$Sensor = $this->get_SEN_ID($name,$table);
-			if ($table != 'TA_VARIOUS') {
-				$eav = 'prep_EAV_'.$table[3];
-				$this->$eav->execute(array_combine($this->key_EAV, array($id_arch, $val, $Sensor['SENSOR_ID'])));
-// 				log_message('save', 'real_EAV');
+			if ($val !== NULL && $val !== FALSE) {
+				$table = $this->get_TABLE_Dest($name);
+				$Sensor = $this->get_SEN_ID($name,$table);
+				if ($table != 'TA_VARIOUS') {
+					$eav = 'prep_EAV_'.$table[3];
+					$this->$eav->execute(array_combine($this->key_EAV, array($id_arch, $val, $Sensor['SENSOR_ID'])));
+				}
 			}
 		}
 	}

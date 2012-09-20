@@ -48,6 +48,7 @@
 		return round($val/3.2808, 2);
 	}
 	
+/**
 	function P_Alt_0($P_VP2, $Elevation_in_m, $Temp_in_K, $gravity = 9.80665) {
 		//		http://en.wikipedia.org/wiki/Atmospheric_pressure#Altitude_atmospheric_pressure_variation
 		return $P_VP2 / pow((1-(0.0065*$Elevation_in_m)/$Temp_in_K), ($gravity*0.0289644)/(8.31447*0.0065));
@@ -69,6 +70,7 @@
 		// 		1/2(1-cos2x)=sin²x
 		return 1/2*(1-cos(2*deg2rad($x)));
 	}
+**/
 	
 	function Soil_LeafAlarms($str) {// ...
 		return hexToDec($str);
