@@ -43,7 +43,7 @@ class weatherstation extends CI_Model {
 	 * recupere sous forme de table l'ensemble des configs d'une ou de toutes les station
 	 * @var item
 		item peut etre le Numero db_ID ou le nom de la station dont on veut les confs
-		si item est homis alors toutes les conf de toutes les stations sont retourné
+		si item est ommis alors toutes les conf de toutes les stations sont retourné
 	 * @return array ('name' => array (configs))
 	 */
 	function config($item = null)
@@ -71,6 +71,14 @@ class weatherstation extends CI_Model {
 			foreach($CurentStation->result() as $val)
 			{ // on integre chacune des configs dans un tableau a 2 dimensions qui sera utilisé par la suite
 				$confs[$item][strtolower($val->CFG_LABEL)] = $val->CFG_VALUE;
+			}
+			if (!isset($confs[$item]['_db'])) {//$this->dbutil->database_exists();
+				$db_name = 'ws-test001';
+				log_message('warning', 'Missing _db '.$item.' > Created!');
+				require_once(APPPATH.'models/CreateDB.php');
+				multi_query($SQL_DB_modele);
+				log_message('SQL', '$db->exec($SQL_DB_modele)');
+				log_message('Step',  __FUNCTION__.'('.__CLASS__.")\n".__FILE__.' ['.__LINE__.']');
 			}
 			if (!isset($confs[$item]['_ip']) || !isset($confs[$item]['_port']) || !isset($confs[$item]['_type'])) {
 				log_message('warning', 'Missing confs for '.$item.' > Skipped!');

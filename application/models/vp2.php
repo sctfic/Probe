@@ -259,7 +259,6 @@ class vp2 extends CI_Model {
 		$data = array();
 		foreach($DataModele as $key=>$limits)
 			$data[$key] = $this->convertUnit( $this->convertRaw( $this->subRaw( $RawStr, $limits), $limits), $limits);
-			print_r($data);
 		return $data;
 	}
 	/**
@@ -352,7 +351,8 @@ class vp2 extends CI_Model {
 				log_message('wswds', 'There are '.$nbrPages.'p. in queue, from archive '.$firstArch.' on first page since '.$last.'.');
 			fwrite($this->fp, ACK);				// Send ACK to start
 			for ($j=0; $j<$nbrPages; $j++) {
-				if ( !((time()+10)%300) ) {
+				$ISS_time = time()%300;
+				if ( $ISS_time<6 ) {
 				// la recuperation des archives bloque la lecture des capteurs donc on le fait par petit bout
 					throw new Exception(_('Please retry later to finish, Data sensors must be checked in few second.'));
 				}
