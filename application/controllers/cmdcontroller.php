@@ -13,24 +13,17 @@ class cmdController extends CI_Controller {
 		elle sera disponible sous la denominatiosn : $this->db->*
 		**/
 		include_once(BASEPATH.'core/Model.php'); // need for load models manualy
-// 		include_once(APPPATH.'models/weatherstation.php');
-// 		$this->load->helper('cli_tools');
+		include_once(APPPATH.'models/weatherstation.php');
+		$this->load->helper('cli_tools');
 
-// 		$this->WS = new weatherstation();
+		$this->WS = new weatherstation();
 	}
 
 	// la fonction qui ce lancera par defaut dans cette classe 
 	// clear;php5 -f /var/www/WsWds/cli.php 'cmdcontroller'
 	function index() {
 // 		$this->configCollectors();
-// 		$this->dataCollectors();
-		include_once(APPPATH.'models/db_builder.php');
-		$this->dbb = new db_builder('nbv4023');
-		$this->dbb->make_db_config('new_wswds', 'new_wswds');
-		$this->dbb->make_db_data('vp2_0');
-		$this->dbb->make_db_data('vp2_1');
-		$this->dbb->make_db_data('vp2_2');
-		$this->dbb->make_db_data('vp2_3');
+		$this->dataCollectors();
 	}
 	
 	// clear;php5 -f /var/www/WsWds/cli.php 'cmdcontroller/dataCollectors'
