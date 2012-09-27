@@ -3,14 +3,18 @@
 try {
 	include_once(BASEPATH.'core/Model.php'); // need for load models manualy
 	include_once(APPPATH.'models/db_builder.php');
-	$this->dbb = new db_builder('p@$$word', 'admin', 'mysql', '127.0.0.1', 3306);
+	$this->dbb = new db_builder('password', 'root', 'mysql', '127.0.0.1', 3306);
 	$this->dbb->make_db_config();
-	$this->dbb->make_db_data('vp2_0');
-	$this->dbb->make_db_data('vp2_1');
+	$this->dbb->make_db_data('toto');
+	OR
+	$this->dbb = new db_builder('password', 'user', 'mysql', '127.0.0.1', 3306);
+	$this->dbb->make_db_config();
+	$this->dbb->make_db_data('toto');
 }
 catch (Exception $e) {
 	log_message('ERROR',  $e->getMessage());
-}**/
+}
+**/
 class db_builder extends CI_Model {
 	protected $host = NULL;
 	protected $port = NULL;

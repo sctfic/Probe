@@ -12,11 +12,11 @@ class cmdController extends CI_Controller {
 		on charge notre modele avec le 3ieme parametre a TRUE pour qu'il charge la base par defaut
 		elle sera disponible sous la denominatiosn : $this->db->*
 		**/
-// 		include_once(BASEPATH.'core/Model.php'); // need for load models manualy
-// 		include_once(APPPATH.'models/weatherstation.php');
-// 		$this->load->helper('cli_tools');
-// 
-// 		$this->WS = new weatherstation();
+		include_once(BASEPATH.'core/Model.php'); // need for load models manualy
+		include_once(APPPATH.'models/weatherstation.php');
+		$this->load->helper('cli_tools');
+
+		$this->WS = new weatherstation();
 	}
 
 	// la fonction qui ce lancera par defaut dans cette classe 
@@ -24,17 +24,6 @@ class cmdController extends CI_Controller {
 	function index() {
 // 		$this->configCollectors();
 // 		$this->dataCollectors();
-try {
-	include_once(BASEPATH.'core/Model.php'); // need for load models manualy
-	include_once(APPPATH.'models/db_builder.php');
-	$this->dbb = new db_builder('nbv4023', 'root', 'mysql', '127.0.0.1', 3306);
-	$this->dbb->make_db_config();
-	$this->dbb->make_db_data('vp2_00');
-}
-catch (Exception $e) {
-	log_message('ERROR',  $e->getMessage());
-}
-
 	}
 	
 	// clear;php5 -f /var/www/WsWds/cli.php 'cmdcontroller/dataCollectors'
