@@ -72,15 +72,7 @@ class weatherstation extends CI_Model {
 			{ // on integre chacune des configs dans un tableau a 2 dimensions qui sera utilisé par la suite
 				$confs[$item][strtolower($val->CFG_LABEL)] = $val->CFG_VALUE;
 			}
-			if (!isset($confs[$item]['_db'])) {//$this->dbutil->database_exists();
-				$db_name = 'ws-test001';
-				log_message('warning', 'Missing _db '.$item.' > Created!');
-				require_once(APPPATH.'models/CreateDB.php');
-				multi_query($SQL_DB_modele);
-				log_message('SQL', '$db->exec($SQL_DB_modele)');
-				log_message('Step',  __FUNCTION__.'('.__CLASS__.")\n".__FILE__.' ['.__LINE__.']');
-			}
-			if (!isset($confs[$item]['_ip']) || !isset($confs[$item]['_port']) || !isset($confs[$item]['_type'])) {
+			if (!isset($confs[$item]['_db']) || !isset($confs[$item]['_ip']) || !isset($confs[$item]['_port']) || !isset($confs[$item]['_type'])) {
 				log_message('warning', 'Missing confs for '.$item.' > Skipped!');
 				unset($confs[$item]);
 			}

@@ -76,10 +76,32 @@ class db_builder extends CI_Model {
 		} catch (PDOException $e) {
 			throw new Exception( $e->getMessage() );
 		}
+
+		$this->save_defaut_config($user, $pass, $db_name);
 		return array(
 		'dsn'=>'mysql:host='.$this->host.';port='.$this->port.';dbname='.$db_name,
 		'login'=>$user,
 		'pass'=>$pass);
+	}
+	protected function save_defaut_config($user, $pass, $db_name) {
+	file_put_contents(APPPATH.'config/db-default.php',
+"<?php
+\$db['default'] = Array(
+	['hostname'] => 'mysql:host='".$this->host."';port='".$this->port."';',
+	['username'] => $user,
+	['password'] => $pass,
+	['dbdriver'] => 'pdo',
+	['database'] = $db_name,
+	['dbprefix'] => '',
+	['pconnect'] => true,
+	['db_debug'] => true,
+	['cache_on'] => false,
+	['cachedir'] => '',
+	['char_set'] => 'utf8',
+	['dbcollat'] => 'utf8_general_ci',
+	['swap_pre'] => '',
+	['autoinit'] => true,
+	['stricton'] => false);");
 	}
 	protected function make_table_config() {
 		$this->pdoConnection->query("SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;

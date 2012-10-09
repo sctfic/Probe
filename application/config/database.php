@@ -58,7 +58,6 @@ $active_record = TRUE;
 /**----------------------------------------------------------------*/
 
 include_once(APPPATH.'config/db-default.php');
-include_once(APPPATH.'config/db-ws-template.php');
 
 /**----------------------------------------------------------------*/
 

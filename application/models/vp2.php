@@ -248,10 +248,9 @@ class vp2 extends CI_Model {
 	// Retourne la valeur numerique coverti en unité SI
 	// Retourne FALSE si la valeur est incohérante.
 		if (is_callable($limits['SI']) and !is_string($Value)) {
-			$val = $limits['SI']($Value);
-			if ($val >= $limits['max'] or $val <= $limits['min'])
+			if ($Value >= $limits['max'] or $Value <= $limits['min'])
 				return FALSE;
-			return $val;
+			return $limits['SI']($Value);
 		}
 		return $Value;
 	}

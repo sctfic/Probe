@@ -17,12 +17,14 @@ class cmdController extends CI_Controller {
 		$this->load->helper('cli_tools');
 
 		$this->WS = new weatherstation();
+		global $db;
+		print_r($db);
 	}
 
 	// la fonction qui ce lancera par defaut dans cette classe 
 	// clear;php5 -f /var/www/WsWds/cli.php 'cmdcontroller'
 	function index() {
-// 		$this->configCollectors();
+		$this->configCollectors();
 // 		$this->dataCollectors();
 	}
 	
@@ -64,7 +66,8 @@ class cmdController extends CI_Controller {
 		}
 		elseif (empty($station)) {
 			// on rapelle cette meme fonction mais avec de vrai paarametre : Toutes les stations
-			$this->configCollectors (array_keys ($this->WS->lst));
+			if (!empty($this->WS->lst))
+				$this->configCollectors (array_keys ($this->WS->lst));
 			return ;
 		}
 		try {
