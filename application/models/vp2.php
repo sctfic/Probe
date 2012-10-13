@@ -505,7 +505,6 @@ class vp2 extends CI_Model {
 					(\''.$name.'\', \'Default_Plot\', 1999, -199, \'2012/01/01 00:00:01\', \'0000/06/00 00:00:00\')');*/
 			return $this->get_SEN_ID($name, false); // dataDB->insert_id(); // query('SELECT LAST_INSERT_ID();');
 		}
-		print_r($id->result_array);
 		log_message('warning', 'Resultat inutilisable ('.$name.')');
 	}
 	

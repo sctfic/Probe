@@ -48,6 +48,25 @@ class db_builder extends CI_Model {
 		if ($result->fetchColumn() > 0) return true;
 		return false;
 	}
+	function randomPassword($size=6) {
+		$alphabet = "abcdefghijklmnopqrstuwxyzABCDEFGHIJKLMNOPQRSTUWXYZ0123456789";
+		for ($i = 0; $i < $size; $i++) {
+			$n = rand(0, strlen($alphabet)-1);
+			$pass[$i] = $alphabet[$n];
+		}
+		return implode($pass);
+	}
+	function make_user ($db, $usr, $pass)
+	{
+		// supprime les utilisateur vide qui provoque des probleme de connection
+		$this->pdoConnection->query("DELETE FROM user WHERE user = '';");
+		// Creation of user
+		$this->pdoConnection->query("CREATE USER IF NOT EXISTS '".$usr."'@'%' IDENTIFIED BY '".$pass."';");
+		// Adding all privileges on our newly created database
+		$this->pdoConnection->query("GRANT ALL PRIVILEGES on `$db`.* TO '".$usr."'@'%' IDENTIFIED BY  '".$pass."' WITH MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0 MAX_USER_CONNECTIONS 0 ;");
+		// recharge les privileges
+		$this->pdoConnection->query("FLUSH PRIVILEGES;");
+	}
 	/**
 	 * create all db items (base and table) for config
 	 * @var $db_name, $user, $pass
@@ -58,51 +77,49 @@ class db_builder extends CI_Model {
 		try {
 			// dans le cas ou la base est fournie avec l'user adequat pas besoin de le refaire
 			if (!$this->is_db($db_name)) {
-				$user = 'WsWds'; 
-				$pass = 'p@ss';
-				//Creation of user
-				$this->pdoConnection->query("CREATE USER IF NOT EXISTS '".$user."'@'%' IDENTIFIED BY '".$pass."';");
+				$user = 'wswds'; 
+				$pass = $this->randomPassword();
+				
 				//Creation of database "wswds"
 				$this->pdoConnection->query("CREATE DATABASE IF NOT EXISTS `$db_name`;");
-				//Adding all privileges on our newly created database
-				$this->pdoConnection->query("GRANT ALL PRIVILEGES on `$db_name`.* TO '".$user."'@'%';");
+				//Creation of user
+				$this->make_user($db_name,$user,$pass);
 			}
 			else {
 				$user = $this->user;
 				$pass = $this->pass;
 			}
 			$this->make_table_config();
-
+			$this->save_defaut_config($user, $pass, $db_name);
+			return array(
+				'dsn'=>'mysql:host='.$this->host.';port='.$this->port.';dbname='.$db_name,
+				'login'=>$user,
+				'pass'=>$pass);
 		} catch (PDOException $e) {
 			throw new Exception( $e->getMessage() );
 		}
-
-		$this->save_defaut_config($user, $pass, $db_name);
-		return array(
-			'dsn'=>'mysql:host='.$this->host.';port='.$this->port.';dbname='.$db_name,
-			'login'=>$user,
-			'pass'=>$pass);
+		return false;
 	}
 	protected function save_defaut_config($user, $pass, $db_name) {
 	if (is_writable(APPPATH.'config/db-default.php')) {
 		file_put_contents(APPPATH.'config/db-default.php',
 "<?php
 \$db['default'] = Array(
-	['hostname'] => 'mysql:host='".$this->host."';port='".$this->port."';',
-	['username'] => $user,
-	['password'] => $pass,
-	['dbdriver'] => 'pdo',
-	['database'] = $db_name,
-	['dbprefix'] => '',
-	['pconnect'] => true,
-	['db_debug'] => true,
-	['cache_on'] => false,
-	['cachedir'] => '',
-	['char_set'] => 'utf8',
-	['dbcollat'] => 'utf8_general_ci',
-	['swap_pre'] => '',
-	['autoinit'] => true,
-	['stricton'] => false);");
+	'hostname' => 'mysql:host=".$this->host.";port=".$this->port.";',
+	'username' => '$user',
+	'password' => '$pass',
+	'dbdriver' => 'pdo',
+	'database' => '$db_name',
+	'dbprefix' => '',
+	'pconnect' => true,
+	'db_debug' => true,
+	'cache_on' => false,
+	'cachedir' => '',
+	'char_set' => 'utf8',
+	'dbcollat' => 'utf8_general_ci',
+	'swap_pre' => '',
+	'autoinit' => true,
+	'stricton' => false);");
 	}
 	else 
 		throw new Exception( i18n('Impossible d\'ecrire le fichier de config') );
@@ -176,27 +193,27 @@ class db_builder extends CI_Model {
 		try {
 			// dans le cas ou la base est fournie avec l'user adequat pas besoin de le refaire
 			if (!$this->is_db($db_name)) {
-				$user = 'WsWds'; 
-				$pass = 'p@ss';
-				//Creation of user
-				$this->pdoConnection->query("CREATE USER IF NOT EXISTS '".$user."'@'%' IDENTIFIED BY '".$pass."';");
-				//Creation of database "$db_name"
+				$user = 'wswds'; 
+				$pass = $this->randomPassword();
+				
+				//Creation of database "wswds"
 				$this->pdoConnection->query("CREATE DATABASE IF NOT EXISTS `$db_name`;");
-				//Adding all privileges on our newly created database
-				$this->pdoConnection->query("GRANT ALL PRIVILEGES on `$db_name`.* TO '".$user."'@'%';");
+				//Creation of user
+				$this->make_user($db_name,$user,$pass);
 			}
 			else {
 				$user = $this->user;
 				$pass = $this->pass;
 			}
 			$this->make_table_data($db_name);
+			return array(
+			'dsn'=>'mysql:host='.$this->host.';port='.$this->port.';dbname='.$db_name,
+			'login'=>$user,
+			'pass'=>$pass);
 		} catch (PDOException $e) {
 			throw new Exception( $e->getMessage() );
 		}
-		return array(
-		'dsn'=>'mysql:host='.$this->host.';port='.$this->port.';dbname='.$db_name,
-		'login'=>$user,
-		'pass'=>$pass);
+		return false;
 	}
 	
 	protected function make_table_data($db_name) {
