@@ -298,6 +298,21 @@ class vp2 extends CI_Model {
 		}
 		return $CONFS;
 	}
+	protected function GetHiLow() { //
+		$CONFS = false;
+		 try {
+			log_message('wswds', '[EEBRD] : Download the current Config');
+			
+			$this->RequestCmd("HILOW\n");
+			$data = fread($this->fp, 436+2);
+			$this->VerifAnswersAndCRC($data, 436+2);
+		}
+		catch (Exception $e) {
+			log_message('warning',  $e->getMessage());
+			return false;
+		}
+		return $CONFS;
+	}
 	/**
 	@description: Lis les valeur courante de tous les capteur disponible sur la station
 	@return: retourne un tableau de tableau de la forme :
