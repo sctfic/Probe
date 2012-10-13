@@ -77,20 +77,14 @@ class Installer extends CI_Controller {
 	$pass=$this->input->post('dbms-password');
 	log_message('info', sprintf('%s', i18n("info.setup.database_!")));
 
-	if (file_exists(APPPATH.'models/db_builder.php')){
-		log_message('include',  __FUNCTION__.'('.__CLASS__.")\n".__FILE__.' ['.__LINE__.']');
-		include_once(APPPATH.'models/db_builder.php');
-		}
-	else 	log_message('ERROR',  __FUNCTION__.'('.__CLASS__.")\n".__FILE__.' ['.__LINE__.']');
+	require_once(BASEPATH.'core/Model.php'); // need for load models manualy
+	require_once(APPPATH.'models/db_builder.php');
 	try {
 		$this->dbb = new db_builder($pass, $username, $engine, $ip, $port);
-	log_message('x',  __FUNCTION__.'('.__CLASS__.")\n".__FILE__.' ['.__LINE__.']');
-		$x = $this->dbb->make_db_config();
-	log_message('x',  __FUNCTION__.'('.__CLASS__.")\n".__FILE__.' ['.__LINE__.']');
-		log_message('info', print_r($x));
+		$dns = $this->dbb->make_db_config();
+		
 	} catch (Exception $e) {
-	log_message('x',  __FUNCTION__.'('.__CLASS__.")\n".__FILE__.' ['.__LINE__.']');
-			log_message('db',  $e->getMessage() );
+		log_message('db',  $e->getMessage() );
 	}
   }
 
