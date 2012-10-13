@@ -73,32 +73,24 @@ class Installer extends CI_Controller {
 	*/
 	public function adminUser() { $this->requestCredentialsForAdminUser(); }
 
-	function setupDbms() {
-	// call to model/db_builder.php
-		$ip=$this->input->post('dbms-ip');
-		$port=$this->input->post('dbms-port');
-		$engine=$this->input->post('dbms-engine');
-		$username=$this->input->post('dbms-username');
-		$pass=$this->input->post('dbms-password');
-		log_message('info', sprintf('%s', i18n("info.setup.database_!")));
+   function setupDbms() {
+    // call to model/db_builder.php
+	$ip=$this->input->post('dbms-ip');
+	$port=$this->input->post('dbms-port');
+	$engine=$this->input->post('dbms-engine');
+	$username=$this->input->post('dbms-username');
+	$pass=$this->input->post('dbms-password');
+	log_message('info', sprintf('%s', i18n("info.setup.database_!")));
 
-		if (file_exists(APPPATH.'models/db_builder.php')){
-			log_message('include',  __FUNCTION__.'('.__CLASS__.")\n".__FILE__.' ['.__LINE__.']');
-			include_once(APPPATH.'models/db_builder.php');
-			}
-		else 	log_message('ERROR',  __FUNCTION__.'('.__CLASS__.")\n".__FILE__.' ['.__LINE__.']');
-		try {
-			$this->dbb = new db_builder($pass, $username, $engine, $ip, $port);
-		log_message('x',  __FUNCTION__.'('.__CLASS__.")\n".__FILE__.' ['.__LINE__.']');
-			$x = $this->dbb->make_db_config();
-		log_message('x',  __FUNCTION__.'('.__CLASS__.")\n".__FILE__.' ['.__LINE__.']');
-			log_message('info', print_r($x));
-		} catch (Exception $e) {
-		log_message('x',  __FUNCTION__.'('.__CLASS__.")\n".__FILE__.' ['.__LINE__.']');
-				log_message('db',  $e->getMessage() );
-		}
+	require_once(BASEPATH.'core/Model.php'); // need for load models manualy
+	require_once(APPPATH.'models/db_builder.php');
+	try {
+		$this->dbb = new db_builder($pass, $username, $engine, $ip, $port);
+		$dns = $this->dbb->make_db_config();
+	} catch (Exception $e) {
+			log_message('db',  $e->getMessage() );
 	}
-
+  }
 
 	function setupAdminUser() {
 	// call to model/db_builder.php
