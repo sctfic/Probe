@@ -3,6 +3,7 @@
 | Configuration for the WsWds application.
 */
 
+$config['mainDb'] = 'wswds';
 // $config['wswds:username'] = 'edouard.lopez';
 $config['ws:username'] = '';
 // $config['wswds:password'] = 'edouard.lopez';

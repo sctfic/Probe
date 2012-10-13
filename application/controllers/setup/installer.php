@@ -7,17 +7,10 @@ require_once APPPATH."/controllers/pages.php";
 class Installer extends CI_Controller {
 
 	public function __construct() {
-	parent::__construct();
+  	parent::__construct();
 
-// 	$this->i18n->setLocaleEnv($this->config->item('ws:locale'), 'global'); // set language
-
-$locale = "fr_FR";
-putenv("LC_ALL=$locale");
-setlocale(LC_ALL, $locale);
-bindtextdomain("global", "application/language/locales/");
-textdomain("global");
-//     $this->encrypt->set_cipher(MCRYPT_BLOWFISH);
-//     $this->startSetup();
+  	$this->i18n->setLocaleEnv($this->config->item('ws:locale'), 'global'); // set language
+  // $this->i18n->getRequestedLang();
 	}
 
 	private function startSetup() {
@@ -51,6 +44,7 @@ textdomain("global");
     $data['dbmsPort'] = 3306;
     $data['dbmsUsername'] = null;
     $data['dbmsPassword'] = null;
+    $data['dbmsDatabaseName'] = $this->config->item('mainDb');
     
     // display the view
     $pages = new Pages();
