@@ -1,0 +1,332 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: wswds\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-10-13 23:47+0100\n"
+"PO-Revision-Date: 2012-10-13 23:48+0100\n"
+"Last-Translator: Édouard Lopez <dev+i18n@edouard-lopez.com>\n"
+"Language-Team: wswds <dev+wswds@edouard-lopez.com>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: _;gettext;gettext_noop;i18n\n"
+"X-Poedit-Basepath: /home/ed/wswds/application\n"
+"Plural-Forms: nplurals=2; plural=n>1;\n"
+"X-Poedit-Language: French\n"
+"X-Poedit-Country: FRANCE\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: helpers/pages_helper.php:12
+msgid ":title"
+msgstr ""
+
+#: helpers/pages_helper.php:13
+msgid ":description"
+msgstr ""
+
+#: helpers/pages_helper.php:14
+msgid ":author"
+msgstr ""
+
+#: models/db_builder.php:125
+msgid "Impossible d'ecrire le fichier de config"
+msgstr ""
+
+#: models/weatherstation.php:81
+msgid "Aucune configuration valide n'est disponible"
+msgstr ""
+
+#: models/weatherstation.php:100
+#: models/weatherstation.php:119
+#, php-format
+msgid "Impossible de se connecter à %s par %s:%s"
+msgstr ""
+
+#: models/weatherstation.php:104
+#: models/weatherstation.php:127
+#, php-format
+msgid "Fermeture de %s impossible"
+msgstr ""
+
+#: models/weatherstation.php:122
+#, php-format
+msgid "Lecture des config de %s impossible"
+msgstr ""
+
+#: models/vp2.php:126
+#, php-format
+msgid "Fermeture de %s correcte."
+msgstr ""
+
+#: models/vp2.php:141
+#, php-format
+msgid "Default Clock synchronize : %ssec"
+msgstr ""
+
+#: models/vp2.php:144
+msgid "Clock synchronizing."
+msgstr ""
+
+#: models/vp2.php:146
+msgid "Clock synch."
+msgstr ""
+
+#: models/vp2.php:148
+#, php-format
+msgid "So mutch Default : %ssec. Please change it manualy"
+msgstr ""
+
+#: models/vp2.php:189
+#, php-format
+msgid "Incomplete Data strlen = %d insted of : %d"
+msgstr ""
+
+#: models/vp2.php:194
+#, php-format
+msgid "Wrong CRC, on good data : crc=0x%X 0x%X , strlen=%d"
+msgstr ""
+
+#: models/vp2.php:213
+#, php-format
+msgid "Command [%s] not understand"
+msgstr ""
+
+#: models/vp2.php:216
+msgid "Unknow Error, Reconnection"
+msgstr ""
+
+#: models/vp2.php:356
+msgid "Please retry later to finish, Data sensors must be checked in few second."
+msgstr ""
+
+#: models/vp2.php:371
+#, php-format
+msgid "Page #%d-%d of %s archived Ok."
+msgstr ""
+
+#: models/vp2.php:376
+#, php-format
+msgid "Page #%d-%d of %s Ignored (Out of Range)."
+msgstr ""
+
+#: models/service/service_user.php:22
+msgid "login.fail.username.password.incorrect"
+msgstr ""
+
+#: views/login.php:16
+msgid "username"
+msgstr ""
+
+#: views/login.php:16
+#: views/login.php:19
+#: views/login.php:25
+#: views/setup/admin-user.php:5
+#: views/setup/admin-user.php:8
+#: views/setup/admin-user.php:14
+#: views/setup/dbms.php:8
+#: views/setup/dbms.php:18
+#: views/setup/dbms.php:28
+#: views/setup/dbms.php:33
+#: views/setup/dbms.php:37
+#: views/setup/dbms.php:46
+#: views/setup/dbms.php:51
+#: views/setup/dbms.php:55
+#: views/setup/dbms.php:73
+#: views/setup/dbms.php:83
+msgid "required"
+msgstr ""
+
+#: views/login.php:16
+#: views/login.php:19
+#: views/login.php:25
+#: views/setup/admin-user.php:5
+#: views/setup/admin-user.php:8
+#: views/setup/admin-user.php:14
+#: views/setup/dbms.php:8
+#: views/setup/dbms.php:18
+#: views/setup/dbms.php:28
+#: views/setup/dbms.php:46
+#: views/setup/dbms.php:63
+#: views/setup/dbms.php:73
+#: views/setup/dbms.php:83
+msgid "&nbsp;:"
+msgstr ""
+
+#: views/login.php:17
+msgid "fill in your username"
+msgstr ""
+
+#: views/login.php:19
+msgid "password"
+msgstr ""
+
+#: views/login.php:21
+msgid "longer is better"
+msgstr ""
+
+#: views/login.php:25
+msgid "password confirmation"
+msgstr ""
+
+#: views/login.php:27
+msgid "so we can prevent mistakes"
+msgstr ""
+
+#: views/login.php:30
+msgid "login"
+msgstr ""
+
+#: views/login.php:35
+msgid "sunny weather"
+msgstr ""
+
+#: views/logout.php:2
+msgid "You're now logged out."
+msgstr ""
+
+#: views/setup/admin-user.php:5
+msgid "setup.admin-user.username"
+msgstr "Administrateur"
+
+#: views/setup/admin-user.php:6
+#: views/setup/dbms.php:76
+msgid "setup.dbms.username.placeholder"
+msgstr "gestionnaire de la base"
+
+#: views/setup/admin-user.php:8
+msgid "setup.admin-user.password"
+msgstr "plus long c'est mieux"
+
+#: views/setup/admin-user.php:10
+#: views/setup/dbms.php:86
+msgid "setup.dbms.password.placeholder"
+msgstr "mot de passe du gestionnaire"
+
+#: views/setup/admin-user.php:14
+msgid "setup.admin-user.password-confirmation"
+msgstr "pour éviter les erreurs de saisi"
+
+#: views/setup/admin-user.php:16
+msgid "setup.dbms.password-confirm.placeholder"
+msgstr "pour éviter les erreurs de saisi"
+
+#: views/setup/admin-user.php:19
+msgid "setup.admin-user.do-it"
+msgstr "Activer l'administrateur"
+
+#: views/setup/dbms.php:8
+msgid "setup.dbms.ip"
+msgstr "Hôte"
+
+#: views/setup/dbms.php:11
+msgid "setup.dbms.ip.placeholder"
+msgstr "adresse IP ou nom de domaine"
+
+#: views/setup/dbms.php:18
+msgid "setup.dbms.port"
+msgstr "Port"
+
+#: views/setup/dbms.php:21
+msgid "setup.dbms.port.placeholder"
+msgstr "défault: 3306"
+
+#: views/setup/dbms.php:28
+msgid "setup.dbms.engine"
+msgstr "Moteur de la Base"
+
+#: views/setup/dbms.php:33
+msgid "setup.dbms.engine-mysql"
+msgstr "MySQL 5+"
+
+#: views/setup/dbms.php:37
+msgid "setup.dbms.engine-sqlite"
+msgstr "SQLite 3+"
+
+#: views/setup/dbms.php:46
+msgid "setup.dbms.database.selection"
+msgstr "Choix de la base"
+
+#: views/setup/dbms.php:51
+msgid "setup.dbms.database-reuse"
+msgstr "base existante"
+
+#: views/setup/dbms.php:55
+msgid "setup.dbms.database-create"
+msgstr "nouvelle base"
+
+#: views/setup/dbms.php:63
+msgid "setup.dbms.database-name"
+msgstr "Nom de la base"
+
+#: views/setup/dbms.php:66
+msgid "setup.dbms.database-name.placeholder"
+msgstr "base existante"
+
+#: views/setup/dbms.php:73
+msgid "setup.dbms.username"
+msgstr "Administrateur"
+
+#: views/setup/dbms.php:83
+msgid "setup.dbms.password"
+msgstr "Mot de passe"
+
+#: views/setup/dbms.php:91
+msgid "setup.dbms.configure"
+msgstr "Configurer →"
+
+#: views/admin/dashboard.php:29
+#, php-format
+msgid "edit %s properties"
+msgstr ""
+
+#: views/admin/dashboard.php:32
+msgid "Model"
+msgstr ""
+
+#: views/admin/dashboard.php:56
+#: views/admin/dashboard.php:57
+msgid "logOut"
+msgstr ""
+
+#: views/templates/footer.php:1
+msgid "Weather Station Web Data Share"
+msgstr ""
+
+#: controllers/setup/installer.php:20
+msgid "error.setup.database"
+msgstr ""
+
+#: controllers/setup/installer.php:26
+msgid "error.setup.amdin-user"
+msgstr ""
+
+#: controllers/setup/installer.php:82
+msgid "info.setup.database_!"
+msgstr ""
+
+#: controllers/setup/installer.php:96
+msgid "info.setup.admin-user"
+msgstr ""
+
+#: controllers/admin/admin.php:54
+msgid "Username"
+msgstr ""
+
+#: controllers/admin/admin.php:55
+msgid "Password"
+msgstr ""
+
+#: controllers/admin/admin.php:56
+msgid "Password Confirmation"
+msgstr ""
+
+#~ msgid "setup.dbms.engine-mysql.placeholder"
+#~ msgstr "MySQL 5+"
+
+#~ msgid "setup.dbms.engine-sqlite.placeholder"
+#~ msgstr "SQLite 3+"
+
+#~ msgid "setup.dbms.do-it"
+#~ msgstr "Configurer la base"

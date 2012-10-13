@@ -32,7 +32,6 @@ private function gettext_domain($lang) {// return language code.
     return $result;
   }
 
-
 public function getRequestedLang() {
     if (isset($_REQUEST['lang']) and !empty($_REQUEST['lang']))
     {
