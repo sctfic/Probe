@@ -80,7 +80,10 @@ class CI_Log {
 		$message .= $level."\t- ".date($this->_date_fmt). ' --> '.str_replace ("\n", "\n\t\t\t\t > ", $msg)."\n";
 		
 		if ($this->_levels[$level] <= $this->_verbose && $this->_levels[$level] > 2)	{
-			echo $message;
+			if (isset($_SERVER['REMOTE_ADDR'])) // en web
+				echo nl2br($message);
+			else // en CLI
+				echo $message;
 		}
 		
 		if (($this->_levels[$level] > $this->_threshold))	{
