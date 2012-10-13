@@ -79,9 +79,9 @@ class db_builder extends CI_Model {
 
 		$this->save_defaut_config($user, $pass, $db_name);
 		return array(
-		'dsn'=>'mysql:host='.$this->host.';port='.$this->port.';dbname='.$db_name,
-		'login'=>$user,
-		'pass'=>$pass);
+			'dsn'=>'mysql:host='.$this->host.';port='.$this->port.';dbname='.$db_name,
+			'login'=>$user,
+			'pass'=>$pass);
 	}
 	protected function save_defaut_config($user, $pass, $db_name) {
 	file_put_contents(APPPATH.'config/db-default.php',

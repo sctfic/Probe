@@ -67,15 +67,49 @@ class Installer extends CI_Controller {
     $pages->view('setup/admin-user', $data);
   }
 
-  private function setupDbms() {
+   function setupDbms() {
     // call to model/db_builder.php
-    log_message('info', printf('%s', i18n("info.setup.database") ) );
+	$ip=$this->input->post('dbms-ip');
+	$port=$this->input->post('dbms-port');
+	$engine=$this->input->post('dbms-engine');
+	$username=$this->input->post('dbms-username');
+	$pass=$this->input->post('dbms-password');
+	log_message('info', printf('%s', i18n("info.setup.database")));
+	
+	include_once(APPPATH.'models/db_builder.php');
+	try {
+		$this->dbb = new db_builder($pass, $username, $engine, $ip, $port);
+		$x = $this->dbb->make_db_config();
+		log_message('info', print_r($x));
+	} catch (Exception $e) {
+			log_message('db',  $e->getMessage() );
+	}
   }
 
 
-  private function setupAdminUser() {
+   function setupAdminUser() {
     // call to model/db_builder.php
     log_message('info', printf('%s', i18n("info.setup.admin-user") ) );
   }
-
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
