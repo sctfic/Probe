@@ -1,6 +1,9 @@
 WsWds (Weather Station Web Data Share/Partage Web des Données de Station Météo) est un ensemble de scripte non compilé executable sur la plupart des OS linux, NAS, Routeur, PC...
 les tests sont effectué sur :
 
+- Pour pouvoir utiliser les traductions il est impératifs d'installer les paquets de langues correspondantes. Sous Ubuntu linux, cela correspondant aux paquets :
+	* language-pack-*
+
 - un PC Ubuntu LAMP
   + Vantage pro2 Plus IP
 
