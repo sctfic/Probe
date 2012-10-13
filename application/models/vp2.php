@@ -103,7 +103,6 @@ class vp2 extends CI_Model {
 // 				WHERE `VAR_DATE` >= :SINCE AND `SEN_ID` =:SENSOR_ID ;';
 	}
 	protected function initConnection()	{
-		$config =& get_config();
 		$errno = 0;
 		$this->fp = @fsockopen (
 			$this->conf['_ip'],
@@ -112,7 +111,7 @@ class vp2 extends CI_Model {
 		if ($this->fp && $errno==0) {
 			stream_set_timeout ($this->fp, 0, 2500000);
 			if ($this->wakeUp()) {
-				if ($config['log_threshold'] + $config['verbose_threshold'] > 3)
+				if ($this->config->item('verbose_threshold') > 2)
 					$this->toggleBacklight (1);
 				log_message('wswds', _( sprintf('Ouverture de la connexion à %s', $this->conf['_name']) ) );
 				return TRUE;
@@ -299,19 +298,21 @@ class vp2 extends CI_Model {
 		return $CONFS;
 	}
 	protected function GetHiLow() { //
-		$CONFS = false;
+		$HILOW = false;
 		 try {
 			log_message('wswds', '[EEBRD] : Download the current Config');
 			
 			$this->RequestCmd("HILOW\n");
 			$data = fread($this->fp, 436+2);
 			$this->VerifAnswersAndCRC($data, 436+2);
+			log_message('wswds', '[LPS] : Download the current Values');
+			$HILOW = $this->RawConverter($this->HILOW, $data),
 		}
 		catch (Exception $e) {
 			log_message('warning',  $e->getMessage());
 			return false;
 		}
-		return $CONFS;
+		return $HILOW;
 	}
 	/**
 	@description: Lis les valeur courante de tous les capteur disponible sur la station
@@ -328,24 +329,34 @@ class vp2 extends CI_Model {
 		try {
 			$this->RequestCmd("LPS $type $nbr\n");
 			while ($nbr-- > 0) {
-				$data = fread($this->fp, 99);
-				$this->VerifAnswersAndCRC($data, 99);
+				$data = fread($this->fp, 97+2);
+				$this->VerifAnswersAndCRC($data, 97+2);
 				log_message('wswds', '[LPS] : Download the current Values');
-				
-				$packet_type = $this->convertUnit( $this->convertRaw( $this->subRaw( $data, $this->Loop[]), ), );
+// 				$packet_type = $this->convertUnit( $this->convertRaw( $this->subRaw( $data, $this->Loop['NO:::PacketType']), $this->Loop['NO:::PacketType']), $this->Loop['NO:::PacketType']);
+				$packet_type = $this->RawConverter(array('NO:::PacketType'=>$this->Loop['NO:::PacketType']), $data);
+				log_message('type', 'Type'.$packet_type."\n".__FUNCTION__.'('.__CLASS__.' ('.$conf['_name'].':'.($base = $conf['_db']).') '.")\n".__FILE__.' ['.__LINE__.']');
 				switch($packet_type) {
 					case 0:
-						$LPS[date('Y/m/d H:i:s')] = $this->RawConverter($this->Loop, $data);
+					file_put_contents (BASEPATH.'data/LOOP.json',
+						json_encode(
+							array_merge(
+								'UTC_date'=>date('Y/m/d H:i:s'),
+								$LPS = $this->RawConverter($this->Loop, $data) )));
 						break;
 					case 1:
-						$LPS[date('Y/m/d H:i:s')] = $this->RawConverter($this->Loop2, $data);
-						break;
+					file_put_contents (BASEPATH.'data/LOOP2.json',
+						json_encode(
+							array_merge(
+								'UTC_date'=>date('Y/m/d H:i:s'),
+								$LPS = $this->RawConverter($this->Loop, $data) )));
+					break;
 					case 2:
 						break;
 					case 3:
 						break;
 				}
-				if ($type==1)
+				
+				if ($nbr>0) sleep(2);
 			}
 		}
 		catch (Exception $e) {
