@@ -1,4 +1,5 @@
 <?=form_open('setup/installer/setupDbms', array('class' => 'setup form-horizontal', 'id' => 'dbms'))?>
+	<legend><?=i18n("setup.dbms.legend")?></legend>
 	<fieldset>
 	<?=validation_errors()?>
 

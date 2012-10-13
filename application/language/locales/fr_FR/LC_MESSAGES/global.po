@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wswds\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-13 23:47+0100\n"
-"PO-Revision-Date: 2012-10-13 23:48+0100\n"
+"POT-Creation-Date: 2012-10-14 00:22+0100\n"
+"PO-Revision-Date: 2012-10-14 00:23+0100\n"
 "Last-Translator: Édouard Lopez <dev+i18n@edouard-lopez.com>\n"
 "Language-Team: wswds <dev+wswds@edouard-lopez.com>\n"
 "Language: \n"
@@ -125,16 +125,16 @@ msgstr ""
 #: views/setup/admin-user.php:5
 #: views/setup/admin-user.php:8
 #: views/setup/admin-user.php:14
-#: views/setup/dbms.php:8
-#: views/setup/dbms.php:18
-#: views/setup/dbms.php:28
-#: views/setup/dbms.php:33
-#: views/setup/dbms.php:37
-#: views/setup/dbms.php:46
-#: views/setup/dbms.php:51
-#: views/setup/dbms.php:55
-#: views/setup/dbms.php:73
-#: views/setup/dbms.php:83
+#: views/setup/dbms.php:9
+#: views/setup/dbms.php:19
+#: views/setup/dbms.php:29
+#: views/setup/dbms.php:34
+#: views/setup/dbms.php:38
+#: views/setup/dbms.php:47
+#: views/setup/dbms.php:52
+#: views/setup/dbms.php:56
+#: views/setup/dbms.php:74
+#: views/setup/dbms.php:84
 msgid "required"
 msgstr ""
 
@@ -144,13 +144,13 @@ msgstr ""
 #: views/setup/admin-user.php:5
 #: views/setup/admin-user.php:8
 #: views/setup/admin-user.php:14
-#: views/setup/dbms.php:8
-#: views/setup/dbms.php:18
-#: views/setup/dbms.php:28
-#: views/setup/dbms.php:46
-#: views/setup/dbms.php:63
-#: views/setup/dbms.php:73
-#: views/setup/dbms.php:83
+#: views/setup/dbms.php:9
+#: views/setup/dbms.php:19
+#: views/setup/dbms.php:29
+#: views/setup/dbms.php:47
+#: views/setup/dbms.php:64
+#: views/setup/dbms.php:74
+#: views/setup/dbms.php:84
 msgid "&nbsp;:"
 msgstr ""
 
@@ -191,7 +191,7 @@ msgid "setup.admin-user.username"
 msgstr "Administrateur"
 
 #: views/setup/admin-user.php:6
-#: views/setup/dbms.php:76
+#: views/setup/dbms.php:77
 msgid "setup.dbms.username.placeholder"
 msgstr "gestionnaire de la base"
 
@@ -200,7 +200,7 @@ msgid "setup.admin-user.password"
 msgstr "plus long c'est mieux"
 
 #: views/setup/admin-user.php:10
-#: views/setup/dbms.php:86
+#: views/setup/dbms.php:87
 msgid "setup.dbms.password.placeholder"
 msgstr "mot de passe du gestionnaire"
 
@@ -216,63 +216,63 @@ msgstr "pour éviter les erreurs de saisi"
 msgid "setup.admin-user.do-it"
 msgstr "Activer l'administrateur"
 
-#: views/setup/dbms.php:8
+#: views/setup/dbms.php:2
+msgid "setup.dbms.legend"
+msgstr "Configuration de la base de donnée"
+
+#: views/setup/dbms.php:9
 msgid "setup.dbms.ip"
 msgstr "Hôte"
 
-#: views/setup/dbms.php:11
+#: views/setup/dbms.php:12
 msgid "setup.dbms.ip.placeholder"
 msgstr "adresse IP ou nom de domaine"
 
-#: views/setup/dbms.php:18
+#: views/setup/dbms.php:19
 msgid "setup.dbms.port"
 msgstr "Port"
 
-#: views/setup/dbms.php:21
+#: views/setup/dbms.php:22
 msgid "setup.dbms.port.placeholder"
 msgstr "défault: 3306"
 
-#: views/setup/dbms.php:28
+#: views/setup/dbms.php:29
 msgid "setup.dbms.engine"
 msgstr "Moteur de la Base"
 
-#: views/setup/dbms.php:33
+#: views/setup/dbms.php:34
 msgid "setup.dbms.engine-mysql"
 msgstr "MySQL 5+"
 
-#: views/setup/dbms.php:37
+#: views/setup/dbms.php:38
 msgid "setup.dbms.engine-sqlite"
 msgstr "SQLite 3+"
 
-#: views/setup/dbms.php:46
+#: views/setup/dbms.php:47
 msgid "setup.dbms.database.selection"
 msgstr "Choix de la base"
 
-#: views/setup/dbms.php:51
+#: views/setup/dbms.php:52
 msgid "setup.dbms.database-reuse"
 msgstr "base existante"
 
-#: views/setup/dbms.php:55
+#: views/setup/dbms.php:56
 msgid "setup.dbms.database-create"
 msgstr "nouvelle base"
 
-#: views/setup/dbms.php:63
+#: views/setup/dbms.php:64
 msgid "setup.dbms.database-name"
 msgstr "Nom de la base"
 
-#: views/setup/dbms.php:66
-msgid "setup.dbms.database-name.placeholder"
-msgstr "base existante"
-
-#: views/setup/dbms.php:73
+#: views/setup/dbms.php:74
 msgid "setup.dbms.username"
 msgstr "Administrateur"
 
-#: views/setup/dbms.php:83
+#: views/setup/dbms.php:84
 msgid "setup.dbms.password"
 msgstr "Mot de passe"
 
-#: views/setup/dbms.php:91
+#: views/setup/dbms.php:92
 msgid "setup.dbms.configure"
 msgstr "Configurer →"
 
@@ -321,6 +321,9 @@ msgstr ""
 #: controllers/admin/admin.php:56
 msgid "Password Confirmation"
 msgstr ""
+
+#~ msgid "setup.dbms.database-name.placeholder"
+#~ msgstr "base existante"
 
 #~ msgid "setup.dbms.engine-mysql.placeholder"
 #~ msgstr "MySQL 5+"
