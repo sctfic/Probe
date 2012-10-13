@@ -4,5 +4,5 @@
 @return: translated string
 */
 function i18n($str) { //
-        return _($str);
+	return _($str);
 }
