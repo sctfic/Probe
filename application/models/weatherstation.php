@@ -82,7 +82,38 @@ class weatherstation extends CI_Model {
 		}
 		return $confs;
 	}
-	
+	function HilowCollector() {
+		$type = strtolower($conf['_type']);
+		include_once(APPPATH.'models/'.$type.'.php');
+		$Current_WS = new $type($conf);
+		try {
+			if ( !$Current_WS->initConnection() )
+				throw new Exception( sprintf( _('Impossible de se connecter à %s par %s:%s'), $conf['_name'], $conf['_ip'], $conf['_port']));
+			$this->data = $Current_WS->GetHilow ( );
+			if ( !$Current_WS->closeConnection() )
+				throw new Exception( sprintf( _('Fermeture de %s impossible'), $conf['_name']) );
+		}
+		catch (Exception $e) {
+			throw new Exception($e->getMessage());
+		}
+		return true;
+	}
+	function LpsCollector() {
+		$type = strtolower($conf['_type']);
+		include_once(APPPATH.'models/'.$type.'.php');
+		$Current_WS = new $type($conf);
+		try {
+			if ( !$Current_WS->initConnection() )
+				throw new Exception( sprintf( _('Impossible de se connecter à %s par %s:%s'), $conf['_name'], $conf['_ip'], $conf['_port']));
+			$this->data = $Current_WS->GetLPS ( );
+			if ( !$Current_WS->closeConnection() )
+				throw new Exception( sprintf( _('Fermeture de %s impossible'), $conf['_name']) );
+		}
+		catch (Exception $e) {
+			throw new Exception($e->getMessage());
+		}
+		return true;
+	}
 	/**
 	 * recupere sous forme de table l'ensemble des configs d'une ou de toutes les station
 	 * @var item
@@ -117,7 +148,7 @@ class weatherstation extends CI_Model {
 		try {
 			if ( !$Current_WS->initConnection() )
 				throw new Exception( sprintf( _('Impossible de se connecter à %s par %s:%s'), $conf['_name'], $conf['_ip'], $conf['_port']));
-	
+			$clock = $Current_WS->clockSync(2);
 			if (!($realconf = end($Current_WS->GetConfig())))
 				throw new Exception( sprintf( _('Lecture des config de %s impossible'),$conf['_name']));
 			// conf est un array('2012/08/04 15:30:00'=>array(...))

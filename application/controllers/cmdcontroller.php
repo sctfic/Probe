@@ -22,11 +22,44 @@ class cmdController extends CI_Controller {
 	// la fonction qui ce lancera par defaut dans cette classe 
 	// clear;php5 -f /var/www/WsWds/cli.php 'cmdcontroller'
 	function index() {
-		if (count($this->WS)<10)
-			$this->configCollectors();
+		$this->configCollectors();
 		$this->dataCollectors();
 	}
+
+	// clear;php5 -f /var/www/WsWds/cli.php 'cmdcontroller/hilowCollectors'
+	function hilowCollectors($station = null) {
+		try {
+			if ($item_ID = array_search($station, $this->WS->lst)) {
+				// on rapelle cette meme fonction mais avec de vrai paarametre : Toutes les stations
+				// on recupere les confs de $station
+				$conf = end($this->WS->config($item_ID)); // $station est le ID ou le nom
+				$this->WS->HilowCollector ($item);
+				return false;
+			}
+			else return false;
+		}
+		catch (Exception $e) {
+			log_message('warning',  $e->getMessage());
+		}
+	}
 	
+	// clear;php5 -f /var/www/WsWds/cli.php 'cmdcontroller/curentCollectors'
+	function curentCollectors($station = null) {
+		try {
+			if ($item_ID = array_search($station, $this->WS->lst)) {
+				// on rapelle cette meme fonction mais avec de vrai paarametre : Toutes les stations
+				// on recupere les confs de $station
+				$conf = end($this->WS->config($item_ID)); // $station est le ID ou le nom
+				$this->WS->LpsCollector ($item);
+				return false;
+			}
+			else return false;
+		}
+		catch (Exception $e) {
+			log_message('warning',  $e->getMessage());
+		}
+	}
+
 	// clear;php5 -f /var/www/WsWds/cli.php 'cmdcontroller/dataCollectors'
 	function dataCollectors($station = null) {
 		if (is_array($station)) {
@@ -41,6 +74,7 @@ class cmdController extends CI_Controller {
 			$this->dataCollectors (array_keys ($this->WS->lst));
 			return false;
 		}
+		else return false;
 		try {
 			// on recupere les confs de $station
 			$conf = end($this->WS->config($station)); // $station est le ID ou le nom
@@ -54,8 +88,8 @@ class cmdController extends CI_Controller {
 	}
 	
 	
-
-	function configCollectors($station = null) {
+	// clear;php5 -f /var/www/WsWds/cli.php 'cmdcontroller/configCollectors'
+	function configCollectors($station = null, $force = false) {
 		if (is_array($station)) {
 			foreach ($station as $item) {
 				// on rapelle cette meme fonction mais individuellement pour chaque station
@@ -69,14 +103,17 @@ class cmdController extends CI_Controller {
 				$this->configCollectors (array_keys ($this->WS->lst));
 			return false;
 		}
+		else return false;
 		try {
-			$conf = end($this->WS->config($station));			
-			$readconf = $this->WS->ConfCollector($conf);
-			foreach ($readconf as $key => $val) {
-				if (strpos($key, 'TR:Config:')!==FALSE)
-					$ToStoreConfig[str_replace('TR:Config:', '', $key)] = $val;
+			$conf = end($this->WS->config($station));
+			if (count($conf)<10 or $force==true) {
+				$readconf = $this->WS->ConfCollector($conf);
+				foreach ($readconf as $key => $val) {
+					if (strpos($key, 'TR:Config:')!==FALSE)
+						$ToStoreConfig[str_replace('TR:Config:', '', $key)] = $val;
+				}
+				$this->WS->arrays2dbconfs($conf['_id'], $ToStoreConfig);
 			}
-			$this->WS->arrays2dbconfs($conf['_id'], $ToStoreConfig);
 		}
 		catch (Exception $e) {
 			log_message('warning',  $e->getMessage());
