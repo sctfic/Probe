@@ -33,7 +33,15 @@ class Installer extends CI_Controller {
   public function index() {
     $this->startSetup();
   }
-  
+
+  /*
+   * alias method to have nice URL
+  */
+  public function dbms() { $this->requestDsnForConfigDb(); }
+
+  /*
+   * build the view to get information about the DBMS
+  */
   public function requestDsnForConfigDb() {
     $this->load->helper('pages');
     $this->load->helper(array('form', 'url'));
@@ -51,6 +59,14 @@ class Installer extends CI_Controller {
     $pages->view('setup/dbms', $data);
   }
 
+  /*
+   * alias method to have nice URL
+  */
+  public function adminUser() { $this->requestCredentialsForAdminUser(); }
+
+  /*
+   * build the view to get information about admin user
+  */
   public function requestCredentialsForAdminUser() {
     $this->load->helper('pages');
     $this->load->helper(array('form', 'url'));
