@@ -84,7 +84,8 @@ class db_builder extends CI_Model {
 			'pass'=>$pass);
 	}
 	protected function save_defaut_config($user, $pass, $db_name) {
-	file_put_contents(APPPATH.'config/db-default.php',
+	if (is_writable(APPPATH.'config/db-default.php')) {
+		file_put_contents(APPPATH.'config/db-default.php',
 "<?php
 \$db['default'] = Array(
 	['hostname'] => 'mysql:host='".$this->host."';port='".$this->port."';',
@@ -102,6 +103,9 @@ class db_builder extends CI_Model {
 	['swap_pre'] => '',
 	['autoinit'] => true,
 	['stricton'] => false);");
+	}
+	else 
+		throw new Exception( i18n('Impossible d\'ecrire le fichier de config') );
 	}
 	protected function make_table_config() {
 		$this->pdoConnection->query("SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;

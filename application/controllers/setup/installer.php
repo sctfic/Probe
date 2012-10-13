@@ -22,67 +22,56 @@ class Installer extends CI_Controller {
 	log_message('error', printf('%s: %s', i18n("error.setup.database"), $e->getMessage()) );
 	}
 
-	try {
+    try {
 //       $this->requestCredentialsForAdminUser();
-	} catch (exception $e){
-	log_message('error', printf('%s: %s', i18n("error.setup.amdin-user"), $e->getMessage()) );
-	}
+    } catch (exception $e){
+      log_message('error', printf('%s: %s', i18n("error.setup.amdin-user"), $e->getMessage()) );
+    }
 
-	}
+  }
 
-	// CI require a landing function called: 'index'
-	public function index() {
-	$this->startSetup();
-	}
+  // CI require a landing function called: 'index'
+  public function index() {
+    $this->startSetup();
+  }
+  
+  public function requestDsnForConfigDb() {
+    $this->load->helper('pages');
+    $this->load->helper(array('form', 'url'));
+    $this->load->library('form_validation');
 
-	/*
-	* alias method to have nice URL
-	*/
-	public function dbms() { $this->requestDsnForConfigDb(); }
+    // build view data
+    $data = pageFetchConfig('setup-dbms'); // fetch information to build the HTML header
+    $data['dbmsIp'] = null;
+    $data['dbmsPort'] = 3306;
+    $data['dbmsUsername'] = null;
+    $data['dbmsPassword'] = null;
+    
+    // display the view
+    $pages = new Pages();
+    $pages->view('setup/dbms', $data);
+  }
 
-	/*
-	* build the view to get information about the DBMS
-	*/
-	public function requestDsnForConfigDb() {
-	$this->load->helper('pages');
-	$this->load->helper(array('form', 'url'));
-	$this->load->library('form_validation');
+  public function requestCredentialsForAdminUser() {
+    $this->load->helper('pages');
+    $this->load->helper(array('form', 'url'));
+    $this->load->library('form_validation');
 
-	// build view data
-	$data = pageFetchConfig('setup-dbms'); // fetch information to build the HTML header
-	$data['dbmsIp'] = null;
-	$data['dbmsPort'] = 3306;
-	$data['dbmsUsername'] = null;
-	$data['dbmsPassword'] = null;
-	
-	// display the view
-	$pages = new Pages();
-	$pages->view('setup/dbms', $data);
-	}
+    // build view data
+    $data = pageFetchConfig('setup-admin-user'); // fetch information to build the HTML header
+    $data['adminUsername'] = NULL;
+    $data['adminPassword'] = NULL;
+    $data['adminPasswordConfirmation'] = NULL;
+    
+    // display the view
+    $pages = new Pages();
+    $pages->view('setup/admin-user', $data);
+  }
 
 	/*
 	* alias method to have nice URL
 	*/
 	public function adminUser() { $this->requestCredentialsForAdminUser(); }
-
-	/*
-	* build the view to get information about admin user
-	*/
-	public function requestCredentialsForAdminUser() {
-	$this->load->helper('pages');
-	$this->load->helper(array('form', 'url'));
-	$this->load->library('form_validation');
-
-	// build view data
-	$data = pageFetchConfig('setup-admin-user'); // fetch information to build the HTML header
-	$data['adminUsername'] = NULL;
-	$data['adminPassword'] = NULL;
-	$data['adminPasswordConfirmation'] = NULL;
-	
-	// display the view
-	$pages = new Pages();
-	$pages->view('setup/admin-user', $data);
-	}
 
 	function setupDbms() {
 	// call to model/db_builder.php
@@ -116,24 +105,3 @@ class Installer extends CI_Controller {
 	log_message('info', printf('%s', i18n("info.setup.admin-user") ) );
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
