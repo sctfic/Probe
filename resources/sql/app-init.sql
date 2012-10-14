@@ -2,18 +2,18 @@ SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL';
 
-DROP SCHEMA IF EXISTS `wswds` ;
-CREATE SCHEMA IF NOT EXISTS `wswds` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
+DROP SCHEMA IF EXISTS `probe` ;
+CREATE SCHEMA IF NOT EXISTS `probe` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
 DROP SCHEMA IF EXISTS `ws-template` ;
 CREATE SCHEMA IF NOT EXISTS `ws-template` DEFAULT CHARACTER SET utf8 ;
-USE `wswds` ;
+USE `probe` ;
 
 -- -----------------------------------------------------
--- Table `wswds`.`TR_ROLE`
+-- Table `probe`.`TR_ROLE`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `wswds`.`TR_ROLE` ;
+DROP TABLE IF EXISTS `probe`.`TR_ROLE` ;
 
-CREATE  TABLE IF NOT EXISTS `wswds`.`TR_ROLE` (
+CREATE  TABLE IF NOT EXISTS `probe`.`TR_ROLE` (
   `ROL_ID` INT NOT NULL AUTO_INCREMENT ,
   `ROL_CODE` VARCHAR(32) NOT NULL ,
   `ROL_LABEL` VARCHAR(64) NOT NULL ,
@@ -22,11 +22,11 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `wswds`.`TA_USER`
+-- Table `probe`.`TA_USER`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `wswds`.`TA_USER` ;
+DROP TABLE IF EXISTS `probe`.`TA_USER` ;
 
-CREATE  TABLE IF NOT EXISTS `wswds`.`TA_USER` (
+CREATE  TABLE IF NOT EXISTS `probe`.`TA_USER` (
   `USR_ID` INT NOT NULL AUTO_INCREMENT ,
   `USR_USERNAME` VARCHAR(32) NOT NULL ,
   `USR_PWD` VARCHAR(64) NOT NULL ,
@@ -37,20 +37,20 @@ CREATE  TABLE IF NOT EXISTS `wswds`.`TA_USER` (
   PRIMARY KEY (`USR_ID`) ,
   CONSTRAINT `FK_USR_ROL`
     FOREIGN KEY (`ROL_ID` )
-    REFERENCES `wswds`.`TR_ROLE` (`ROL_ID` )
+    REFERENCES `probe`.`TR_ROLE` (`ROL_ID` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-CREATE INDEX `IDX_FK_USR_ROL` ON `wswds`.`TA_USER` (`ROL_ID` ASC) ;
+CREATE INDEX `IDX_FK_USR_ROL` ON `probe`.`TA_USER` (`ROL_ID` ASC) ;
 
 
 -- -----------------------------------------------------
--- Table `wswds`.`TR_CONFIG`
+-- Table `probe`.`TR_CONFIG`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `wswds`.`TR_CONFIG` ;
+DROP TABLE IF EXISTS `probe`.`TR_CONFIG` ;
 
-CREATE  TABLE IF NOT EXISTS `wswds`.`TR_CONFIG` (
+CREATE  TABLE IF NOT EXISTS `probe`.`TR_CONFIG` (
   `CFG_ID` INT NOT NULL AUTO_INCREMENT ,
   `CFG_STATION_ID` TINYINT NULL ,
   `CFG_CODE` TINYINT NOT NULL ,
@@ -62,15 +62,15 @@ CREATE  TABLE IF NOT EXISTS `wswds`.`TR_CONFIG` (
 ENGINE = InnoDB
 COMMENT = 'Ici on stoque chaque config, ca valeur et les date d\'accé';
 
-CREATE UNIQUE INDEX `IDX_UNI_CFG_CODE` ON `wswds`.`TR_CONFIG` (`CFG_CODE` ASC) ;
+CREATE UNIQUE INDEX `IDX_UNI_CFG_CODE` ON `probe`.`TR_CONFIG` (`CFG_CODE` ASC) ;
 
 
 -- -----------------------------------------------------
--- Table `wswds`.`TA_LOG`
+-- Table `probe`.`TA_LOG`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `wswds`.`TA_LOG` ;
+DROP TABLE IF EXISTS `probe`.`TA_LOG` ;
 
-CREATE  TABLE IF NOT EXISTS `wswds`.`TA_LOG` (
+CREATE  TABLE IF NOT EXISTS `probe`.`TA_LOG` (
   `LOG_ID` INT NOT NULL ,
   `LOG_STATION_ID` TINYINT NULL ,
   `LOG_CODE` TINYINT NULL ,
