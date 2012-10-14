@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: wswds\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-10-14 00:22+0100\n"
-"PO-Revision-Date: 2012-10-14 00:23+0100\n"
+"PO-Revision-Date: 2012-10-14 00:37+0100\n"
 "Last-Translator: Édouard Lopez <dev+i18n@edouard-lopez.com>\n"
 "Language-Team: wswds <dev+wswds@edouard-lopez.com>\n"
 "Language: \n"
@@ -20,7 +20,7 @@ msgstr ""
 
 #: helpers/pages_helper.php:12
 msgid ":title"
-msgstr ""
+msgstr "Titre"
 
 #: helpers/pages_helper.php:13
 msgid ":description"
