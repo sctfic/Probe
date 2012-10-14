@@ -11,7 +11,8 @@
 	<meta name="description" content="<?=$description?>">
 	<meta name="author" content="<?=$author?>">
 
-	<meta name="viewport" content="width=device-width">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/resources/less/bootstrap/responsive.less" rel="stylesheet/less">
 
     <link type="image/png" rel="shortcut icon" href="/.favicon.png">
     <link rel="stylesheet/less" href="/resources/less/wswds.less">
