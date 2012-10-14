@@ -1,22 +1,61 @@
-<?=form_open('setup/installer/setupAdminUser', array('class' => 'setup', 'id' => 'admin-user'))?>
-	<fieldset>
-	<?=validation_errors()?>
+<div class="navbar navbar-inverse navbar-fixed-top">
+	<ul class="breadcrumb">
+	    <li><a href="/setup/installer/dbms"><?=i18n("setup.breadcrumb.dbms")?></a> <span class="divider">/</span></li>
+	    <li class="active"><?=i18n("setup.breadcrumb.administrator")?> <span class="divider">/</span></li>
+	</ul>
+</div>
 
-	<?=form_label( sprintf('%s <span class="hidden">(%s)</span>%s', i18n('setup.admin-user.username'), i18n('required'), i18n('&nbsp;:')), 'admin-username')?>
-	<?=form_input( array( 'name' => 'admin-username', 'id' => 'admin-username', 'value' => $adminUsername, 'placeholder' => i18n('setup.dbms.username.placeholder') ) )?>
+<div class="container">
+	<?=form_open('setup/installer/setupadministrator', array('class' => 'modal setup form-horizontal', 'id' => 'administrator'))?>
+		<div class="modal-header">
+			<!-- <legend> -->
+				<h3><?=i18n("setup.administrator.legend")?></h3>
+			<!-- </legend>	 -->
+		</div>
+		<fieldset class="modal-body">
+			<?=validation_errors()?>
 
-	<?=form_label( sprintf('%s <span class="hidden">(%s)</span>%s', i18n('setup.admin-user.password'), i18n('required'),i18n('&nbsp;:')), 'admin-password')?>
-	<?= sprintf('');//form_password( 'password', $username, sprintf('placeholder="%s" %s',i18n('longer is better'), getStatus('password') ) )?>
-	<?=form_input( array( 'name' => 'admin-password', 'id' => 'admin-password', 'value' => $adminPassword, 'placeholder' => i18n('setup.dbms.password.placeholder') ) )?>
+			<!-- Admin Username -->
+			<div class="control-group">
+				<label class="control-label" for="administrator-username">
+					<?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('setup.administrator.username'), i18n('required'), i18n('&nbsp;:')) ?>
+				</label>
+				<div class="controls">
+					<input type="text" id="administrator-username" value="<?=$administratorUsername?>" required class="input-medium" placeholder="<?=i18n('setup.administrator.username.placeholder')?>">
+				</div>
+			</div>
 
-	<?php
-	if ( _empty($this->config->item('ws:username') ) ) {?>
-	<?=form_label( sprintf('%s <span class="hidden">(%s)</span>%s', i18n('setup.admin-user.password-confirmation'), i18n('required'),i18n('&nbsp;:')), 'confirm')?>
-	<?= sprintf('');//form_password( 'confirm', '', sprintf('placeholder="%s" %s',i18n('so we can prevent mistakes'), getStatus('confirm') ) )?>
-	<?=form_input( array( 'name' => 'admin-password-confirm', 'id' => 'admin-password-confirm', 'value' => $adminPasswordConfirmation, 'placeholder' => i18n('setup.dbms.password-confirm.placeholder') ) )?>
-	<?php } ?>
+			<!-- Administrator's password -->
+			<div class="control-group">		
+				<label class="control-label" for="administrator-password">
+					<?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('setup.administrator.password'), i18n('required'), i18n('&nbsp;:'))?>
+				</label>
+				<div class="controls">
+					<input type="text" id="administrator-password" required value="<?=$administratorPassword?>" class="input-large" placeholder="<?=i18n('setup.administrator.password.placeholder')?>">
+				</div>
+			</div>
 
-	<?=form_submit('setup-admin-user', i18n('setup.admin-user.do-it'), 'class="btn"')?>
-	<!--keygen name="security" /-->
-	</fieldset>
-<?=form_close()?>
+			<!-- Administrator's password confirmation -->
+			<div class="control-group">		
+				<label class="control-label" for="administrator-password-confirmation">
+					<?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('setup.administrator.password-confirmation'), i18n('required'), i18n('&nbsp;:'))?>
+				</label>
+				<div class="controls">
+					<input type="text" id="administrator-password-confirmation" required value="<?=$administratorPassword?>" class="input-large" placeholder="<?=i18n('setup.administrator.password-confirmation.placeholder')?>">
+				</div>
+			</div>
+
+			<?php
+			if ( _empty($this->config->item('ws:username') ) ) {?>
+			<?=form_label( sprintf('%s <span class="hidden">(%s)</span>%s', i18n('setup.administrator.password-confirmation'), i18n('required'),i18n('&nbsp;:')), 'confirm')?>
+			<?= sprintf('');//form_password( 'confirm', '', sprintf('placeholder="%s" %s',i18n('so we can prevent mistakes'), getStatus('confirm') ) )?>
+			<?=form_input( array( 'name' => 'admin-password-confirm', 'id' => 'admin-password-confirm', 'value' => $administratorPasswordConfirmation, 'placeholder' => i18n('setup.administrator.password-confirm.placeholder') ) )?>
+			<?php } ?>
+
+			<!--keygen name="security" /-->
+		</fieldset>
+		<div class="modal-footer">
+			<?=form_submit('configure', i18n('setup.administrator.configure'), 'class="btn btn-primary pull-right"')?>
+		</div>
+	<?=form_close()?>
+</div>
