@@ -9,7 +9,7 @@ class cryptPwd extends CI_Controller {
 		}
 		parent::__construct();
 		log_message('debug',  '__construct() '.__FILE__);
-		include(APPPATH.'libraries/WS_rev_crypt.php');
+		include(APPPATH.'libraries/PROBE_rev_crypt.php');
 		$this->__init();
 	}	
 	function __init($force=false)
@@ -21,14 +21,14 @@ class cryptPwd extends CI_Controller {
 
 	// clear;clear;php5 -f /var/www/Probe/cli.php 'cryptpwd/read' 'toto'
 	function read($name){
-		$crypt = new WS_rev_crypt($name);
+		$crypt = new PROBE_rev_crypt($name);
 		echo "\t>\t".$name.':'.$crypt->read()."\n";
 		unset($crypt);
 
 	}
 	// clear;clear;php5 -f /var/www/Probe/cli.php 'cryptpwd/write' 'toto' 'psswrd'
 	function write($name, $pwd) {
-		$crypt = new WS_rev_crypt($name);
+		$crypt = new PROBE_rev_crypt($name);
 		$crypt->write($pwd);
 		unset($crypt);
 	}

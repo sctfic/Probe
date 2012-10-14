@@ -5,8 +5,8 @@
  * Cette classe permet de coder ou décoder une chaïne
  * de caractères
 
-	include(APPPATH.'libraries/WS_rev_crypt.php');
-	$crypt = new WS_rev_crypt('database_root');
+	include(APPPATH.'libraries/PROBE_rev_crypt.php');
+	$crypt = new PROBE_rev_crypt('database_root');
 //	$crypt->write('P@$$w0rd');
 	$config['probe:db.root.password'] = $crypt->read();
 	unset($crypt);
@@ -28,7 +28,7 @@
  * @improve by alopez 2012 add : read(), write()
  **/
 
-class WS_rev_crypt {
+class PROBE_rev_crypt {
 	
 	/**
 	 * Clé utilisée pour générer le cryptage

@@ -1,6 +1,6 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class WS_Loader extends CI_Loader {
+class PROBE_Loader extends CI_Loader {
 /**
 	change protected > public to permit to unload modele with just : unset($this->my_modele);
 	

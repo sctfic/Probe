@@ -9,8 +9,8 @@ $config['probe:username'] = '';
 // $config['probe:password'] = 'edouard.lopez';
 $config['probe:password'] = '';
 /**
-	include(APPPATH.'libraries/WS_rev_crypt.php');
-	$crypt = new WS_rev_crypt('database_root');
+	include(APPPATH.'libraries/PROBE_rev_crypt.php');
+	$crypt = new PROBE_rev_crypt('database_root');
 //	$crypt->write('P@$$w0rd');
 	$config['probe:password'] = $crypt->read();
 	unset($crypt);

@@ -55,8 +55,8 @@ $active_record = TRUE;
 $db['default']['hostname'] = 'mysql:host=localhost';
 // this is the default user name for the database
 $db['default']['username'] = 'probe';
-	include_once(APPPATH.'libraries/WS_rev_crypt.php');
-	$crypt = new WS_rev_crypt('db-default');
+	include_once(APPPATH.'libraries/PROBE_rev_crypt.php');
+	$crypt = new PROBE_rev_crypt('db-default');
 // this is the default PASSWORD for the database. 
 // Once you had a successful run, you MUST remove this line 
 	$crypt->write('probe');
@@ -75,21 +75,21 @@ $db['default']['swap_pre'] = '';
 $db['default']['autoinit'] = TRUE;
 $db['default']['stricton'] = FALSE;
 
-$db['ws-template']['hostname']		= $db['default']['hostname'];
-$db['ws-template']['username']		= $db['default']['username'];
-$db['ws-template']['password']		= $db['default']['password'];
-$db['ws-template']['database']		= 'ws-template';
-$db['ws-template']['dbdriver']		= $db['default']['dbdriver'];
-$db['ws-template']['dbprefix']		= $db['default']['dbprefix'];
-$db['ws-template']['pconnect']		= $db['default']['pconnect'];
-$db['ws-template']['db_debug']		= $db['default']['db_debug'];
-$db['ws-template']['cache_on']		= $db['default']['cache_on'];
-$db['ws-template']['cachedir']		= $db['default']['cachedir'];
-$db['ws-template']['char_set']		= $db['default']['char_set'];
-$db['ws-template']['dbcollat']		= $db['default']['dbcollat'];
-$db['ws-template']['swap_pre']		= $db['default']['swap_pre'];
-$db['ws-template']['autoinit']		= $db['default']['autoinit'];
-$db['ws-template']['stricton']		= $db['default']['stricton'];
+$db['probe-template']['hostname']		= $db['default']['hostname'];
+$db['probe-template']['username']		= $db['default']['username'];
+$db['probe-template']['password']		= $db['default']['password'];
+$db['probe-template']['database']		= 'probe-template';
+$db['probe-template']['dbdriver']		= $db['default']['dbdriver'];
+$db['probe-template']['dbprefix']		= $db['default']['dbprefix'];
+$db['probe-template']['pconnect']		= $db['default']['pconnect'];
+$db['probe-template']['db_debug']		= $db['default']['db_debug'];
+$db['probe-template']['cache_on']		= $db['default']['cache_on'];
+$db['probe-template']['cachedir']		= $db['default']['cachedir'];
+$db['probe-template']['char_set']		= $db['default']['char_set'];
+$db['probe-template']['dbcollat']		= $db['default']['dbcollat'];
+$db['probe-template']['swap_pre']		= $db['default']['swap_pre'];
+$db['probe-template']['autoinit']		= $db['default']['autoinit'];
+$db['probe-template']['stricton']		= $db['default']['stricton'];
 
 
 /* End of file database.php */
