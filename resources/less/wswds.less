@@ -15,7 +15,7 @@
 @backgroundColorForm: #FFF;
 @backgroundForm: none repeat scroll 0 0 @backgroundColorForm;
 @loginMarginTop: -175px;
-@loginFooterMarginTop: @loginMarginTop+250px;
+@loginFooterMarginTop: @loginMarginTop+200px;
 @oddRow: #729fcf;
 @overRow: #8ae234;
 
@@ -24,6 +24,12 @@ body {
   padding-bottom: 40px;
 }
 
+.breadcrumb {
+    .border-radius(0);
+}
+.breadcrumb .active {
+    font-weight: bold; 
+}
 article {
     width: 90%;
     margin: 0 auto;
@@ -31,6 +37,11 @@ article {
 
 
 .debugBox {outline: thin dotted red;}
+.disabled {
+    color: #BEBEC5;
+    text-decoration: none;
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+}
 
 .textShadowLight {
     color: #CCC;
@@ -53,16 +64,12 @@ article {
    Author:
    ========================================================================== */
 
-// .setup {
-// 	.center-block();
-//     .modal;
-//     .modal-body;
-// }
-
 .setup, .login, #logout {
     .modal;
-    /*.modal-body;*/
-    /*margin: @loginMarginTop 0 0 -280px;*/
+    position: relative;
+    top: auto;
+    left: auto;
+    margin: 0 auto;
 }
     #authentification {
         > fieldset
@@ -119,11 +126,9 @@ footer {
 /*     .debugBox; */
     .modal-body;
     text-align: center;
-/*     margin-top: @loginFooterMarginTop; */
+    margin-top: @loginFooterMarginTop; 
     .textShadowLight;
-    top: 75%;
     width: 100%;
-    position: fixed;
     .center-block();
 }
 
