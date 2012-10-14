@@ -18,15 +18,15 @@ class Installer extends CI_Controller {
     if (!file_exists(APPPATH."config/db-default.php")) {
       // $this->requestDsnForConfigDb();
       redirect("setup/installer/dbms");
-    } else {
-      try { # file exists, we try to connect to the db and fetch 
+    } else { # file exists, 
+      try { # connect to the db and check if there is any admin user
         $this->load->database();
         $query = $this->query("SELECT COUNT(*) AS `AdminCount`
           FROM `TA_USER` INNER JOIN `TR_ROLE`
           ON `TA_USER`.`ROL_ID` = `TR_ROLE`.`ROL_ID` 
           WHERE `TR_ROLE`.`ROL_CODE` = 'admin';"
         );
-        if (count($query->result_array()) > 0) {
+        if (count($query->result_array()) = 0) { # no admin yet
           $this->requestCredentialsForAdminUser();
         }
       } catch (Exception $e) {
