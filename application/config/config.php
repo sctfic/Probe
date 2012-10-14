@@ -107,9 +107,7 @@ $config['enable_hooks'] = FALSE;
 | http://codeigniter.com/user_guide/general/creating_libraries.html
 |
 */
-$config['subclass_prefix'] = 'WS_'; // to use
-// $config['subclass_prefix'] = 'WSWDS_'; // ed
-// $config['subclass_prefix'] = 'Probe_'; // jerep6
+$config['subclass_prefix'] = 'PROBE_'; // to use
 
 
 /*
@@ -172,7 +170,7 @@ $config['directory_trigger']    = 'd'; // experimental not currently in use
 | determine what gets logged. Threshold options are:
 | You can enable error logging by setting a threshold over zero. The
 | threshold determines what gets logged. Threshold options are:
-| array('ERROR' => 1, 'DEBUG' => 2, 'WARNING' => 3, 'INFO' => 4, 'CRON' => 5, 'WSWDS' => 6, 'ALL' => 9);
+| array('ERROR' => 1, 'DEBUG' => 2, 'WARNING' => 3, 'INFO' => 4, 'CRON' => 5, 'PROBE' => 6, 'ALL' => 9);
 |
 |   0 = Disables logging, Error logging TURNED OFF
 |   1 = Error Messages (including PHP errors)
@@ -180,7 +178,7 @@ $config['directory_trigger']    = 'd'; // experimental not currently in use
 |   3 = Warning
 |   4 = Informational Messages
 |   5 = Cron Messages
-|   6 = WSWDS Messages
+|   6 = PROBE Messages
 |   8 = Other personnal Messages
 |   9 = All Messages
 |

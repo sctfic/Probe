@@ -1,4 +1,4 @@
-WsWds (Weather Station Web Data Share) is a PHP apps that aim to allow fine and better management of Vantage weather station.
+Probe (Weather Station Web Data Share) is a PHP apps that aim to allow fine and better management of Vantage weather station.
 The project aim to be :
 - cross-platform (Linux/Mac/Windows),
 - lightweigt, can run on PC/Mac, NAS, router, smartphone, etc.
