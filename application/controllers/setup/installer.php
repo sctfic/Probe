@@ -26,7 +26,7 @@ class Installer extends CI_Controller {
           ON `TA_USER`.`ROL_ID` = `TR_ROLE`.`ROL_ID` 
           WHERE `TR_ROLE`.`ROL_CODE` = 'admin';"
         );
-        if (count($query->result_array()) = 0) { # no admin yet
+        if (count($query->result_array()) == 0) { # no admin yet
           $this->requestCredentialsForAdminUser();
         }
       } catch (Exception $e) {
