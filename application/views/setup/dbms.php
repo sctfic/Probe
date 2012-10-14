@@ -1,3 +1,10 @@
+<div class="navbar navbar-inverse navbar-fixed-top">
+	<ul class="breadcrumb">
+	    <li class="active"><a href="/setup/installer/dbms"><?=i18n("setup.breadcrumb.dbms")?></a> <span class="divider">/</span></li>
+	    <li class="disabled"><?=i18n("setup.breadcrumb.administrator")?> <span class="divider">/</span></li>
+	</ul>
+</div>
+
 <?=form_open('setup/installer/setupDbms', array('class' => 'modal setup form-horizontal', 'id' => 'dbms'))?>
 
 	<div class="modal-header">
@@ -14,7 +21,7 @@
 				<?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('setup.dbms.ip'), i18n('required'), i18n('&nbsp;:')) ?>
 			</label>
 			<div class="controls">
-				<input type="text" id="dbms-ip" value="<?=$dbmsIp?>" class="input-medium" placeholder="<?=i18n('setup.dbms.ip.placeholder')?>">
+				<input type="text" id="dbms-ip" value="<?=$dbmsIp?>" required class="input-medium" placeholder="<?=i18n('setup.dbms.ip.placeholder')?>">
 			</div>
 		</div>
 
@@ -73,8 +80,8 @@
 			</div>
 		</div>
 
+		<!-- Database's manager's username -->
 		<div class="control-group">		
-		<!-- Server admin username -->
 			<label class="control-label" for="dbms-username">
 				<?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('setup.dbms.username'), i18n('required'), i18n('&nbsp;:'))?>
 			</label>
@@ -83,8 +90,8 @@
 			</div>
 		</div>
 
+		<!-- Database's manager's password -->
 		<div class="control-group">		
-		<!-- Server admin password -->
 			<label class="control-label" for="dbms-password">
 				<?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('setup.dbms.password'), i18n('required'), i18n('&nbsp;:'))?>
 			</label>
