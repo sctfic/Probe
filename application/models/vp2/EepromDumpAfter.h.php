@@ -49,7 +49,7 @@ Convention de nomage :
 
 	'TA:Arch:Rain:RainFall:Sample'		=>	array( 'pos' => 10,	'len' => 2,	'fn'=>'s2uSht',		'SI'=>'RainSample2mm',	'min'=>0,	'max'=>600,	'err'=>0,	'unit'=> 'clic'	),
 	'TA:Arch:Rain:RainRate:HighSample'	=>	array( 'pos' => 12,	'len' => 2,	'fn'=>'s2uSht',		'SI'=>'RainSample2mm',	'min'=>0,	'max'=>900,	'err'=>0,	'unit'=> 'clic/h'),
-	'TA:Arch:Various:Bar:Current'		=>	array( 'pos' => 14,	'len' => 2,	'fn'=>'_0001',		'SI'=>'inHg2hPa',	'min'=>820,	'max'=>1100,	'err'=>0,	'unit'=> 'in.Hg'),
+	'TA:Arch:Various:Bar:Current'		=>	array( 'pos' => 14,	'len' => 2,	'fn'=>'_0001',		'SI'=>'inHg2hPa',	'min'=>25,	'max'=>33,	'err'=>0,	'unit'=> 'in.Hg'),
 	'TA:Arch:Various:Solar:Radiation'	=>	array( 'pos' => 16,	'len' => 2,	'fn'=>'s2sSht',		'SI'=>NULL,		'min'=>0,	'max'=>1409,	'err'=>32767,	'unit'=> 'W/m²'	),
 //	'TA:Arch:Various:Wind:Sample'		=>	array( 'pos' => 18,	'len' => 2,	'fn'=>'s2uSht',		'SI'=>NULL,		'min'=>0,	'max'=>0xFFFF,	'err'=>0,	'unit'=> '-'	),
 
