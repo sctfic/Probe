@@ -15,7 +15,7 @@
     <link href="/resources/less/bootstrap/responsive.less" rel="stylesheet/less">
 
     <link type="image/png" rel="shortcut icon" href="/.favicon.png">
-    <link rel="stylesheet/less" href="/resources/less/wswds.less">
+    <link rel="stylesheet/less" href="/resources/less/probe.less">
 	<script src="/resources/js/libs/less-1.3.0.min.js"></script>
 
 	<!-- Use SimpLESS (Win/Linux/Mac) or LESS.app (Mac) to compile your .less files

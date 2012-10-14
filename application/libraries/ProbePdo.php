@@ -1,6 +1,6 @@
 <?php
 
-class WsWdsPdo {
+class ProbePdo {
 	protected $CI;
 	
 	protected $hostname;
@@ -80,9 +80,9 @@ class WsWdsPdo {
 	 * @return	string	the name of the result class
 	 */
 	function load_rdriver() {
-		$driver = 'WsWdsPdoResult';
+		$driver = 'ProbePdoResult';
 		if (!class_exists($driver)) {
-			require_once(APPPATH.'libraries/WsWdsPdoResult.php');
+			require_once(APPPATH.'libraries/ProbePdoResult.php');
 		}
 		return $driver;
 	}

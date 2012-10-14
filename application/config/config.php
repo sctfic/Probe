@@ -14,7 +14,7 @@
 | path to your installation.
 |
 */
-$config['base_url'] = 'http://wswds.dev/';
+$config['base_url'] = 'http://probe.dev/';
 
 /*
 |--------------------------------------------------------------------------
@@ -109,7 +109,7 @@ $config['enable_hooks'] = FALSE;
 */
 $config['subclass_prefix'] = 'WS_'; // to use
 // $config['subclass_prefix'] = 'WSWDS_'; // ed
-// $config['subclass_prefix'] = 'WsWds_'; // jerep6
+// $config['subclass_prefix'] = 'Probe_'; // jerep6
 
 
 /*
@@ -242,7 +242,7 @@ $config['cache_path'] = '';
 | MUST set an encryption key.  See the user guide for info.
 |
 */
-$config['encryption_key'] = '$2a$07$WsWds.0cEzRZZaN/PX8M0w';
+$config['encryption_key'] = '$2a$07$Probe.0cEzRZZaN/PX8M0w';
 
 /*
 |--------------------------------------------------------------------------
@@ -262,7 +262,7 @@ $config['encryption_key'] = '$2a$07$WsWds.0cEzRZZaN/PX8M0w';
 | 'sess_time_to_update'     = how many seconds between CI refreshing Session Information
 |
 */
-$config['sess_cookie_name']		= 'WsWds'; // jerep6
+$config['sess_cookie_name']		= 'Probe'; // jerep6
 $config['sess_cookie_name']		= 'ws-session';
 $config['sess_expiration']		= 7200;
 $config['sess_expire_on_close']	= FALSE;

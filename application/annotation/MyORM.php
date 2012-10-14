@@ -1,5 +1,5 @@
 <?php
-use wswds\annotation\AnnotationReader;
+use probe\annotation\AnnotationReader;
 require_once APPPATH."annotation/AnnotationReader.php";
 
 /**

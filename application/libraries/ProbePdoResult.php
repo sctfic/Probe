@@ -5,7 +5,7 @@
  * @author jerep6
  *
  */
-class WsWdsPdoResult {
+class ProbePdoResult {
 	
 	/**
 	 * Statement pdo résultant de la requete

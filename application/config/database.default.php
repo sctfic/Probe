@@ -54,15 +54,15 @@ $active_record = TRUE;
  */
 $db['default']['hostname'] = 'mysql:host=localhost';
 // this is the default user name for the database
-$db['default']['username'] = 'wswds';
+$db['default']['username'] = 'probe';
 	include_once(APPPATH.'libraries/WS_rev_crypt.php');
 	$crypt = new WS_rev_crypt('db-default');
 // this is the default PASSWORD for the database. 
 // Once you had a successful run, you MUST remove this line 
-	$crypt->write('wswds');
+	$crypt->write('probe');
 	$db['default']['password'] = $crypt->read();
 		unset($crypt);
-$db['default']['database'] = 'wswds';
+$db['default']['database'] = 'probe';
 $db['default']['dbdriver'] = 'pdo';
 $db['default']['dbprefix'] = '';
 $db['default']['pconnect'] = TRUE;

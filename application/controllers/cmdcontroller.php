@@ -1,5 +1,5 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-// clear;php5 -f /var/www/WsWds/cli.php 'cmdcontroller'
+// clear;php5 -f /var/www/Probe/cli.php 'cmdcontroller'
 class cmdController extends CI_Controller {
 	function __construct() {
 		if (isset($_SERVER['REMOTE_ADDR'])) { // n'est pas definie en php5-cli
@@ -20,13 +20,13 @@ class cmdController extends CI_Controller {
 	}
 
 	// la fonction qui ce lancera par defaut dans cette classe 
-	// clear;php5 -f /var/www/WsWds/cli.php 'cmdcontroller'
+	// clear;php5 -f /var/www/Probe/cli.php 'cmdcontroller'
 	function index() {
 		$this->configCollectors();
 		$this->dataCollectors();
 	}
 
-	// clear;php5 -f /var/www/WsWds/cli.php 'cmdcontroller/hilowCollectors'
+	// clear;php5 -f /var/www/Probe/cli.php 'cmdcontroller/hilowCollectors'
 	function hilowCollectors($station = null) {
 		try {
 			if ($item_ID = array_search($station, $this->WS->lst)) {
@@ -43,7 +43,7 @@ class cmdController extends CI_Controller {
 		}
 	}
 	
-	// clear;php5 -f /var/www/WsWds/cli.php 'cmdcontroller/curentCollectors'
+	// clear;php5 -f /var/www/Probe/cli.php 'cmdcontroller/curentCollectors'
 	function curentCollectors($station = null) {
 		try {
 			if ($item_ID = array_search($station, $this->WS->lst)) {
@@ -60,7 +60,7 @@ class cmdController extends CI_Controller {
 		}
 	}
 
-	// clear;php5 -f /var/www/WsWds/cli.php 'cmdcontroller/dataCollectors'
+	// clear;php5 -f /var/www/Probe/cli.php 'cmdcontroller/dataCollectors'
 	function dataCollectors($station = null) {
 		if (is_array($station)) {
 			foreach ($station as $item) {
@@ -88,7 +88,7 @@ class cmdController extends CI_Controller {
 	}
 	
 	
-	// clear;php5 -f /var/www/WsWds/cli.php 'cmdcontroller/configCollectors'
+	// clear;php5 -f /var/www/Probe/cli.php 'cmdcontroller/configCollectors'
 	function configCollectors($station = null, $force = false) {
 		if (is_array($station)) {
 			foreach ($station as $item) {

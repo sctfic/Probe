@@ -1,5 +1,5 @@
 <?php
-namespace wswds\annotation;
+namespace probe\annotation;
 /**
  *
  * @author jerep6

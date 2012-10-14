@@ -1,4 +1,4 @@
-<?php // clear;php5 -f /var/www/WsWds/cli.php 'cron'
+<?php // clear;php5 -f /var/www/Probe/cli.php 'cron'
 class vp2 extends CI_Model {
 	protected $fp=NULL;	// Pointer of VP2 Connection
 	protected $backLightScreen=FALSE; // actual state of backlight screen
@@ -113,7 +113,7 @@ class vp2 extends CI_Model {
 			if ($this->wakeUp()) {
 				if ($this->config->item('verbose_threshold') > 2)
 					$this->toggleBacklight (1);
-				log_message('wswds', _( sprintf('Ouverture de la connexion à %s', $this->conf['_name']) ) );
+				log_message('probe', _( sprintf('Ouverture de la connexion à %s', $this->conf['_name']) ) );
 				return TRUE;
 			}
 			else {
@@ -125,7 +125,7 @@ class vp2 extends CI_Model {
 	protected function CloseConnection()	{
 		$this->toggleBacklight(0);
 		if (fclose($this->fp)) {
-			log_message('wswds', sprintf( _('Fermeture de %s correcte.'), $this->conf['_name'] ) );
+			log_message('probe', sprintf( _('Fermeture de %s correcte.'), $this->conf['_name'] ) );
 			return TRUE;
 		}
 		return FALSE;
@@ -143,7 +143,7 @@ class vp2 extends CI_Model {
 			Waiting( 0, sprintf( _('Default Clock synchronize : %ssec'), $realLag) );
 			if ($realLag < 3600-$maxLag || $realLag > 3600*12 || $force) {	// OK
 				if ($TIME = $this->updateStationTime()) {							// OK
-					log_message('wswds', _('Clock synchronizing.'));					// OK
+					log_message('probe', _('Clock synchronizing.'));					// OK
 				}
 				else log_message('warning', _( 'Clock synch.'));
 			}
@@ -271,7 +271,7 @@ class vp2 extends CI_Model {
 	protected function GetConfig() { //
 		$CONFS = false;
 		 try {
-			log_message('wswds', '[EEBRD] : Download the current Config');
+			log_message('probe', '[EEBRD] : Download the current Config');
 			
 // 			$P=str_pad(strtoupper(dechex(0)),3,'0',STR_PAD_LEFT);
 // 			$L=str_pad(strtoupper(dechex(177)),2,'0',STR_PAD_LEFT);
@@ -300,12 +300,12 @@ class vp2 extends CI_Model {
 	protected function GetHiLow() { //
 		$HILOW = false;
 		 try {
-			log_message('wswds', '[EEBRD] : Download the current Config');
+			log_message('probe', '[EEBRD] : Download the current Config');
 			
 			$this->RequestCmd("HILOW\n");
 			$data = fread($this->fp, 436+2);
 			$this->VerifAnswersAndCRC($data, 436+2);
-			log_message('wswds', '[LPS] : Download the current Values');
+			log_message('probe', '[LPS] : Download the current Values');
 			$HILOW = $this->RawConverter($this->HILOW, $data),
 		}
 		catch (Exception $e) {
@@ -331,7 +331,7 @@ class vp2 extends CI_Model {
 			while ($nbr-- > 0) {
 				$data = fread($this->fp, 97+2);
 				$this->VerifAnswersAndCRC($data, 97+2);
-				log_message('wswds', '[LPS] : Download the current Values');
+				log_message('probe', '[LPS] : Download the current Values');
 // 				$packet_type = $this->convertUnit( $this->convertRaw( $this->subRaw( $data, $this->Loop['NO:::PacketType']), $this->Loop['NO:::PacketType']), $this->Loop['NO:::PacketType']);
 				$packet_type = $this->RawConverter(array('NO:::PacketType'=>$this->Loop['NO:::PacketType']), $data);
 				log_message('type', 'Type'.$packet_type."\n".__FUNCTION__.'('.__CLASS__.' ('.$conf['_name'].':'.($base = $conf['_db']).') '.")\n".__FILE__.' ['.__LINE__.']');
@@ -389,7 +389,7 @@ class vp2 extends CI_Model {
 // 			$retry = $this->retry-1;
 			$nbrPages = hexToDec (strrev(substr($data,0,2)));	// Split Bytes in revers order : Nbr of page
 			$firstArch = hexToDec (strrev(substr($data,2,2)));	// Split Bytes in revers order : # of first archived
-				log_message('wswds', 'There are '.$nbrPages.'p. in queue, from archive '.$firstArch.' on first page since '.$last.'.');
+				log_message('probe', 'There are '.$nbrPages.'p. in queue, from archive '.$firstArch.' on first page since '.$last.'.');
 			fwrite($this->fp, ACK);				// Send ACK to start
 			for ($j=0; $j<$nbrPages; $j++) {
 				$ISS_time = time()%300;
@@ -444,7 +444,7 @@ class vp2 extends CI_Model {
 				.' '.str_pad(ord($TIME[2]),2,'0',STR_PAD_LEFT)
 				.':'.str_pad(ord($TIME[1]),2,'0',STR_PAD_LEFT)
 				.':'.str_pad(ord($TIME[0]),2,'0',STR_PAD_LEFT);
-			log_message('wswds',  'Real : '.date('Y/m/d H:i:s').' vs VP2 : '.$TIME);
+			log_message('probe',  'Real : '.date('Y/m/d H:i:s').' vs VP2 : '.$TIME);
 			return $TIME;
 		}
 		catch (Exception $e) {
@@ -465,7 +465,7 @@ class vp2 extends CI_Model {
 			list($h,$i,$s) = explode(':', $_clock);
 			$TIME = chr($s).chr($i).chr($h).chr($d).chr($m).chr($y-1900);
 			$this->RequestCmd ($TIME . CalculateCRC($TIME));
-			log_message('wswds', '[SETTIME] : '.$_date.' '.$_clock);
+			log_message('probe', '[SETTIME] : '.$_date.' '.$_clock);
 			return $_date.' '.$_clock;
 		}
 		catch (Exception $e) {

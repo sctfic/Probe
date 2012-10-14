@@ -11,7 +11,7 @@ class Dao_User extends Dao_Database {
     public function read($username, $pwd) {
     	$user = NULL;
     	$sql = "SELECT * FROM TA_USER WHERE USR_USERNAME=:username AND USR_PWD=:pwd";
-    	$res = $this->wswdspdo->query($sql, array(
+    	$res = $this->probepdo->query($sql, array(
     			":username" => $username,
     			":pwd" => $pwd
 			)

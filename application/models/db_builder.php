@@ -72,15 +72,15 @@ class db_builder extends CI_Model {
 	 * @var $db_name, $user, $pass
 	 * @return array ()
 	 */
-	function make_db_config($db_name = 'wswds') {
+	function make_db_config($db_name = 'probe') {
 		// la base de config doit tjrs porter ce nom
 		try {
 			// dans le cas ou la base est fournie avec l'user adequat pas besoin de le refaire
 			if (!$this->is_db($db_name)) {
-				$user = 'wswds'; 
+				$user = 'probe'; 
 				$pass = $this->randomPassword();
 				
-				//Creation of database "wswds"
+				//Creation of database "probe"
 				$this->pdoConnection->query("CREATE DATABASE IF NOT EXISTS `$db_name`;");
 				//Creation of user
 				$this->make_user($db_name,$user,$pass);
@@ -128,9 +128,9 @@ class db_builder extends CI_Model {
 		$this->pdoConnection->query("SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 			SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 			SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL';
-			CREATE SCHEMA IF NOT EXISTS `wswds` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
-			USE `wswds`;");
-		$this->pdoConnection->query("CREATE  TABLE IF NOT EXISTS `wswds`.`TA_USER` (
+			CREATE SCHEMA IF NOT EXISTS `probe` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
+			USE `probe`;");
+		$this->pdoConnection->query("CREATE  TABLE IF NOT EXISTS `probe`.`TA_USER` (
 			`USR_ID` INT(11) NOT NULL AUTO_INCREMENT ,
 			`USR_USERNAME` VARCHAR(32) NOT NULL ,
 			`USR_PWD` VARCHAR(64) NOT NULL ,
@@ -142,13 +142,13 @@ class db_builder extends CI_Model {
 			INDEX `IDX_FK_USR_ROL` (`ROL_ID` ASC) ,
 			CONSTRAINT `FK_USR_ROL`
 			FOREIGN KEY (`ROL_ID` )
-			REFERENCES `wswds`.`TR_ROLE` (`ROL_ID` )
+			REFERENCES `probe`.`TR_ROLE` (`ROL_ID` )
 			ON DELETE NO ACTION
 			ON UPDATE NO ACTION)
 			ENGINE = InnoDB
 			DEFAULT CHARACTER SET = utf8
 			COLLATE = utf8_general_ci;");
-		$this->pdoConnection->query("CREATE  TABLE IF NOT EXISTS `wswds`.`TR_ROLE` (
+		$this->pdoConnection->query("CREATE  TABLE IF NOT EXISTS `probe`.`TR_ROLE` (
 			`ROL_ID` INT(11) NOT NULL AUTO_INCREMENT ,
 			`ROL_CODE` VARCHAR(32) NOT NULL ,
 			`ROL_LABEL` VARCHAR(64) NOT NULL ,
@@ -156,7 +156,7 @@ class db_builder extends CI_Model {
 			ENGINE = InnoDB
 			DEFAULT CHARACTER SET = utf8
 			COLLATE = utf8_general_ci;");
-		$this->pdoConnection->query("CREATE  TABLE IF NOT EXISTS `wswds`.`TR_CONFIG` (
+		$this->pdoConnection->query("CREATE  TABLE IF NOT EXISTS `probe`.`TR_CONFIG` (
 			`CFG_STATION_ID` TINYINT(4) NOT NULL ,
 			`CFG_LABEL` VARCHAR(32) NOT NULL ,
 			`CFG_VALUE` TINYTEXT NOT NULL ,
@@ -167,7 +167,7 @@ class db_builder extends CI_Model {
 			DEFAULT CHARACTER SET = utf8
 			COLLATE = utf8_general_ci
 			COMMENT = 'Ici on stoque chaque config, ca valeur et les date d\'accé';");
-		$this->pdoConnection->query("CREATE  TABLE IF NOT EXISTS `wswds`.`TA_LOG` (
+		$this->pdoConnection->query("CREATE  TABLE IF NOT EXISTS `probe`.`TA_LOG` (
 			`LOG_ID` INT(11) NOT NULL ,
 			`LOG_STATION_ID` TINYINT(4) NULL DEFAULT NULL ,
 			`LOG_CODE` TINYINT(4) NULL DEFAULT NULL ,
@@ -193,10 +193,10 @@ class db_builder extends CI_Model {
 		try {
 			// dans le cas ou la base est fournie avec l'user adequat pas besoin de le refaire
 			if (!$this->is_db($db_name)) {
-				$user = 'wswds'; 
+				$user = 'probe'; 
 				$pass = $this->randomPassword();
 				
-				//Creation of database "wswds"
+				//Creation of database "probe"
 				$this->pdoConnection->query("CREATE DATABASE IF NOT EXISTS `$db_name`;");
 				//Creation of user
 				$this->make_user($db_name,$user,$pass);

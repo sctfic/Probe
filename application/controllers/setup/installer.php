@@ -9,7 +9,7 @@ class Installer extends CI_Controller {
 	public function __construct() {
   	parent::__construct();
 
-  	$this->i18n->setLocaleEnv($this->config->item('ws:locale'), 'global');
+  	$this->i18n->setLocaleEnv($this->config->item('probe:locale'), 'global');
 	}
 
 	private function startSetup() {

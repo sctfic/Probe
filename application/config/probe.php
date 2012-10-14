@@ -1,23 +1,23 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /*
-| Configuration for the WsWds application.
+| Configuration for the Probe application.
 */
 
-$config['mainDb'] = 'wswds';
-// $config['wswds:username'] = 'edouard.lopez';
-$config['ws:username'] = '';
-// $config['wswds:password'] = 'edouard.lopez';
-$config['ws:password'] = '';
+$config['mainDb'] = 'probe';
+// $config['probe:username'] = 'edouard.lopez';
+$config['probe:username'] = '';
+// $config['probe:password'] = 'edouard.lopez';
+$config['probe:password'] = '';
 /**
 	include(APPPATH.'libraries/WS_rev_crypt.php');
 	$crypt = new WS_rev_crypt('database_root');
 //	$crypt->write('P@$$w0rd');
-	$config['ws:password'] = $crypt->read();
+	$config['probe:password'] = $crypt->read();
 	unset($crypt);
 **/
 
 // Locale/language to use for the interface
-$config['ws:locale'] = 'fr';
+$config['probe:locale'] = 'fr';
 
 /*
 *redirection URLs for the admin area

@@ -9,7 +9,7 @@
 <script src="/resources/js/libs/jquery.bgpos.js"></script>
 
 <!-- Custom javascript -->
-<script src="/resources/js/wswds.js"></script>
+<script src="/resources/js/probe.js"></script>
 <script>
     var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
     (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];

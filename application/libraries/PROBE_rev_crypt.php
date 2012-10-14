@@ -8,7 +8,7 @@
 	include(APPPATH.'libraries/WS_rev_crypt.php');
 	$crypt = new WS_rev_crypt('database_root');
 //	$crypt->write('P@$$w0rd');
-	$config['ws:db.root.password'] = $crypt->read();
+	$config['probe:db.root.password'] = $crypt->read();
 	unset($crypt);
 
 	WARNING WARNING WARNING 

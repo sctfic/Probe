@@ -21,7 +21,7 @@
     <?=form_password( 'password', $username, sprintf('placeholder="%s"',i18n('longer is better') ) )?>
 
     <?php
-    if ( _empty($this->config->item('ws:username') ) ) {?>
+    if ( _empty($this->config->item('probe:username') ) ) {?>
         <?=form_label( sprintf('%s <span class="hidden">(%s)</span>%s', i18n('password confirmation'), i18n('required'),i18n('&nbsp;:')), 'confirm')?>
         <?= sprintf('');//form_password( 'confirm', '', sprintf('placeholder="%s" %s',i18n('so we can prevent mistakes'), getStatus('confirm') ) )?>
         <?=form_password( 'confirm', '', sprintf('placeholder="%s"',i18n('so we can prevent mistakes') ) )?>

@@ -88,7 +88,7 @@ $autoload['helper'] = array(
 */
 
 $autoload['config'] = array(
-    'wswds'
+    'probe'
 );
 
 

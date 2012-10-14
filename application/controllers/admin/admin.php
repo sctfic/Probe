@@ -14,7 +14,7 @@ class Admin extends Authentification {
 	public function __construct() {
 		parent::__construct();
 
-		$this->i18n->setLocaleEnv($this->config->item('ws:locale'), 'global'); // set language
+		$this->i18n->setLocaleEnv($this->config->item('probe:locale'), 'global'); // set language
 		$this->encrypt->set_cipher(MCRYPT_BLOWFISH);
 
 		//Modèles
