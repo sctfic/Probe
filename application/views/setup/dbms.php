@@ -77,6 +77,8 @@
 			</label>
 			<div class="controls">
 				<input type="text" id="dbms-database-name" disabled value="<?=$dbmsDatabaseName?>" class="input-large" >
+			    <!-- <span class="input-large uneditable-input"><?=$dbmsDatabaseName?></span> -->
+				<!-- <input type="hidden" id="dbms-database-name" value="<?=$dbmsDatabaseName?>" class="input-large" > -->
 			</div>
 		</div>
 

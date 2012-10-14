@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: wswds\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-10-14 17:35+0100\n"
-"PO-Revision-Date: 2012-10-14 22:58+0100\n"
+"PO-Revision-Date: 2012-10-14 23:32+0100\n"
 "Last-Translator: Édouard Lopez <dev+i18n@edouard-lopez.com>\n"
 "Language-Team: wswds <dev+wswds@edouard-lopez.com>\n"
 "Language: \n"
@@ -209,7 +209,7 @@ msgstr "Configuration du compte administrateur"
 
 #: views/setup/admin-user.php:21
 msgid "setup.administrator.username"
-msgstr "Administrateur"
+msgstr "Utilisateur"
 
 #: views/setup/admin-user.php:24
 msgid "setup.administrator.username.placeholder"
@@ -292,7 +292,7 @@ msgstr "Nom de la base"
 
 #: views/setup/dbms.php:85
 msgid "setup.dbms.username"
-msgstr "Administrateur"
+msgstr "Utilisateur"
 
 #: views/setup/dbms.php:88
 msgid "setup.dbms.username.placeholder"

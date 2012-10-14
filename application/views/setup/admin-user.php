@@ -21,7 +21,7 @@
 					<?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('setup.administrator.username'), i18n('required'), i18n('&nbsp;:')) ?>
 				</label>
 				<div class="controls">
-					<input type="text" id="administrator-username" value="<?=$administratorUsername?>" required class="input-medium" placeholder="<?=i18n('setup.administrator.username.placeholder')?>">
+					<input type="text" id="administrator-username" value="<?=$administratorUsername?>" required class="input-large" placeholder="<?=i18n('setup.administrator.username.placeholder')?>">				</div>
 				</div>
 			</div>
 
@@ -45,14 +45,6 @@
 				</div>
 			</div>
 
-			<?php
-			if ( _empty($this->config->item('ws:username') ) ) {?>
-			<?=form_label( sprintf('%s <span class="hidden">(%s)</span>%s', i18n('setup.administrator.password-confirmation'), i18n('required'),i18n('&nbsp;:')), 'confirm')?>
-			<?= sprintf('');//form_password( 'confirm', '', sprintf('placeholder="%s" %s',i18n('so we can prevent mistakes'), getStatus('confirm') ) )?>
-			<?=form_input( array( 'name' => 'admin-password-confirm', 'id' => 'admin-password-confirm', 'value' => $administratorPasswordConfirmation, 'placeholder' => i18n('setup.administrator.password-confirm.placeholder') ) )?>
-			<?php } ?>
-
-			<!--keygen name="security" /-->
 		</fieldset>
 		<div class="modal-footer">
 			<?=form_submit('configure', i18n('setup.administrator.configure'), 'class="btn btn-primary pull-right"')?>
