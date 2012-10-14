@@ -9,23 +9,30 @@ class Installer extends CI_Controller {
 	public function __construct() {
   	parent::__construct();
 
-  	$this->i18n->setLocaleEnv($this->config->item('ws:locale'), 'global'); // set language
-  // $this->i18n->getRequestedLang();
+  	$this->i18n->setLocaleEnv($this->config->item('ws:locale'), 'global');
 	}
 
 	private function startSetup() {
-	try {
-	$this->requestDsnForConfigDb();
-	} catch (exception $e){
-	log_message('error', printf('%s: %s', i18n("error.setup.database"), $e->getMessage()) );
-	}
-
-    try {
-//       $this->requestCredentialsForAdminUser();
-    } catch (exception $e){
-      log_message('error', printf('%s: %s', i18n("error.setup.amdin-user"), $e->getMessage()) );
+    $this->load->helper('url');
+    # show form if config file missing
+    if (!file_exists(APPPATH."config/db-default.php")) {
+      // $this->requestDsnForConfigDb();
+      redirect("setup/installer/dbms");
+    } else {
+      try { # file exists, we try to connect to the db and fetch 
+        $this->load->database();
+        $query = $this->query("SELECT COUNT(*) AS `AdminCount`
+          FROM `TA_USER` INNER JOIN `TR_ROLE`
+          ON `TA_USER`.`ROL_ID` = `TR_ROLE`.`ROL_ID` 
+          WHERE `TR_ROLE`.`ROL_CODE` = 'admin';"
+        );
+        if (count($query->result_array()) > 0) {
+          $this->requestCredentialsForAdminUser();
+        }
+      } catch (Exception $e) {
+        log_message('error', printf('%s', i18n("error.setup.dbms.connect") ) );
+      }
     }
-
   }
 
   // CI require a landing function called: 'index'
@@ -33,6 +40,11 @@ class Installer extends CI_Controller {
     $this->startSetup();
   }
   
+  /*
+  * alias method to have nice URL
+  */
+  public function dbms() { $this->requestDsnForConfigDb(); }
+
   public function requestDsnForConfigDb() {
     $this->load->helper('pages');
     $this->load->helper(array('form', 'url'));
@@ -58,9 +70,9 @@ class Installer extends CI_Controller {
 
     // build view data
     $data = pageFetchConfig('setup-admin-user'); // fetch information to build the HTML header
-    $data['adminUsername'] = NULL;
-    $data['adminPassword'] = NULL;
-    $data['adminPasswordConfirmation'] = NULL;
+    $data['administratorUsername'] = NULL;
+    $data['administratorPassword'] = NULL;
+    $data['administratorPasswordConfirmation'] = NULL;
     
     // display the view
     $pages = new Pages();
