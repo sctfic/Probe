@@ -21,7 +21,7 @@
 					<?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('setup.administrator.username'), i18n('required'), i18n('&nbsp;:')) ?>
 				</label>
 				<div class="controls">
-					<input type="text" id="administrator-username" value="<?=$administratorUsername?>" required class="input-large" placeholder="<?=i18n('setup.administrator.username.placeholder')?>">				</div>
+					<input type="text" id="administrator-username" value="<?=$administratorUsername?>" required class="input-large" placeholder="<?=i18n('setup.administrator.username.placeholder')?>">
 				</div>
 			</div>
 
