@@ -86,7 +86,7 @@
 	'No:Current:Rain:RainRate:TimeDailyHigh'        =>	array( 'pos' => 118,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,    'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
 	'No:Current:Rain:RainRate:HourHigh'             =>	array( 'pos' => 120,	'len' => 2,	'fn'=>'Raw2Time',   'SI'=>NULL,               'min'=>NULL,    'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
 	'No:Current:Rain:RainRate:MonthHigh'            =>	array( 'pos' => 122,	'len' => 2,	'fn'=>'s2uSht',     'SI'=>'RainSample2mm',    'min'=>0,       'max'=>900,	'err'=>0,       'unit'=> 'clic/h'),
-	'No:Current:Rain:RainRate:YearHigh'             =>	array( 'pos' => 124,	'len' => 2,	's2uSht',           'SI'=>'RainSample2mm',    'min'=>0,       'max'=>900,	'err'=>0,       'unit'=> 'clic/h'),
+	'No:Current:Rain:RainRate:YearHigh'             =>	array( 'pos' => 124,	'len' => 2,	'fn'=>'s2uSht',     'SI'=>'RainSample2mm',    'min'=>0,       'max'=>900,	'err'=>0,       'unit'=> 'clic/h'),
 
 ///						*********** extra temperature ***********					///
 	'No:Current:Temp:Out#2:DailyLow'                =>	array( 'pos' => 126,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
@@ -106,7 +106,8 @@
 	'No:Current:Temp:Soil#2:DailyLow'               =>	array( 'pos' => 138,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
 	'No:Current:Temp:Soil#3:DailyLow'               =>	array( 'pos' => 139,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
 	'No:Current:Temp:Soil#4:DailyLow'               =>	array( 'pos' => 140,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
-	
+
+
 	'No:Current:Temp:Out#2:DailyHigh'               =>	array( 'pos' => 141,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
 	'No:Current:Temp:Out#3:DailyHigh'               =>	array( 'pos' => 142,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
 	'No:Current:Temp:Out#4:DailyHigh'               =>	array( 'pos' => 143,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
@@ -124,13 +125,120 @@
 	'No:Current:Temp:Soil#2:DailyHigh'              =>	array( 'pos' => 153,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
 	'No:Current:Temp:Soil#3:DailyHigh'              =>	array( 'pos' => 154,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
 	'No:Current:Temp:Soil#4:DailyHigh'              =>	array( 'pos' => 155,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
-	
-	'No:Current:Temp:Out#x:TimeDailyLow'            =>	array( 'pos' => 156,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,    'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
-	'No:Current:Temp:Out#x:TimeDailyHigh'           =>	array( 'pos' => 186,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,    'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
-	'No:Current:Temp:Out#x:MonthHigh'               =>	array( 'pos' => 216,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
-	'No:Current:Temp:Out#x:MonthLow'                =>	array( 'pos' => 231,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
-	'No:Current:Temp:Out#x:YearHigh'                =>	array( 'pos' => 246,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
-	'No:Current:Temp:Out#x:YearLow'                 =>	array( 'pos' => 261,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
+
+
+	'No:Current:Temp:Out#2:TimeDailyLow'            =>	array( 'pos' => 156,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,    'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
+	'No:Current:Temp:Out#3:TimeDailyLow'            =>	array( 'pos' => 156,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,    'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
+	'No:Current:Temp:Out#4:TimeDailyLow'            =>	array( 'pos' => 156,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,    'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
+	'No:Current:Temp:Out#5:TimeDailyLow'            =>	array( 'pos' => 156,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,    'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
+	'No:Current:Temp:Out#6:TimeDailyLow'            =>	array( 'pos' => 156,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,    'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
+	'No:Current:Temp:Out#7:TimeDailyLow'            =>	array( 'pos' => 156,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,    'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
+	'No:Current:Temp:Out#8:TimeDailyLow'            =>	array( 'pos' => 156,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,    'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
+
+	'No:Current:Temp:Leaf#1:TimeDailyLow'            =>	array( 'pos' => 156,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,    'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
+	'No:Current:Temp:Leaf#2:TimeDailyLow'            =>	array( 'pos' => 156,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,    'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
+	'No:Current:Temp:Leaf#3:TimeDailyLow'            =>	array( 'pos' => 156,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,    'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
+	'No:Current:Temp:Leaf#4:TimeDailyLow'            =>	array( 'pos' => 156,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,    'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
+
+	'No:Current:Temp:Soil#1:TimeDailyLow'            =>	array( 'pos' => 156,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,    'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
+	'No:Current:Temp:Soil#2:TimeDailyLow'            =>	array( 'pos' => 156,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,    'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
+	'No:Current:Temp:Soil#3:TimeDailyLow'            =>	array( 'pos' => 156,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,    'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
+	'No:Current:Temp:Soil#4:TimeDailyLow'            =>	array( 'pos' => 156,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,    'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
+
+
+	'No:Current:Temp:Out#2:TimeDailyHigh'           =>	array( 'pos' => 186,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,    'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
+	'No:Current:Temp:Out#3:TimeDailyHigh'           =>	array( 'pos' => 186,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,    'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
+	'No:Current:Temp:Out#4:TimeDailyHigh'           =>	array( 'pos' => 186,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,    'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
+	'No:Current:Temp:Out#5:TimeDailyHigh'           =>	array( 'pos' => 186,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,    'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
+	'No:Current:Temp:Out#6:TimeDailyHigh'           =>	array( 'pos' => 186,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,    'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
+	'No:Current:Temp:Out#7:TimeDailyHigh'           =>	array( 'pos' => 186,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,    'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
+	'No:Current:Temp:Out#8:TimeDailyHigh'           =>	array( 'pos' => 186,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,    'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
+
+	'No:Current:Temp:Leaf#1:TimeDailyHigh'           =>	array( 'pos' => 186,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,    'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
+	'No:Current:Temp:Leaf#2:TimeDailyHigh'           =>	array( 'pos' => 186,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,    'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
+	'No:Current:Temp:Leaf#3:TimeDailyHigh'           =>	array( 'pos' => 186,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,    'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
+	'No:Current:Temp:Leaf#4:TimeDailyHigh'           =>	array( 'pos' => 186,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,    'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
+
+	'No:Current:Temp:Soil#1:TimeDailyHigh'           =>	array( 'pos' => 186,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,    'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
+	'No:Current:Temp:Soil#2:TimeDailyHigh'           =>	array( 'pos' => 186,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,    'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
+	'No:Current:Temp:Soil#3:TimeDailyHigh'           =>	array( 'pos' => 186,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,    'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
+	'No:Current:Temp:Soil#4:TimeDailyHigh'           =>	array( 'pos' => 186,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,    'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
+
+
+	'No:Current:Temp:Out#2:MonthHigh'               =>	array( 'pos' => 216,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
+	'No:Current:Temp:Out#3:MonthHigh'               =>	array( 'pos' => 216,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
+	'No:Current:Temp:Out#4:MonthHigh'               =>	array( 'pos' => 216,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
+	'No:Current:Temp:Out#5:MonthHigh'               =>	array( 'pos' => 216,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
+	'No:Current:Temp:Out#6:MonthHigh'               =>	array( 'pos' => 216,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
+	'No:Current:Temp:Out#7:MonthHigh'               =>	array( 'pos' => 216,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
+	'No:Current:Temp:Out#8:MonthHigh'               =>	array( 'pos' => 216,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
+
+	'No:Current:Temp:Leaf#1:MonthHigh'               =>	array( 'pos' => 216,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
+	'No:Current:Temp:Leaf#2:MonthHigh'               =>	array( 'pos' => 216,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
+	'No:Current:Temp:Leaf#3:MonthHigh'               =>	array( 'pos' => 216,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
+	'No:Current:Temp:Leaf#4:MonthHigh'               =>	array( 'pos' => 216,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
+
+	'No:Current:Temp:Soil#1:MonthHigh'               =>	array( 'pos' => 216,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
+	'No:Current:Temp:Soil#2:MonthHigh'               =>	array( 'pos' => 216,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
+	'No:Current:Temp:Soil#3:MonthHigh'               =>	array( 'pos' => 216,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
+	'No:Current:Temp:Soil#4:MonthHigh'               =>	array( 'pos' => 216,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
+
+
+	'No:Current:Temp:Out#2:MonthLow'                =>	array( 'pos' => 231,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
+	'No:Current:Temp:Out#3:MonthLow'                =>	array( 'pos' => 231,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
+	'No:Current:Temp:Out#4:MonthLow'                =>	array( 'pos' => 231,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
+	'No:Current:Temp:Out#5:MonthLow'                =>	array( 'pos' => 231,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
+	'No:Current:Temp:Out#6:MonthLow'                =>	array( 'pos' => 231,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
+	'No:Current:Temp:Out#7:MonthLow'                =>	array( 'pos' => 231,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
+	'No:Current:Temp:Out#8:MonthLow'                =>	array( 'pos' => 231,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
+
+	'No:Current:Temp:Leaf#1:MonthLow'                =>	array( 'pos' => 231,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
+	'No:Current:Temp:Leaf#2:MonthLow'                =>	array( 'pos' => 231,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
+	'No:Current:Temp:Leaf#3:MonthLow'                =>	array( 'pos' => 231,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
+	'No:Current:Temp:Leaf#4:MonthLow'                =>	array( 'pos' => 231,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
+
+	'No:Current:Temp:Soil#1:MonthLow'                =>	array( 'pos' => 231,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
+	'No:Current:Temp:Soil#2:MonthLow'                =>	array( 'pos' => 231,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
+	'No:Current:Temp:Soil#3:MonthLow'                =>	array( 'pos' => 231,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
+	'No:Current:Temp:Soil#4:MonthLow'                =>	array( 'pos' => 231,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
+
+
+	'No:Current:Temp:Out#2:YearHigh'                =>	array( 'pos' => 246,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
+	'No:Current:Temp:Out#3:YearHigh'                =>	array( 'pos' => 246,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
+	'No:Current:Temp:Out#4:YearHigh'                =>	array( 'pos' => 246,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
+	'No:Current:Temp:Out#5:YearHigh'                =>	array( 'pos' => 246,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
+	'No:Current:Temp:Out#6:YearHigh'                =>	array( 'pos' => 246,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
+	'No:Current:Temp:Out#7:YearHigh'                =>	array( 'pos' => 246,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
+	'No:Current:Temp:Out#8:YearHigh'                =>	array( 'pos' => 246,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
+
+	'No:Current:Temp:Leaf#1:YearHigh'                =>	array( 'pos' => 246,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
+	'No:Current:Temp:Leaf#2:YearHigh'                =>	array( 'pos' => 246,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
+	'No:Current:Temp:Leaf#3:YearHigh'                =>	array( 'pos' => 246,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
+	'No:Current:Temp:Leaf#4:YearHigh'                =>	array( 'pos' => 246,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
+
+	'No:Current:Temp:Soil#1:YearHigh'                =>	array( 'pos' => 246,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
+	'No:Current:Temp:Soil#2:YearHigh'                =>	array( 'pos' => 246,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
+	'No:Current:Temp:Soil#3:YearHigh'                =>	array( 'pos' => 246,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
+	'No:Current:Temp:Soil#4:YearHigh'                =>	array( 'pos' => 246,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
+
+
+	'No:Current:Temp:Out#2:YearLow'                 =>	array( 'pos' => 261,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
+	'No:Current:Temp:Out#3:YearLow'                 =>	array( 'pos' => 261,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
+	'No:Current:Temp:Out#4:YearLow'                 =>	array( 'pos' => 261,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
+	'No:Current:Temp:Out#5:YearLow'                 =>	array( 'pos' => 261,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
+	'No:Current:Temp:Out#6:YearLow'                 =>	array( 'pos' => 261,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
+	'No:Current:Temp:Out#7:YearLow'                 =>	array( 'pos' => 261,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
+	'No:Current:Temp:Out#8:YearLow'                 =>	array( 'pos' => 261,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
+
+	'No:Current:Temp:Leaf#1:YearLow'                 =>	array( 'pos' => 261,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
+	'No:Current:Temp:Leaf#2:YearLow'                 =>	array( 'pos' => 261,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
+	'No:Current:Temp:Leaf#3:YearLow'                 =>	array( 'pos' => 261,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
+	'No:Current:Temp:Leaf#4:YearLow'                 =>	array( 'pos' => 261,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
+
+	'No:Current:Temp:Soil#1:YearLow'                 =>	array( 'pos' => 261,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
+	'No:Current:Temp:Soil#2:YearLow'                 =>	array( 'pos' => 261,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
+	'No:Current:Temp:Soil#3:YearLow'                 =>	array( 'pos' => 261,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
+	'No:Current:Temp:Soil#4:YearLow'                 =>	array( 'pos' => 261,	'len' => 1,	'fn'=>'SmallTemp',  'SI'=>'F2kelvin',         'min'=>-50,     'max'=>160,	'err'=>255,     'unit'=> '°F'),
 
 ///						*********** extra Humidity ***********						///
 	'No:Current:Hum:Out:DailyLow'                   =>	array( 'pos' => 276,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
@@ -140,36 +248,154 @@
 	'No:Current:Hum:Out#5:DailyLow'                 =>	array( 'pos' => 280,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
 	'No:Current:Hum:Out#6:DailyLow'                 =>	array( 'pos' => 281,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
 	'No:Current:Hum:Out#7:DailyLow'                 =>	array( 'pos' => 282,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
-	'No:Current:Hum:Out#8:DailyLow'                 =>	array( 'pos' => 283,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:Hum:Out#8:DailyLow'                 =>	array( 'pos' => 283,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),8
 
-	'No:Current:Hum:Out#x:DailyHigh'                =>	array( 'pos' => 284,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
-	'No:Current:Hum:Out#x:TimeDailyLow'             =>	array( 'pos' => 300,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,    'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
-	'No:Current:Hum:Out#x:TimeDailyHigh'            =>	array( 'pos' => 316,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,    'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
-	'No:Current:Hum:Out#x:MonthHigh'                =>	array( 'pos' => 324,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
-	'No:Current:Hum:Out#x:MonthLow'                 =>	array( 'pos' => 332,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
-	'No:Current:Hum:Out#x:YearHigh'                 =>	array( 'pos' => 340,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
-	'No:Current:Hum:Out#x:YearLow'                  =>	array( 'pos' => 348,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:Hum:Out:DailyHigh'                =>	array( 'pos' => 284,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:Hum:Out#2:DailyHigh'                =>	array( 'pos' => 285,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:Hum:Out#3:DailyHigh'                =>	array( 'pos' => 286,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:Hum:Out#4:DailyHigh'                =>	array( 'pos' => 287,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:Hum:Out#5:DailyHigh'                =>	array( 'pos' => 288,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:Hum:Out#6:DailyHigh'                =>	array( 'pos' => 289,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:Hum:Out#7:DailyHigh'                =>	array( 'pos' => 290,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:Hum:Out#8:DailyHigh'                =>	array( 'pos' => 291,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+
+	'No:Current:Hum:Out:TimeDailyLow'             =>	array( 'pos' => 292,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,    'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
+	'No:Current:Hum:Out#2:TimeDailyLow'             =>	array( 'pos' => 294,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,    'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
+	'No:Current:Hum:Out#3:TimeDailyLow'             =>	array( 'pos' => 296,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,    'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
+	'No:Current:Hum:Out#4:TimeDailyLow'             =>	array( 'pos' => 298,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,    'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
+	'No:Current:Hum:Out#5:TimeDailyLow'             =>	array( 'pos' => 300,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,    'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
+	'No:Current:Hum:Out#6:TimeDailyLow'             =>	array( 'pos' => 302,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,    'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
+	'No:Current:Hum:Out#7:TimeDailyLow'             =>	array( 'pos' => 304,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,    'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
+	'No:Current:Hum:Out#8:TimeDailyLow'             =>	array( 'pos' => 306,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,    'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
+
+	'No:Current:Hum:Out:TimeDailyHigh'            =>	array( 'pos' => 308,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,    'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
+	'No:Current:Hum:Out#2:TimeDailyHigh'            =>	array( 'pos' => 310,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,    'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
+	'No:Current:Hum:Out#3:TimeDailyHigh'            =>	array( 'pos' => 312,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,    'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
+	'No:Current:Hum:Out#4:TimeDailyHigh'            =>	array( 'pos' => 314,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,    'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
+	'No:Current:Hum:Out#5:TimeDailyHigh'            =>	array( 'pos' => 316,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,    'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
+	'No:Current:Hum:Out#6:TimeDailyHigh'            =>	array( 'pos' => 318,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,    'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
+	'No:Current:Hum:Out#7:TimeDailyHigh'            =>	array( 'pos' => 320,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,    'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
+	'No:Current:Hum:Out#8:TimeDailyHigh'            =>	array( 'pos' => 322,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,    'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
+
+	'No:Current:Hum:Out:MonthHigh'                =>	array( 'pos' => 324,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:Hum:Out#2:MonthHigh'                =>	array( 'pos' => 324,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:Hum:Out#3:MonthHigh'                =>	array( 'pos' => 324,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:Hum:Out#4:MonthHigh'                =>	array( 'pos' => 324,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:Hum:Out#5:MonthHigh'                =>	array( 'pos' => 324,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:Hum:Out#6:MonthHigh'                =>	array( 'pos' => 324,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:Hum:Out#7:MonthHigh'                =>	array( 'pos' => 324,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:Hum:Out#8:MonthHigh'                =>	array( 'pos' => 324,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+
+	'No:Current:Hum:Out:MonthLow'                 =>	array( 'pos' => 332,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:Hum:Out#2:MonthLow'                 =>	array( 'pos' => 332,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:Hum:Out#3:MonthLow'                 =>	array( 'pos' => 332,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:Hum:Out#4:MonthLow'                 =>	array( 'pos' => 332,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:Hum:Out#5:MonthLow'                 =>	array( 'pos' => 332,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:Hum:Out#6:MonthLow'                 =>	array( 'pos' => 332,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:Hum:Out#7:MonthLow'                 =>	array( 'pos' => 332,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:Hum:Out#8:MonthLow'                 =>	array( 'pos' => 332,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+
+	'No:Current:Hum:Out:YearHigh'                 =>	array( 'pos' => 340,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:Hum:Out#2:YearHigh'                 =>	array( 'pos' => 340,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:Hum:Out#3:YearHigh'                 =>	array( 'pos' => 340,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:Hum:Out#4:YearHigh'                 =>	array( 'pos' => 340,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:Hum:Out#5:YearHigh'                 =>	array( 'pos' => 340,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:Hum:Out#6:YearHigh'                 =>	array( 'pos' => 340,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:Hum:Out#7:YearHigh'                 =>	array( 'pos' => 340,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:Hum:Out#8:YearHigh'                 =>	array( 'pos' => 340,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+
+	'No:Current:Hum:Out:YearLow'                  =>	array( 'pos' => 348,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:Hum:Out#2:YearLow'                  =>	array( 'pos' => 348,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:Hum:Out#3:YearLow'                  =>	array( 'pos' => 348,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:Hum:Out#4:YearLow'                  =>	array( 'pos' => 348,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:Hum:Out#5:YearLow'                  =>	array( 'pos' => 348,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:Hum:Out#6:YearLow'                  =>	array( 'pos' => 348,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:Hum:Out#7:YearLow'                  =>	array( 'pos' => 348,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:Hum:Out#8:YearLow'                  =>	array( 'pos' => 348,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
 
 ///						*********** soil moisture ***********						///
-	'No:Current:SoilMoisture:Soil:DailyHigh'        =>	array( 'pos' => 356,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
-	'No:Current:SoilMoisture:Soil:TimeDailyHigh'    =>	array( 'pos' => 360,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,    'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
-	'No:Current:SoilMoisture:Soil:DailyLow'         =>	array( 'pos' => 368,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
-	'No:Current:SoilMoisture:Soil:TimeDailyLow'     =>	array( 'pos' => 372,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,    'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
-	'No:Current:SoilMoisture:Soil:MonthLow'         =>	array( 'pos' => 380,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
-	'No:Current:SoilMoisture:Soil:MonthHigh'        =>	array( 'pos' => 384,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
-	'No:Current:SoilMoisture:Soil:YearLow'          =>	array( 'pos' => 388,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
-	'No:Current:SoilMoisture:Soil:YearHigh'         =>	array( 'pos' => 392,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+
+	'No:Current:SoilMoisture:Soil#1:DailyHigh'        =>	array( 'pos' => 356,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:SoilMoisture:Soil#2:DailyHigh'        =>	array( 'pos' => 357,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:SoilMoisture:Soil#3:DailyHigh'        =>	array( 'pos' => 358,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:SoilMoisture:Soil#4:DailyHigh'        =>	array( 'pos' => 359,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+
+	'No:Current:SoilMoisture:Soil#1:TimeDailyHigh'    =>	array( 'pos' => 360,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,    'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
+	'No:Current:SoilMoisture:Soil#2:TimeDailyHigh'    =>	array( 'pos' => 362,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,    'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
+	'No:Current:SoilMoisture:Soil#3:TimeDailyHigh'    =>	array( 'pos' => 364,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,    'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
+	'No:Current:SoilMoisture:Soil#4:TimeDailyHigh'    =>	array( 'pos' => 366,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,    'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
+
+	'No:Current:SoilMoisture:Soil#1:DailyLow'         =>	array( 'pos' => 368,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:SoilMoisture:Soil#2:DailyLow'         =>	array( 'pos' => 369,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:SoilMoisture:Soil#3:DailyLow'         =>	array( 'pos' => 370,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:SoilMoisture:Soil#4:DailyLow'         =>	array( 'pos' => 371,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+
+	'No:Current:SoilMoisture:Soil#1:TimeDailyLow'     =>	array( 'pos' => 372,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,    'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
+	'No:Current:SoilMoisture:Soil#2:TimeDailyLow'     =>	array( 'pos' => 374,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,    'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
+	'No:Current:SoilMoisture:Soil#3:TimeDailyLow'     =>	array( 'pos' => 376,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,    'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
+	'No:Current:SoilMoisture:Soil#4:TimeDailyLow'     =>	array( 'pos' => 378,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,    'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
+
+	'No:Current:SoilMoisture:Soil#1:MonthLow'         =>	array( 'pos' => 380,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:SoilMoisture:Soil#2:MonthLow'         =>	array( 'pos' => 381,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:SoilMoisture:Soil#3:MonthLow'         =>	array( 'pos' => 382,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:SoilMoisture:Soil#4:MonthLow'         =>	array( 'pos' => 383,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+
+	'No:Current:SoilMoisture:Soil#1:MonthHigh'        =>	array( 'pos' => 384,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:SoilMoisture:Soil#2:MonthHigh'        =>	array( 'pos' => 385,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:SoilMoisture:Soil#3:MonthHigh'        =>	array( 'pos' => 386,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:SoilMoisture:Soil#4:MonthHigh'        =>	array( 'pos' => 387,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+
+	'No:Current:SoilMoisture:Soil#1:YearLow'          =>	array( 'pos' => 388,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:SoilMoisture:Soil#2:YearLow'          =>	array( 'pos' => 389,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:SoilMoisture:Soil#3:YearLow'          =>	array( 'pos' => 390,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:SoilMoisture:Soil#4:YearLow'          =>	array( 'pos' => 391,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+
+	'No:Current:SoilMoisture:Soil#1:YearHigh'         =>	array( 'pos' => 392,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:SoilMoisture:Soil#2:YearHigh'         =>	array( 'pos' => 393,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:SoilMoisture:Soil#3:YearHigh'         =>	array( 'pos' => 394,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:SoilMoisture:Soil#4:YearHigh'         =>	array( 'pos' => 395,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
 
 ///						*********** leaf Wetness ***********						///
-	'No:Current:LeafWetnesses:Leaf:DailyHigh'       =>	array( 'pos' => 496,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
-	'No:Current:LeafWetnesses:Leaf:TimeDailyHigh'   =>	array( 'pos' => 500,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,     'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
-	'No:Current:LeafWetnesses:Leaf:DailyLow'        =>	array( 'pos' => 508,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
-	'No:Current:LeafWetnesses:Leaf:TimeDailyLow'    =>	array( 'pos' => 512,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,     'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
-	'No:Current:LeafWetnesses:Leaf:MonthLow'        =>	array( 'pos' => 520,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
-	'No:Current:LeafWetnesses:Leaf:MonthHigh'       =>	array( 'pos' => 524,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
-	'No:Current:LeafWetnesses:Leaf:YearLow'         =>	array( 'pos' => 528,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
-	'No:Current:LeafWetnesses:Leaf:YearHigh'        =>	array( 'pos' => 532,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:LeafWetnesses:Leaf#1:DailyHigh'       =>	array( 'pos' => 396,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:LeafWetnesses:Leaf#2:DailyHigh'       =>	array( 'pos' => 397,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:LeafWetnesses:Leaf#3:DailyHigh'       =>	array( 'pos' => 398,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:LeafWetnesses:Leaf#4:DailyHigh'       =>	array( 'pos' => 399,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+
+	'No:Current:LeafWetnesses:Leaf#1:TimeDailyHigh'   =>	array( 'pos' => 400,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,     'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
+	'No:Current:LeafWetnesses:Leaf#2:TimeDailyHigh'   =>	array( 'pos' => 402,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,     'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
+	'No:Current:LeafWetnesses:Leaf#3:TimeDailyHigh'   =>	array( 'pos' => 404,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,     'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
+	'No:Current:LeafWetnesses:Leaf#4:TimeDailyHigh'   =>	array( 'pos' => 406,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,     'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
+
+	'No:Current:LeafWetnesses:Leaf#1:DailyLow'        =>	array( 'pos' => 408,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:LeafWetnesses:Leaf#2:DailyLow'        =>	array( 'pos' => 409,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:LeafWetnesses:Leaf#3:DailyLow'        =>	array( 'pos' => 410,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:LeafWetnesses:Leaf#4:DailyLow'        =>	array( 'pos' => 411,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+
+	'No:Current:LeafWetnesses:Leaf#1:TimeDailyLow'    =>	array( 'pos' => 412,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,     'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
+	'No:Current:LeafWetnesses:Leaf#2:TimeDailyLow'    =>	array( 'pos' => 414,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,     'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
+	'No:Current:LeafWetnesses:Leaf#3:TimeDailyLow'    =>	array( 'pos' => 416,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,     'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
+	'No:Current:LeafWetnesses:Leaf#4:TimeDailyLow'    =>	array( 'pos' => 418,	'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,     'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
+
+	'No:Current:LeafWetnesses:Leaf#1:MonthLow'        =>	array( 'pos' => 420,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:LeafWetnesses:Leaf#2:MonthLow'        =>	array( 'pos' => 421,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:LeafWetnesses:Leaf#3:MonthLow'        =>	array( 'pos' => 422,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:LeafWetnesses:Leaf#4:MonthLow'        =>	array( 'pos' => 423,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+
+	'No:Current:LeafWetnesses:Leaf#1:MonthHigh'       =>	array( 'pos' => 424,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:LeafWetnesses:Leaf#2:MonthHigh'       =>	array( 'pos' => 425,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:LeafWetnesses:Leaf#3:MonthHigh'       =>	array( 'pos' => 426,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:LeafWetnesses:Leaf#4:MonthHigh'       =>	array( 'pos' => 427,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+
+	'No:Current:LeafWetnesses:Leaf#1:YearLow'         =>	array( 'pos' => 428,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:LeafWetnesses:Leaf#2:YearLow'         =>	array( 'pos' => 429,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:LeafWetnesses:Leaf#3:YearLow'         =>	array( 'pos' => 430,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:LeafWetnesses:Leaf#4:YearLow'         =>	array( 'pos' => 431,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+
+	'No:Current:LeafWetnesses:Leaf#1:YearHigh'        =>	array( 'pos' => 432,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:LeafWetnesses:Leaf#2:YearHigh'        =>	array( 'pos' => 433,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:LeafWetnesses:Leaf#3:YearHigh'        =>	array( 'pos' => 434,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
+	'No:Current:LeafWetnesses:Leaf#4:YearHigh'        =>	array( 'pos' => 435,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
 	
-// 	'CRC'                       =>	array( 'pos' => 536,	'len' => 2,	'fn'=>'crc',		      'SI'=>NULL,         'min'=>0,       'max'=>0xFF,	'err'=>255,     'unit'=> ''	),
+// 	'CRC'                       =>	array( 'pos' => 436,	'len' => 2,	'fn'=>'crc',		      'SI'=>NULL,         'min'=>0,       'max'=>0xFF,	'err'=>255,     'unit'=> ''	),
 	);
 ?>
