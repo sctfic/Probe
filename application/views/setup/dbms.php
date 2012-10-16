@@ -21,7 +21,11 @@
 				<?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('setup.dbms.ip'), i18n('required'), i18n('&nbsp;:')) ?>
 			</label>
 			<div class="controls">
-				<input type="text" id="dbms-ip" value="<?=$dbmsIp?>" required class="input-medium" placeholder="<?=i18n('setup.dbms.ip.placeholder')?>">
+				<input id="dbms-ip"
+					type="text" required
+					name="dbms-ip" value="<?=$dbmsIp?>" 
+					class="input-medium" placeholder="<?=i18n('setup.dbms.ip.placeholder')?>"
+				>
 			</div>
 		</div>
 
@@ -31,7 +35,11 @@
 				<?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('setup.dbms.port'), i18n('required'), i18n('&nbsp;:')) ?>
 			</label>
 			<div class="controls">
-				<input type="number" min="1" max="65535" id="dbms-port" value="<?=$dbmsPort?>" class="input-mini" placeholder="<?=i18n('setup.dbms.port.placeholder')?>">
+				<input id="dbms-port"
+					type="number" min="1" max="65535" 
+					name="dbms-port" value="<?=$dbmsPort?>" 
+					class="input-mini" placeholder="<?=i18n('setup.dbms.port.placeholder')?>"
+				>
 			</div>
 		</div>
 
@@ -42,11 +50,19 @@
 			</label>
 			<div class="controls">
 				<label class="control-label inline" for="dbms-engine-mysql">
-					<input type="radio" name="dbms-engine" id="dbms-engine-mysql" value="<?=$dbmsPort?>" checked class="input-mini" >
+					<input id="dbms-engine-mysql"
+ 						type="radio" checked 
+						name="dbms-engine" value="mysql"
+						class="input-mini" 
+					>
 					<?=sprintf('%s <span class="hidden">(%s)</span>', i18n('setup.dbms.engine-mysql'), i18n('required')) ?>
 				</label>
 				<label class="control-label inline" for="dbms-engine-sqlite">
-					<input type="radio" name="dbms-engine" id="dbms-engine-sqlite" value="<?=$dbmsPort?>" class="input-mini" >
+					<input id="dbms-engine-sqlite"
+						type="radio" 
+						name="dbms-engine" value="sqlite"
+						class="input-mini" 
+					>
 					<?=sprintf('%s <span class="hidden">(%s)</span>', i18n('setup.dbms.engine-sqlite'), i18n('required')) ?>
 				</label>
 			</div>
@@ -76,7 +92,11 @@
 				<?=sprintf('%s %s', i18n('setup.dbms.database-name'), i18n('&nbsp;:'))?>
 			</label>
 			<div class="controls">
-				<input type="text" id="dbms-database-name" disabled value="<?=$dbmsDatabaseName?>" class="input-large" >
+				<input id="dbms-database-name"
+					type="text" disabled
+					name="dbms-database-name" value="<?=$dbmsDatabaseName?>"
+					class="input-large" 
+				>
 			    <!-- <span class="input-large uneditable-input"><?=$dbmsDatabaseName?></span> -->
 				<!-- <input type="hidden" id="dbms-database-name" value="<?=$dbmsDatabaseName?>" class="input-large" > -->
 			</div>
@@ -88,7 +108,11 @@
 				<?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('setup.dbms.username'), i18n('required'), i18n('&nbsp;:'))?>
 			</label>
 			<div class="controls">
-				<input type="text" id="dbms-username" required value="<?=$dbmsUsername?>" class="input-large" placeholder="<?=i18n('setup.dbms.username.placeholder')?>">
+				<input id="dbms-username"
+					type="text" required
+					name="dbms-username" value="<?=$dbmsUsername?>" 
+					class="input-large" placeholder="<?=i18n('setup.dbms.username.placeholder')?>"
+				>
 			</div>
 		</div>
 
@@ -98,7 +122,11 @@
 				<?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('setup.dbms.password'), i18n('required'), i18n('&nbsp;:'))?>
 			</label>
 			<div class="controls">
-				<input type="text" id="dbms-password" required value="<?=$dbmsPassword?>" class="input-large" placeholder="<?=i18n('setup.dbms.password.placeholder')?>">
+				<input id="dbms-password"
+					type="password" required
+					name="dbms-password" value="<?=$dbmsPassword?>"
+					class="input-large" placeholder="<?=i18n('setup.dbms.password.placeholder')?>"
+				>
 			</div>
 		</div>
 
