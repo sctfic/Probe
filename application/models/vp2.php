@@ -13,8 +13,6 @@ class vp2 extends CI_Model {
 
 	protected $prep_VARIOUS = NULL;
 	protected $key_VARIOUS = array(':UTC_date', ':rainfall', ':max_rainfall', ':P0', ':srad', ':max_srad', ':wspeed', ':max_wspeed', ':dir_higtspeed', ':dir_dominant', ':uv', ':max_uv', ':forecast', ':et');
-
-	protected $T_12H = NULL;
 	
 	protected $dataDB = NULL;
 	protected $current_data = NULL;
@@ -22,56 +20,24 @@ class vp2 extends CI_Model {
 	protected function __construct($conf)
 	{
 		parent::__construct();
-		log_message('init',  __FUNCTION__.'('.__CLASS__.' ('.$conf['_name'].':'.($base = $conf['_db']).') '.")\n".__FILE__.' ['.__LINE__.']');
+		log_message('init',  __FUNCTION__.'('.__CLASS__.' ('.$conf['_name'].':'.($conf['_name']).') '.")\n".__FILE__.' ['.__LINE__.']');
 		$this->conf = $conf;
-		$this->load->helper(array('binary','s.i.converter'));
-		global $auge, $altitude, $latitude, $longitude, $Zone, $WindCup;
-		$auge = $conf['rain:collector:size'];
-		$WindCup = $conf['wind:cup:large'];
-		$altitude = $conf['geo:elevation:ocean'];
-		$latitude = $conf['geo:latitude:nordvalue'];
-		$longitude = $conf['geo:longitude:estvalue'];
-		$Zone = $conf['geo:time:zone'];
-		
-	/**
-	[bar::unit] => 0
-	[bar:calibration:cal] => 0.004
-	[bar:calibration:gain] => 0
-	[bar:calibration:offset] => -36
-	[daylight:savings:enable] => 0
-	[daylight:savings:manual] => 1
-	[geo:elevation:ocean] => 240
-	[geo:elevation:unit] => 0
->	[geo:latitude:nord] => 44.5
-? >	[geo:latitude:north] => 0
-? >	[geo:longitude:east] => 0
->	[geo:longitude:est] => 0.3
-	[geo:time:zone] => 21
-	[hum:calibration:@33%] => -1
-	[hum:calibration:@80%] => -1
-	[rain::seasonstart] => 1
-	[rain:collector:size] => 0
-	[rain:display:unit] => 0
-	[temp:display:unit] => 0
-	[temp:log:average] => 1
-	[time:archive:period] => 5
-	[time:format:day/month] => 0
-	[time:gmt:enable] => 1
-	[time:gmt:offset] => 2:00
-	[time:mode:am/pm] => 0
-	[time:mode:isam] => 0
-	[wind:cup:large] => 0
-	[wind:display:unit] => 0
-	**/
+
+		define ("AUGE", $conf['rain:collector:size']);
+		define ("CUP", $conf['wind:cup:large']);
+		define ("ALTITUDE", $conf['geo:elevation:ocean']);
+		define ("LATITUDE", $conf['geo:latitude:nordvalue']);
+		define ("LONGITUDE", $conf['geo:longitude:estvalue']);
+		define ("ZONE", $conf['geo:time:zone']);
 
 		require (APPPATH.'models/vp2/EepromDumpAfter.h.php');
 		require (APPPATH.'models/vp2/EepromLoop.h.php');
 		require (APPPATH.'models/vp2/EepromLoop2.h.php');
 		require (APPPATH.'models/vp2/EepromHiLow.h.php');
 		require (APPPATH.'models/vp2/EepromConfig.h.php');
-		
-		$this->dataDB = $this->load->database($base, TRUE);
-		
+
+		$this->dataDB = $this->load->database(unserialize($conf['_dsn']), TRUE);
+
 		$this->prep_EAV_T = $this->dataDB->conn_id->prepare(
 			'REPLACE 
 				INTO TA_TEMPERATURE (ID, VALUE, SEN_ID) 
@@ -334,7 +300,7 @@ class vp2 extends CI_Model {
 				log_message('probe', '[LPS] : Download the current Values');
 // 				$packet_type = $this->convertUnit( $this->convertRaw( $this->subRaw( $data, $this->Loop['NO:::PacketType']), $this->Loop['NO:::PacketType']), $this->Loop['NO:::PacketType']);
 				$packet_type = $this->RawConverter(array('NO:::PacketType'=>$this->Loop['NO:::PacketType']), $data);
-				log_message('type', 'Type'.$packet_type."\n".__FUNCTION__.'('.__CLASS__.' ('.$conf['_name'].':'.($base = $conf['_db']).') '.")\n".__FILE__.' ['.__LINE__.']');
+				log_message('type', 'Type'.$packet_type."\n".__FUNCTION__.'('.__CLASS__.' ('.$this->conf['_name'].':'.($this->conf['_db']).') '.")\n".__FILE__.' ['.__LINE__.']');
 				switch($packet_type) {
 					case 0:
 					file_put_contents (BASEPATH.'data/LOOP.json',

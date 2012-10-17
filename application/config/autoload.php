@@ -71,6 +71,10 @@ $autoload['libraries'] = array(
 $autoload['helper'] = array(
 	'i18n',
 	'toolbox',
+	'cli_tools',
+	's.i.converter',
+	'security',
+	'binary'
 );
 
 

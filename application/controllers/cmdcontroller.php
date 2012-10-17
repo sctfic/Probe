@@ -14,7 +14,6 @@ class cmdController extends CI_Controller {
 		**/
 		include_once(BASEPATH.'core/Model.php'); // need for load models manualy
 		include_once(APPPATH.'models/weatherstation.php');
-		$this->load->helper('cli_tools');
 
 		$this->WS = new weatherstation();
 	}

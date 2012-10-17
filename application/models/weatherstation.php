@@ -2,12 +2,12 @@
 // http://fmaz.developpez.com/tutoriels/php/comprendre-pdo/
 class weatherstation extends CI_Model {
 	protected $DBConf = NULL;
-	public $lst = NULL;
+	protected $lst = NULL;
 	protected $data = NULL;
-	public $confExtend = NULL;	
-	public $type = NULL;
-	public $name = NULL;
-	public $conf = NULL;
+	protected $confExtend = NULL;	
+	protected $type = NULL;
+	protected $name = NULL;
+	protected $conf = NULL;
 	
 	function __construct()
 	{
@@ -72,7 +72,7 @@ class weatherstation extends CI_Model {
 			{ // on integre chacune des configs dans un tableau a 2 dimensions qui sera utilisé par la suite
 				$confs[$item][strtolower($val->CFG_LABEL)] = $val->CFG_VALUE;
 			}
-			if (!isset($confs[$item]['_db']) || !isset($confs[$item]['_ip']) || !isset($confs[$item]['_port']) || !isset($confs[$item]['_type'])) {
+			if (!isset($confs[$item]['_dsn']) || !isset($confs[$item]['_db_user']) || !isset($confs[$item]['_db_pass']) || !isset($confs[$item]['_ip']) || !isset($confs[$item]['_port']) || !isset($confs[$item]['_type'])) {
 				log_message('warning', 'Missing confs for '.$item.' > Skipped!');
 				unset($confs[$item]);
 			}

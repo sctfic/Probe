@@ -22,7 +22,7 @@ class db_builder extends CI_Model {
 	protected $pass = NULL;
 	protected $db_type = NULL;
 	protected $pdoConnection = NULL;
-// 	protected $ = NULL;
+
 	function __construct($pass='', $user='root', $db_type='mysql', $host='localhost', $port=3306) {
 		parent::__construct();
 		log_message('init',  __FUNCTION__.'('.__CLASS__.")\n".__FILE__.' ['.__LINE__.']');
@@ -31,6 +31,7 @@ class db_builder extends CI_Model {
 		$this->user = $user;
 		$this->pass = $pass;
 		$this->db_type = $db_type;
+		$this->cryptor = $this->load->library('encrypt');
 		try {
 			$this->pdoConnection = new PDO($db_type.':host='.$host.';port='.$port, $user, $pass);
 		} catch (PDOException $e) {
@@ -48,16 +49,7 @@ class db_builder extends CI_Model {
 		if ($result->fetchColumn() > 0) return true;
 		return false;
 	}
-	function randomPassword($size=6) {
-		$alphabet = "abcdefghijklmnopqrstuwxyzABCDEFGHIJKLMNOPQRSTUWXYZ0123456789";
-		for ($i = 0; $i < $size; $i++) {
-			$n = rand(0, strlen($alphabet)-1);
-			$pass[$i] = $alphabet[$n];
-		}
-		return implode($pass);
-	}
-	function make_user ($db, $usr, $pass)
-	{
+	function make_user ($db, $usr, $pass) {
 		// supprime les utilisateur vide qui provoque des probleme de connection
 		$this->pdoConnection->query("DELETE FROM user WHERE user = '';");
 		// Creation of user
@@ -78,7 +70,7 @@ class db_builder extends CI_Model {
 			// dans le cas ou la base est fournie avec l'user adequat pas besoin de le refaire
 			if (!$this->is_db($db_name)) {
 				$user = 'probe'; 
-				$pass = $this->randomPassword();
+				$pass = randomPassword();
 				
 				//Creation of database "probe"
 				$this->pdoConnection->query("CREATE DATABASE IF NOT EXISTS `$db_name`;");
@@ -90,37 +82,30 @@ class db_builder extends CI_Model {
 				$pass = $this->pass;
 			}
 			$this->make_table_config();
-			$this->save_defaut_config($user, $pass, $db_name);
-			return array(
-				'dsn'=>'mysql:host='.$this->host.';port='.$this->port.';dbname='.$db_name,
-				'login'=>$user,
-				'pass'=>$pass);
+			$connectConf = array (
+				'dbdriver'=> 'pdo',
+				'username'=> $user,
+				'password'=> $pass,
+				'hostname'=> $dbdriver.':host='.$host.';port='.$port,
+				'database'=> $db_name);
+
+			return $this->save2defConf($connectConf);
 		} catch (PDOException $e) {
 			throw new Exception( $e->getMessage() );
 		}
 		return false;
 	}
-	protected function save_defaut_config($user, $pass, $db_name) {
-	if (file_put_contents(APPPATH.'config/db-default.php',
-"<?php
-\$db['default'] = Array(
-	'hostname' => 'mysql:host=".$this->host.";port=".$this->port.";',
-	'username' => '$user',
-	'password' => '$pass',
-	'dbdriver' => 'pdo',
-	'database' => '$db_name',
-	'dbprefix' => '',
-	'pconnect' => true,
-	'db_debug' => true,
-	'cache_on' => false,
-	'cachedir' => '',
-	'char_set' => 'utf8',
-	'dbcollat' => 'utf8_general_ci',
-	'swap_pre' => '',
-	'autoinit' => true,
-	'stricton' => false);") === FALSE)
-		throw new Exception( i18n('Impossible d\'ecrire le fichier de config : '.APPPATH.'config/db-default.php') );
+
+	/**
+	* this finction write in config/db-default.php file the necessary connection config to reconnect later
+	*	@param array () of config
+	**/
+	protected function save2defConf($conf) {
+		if (file_put_contents(APPPATH.'config/db-default.php', "<?php\n\$db['default'] = ".var_export($conf, TRUE).";") === FALSE)
+			throw new Exception( i18n('Impossible d ecrire le fichier de config : '.APPPATH.'config/db-default.php') );
+		return true;
 	}
+
 	protected function make_table_config() {
 		$this->pdoConnection->query("SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 			SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
@@ -163,7 +148,7 @@ class db_builder extends CI_Model {
 			ENGINE = InnoDB
 			DEFAULT CHARACTER SET = utf8
 			COLLATE = utf8_general_ci
-			COMMENT = 'Ici on stoque chaque config, ca valeur et les date d\'accé';");
+			COMMENT = 'Ici on stoque chaque config, ca valeur et les date d accé';");
 		$this->pdoConnection->query("CREATE  TABLE IF NOT EXISTS `probe`.`TA_LOG` (
 			`LOG_ID` INT(11) NOT NULL ,
 			`LOG_STATION_ID` TINYINT(4) NULL DEFAULT NULL ,
@@ -175,7 +160,7 @@ class db_builder extends CI_Model {
 			ENGINE = InnoDB
 			DEFAULT CHARACTER SET = utf8
 			COLLATE = utf8_general_ci
-			COMMENT = 'Ici on log les different accée a chaque station ainsi qu\'une' /* comment truncated */;
+			COMMENT = 'Ici on log les different accée a chaque station ainsi qu une';
 			SET SQL_MODE=@OLD_SQL_MODE;
 			SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 			SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;");
@@ -191,7 +176,7 @@ class db_builder extends CI_Model {
 			// dans le cas ou la base est fournie avec l'user adequat pas besoin de le refaire
 			if (!$this->is_db($db_name)) {
 				$user = 'probe'; 
-				$pass = $this->randomPassword();
+				$pass = randomPassword();
 				
 				//Creation of database "probe"
 				$this->pdoConnection->query("CREATE DATABASE IF NOT EXISTS `$db_name`;");
@@ -203,10 +188,16 @@ class db_builder extends CI_Model {
 				$pass = $this->pass;
 			}
 			$this->make_table_data($db_name);
-			return array(
-			'dsn'=>'mysql:host='.$this->host.';port='.$this->port.';dbname='.$db_name,
-			'login'=>$user,
-			'pass'=>$pass);
+			
+			$connectConf = array (
+				'dbdriver'=> 'pdo',
+				'username'=> $user,
+				'password'=> $this->encrypt->encode($pass),
+				'hostname'=> $dbdriver.':host='.$host.';port='.$port,
+				'database'=> $db_name);
+
+			return serialize($connectConf);
+
 		} catch (PDOException $e) {
 			throw new Exception( $e->getMessage() );
 		}
@@ -220,7 +211,7 @@ class db_builder extends CI_Model {
 			CREATE SCHEMA IF NOT EXISTS `$db_name` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
 			USE `$db_name`;");
 		$this->pdoConnection->query("CREATE  TABLE IF NOT EXISTS `$db_name`.`TR_SENSOR` (
-			`SEN_ID` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'Technical sensor\'s key' ,
+			`SEN_ID` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'Technical sensor s key' ,
 			`SEN_NAME` VARCHAR(64) NOT NULL COMMENT 'Name of the sensor' ,
 			`SEN_HUMAN_NAME` VARCHAR(64) NULL DEFAULT NULL ,
 			`SEN_DESCRIPTIF` MEDIUMTEXT NULL DEFAULT NULL ,
@@ -250,8 +241,8 @@ class db_builder extends CI_Model {
 			`VAR_WIND_SPEED_HIGHT` FLOAT(11) NULL DEFAULT NULL COMMENT 'max vitesse de vent' ,
 			`VAR_WIND_SPEED_HIGHT_DIR` TINYINT(4) NULL DEFAULT NULL COMMENT 'direction du vent de la plus haute rafale de vent sur cette periode' ,
 			`VAR_WIND_SPEED_DOMINANT_DIR` TINYINT(4) NULL DEFAULT NULL COMMENT 'direction des vent dominant sur cette periode' ,
-			`VAR_UV_INDEX` FLOAT(11) NULL DEFAULT NULL COMMENT 'niveau d\'UV (W/m²)' ,
-			`VAR_UV_INDEX_HIGHT` FLOAT(11) NULL DEFAULT NULL COMMENT 'max : niveau d\'UV (W/m²)' ,
+			`VAR_UV_INDEX` FLOAT(11) NULL DEFAULT NULL COMMENT 'niveau d UV (W/m²)' ,
+			`VAR_UV_INDEX_HIGHT` FLOAT(11) NULL DEFAULT NULL COMMENT 'max : niveau d UV (W/m²)' ,
 			`VAR_FORECAST_RULE` TINYINT(4) NULL DEFAULT NULL COMMENT 'prevision grossiere (voir P.22 de la doc)' ,
 			`VAR_ET` FLOAT(11) NULL DEFAULT NULL COMMENT 'pluviometrie sur cette periode' ,
 			PRIMARY KEY (`VAR_ID`) ,
@@ -260,7 +251,7 @@ class db_builder extends CI_Model {
 			ENGINE = InnoDB
 			DEFAULT CHARACTER SET = utf8
 			COLLATE = utf8_general_ci
-			COMMENT = 'Table des capteurs unique (d\'autre du meme type ne peuvent e' /* comment truncated */;");
+			COMMENT = 'Table des capteurs unique (d autre du meme type ne peuvent e' /* comment truncated */;");
 		$this->pdoConnection->query("CREATE  TABLE IF NOT EXISTS `$db_name`.`TA_TEMPERATURE` (
 			`ID` INT(11) NOT NULL ,
 			`SEN_ID` INT(11) NOT NULL ,
@@ -340,9 +331,10 @@ class db_builder extends CI_Model {
 			ENGINE = InnoDB
 			DEFAULT CHARACTER SET = utf8
 			COLLATE = utf8_general_ci
-			COMMENT = 'Regroupe les relevés de tous les capteurs d\'humidité';
+			COMMENT = 'Regroupe les relevés de tous les capteurs d humidité';
 			SET SQL_MODE=@OLD_SQL_MODE;
 			SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 			SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;");
 	}
+
 }
