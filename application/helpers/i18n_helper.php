@@ -8,6 +8,6 @@
 @return: translated string
 */
 function i18n($key, $dynamic = false) { //
-	if ($dynamic == true) { log_message('I18N', printf('%s', $key ) ); }
+	if ($dynamic == true) { log_message('i18n', sprintf('%s', $key ) ); }
 	return _($key);
 }
