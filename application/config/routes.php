@@ -43,6 +43,7 @@ $route['default_controller'] = "admin/admin";
 $route['404_override'] = '';
 
 $route['admin'] = "admin/admin";
+$route['setup'] = "setup/installer";
 
 
 /* End of file routes.php */
