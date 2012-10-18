@@ -85,7 +85,7 @@ class weatherstation extends CI_Model {
 			{ // on integre chacune des configs dans un tableau a 2 dimensions qui sera utilisé par la suite
 				$confs[$item][strtolower($val->CFG_LABEL)] = $val->CFG_VALUE;
 			}
-			if (!isset($confs[$item]['_dsn']) || !isset($confs[$item]['_db_user']) || !isset($confs[$item]['_db_pass']) || !isset($confs[$item]['_ip']) || !isset($confs[$item]['_port']) || !isset($confs[$item]['_type'])) {
+			if (!isset($confs[$item]['username']) || !isset($confs[$item]['password']) || !isset($confs[$item]['dbdriver']) || !isset($confs[$item]['_ip']) || !isset($confs[$item]['_port']) || !isset($confs[$item]['_type'])) {
 				log_message('warning', 'Missing confs for '.$item.' > Skipped!');
 				unset($confs[$item]);
 			}
@@ -93,6 +93,8 @@ class weatherstation extends CI_Model {
 		if (count($confs) == 0){
 			throw new Exception(_('Aucune configuration valide n\'est disponible'));
 		}
+		// on decode le password.
+		$confs['password'] = $this->encrypt->decode($confs['password']);
 		return $confs;
 	}
 	function HilowCollector() {
