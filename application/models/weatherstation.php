@@ -40,6 +40,18 @@ class weatherstation extends CI_Model {
 		return $this->lst;
 	}
 	/**
+	 * recupere les premier ID nom utilisé parmis la liste des ID des stations
+	 * @return array ()
+	 **/
+	function availableID () {
+		// given array : $this->lst. [0,1,  3,4,  6,7  ]
+		// construct a new array :   [0,1,2,3,4,5,6,7,8]
+		// use array_diff to get the missing elements 
+		if (empty($this->lst))
+			return array(1);
+		return array_diff (range(0, max(array_keys($this->lst))+1), array_keys($this->lst)); // [2,5,8]
+	}
+	/**
 	 * recupere sous forme de table l'ensemble des configs d'une ou de toutes les station
 	 * @var item
 		item peut etre le Numero db_ID ou le nom de la station dont on veut les confs
@@ -48,6 +60,7 @@ class weatherstation extends CI_Model {
 	 */
 	function config($item = null)
 	{
+		$this->lst = $this->lstNames();
 		if (!empty($item)) {
 			if (is_numeric($item) && array_key_exists($item, $this->lst))
 			//dans le cas ou je connais deja de ID de ma station

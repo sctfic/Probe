@@ -23,20 +23,13 @@ class vp2 extends CI_Model {
 		log_message('init',  __FUNCTION__.'('.__CLASS__.' ('.$conf['_name'].':'.($conf['_name']).') '.")\n".__FILE__.' ['.__LINE__.']');
 		$this->conf = $conf;
 
-		define ("AUGE", $conf['rain:collector:size']);
-		define ("CUP", $conf['wind:cup:large']);
-		define ("ALTITUDE", $conf['geo:elevation:ocean']);
-		define ("LATITUDE", $conf['geo:latitude:nordvalue']);
-		define ("LONGITUDE", $conf['geo:longitude:estvalue']);
-		define ("ZONE", $conf['geo:time:zone']);
-
 		require (APPPATH.'models/vp2/EepromDumpAfter.h.php');
 		require (APPPATH.'models/vp2/EepromLoop.h.php');
 		require (APPPATH.'models/vp2/EepromLoop2.h.php');
 		require (APPPATH.'models/vp2/EepromHiLow.h.php');
 		require (APPPATH.'models/vp2/EepromConfig.h.php');
 
-		$this->dataDB = $this->load->database(unserialize($conf['_dsn']), TRUE);
+		$this->dataDB = $this->load->database($conf, TRUE);
 
 		$this->prep_EAV_T = $this->dataDB->conn_id->prepare(
 			'REPLACE 

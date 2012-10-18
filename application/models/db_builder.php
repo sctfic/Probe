@@ -185,7 +185,7 @@ class db_builder extends CI_Model {
 				'hostname'=> $dbdriver.':host='.$host.';port='.$port,
 				'database'=> $db_name);
 
-			return serialize($connectConf);
+			return $connectConf; // arrays2dbconfs($id, $conf)
 
 		} catch (PDOException $e) {
 			throw new Exception( $e->getMessage() );
