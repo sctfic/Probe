@@ -26,5 +26,21 @@ class Dao_User extends Dao_Database {
         return $user;
     }
 
+    public function write($username, $pwd) {
+        $user = false;
+
+        $sql = "INSERT INTO `TA_USER` (:username, :pwd);";
+        $res = $this->probepdo->query($sql, array(
+                ":username" => $username,
+                ":pwd" => $pwd
+            )
+        );
+
+        // Si un user est bien insérer.
+        if($res->rowCount() > 0) {
+            $user = $this->read($userInserted, $pwd);
+        }
+        return $user;
+    }
 }
 ?>
