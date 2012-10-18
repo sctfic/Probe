@@ -6,7 +6,7 @@
 </div>
 
 <div class="container">
-	<?=form_open('setup/installer/setupadministrator', array('class' => 'modal setup form-horizontal', 'id' => 'administrator'))?>
+	<?=form_open('setup/installer/setupAdministrator', array('class' => 'modal setup form-horizontal', 'id' => 'administrator'))?>
 		<div class="modal-header">
 			<!-- <legend> -->
 				<h3><?=i18n("setup.administrator.legend")?></h3>
@@ -21,7 +21,10 @@
 					<?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('setup.administrator.username'), i18n('required'), i18n('&nbsp;:')) ?>
 				</label>
 				<div class="controls">
-					<input type="text" id="administrator-username" value="<?=$administratorUsername?>" required class="input-large" placeholder="<?=i18n('setup.administrator.username.placeholder')?>">
+					<input id="administrator-username"
+						type="text" required
+						name="administrator-username" value="<?=$administratorUsername?>" 
+						class="input-large" placeholder="<?=i18n('setup.administrator.username.placeholder')?>">
 				</div>
 			</div>
 
@@ -31,7 +34,10 @@
 					<?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('setup.administrator.password'), i18n('required'), i18n('&nbsp;:'))?>
 				</label>
 				<div class="controls">
-					<input type="text" id="administrator-password" required value="<?=$administratorPassword?>" class="input-large" placeholder="<?=i18n('setup.administrator.password.placeholder')?>">
+					<input id="administrator-password"
+						type="password" required
+						name="administrator-password" value="<?=$administratorPassword?>" 
+						class="input-large" placeholder="<?=i18n('setup.administrator.password.placeholder')?>">
 				</div>
 			</div>
 
@@ -41,7 +47,10 @@
 					<?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('setup.administrator.password-confirmation'), i18n('required'), i18n('&nbsp;:'))?>
 				</label>
 				<div class="controls">
-					<input type="text" id="administrator-password-confirmation" required value="<?=$administratorPassword?>" class="input-large" placeholder="<?=i18n('setup.administrator.password-confirmation.placeholder')?>">
+					<input id="administrator-password-confirmation"
+					type="password" required
+					name="administrator-password-confirmation" value="<?=$administratorPassword?>"
+					class="input-large" placeholder="<?=i18n('setup.administrator.password-confirmation.placeholder')?>">
 				</div>
 			</div>
 
