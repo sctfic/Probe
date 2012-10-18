@@ -28,9 +28,7 @@ class Admin extends Authentification {
 	}
 
 	public function index() {
-		$this->lang->load('admin', 'french');
-
-		echo "PAGE ACCUEIL ADMIN : ".$this->lang->line('admin.bienvenue');
+		i18n('admin.welcome');
 	}
 
 	/*

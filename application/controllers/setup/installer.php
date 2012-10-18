@@ -103,8 +103,27 @@ class Installer extends CI_Controller {
   	}
   }
 
-	function setupAdminUser() {
-	// call to model/db_builder.php
-	log_message('info', printf('%s', i18n("info.setup.admin-user") ) );
+	function setupAdministrator() {
+    log_message('info', '$be->getMessage()');
+    $administratorUsername = $this->input->post('administrator-username');
+    $administratorPassword  = $this->input->post('administrator-password');
+    $administratorPasswordConfirmation  = $this->input->post('administrator-password-confirmation');
+
+    if ($administratorPassword == $administratorPasswordConfirmation) {
+      $this->load->model('service/Service_User');
+
+      try {
+        //Chercher l'user correspondant au couple login/pwd
+        $user = $this->Service_User->register($administratorUsername, $administratorPassword);
+        // $this->session->set_userdata("user", serialize($user));
+      }
+      catch(BusinessException $be) {
+        //Message d'erreur dans la variable "msg" de la session. Impossible d'utiliser flashdata car il y a 2 redirections en cas d'erreur de login
+        // $this->session->set_userdata("msg", $be->getMessage());
+        log_message('error', $be->getMessage());
+      }
+
+      redirect("admin");
+    }
 	}
 }
