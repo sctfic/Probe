@@ -82,28 +82,17 @@ class db_builder extends CI_Model {
 				$pass = $this->pass;
 			}
 			$this->make_table_config();
-			$connectConf = array (
+			return $connectConf = array (
 				'dbdriver'=> 'pdo',
 				'username'=> $user,
 				'password'=> $pass,
 				'hostname'=> $dbdriver.':host='.$host.';port='.$port,
 				'database'=> $db_name);
 
-			return $this->save2defConf($connectConf);
 		} catch (PDOException $e) {
 			throw new Exception( $e->getMessage() );
 		}
 		return false;
-	}
-
-	/**
-	* this finction write in config/db-default.php file the necessary connection config to reconnect later
-	*	@param array () of config
-	**/
-	protected function save2defConf($conf) {
-		if (file_put_contents(APPPATH.'config/db-default.php', "<?php\n\$db['default'] = ".var_export($conf, TRUE).";") === FALSE)
-			throw new Exception( i18n('Impossible d ecrire le fichier de config : '.APPPATH.'config/db-default.php') );
-		return true;
 	}
 
 	protected function make_table_config() {
