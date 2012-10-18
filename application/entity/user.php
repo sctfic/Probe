@@ -45,6 +45,8 @@ class User implements Serializable {
 
 	private $authentified;
 
+	private $registered;
+
 	public function __construct() { }
 
 
@@ -159,6 +161,14 @@ class User implements Serializable {
 
 	public function setAuthentified($authentified) {
 		$this->authentified = $authentified;
+	}
+
+	public function setRegistered($registered) {
+		$this->registered = $registered;
+	}
+
+	public function isRegistered() {
+	    return $this->registered;
 	}
 
 	public function __toString() {

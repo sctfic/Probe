@@ -26,5 +26,21 @@ class Service_User extends Service {
     	return $user;
     }
 
+    /*
+    * return an User object when for authentified user, otherwise throw an error
+    */
+    public function register($username, $pwd) {
+        include_once(APPPATH.'libraries/PROBE_rev_crypt.php');
+        $crypt = new PROBE_rev_crypt('db-default');
+        $encryptedPwd = $crypt->code($pwd);
+        $user = $this->Dao_User->write($username, $encryptedPwd);
+
+        if($user == NULL) {
+            throw new BusinessException( i18n('login.fail.username.password.incorrect') );
+        }
+
+        $user->setRegistered(true);
+        return $user;
+    }
 }
 ?>

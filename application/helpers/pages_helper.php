@@ -9,9 +9,9 @@
 function pageFetchConfig($page) { //
 	$data = array();
     $data['page'] = $page;
-    $data['title'] = _($page.':title');
-    $data['description'] = _($page.':description');
-    $data['author'] = _($page.':author');
+    $data['title'] = i18n($page.':title', true);
+    $data['description'] = i18n($page.':description', true);
+    $data['author'] = i18n($page.':author', true);
 
 //     var_dump($data);
   return $data;
