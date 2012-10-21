@@ -8,6 +8,7 @@ class Installer extends CI_Controller {
 
 	public function __construct() {
   	parent::__construct();
+    $this->load->helper('url');
 
   	$this->i18n->setLocaleEnv($this->config->item('probe:locale'), 'global');
 	}
@@ -113,6 +114,26 @@ class Installer extends CI_Controller {
   /*
   * Model: create administrator entry into DB and config file
   */
+	function setupDbms() {
+    // call to model/db_builder.php
+  	$ip=$this->input->post('dbms-ip');
+  	$port=$this->input->post('dbms-port');
+  	$engine=$this->input->post('dbms-engine');
+  	$username=$this->input->post('dbms-username');
+  	$pass=$this->input->post('dbms-password');
+  	log_message('info', sprintf('%s', i18n("info.setup.database_!")));
+
+  	require_once(BASEPATH.'core/Model.php'); // need for load models manualy
+  	require_once(APPPATH.'models/db_builder.php');
+  	try {
+  		$this->dbb = new db_builder($pass, $username, $engine, $ip, $port);
+  		$dns = $this->dbb->make_db_config();
+      array2conf_php(APPPATH.'config/db-default.php', $dns, "db['default']");
+  	} catch (Exception $e) {
+  			log_message('db',  $e->getMessage() );
+  	}
+  }
+
 	function setupAdministrator() {
     $administratorUsername = $this->input->post('administrator-username');
     $administratorPassword = $this->input->post('administrator-password');

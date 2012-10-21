@@ -16,7 +16,7 @@ function randomPassword($size=6, $alphabet = "abcdefghijklmnopqrstuwxyzABCDEFGHI
 * necessary connection config to reconnect later
 * @param array () of config
 **/
-function array2conf_php($file, $conf_name="db['default']", $conf_val) {
+function array2conf_php($file, $conf_val, $conf_name="db['default']") {
 	if (file_put_contents($file, "<?php\n\$".$conf_name." = ".var_export($conf_val, TRUE).";") === FALSE)
 		throw new Exception( i18n('Impossible d ecrire le fichier de config : '.APPPATH.'config/db-default.php') );
 	return true;

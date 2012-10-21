@@ -259,7 +259,7 @@ class db_builder extends CI_Model {
 			}
 			$this->make_table_data($dbName);
 			
-			$connectConf = array (
+			return array ( // arrays2dbconfs($id, $conf)
 				'dbdriver'=> 'pdo',
 				'username'=> $userName,
 				'password'=> $this->encrypt->encode($userPassword),

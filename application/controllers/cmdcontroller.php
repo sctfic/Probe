@@ -128,7 +128,6 @@ class cmdController extends CI_Controller {
 			$newID = current ($this->WS->availableID());
 			$this->WS->arrays2dbconfs($newID, $dsn);
 			return $this->WS->config($newID);
-			}
 		}
 		catch (Exception $e) {
 			log_message('warning',  $e->getMessage());
