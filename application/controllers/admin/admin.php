@@ -64,10 +64,10 @@ class Admin extends Authentification {
 	*/
 	public function connect() {
 		$userName =	$this->input->post('username');
-		$pwd	=	$this->input->post('password');
+		$userPassword	=	$this->input->post('password');
 		try {
 			//Chercher l'user correspondant au couple login/pwd
-			$user = $this->Service_User->authentify($userName, $pwd);
+			$user = $this->Service_User->authentify($userName, $userPassword);
 			$this->session->set_userdata("user", serialize($user));
 		}
 		catch(BusinessException $be) {
