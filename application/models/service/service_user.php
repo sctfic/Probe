@@ -8,7 +8,7 @@ class Service_User extends Service {
         //Daos
         $this->load->model('dao/Dao_User');
         $this->load->library('encrypt');
-        $this->encrypt->set_cipher();
+        $this->encrypt->set_cipher(MCRYPT_BLOWFISH);
     }
 
 	/*
@@ -30,12 +30,11 @@ class Service_User extends Service {
     * return an User object when for authentified user, otherwise throw an error
     */
     public function register($userName, $userPassword) {
-        include_once(APPPATH.'libraries/PROBE_rev_crypt.php');
         $this->load->library('encrypt');
-        $user = $this->Dao_User->read($userName, $this->encrypt->encode($userPassword) );
+        $user = $this->Dao_User->write($userName, $this->encrypt->encode($userPassword) );
 
         if($user == NULL) {
-            throw new BusinessException( i18n('login.fail.username.password.incorrect') );
+            throw new BusinessException( i18n('register.fail.username.password.incorrect') );
         }
 
         $user->setRegistered(true);
