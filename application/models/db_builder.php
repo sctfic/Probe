@@ -30,10 +30,12 @@ class db_builder extends CI_Model {
 		$this->port = $port;
 		$this->user = $user;
 		$this->pass = $pass;
-		$this->db_type = $db_type;
+		$this->dbdriver = $db_type;
+		log_message('var', $pass.' - '.$user.' - '.$db_type.':host='.$host.';port='.$port);
 		try {
 			$this->pdoConnection = new PDO($db_type.':host='.$host.';port='.$port, $user, $pass);
 		} catch (PDOException $e) {
+		log_message('PDOException',  __FUNCTION__.'('.__CLASS__.")\n".__FILE__.' ['.__LINE__.']');
 			throw new Exception( $e->getMessage() );
 		}
 	}
@@ -85,7 +87,7 @@ class db_builder extends CI_Model {
 				'dbdriver'=> 'pdo',
 				'username'=> $user,
 				'password'=> $pass,
-				'hostname'=> $dbdriver.':host='.$host.';port='.$port,
+				'hostname'=> $this->dbdriver.':host='.$this->host.';port='.$this->port,
 				'database'=> $db_name);
 
 		} catch (PDOException $e) {
