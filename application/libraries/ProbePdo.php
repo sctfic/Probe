@@ -4,10 +4,10 @@ class ProbePdo {
 	protected $CI;
 	
 	protected $hostname;
-	protected $username;
+	protected $userName;
 	protected $password;
 	protected $database;
-	protected $dbEngine;
+	protected $engine;
 	
 	/** 
 	 * Connection pdo
@@ -40,13 +40,13 @@ class ProbePdo {
 		
 		$params = $db[$groupBD];
 		$this->hostname = $params["hostname"];
-		$this->username = $params["username"];
+		$this->userName = $params["username"];
 		$this->password = $params["password"];
 		if(isset($params["database"])) {
 			$this->database = $params["database"];
 		}
 		
-		$this->dbEngine = $params["dbdriver"];
+		$this->engine = $params["dbdriver"];
 		$this->initialize();
 	}
 	
@@ -55,7 +55,7 @@ class ProbePdo {
 	 */
 	private function initialize() {
 		$this->hostname = (empty($this->database)) ? $this->hostname : $this->hostname .= ";dbname=".$this->database;
-		$this->connection = new PDO($this->hostname, $this->username, $this->password);
+		$this->connection = new PDO($this->hostname, $this->userName, $this->password);
 		$this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	}
 	

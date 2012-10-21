@@ -31,7 +31,7 @@ class User implements Serializable {
     /**
      * @ORM\Column(name=USR_PWD)
      */
-    private $pwd;
+    private $userPassword;
 
     /**
      * @ORM\Column(name=USR_EMAIL)
@@ -57,7 +57,7 @@ class User implements Serializable {
 			'firstName' => $this->firstName,
 			'familyName' => $this->familyName,
 			'email' => $this->email,
-			'pwd' => $this->pwd,
+			'pwd' => $this->userPassword,
 			'roleId' => $this->roleId,
 			'authentified' => $this->authentified
 		));
@@ -133,11 +133,11 @@ class User implements Serializable {
 	    return $this->firstName;
 	}
 
-	public function setPwd($pwd	) {
-	    $this->pwd = $pwd;
+	public function setPwd($userPassword	) {
+	    $this->userPassword = $userPassword;
 	}
 	public function getPwd() {
-	    return $this->pwd;
+	    return $this->userPassword;
 	}
 	
 	public function setRoleId($roleId	) {
