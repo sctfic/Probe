@@ -52,10 +52,10 @@ class Installer extends CI_Controller {
 
     // build view data
     $data = pageFetchConfig('setup-dbms'); // fetch information to build the HTML header
-    $data['dbmsIp'] = null;
-    $data['dbmsPort'] = 3306;
     $data['dbmsUsername'] = null;
     $data['dbmsPassword'] = null;
+    $data['dbmsHost'] = null;
+    $data['dbmsPort'] = 3306;
     $data['dbmsDatabaseName'] = $this->config->item('mainDb');
     
     // display the view
@@ -72,18 +72,18 @@ class Installer extends CI_Controller {
     require_once(BASEPATH.'core/Model.php'); // need for load models manualy
     require_once(APPPATH.'models/db_builder.php');
 
-    $ip=$this->input->post('dbms-ip');
-    $port=$this->input->post('dbms-port');
-    $engine=$this->input->post('dbms-engine');
-    $username=$this->input->post('dbms-username');
-    $pass=$this->input->post('dbms-password');
-    log_message('info', sprintf('%s', i18n("info.setup.database_!")));
+    $dbEngine=$this->input->post('dbms-engine');
+    $userName=$this->input->post('dbms-username');
+    $userPassword=$this->input->post('dbms-password');
+    $dbHost=$this->input->post('dbms-host');
+    $dbPort=$this->input->post('dbms-port');
 
     try {
-      $this->dbb = new db_builder($pass, $username, $engine, $ip, $port);
-      $dns = $this->dbb->make_db_config();
-      log_message('info', var_dump($dns));
-      // redirect("setup/installer/adminUser");
+      $this->dbb = new db_builder($dbEngine, $userPassword, $userName, $dbHost, $dbPort);
+      $this->dbb->createAppDb();
+      $dns = $this->dbb->getDsn();
+      array2conf_php(APPPATH.'config/db-default.php', $dns, "db['default']");
+      redirect("setup/installer/adminUser");
     } catch (Exception $e) {
         log_message('db',  $e->getMessage() );
     }
@@ -111,28 +111,6 @@ class Installer extends CI_Controller {
     $pages->view('setup/admin-user', $data);
   }
 
-  /*
-  * Model: create administrator entry into DB and config file
-  */
-	function setupDbms() {
-    // call to model/db_builder.php
-  	$ip=$this->input->post('dbms-ip');
-  	$port=$this->input->post('dbms-port');
-  	$engine=$this->input->post('dbms-engine');
-  	$username=$this->input->post('dbms-username');
-  	$pass=$this->input->post('dbms-password');
-  	log_message('info', sprintf('%s', i18n("info.setup.database_!")));
-
-  	require_once(BASEPATH.'core/Model.php'); // need for load models manualy
-  	require_once(APPPATH.'models/db_builder.php');
-  	try {
-  		$this->dbb = new db_builder($pass, $username, $engine, $ip, $port);
-  		$dns = $this->dbb->make_db_config();
-      array2conf_php(APPPATH.'config/db-default.php', $dns, "db['default']");
-  	} catch (Exception $e) {
-  			log_message('db',  $e->getMessage() );
-  	}
-  }
 
 	function setupAdministrator() {
     $administratorUsername = $this->input->post('administrator-username');
