@@ -19,80 +19,93 @@ class db_builder extends CI_Model {
 	protected $host = NULL;
 	protected $port = NULL;
 	protected $user = NULL;
-	protected $pass = NULL;
+	protected $userPassword = NULL;
 	protected $db_type = NULL;
 	protected $pdoConnection = NULL;
 
-	function __construct($pass='', $user='root', $db_type='mysql', $host='localhost', $port=3306) {
+
+	function __construct($userPassword='', $user='root', $db_type='mysql', $host='localhost', $port=3306) {
 		parent::__construct();
 		log_message('init',  __FUNCTION__.'('.__CLASS__.")\n".__FILE__.' ['.__LINE__.']');
 		$this->host = $host;
 		$this->port = $port;
 		$this->user = $user;
-		$this->pass = $pass;
+		$this->pass = $userPassword;
 		$this->db_type = $db_type;
 		$this->cryptor = $this->load->library('encrypt');
 		try {
-			$this->pdoConnection = new PDO($db_type.':host='.$host.';port='.$port, $user, $pass);
+			$this->pdoConnection = new PDO($db_type.':host='.$host.';port='.$port, $user, $userPassword);
 		} catch (PDOException $e) {
 			throw new Exception( $e->getMessage() );
 		}
 	}
+
+
 	/**
-	 * test is database exist or not
-	 * @var $db_name
-	 * @return true / false
+	 * Test if database exists or not
+	 * @param $db_name
+	 * @return boolean
 	 */
-	function is_db($db_name) {
+	function dbExists($db_name) {
 // 		$this->pdoConnection->query("SELECT IF(EXISTS (SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '$db_name'), TRUE, FALSE)");
 		$result = $this->pdoConnection->query("SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '$db_name'");
 		if ($result->fetchColumn() > 0) return true;
 		return false;
 	}
-	function make_user ($db, $usr, $pass) {
+
+	/*
+	* Add admin user to the database
+	* @param $db, the name of the database to administrate
+	* @param $userName
+	* @param $userPassword
+	*/
+	function addAdminUser($db, $userName, $userPassword) {
 		// supprime les utilisateur vide qui provoque des probleme de connection
 		$this->pdoConnection->query("DELETE FROM user WHERE user = '';");
 		// Creation of user
-		$this->pdoConnection->query("CREATE USER IF NOT EXISTS '".$usr."'@'%' IDENTIFIED BY '".$pass."';");
+		$this->pdoConnection->query("CREATE USER IF NOT EXISTS '".$userName."'@'%' IDENTIFIED BY '".$userPassword."';");
 		// Adding all privileges on our newly created database
-		$this->pdoConnection->query("GRANT ALL PRIVILEGES on `$db`.* TO '".$usr."'@'%' IDENTIFIED BY  '".$pass."' WITH MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0 MAX_USER_CONNECTIONS 0 ;");
+		$this->pdoConnection->query("GRANT ALL PRIVILEGES on `$db`.* TO '".$userName."'@'%' IDENTIFIED BY  '".$userPassword."' WITH MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0 MAX_USER_CONNECTIONS 0 ;");
 		// recharge les privileges
 		$this->pdoConnection->query("FLUSH PRIVILEGES;");
 	}
 	/**
 	 * create all db items (base and table) for config
-	 * @var $db_name, $user, $pass
-	 * @return array ()
+	 * @param $db_name, working database
+	 * @return array(), should be non-empty
 	 */
 	function make_db_config($db_name = 'probe') {
-		// la base de config doit tjrs porter ce nom
+		// the database MUST be name 'probe' !
 		try {
+			/*  */
 			// dans le cas ou la base est fournie avec l'user adequat pas besoin de le refaire
-			if (!$this->is_db($db_name)) {
-				$user = 'probe'; 
-				$pass = randomPassword();
+			if (!$this->dbExists($db_name)) {
+				$userName = 'probe'; 
+				$userPassword = randomPassword();
 				
 				//Creation of database "probe"
 				$this->pdoConnection->query("CREATE DATABASE IF NOT EXISTS `$db_name`;");
 				//Creation of user
-				$this->make_user($db_name,$user,$pass);
+				$this->addAdminUser($db_name, $userName, $userPassword);
 			}
 			else {
-				$user = $this->user;
-				$pass = $this->pass;
+				$userName = $this->user;
+				$userPassword = $this->pass;
 			}
 			$this->make_table_config();
-			return $connectConf = array (
+
+			return array (
 				'dbdriver'=> 'pdo',
-				'username'=> $user,
-				'password'=> $pass,
+				'username'=> $userName,
+				'password'=> $userPassword,
 				'hostname'=> $dbdriver.':host='.$host.';port='.$port,
-				'database'=> $db_name);
+				'database'=> $db_name
+			);
 
 		} catch (PDOException $e) {
 			throw new Exception( $e->getMessage() );
 		}
-		return false;
+		return array();
 	}
 
 	protected function make_table_config() {
@@ -156,32 +169,32 @@ class db_builder extends CI_Model {
 	}
 	/**
 	 * 
-	 * @var $db_name, $user, $pass
+	 * @param $db_name, $user, $userPassword
 	 * @return array ()
 	 */
 	function make_db_data($db_name) {
 		if (empty($db_name)) return false;
 		try {
 			// dans le cas ou la base est fournie avec l'user adequat pas besoin de le refaire
-			if (!$this->is_db($db_name)) {
+			if (!$this->dbExists($db_name)) {
 				$user = 'probe'; 
-				$pass = randomPassword();
+				$userPassword = randomPassword();
 				
 				//Creation of database "probe"
 				$this->pdoConnection->query("CREATE DATABASE IF NOT EXISTS `$db_name`;");
 				//Creation of user
-				$this->make_user($db_name,$user,$pass);
+				$this->addAdminUser($db_name,$user,$userPassword);
 			}
 			else {
 				$user = $this->user;
-				$pass = $this->pass;
+				$userPassword = $this->pass;
 			}
 			$this->make_table_data($db_name);
 			
 			$connectConf = array (
 				'dbdriver'=> 'pdo',
 				'username'=> $user,
-				'password'=> $this->encrypt->encode($pass),
+				'password'=> $this->encrypt->encode($userPassword),
 				'hostname'=> $dbdriver.':host='.$host.';port='.$port,
 				'database'=> $db_name);
 
