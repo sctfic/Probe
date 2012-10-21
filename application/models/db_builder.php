@@ -1,4 +1,8 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
+define('APP_DB', 'probe');
+
+
 /*
 try {
 	include_once(BASEPATH.'core/Model.php'); // need for load models manualy
@@ -35,7 +39,7 @@ class db_builder extends CI_Model {
 		$this->setUserName($userName);
 		$this->setUserPassword($userPassword);
 		$this->setHost($host);
-		$this->setPort($port)
+		$this->setPort($port);
 		$this->setDbName($dbName);
 
 		$this->cryptor = $this->load->library('encrypt');
@@ -58,7 +62,7 @@ class db_builder extends CI_Model {
 	protected function setHost($value) {
 		$this->host = $value;
 	}
-	protected function getHost($value) {
+	protected function getHost() {
 		return $this->host;
 	}
 
@@ -66,7 +70,7 @@ class db_builder extends CI_Model {
 	protected function setPort($value) {
 		$this->port = $value;
 	}
-	protected function getPort($value) {
+	protected function getPort() {
 		return $this->port;
 	}
 
@@ -74,7 +78,7 @@ class db_builder extends CI_Model {
 	protected function setUserName($value) {
 		$this->userName = $value;
 	}
-	protected function getUserName($value) {
+	protected function getUserName() {
 		return $this->userName;
 	}
 
@@ -82,7 +86,7 @@ class db_builder extends CI_Model {
 	protected function setUserPassword($value) {
 		$this->userPassword = $value;
 	}
-	protected function getUserPassword($value) {
+	protected function getUserPassword() {
 		return $this->userPassword;
 	}
 
@@ -90,7 +94,7 @@ class db_builder extends CI_Model {
 	protected function setEngine($value) {
 		$this->engine = $value;
 	}
-	protected function getEngine($value) {
+	protected function getEngine() {
 		return $this->engine;
 	}
 
@@ -98,7 +102,7 @@ class db_builder extends CI_Model {
 	protected function setDbName($value) {
 		$this->dbName = $value;
 	}
-	protected function getDbName($value) {
+	protected function getDbName() {
 		return $this->dbName;	
 	}
 
@@ -110,10 +114,10 @@ class db_builder extends CI_Model {
 	*/
 		$this->dsn = $value;
 	}
-	protected function getDsn($value) {
+	public function getDsn() {
 		return array (
 			'dbdriver'=> 'pdo',
-			'username'=> $this->getUserName(), ,
+			'username'=> $this->getUserName(),
 			'password'=> $this->getUserPassword(),
 			'hostname'=> $this->getEngine().':host='.$this->getHost().';port='.$this->getPort(),
 			'database'=> $this->getDbName()
@@ -162,9 +166,9 @@ class db_builder extends CI_Model {
 		// the database MUST be name 'probe' !
 		try {
 			// dans le cas ou la base est fournie avec l'user adequat pas besoin de le refaire
-			if ( ! $this->dbExists($this->getDbName()) ) {
+			if ( ! $this->dbExists(APP_DB) ) {
 				// create the 'probe' database
-				$sqlCreateDb = sprintf("CREATE DATABASE IF NOT EXISTS `%s`;", $this->getDbName());
+				$sqlCreateDb = sprintf("CREATE DATABASE IF NOT EXISTS `%s`;", APP_DB);
 				$this->pdoConnection->query($sqlCreateDb);
 
 				// create an admin user for this base
@@ -189,9 +193,10 @@ class db_builder extends CI_Model {
 			"SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 			SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 			SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL';
-			CREATE SCHEMA IF NOT EXISTS `probe` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
+			CREATE SCHEMA IF NOT EXISTS `%s` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
 			USE `%s`;", 
-			'probe'
+			APP_DB,
+			APP_DB
 		);
 		$sqlCreateUsersTable = sprintf(
 			"CREATE  TABLE IF NOT EXISTS `%s`.`TA_USER` (
@@ -211,9 +216,10 @@ class db_builder extends CI_Model {
 			ON UPDATE NO ACTION)
 			ENGINE = InnoDB
 			DEFAULT CHARACTER SET = utf8
-			COLLATE = utf8_general_ci;", 
-			$this->getDbName(),
-			$this->getDbName()
+			COLLATE = utf8_general_ci
+			COMMENT = 'User list for this application';",
+			APP_DB,
+			APP_DB
 		);
 
 		$sqlCreateRolesTable = sprintf(
@@ -224,10 +230,11 @@ class db_builder extends CI_Model {
 			PRIMARY KEY (`ROL_ID`) )
 			ENGINE = InnoDB
 			DEFAULT CHARACTER SET = utf8
-			COLLATE = utf8_general_ci;",
-			$this->getDbName()
+			COLLATE = utf8_general_ci
+			COMMENT = 'Available roles for the users';",
+			APP_DB
 		);
-		$sqlCreateConfigTable = sprintf(
+		$sqlCreateConfigsTable = sprintf(
 			"CREATE  TABLE IF NOT EXISTS `%s`.`TR_CONFIG` (
 			`CFG_STATION_ID` TINYINT(4) NOT NULL ,
 			`CFG_LABEL` VARCHAR(32) NOT NULL ,
@@ -238,8 +245,8 @@ class db_builder extends CI_Model {
 			ENGINE = InnoDB
 			DEFAULT CHARACTER SET = utf8
 			COLLATE = utf8_general_ci
-			COMMENT = 'Ici on stoque chaque config, ca valeur et les date d accé';",
-			$this->getDbName()
+			COMMENT = 'Stock each station's properties/value and access datetime';",
+			APP_DB
 		);
 		$sqlCreateLogsTable = sprintf(
 			"CREATE  TABLE IF NOT EXISTS `%s`.`TA_LOG` (
@@ -253,17 +260,17 @@ class db_builder extends CI_Model {
 			ENGINE = InnoDB
 			DEFAULT CHARACTER SET = utf8
 			COLLATE = utf8_general_ci
-			COMMENT = 'Ici on log les different accée a chaque station ainsi qu une';
+			COMMENT = 'Access log to each station';
 			SET SQL_MODE=@OLD_SQL_MODE;
 			SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 			SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;",
-			$this->getDbName()
+			APP_DB
 		);
 
 		$this->pdoConnection->query($sqlCreateSchema);
 		$this->pdoConnection->query($sqlCreateUsersTable);
 		$this->pdoConnection->query($sqlCreateRolesTable);
-		$this->pdoConnection->query($sqlCreateConfigTable);
+		$this->pdoConnection->query($sqlCreateConfigsTable);
 		$this->pdoConnection->query($sqlCreateLogsTable);
 	}
 
@@ -300,12 +307,17 @@ class db_builder extends CI_Model {
 	}
 	
 	protected function createStationTables() {
-		$this->pdoConnection->query("SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+		$sqlCreateSchema = sprintf(
+			"SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 			SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 			SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL';
-			CREATE SCHEMA IF NOT EXISTS `$dbName` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
-			USE `$dbName`;");
-		$this->pdoConnection->query("CREATE  TABLE IF NOT EXISTS `$dbName`.`TR_SENSOR` (
+			CREATE SCHEMA IF NOT EXISTS `%s` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
+			USE `%s`;", 
+			$this->getDbName(),
+			$this->getDbName()
+		);
+		$sqlCreateSensorsTable = sprintf(
+			"CREATE  TABLE IF NOT EXISTS `%s`.`TR_SENSOR` (
 			`SEN_ID` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'Technical sensor s key' ,
 			`SEN_NAME` VARCHAR(64) NOT NULL COMMENT 'Name of the sensor' ,
 			`SEN_HUMAN_NAME` VARCHAR(64) NULL DEFAULT NULL ,
@@ -323,8 +335,11 @@ class db_builder extends CI_Model {
 			ENGINE = InnoDB
 			DEFAULT CHARACTER SET = utf8
 			COLLATE = utf8_general_ci
-			COMMENT = 'Table descriptive des capteurs present sur la station';");
-		$this->pdoConnection->query("CREATE  TABLE IF NOT EXISTS `$dbName`.`TA_VARIOUS` (
+			COMMENT = 'Table descriptive des capteurs present sur la station';",
+			$this->getDbName()
+		);
+		$sqlCreateVariousTable = sprintf(
+			"CREATE  TABLE IF NOT EXISTS `%s`.`TA_VARIOUS` (
 			`VAR_ID` INT(11) NOT NULL AUTO_INCREMENT ,
 			`VAR_DATE` DATETIME NULL DEFAULT NULL ,
 			`VAR_PRESSURE_ALT0` FLOAT(11) NULL DEFAULT NULL COMMENT 'Pression admospherique' ,
@@ -346,8 +361,12 @@ class db_builder extends CI_Model {
 			ENGINE = InnoDB
 			DEFAULT CHARACTER SET = utf8
 			COLLATE = utf8_general_ci
-			COMMENT = 'Table des capteurs unique (d autre du meme type ne peuvent e' /* comment truncated */;");
-		$this->pdoConnection->query("CREATE  TABLE IF NOT EXISTS `$dbName`.`TA_TEMPERATURE` (
+			COMMENT = 'Table des capteurs unique (d autre du meme type ne peuvent e' /* comment truncated */;",
+			$this->getDbName()
+		);
+
+		$sqlCreateTemperatureTable = sprintf(
+			"CREATE  TABLE IF NOT EXISTS `%s`.`TA_TEMPERATURE` (
 			`ID` INT(11) NOT NULL ,
 			`SEN_ID` INT(11) NOT NULL ,
 			`VALUE` FLOAT(11) NOT NULL ,
@@ -355,19 +374,24 @@ class db_builder extends CI_Model {
 			INDEX `DATE_idx` (`ID` ASC) ,
 			CONSTRAINT `SENSOR`
 			FOREIGN KEY (`SEN_ID` )
-			REFERENCES `$dbName`.`TR_SENSOR` (`SEN_ID` )
+			REFERENCES `%s`.`TR_SENSOR` (`SEN_ID` )
 			ON DELETE NO ACTION
 			ON UPDATE NO ACTION,
 			CONSTRAINT `DATE`
 			FOREIGN KEY (`ID` )
-			REFERENCES `$dbName`.`TA_VARIOUS` (`VAR_ID` )
+			REFERENCES `%s`.`TA_VARIOUS` (`VAR_ID` )
 			ON DELETE NO ACTION
 			ON UPDATE NO ACTION)
 			ENGINE = InnoDB
 			DEFAULT CHARACTER SET = utf8
 			COLLATE = utf8_general_ci
-			COMMENT = 'Regroupe les relevés de tous les capteurs de temperature (en' /* comment truncated */;");
-		$this->pdoConnection->query("CREATE  TABLE IF NOT EXISTS `$dbName`.`TA_WETNESSES` (
+			COMMENT = 'Regroupe les relevés de tous les capteurs de temperature (en' /* comment truncated */;",
+			$this->getDbName(),
+			$this->getDbName(),
+			$this->getDbName()
+		);
+		$sqlCreateWetnessesTable = sprintf(
+			"CREATE  TABLE IF NOT EXISTS `%s`.`TA_WETNESSES` (
 			`ID` INT(11) NOT NULL ,
 			`SEN_ID` INT(11) NOT NULL ,
 			`VALUE` TINYINT(4) NULL DEFAULT NULL ,
@@ -375,19 +399,24 @@ class db_builder extends CI_Model {
 			INDEX `DATE` (`ID` ASC) ,
 			CONSTRAINT `SENSOR0`
 			FOREIGN KEY (`SEN_ID` )
-			REFERENCES `$dbName`.`TR_SENSOR` (`SEN_ID` )
+			REFERENCES `%s`.`TR_SENSOR` (`SEN_ID` )
 			ON DELETE NO ACTION
 			ON UPDATE NO ACTION,
 			CONSTRAINT `DATE0`
 			FOREIGN KEY (`ID` )
-			REFERENCES `$dbName`.`TA_VARIOUS` (`VAR_ID` )
+			REFERENCES `%s`.`TA_VARIOUS` (`VAR_ID` )
 			ON DELETE NO ACTION
 			ON UPDATE NO ACTION)
 			ENGINE = InnoDB
 			DEFAULT CHARACTER SET = utf8
 			COLLATE = utf8_general_ci
-			COMMENT = 'Regroupe les relevés de tous les capteurs de humidité du feu' /* comment truncated */;");
-		$this->pdoConnection->query("CREATE  TABLE IF NOT EXISTS `$dbName`.`TA_MOISTURE` (
+			COMMENT = 'Regroupe les relevés de tous les capteurs de humidité du feu' /* comment truncated */;",
+			$this->getDbName(),
+			$this->getDbName(),
+			$this->getDbName()
+		);
+		$sqlCreateMoistureTable = sprintf(
+			"CREATE  TABLE IF NOT EXISTS `%s`.`TA_MOISTURE` (
 			`ID` INT(11) NOT NULL ,
 			`SEN_ID` INT(11) NOT NULL ,
 			`VALUE` TINYINT(4) NOT NULL ,
@@ -395,19 +424,24 @@ class db_builder extends CI_Model {
 			INDEX `DATE` (`ID` ASC) ,
 			CONSTRAINT `SENSOR00`
 			FOREIGN KEY (`SEN_ID` )
-			REFERENCES `$dbName`.`TR_SENSOR` (`SEN_ID` )
+			REFERENCES `%s`.`TR_SENSOR` (`SEN_ID` )
 			ON DELETE NO ACTION
 			ON UPDATE NO ACTION,
 			CONSTRAINT `DATE00`
 			FOREIGN KEY (`ID` )
-			REFERENCES `$dbName`.`TA_VARIOUS` (`VAR_ID` )
+			REFERENCES `%s`.`TA_VARIOUS` (`VAR_ID` )
 			ON DELETE NO ACTION
 			ON UPDATE NO ACTION)
 			ENGINE = InnoDB
 			DEFAULT CHARACTER SET = utf8
 			COLLATE = utf8_general_ci
-			COMMENT = 'Regroupe les relevés de tous les capteurs de humidité du sol' /* comment truncated */;");
-		$this->pdoConnection->query("CREATE  TABLE IF NOT EXISTS `$dbName`.`TA_HUMIDITY` (
+			COMMENT = 'Regroupe les relevés de tous les capteurs de humidité du sol' /* comment truncated */;",
+			$this->getDbName(),
+			$this->getDbName(),
+			$this->getDbName()
+		);
+		$sqlCreateHumidityTable = sprintf(
+			"CREATE  TABLE IF NOT EXISTS `%s`.`TA_HUMIDITY` (
 			`ID` INT(11) NOT NULL ,
 			`SEN_ID` INT(11) NOT NULL ,
 			`VALUE` TINYINT(4) NOT NULL ,
@@ -415,12 +449,12 @@ class db_builder extends CI_Model {
 			INDEX `DATE` (`ID` ASC) ,
 			CONSTRAINT `SENSOR1`
 			FOREIGN KEY (`SEN_ID` )
-			REFERENCES `$dbName`.`TR_SENSOR` (`SEN_ID` )
+			REFERENCES `%s`.`TR_SENSOR` (`SEN_ID` )
 			ON DELETE NO ACTION
 			ON UPDATE NO ACTION,
 			CONSTRAINT `DATE1`
 			FOREIGN KEY (`ID` )
-			REFERENCES `$this->getDbName()`.`TA_VARIOUS` (`VAR_ID` )
+			REFERENCES `%s`.`TA_VARIOUS` (`VAR_ID` )
 			ON DELETE NO ACTION
 			ON UPDATE NO ACTION)
 			ENGINE = InnoDB
@@ -429,7 +463,20 @@ class db_builder extends CI_Model {
 			COMMENT = 'Regroupe les relevés de tous les capteurs d humidité';
 			SET SQL_MODE=@OLD_SQL_MODE;
 			SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
-			SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;");
+			SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;",
+			$this->getDbName(),
+			$this->getDbName(),
+			$this->getDbName()
+		);
+
+
+		$this->pdoConnection->query($sqlCreateSchema);
+		$this->pdoConnection->query($sqlCreateSensorsTable);
+		$this->pdoConnection->query($sqlCreateVariousTable);
+		$this->pdoConnection->query($sqlCreateTemperatureTable);
+		$this->pdoConnection->query($sqlCreateWetnessesTable);
+		$this->pdoConnection->query($sqlCreateMoistureTable);
+		$this->pdoConnection->query($sqlCreateHumidityTable);
 	}
 
 }
