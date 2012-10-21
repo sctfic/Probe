@@ -1,5 +1,5 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-/**
+/*
 try {
 	include_once(BASEPATH.'core/Model.php'); // need for load models manualy
 	include_once(APPPATH.'models/db_builder.php');
@@ -14,7 +14,7 @@ try {
 catch (Exception $e) {
 	log_message('ERROR',  $e->getMessage());
 }
-**/
+*/
 class db_builder extends CI_Model {
 	protected $host = NULL;
 	protected $port = NULL;

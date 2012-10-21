@@ -35,16 +35,15 @@ class Installer extends CI_Controller {
     }
   }
 
-  // CI require a landing function called: 'index'
-  public function index() {
-    $this->startSetup();
-  }
+  /* CI require a landing function called: 'index' */
+  public function index() { $this->startSetup(); }
   
-  /*
-  * alias method to have nice URL
-  */
-  public function dbms() { $this->requestDsnForConfigDb(); }
 
+  /* alias method to have nice URL */
+  public function dbms() { $this->requestDsnForConfigDb(); }
+  /*
+  * View: form to request the application administrator's credentials.
+  */
   public function requestDsnForConfigDb() {
     $this->load->helper('pages');
     $this->load->helper(array('form', 'url'));
@@ -63,6 +62,38 @@ class Installer extends CI_Controller {
     $pages->view('setup/dbms', $data);
   }
 
+
+  /*
+  * Model: create the database and relative configuration' files
+  */
+  function setupDbms() {
+    $this->load->helper('url');
+    require_once(BASEPATH.'core/Model.php'); // need for load models manualy
+    require_once(APPPATH.'models/db_builder.php');
+
+    $ip=$this->input->post('dbms-ip');
+    $port=$this->input->post('dbms-port');
+    $engine=$this->input->post('dbms-engine');
+    $username=$this->input->post('dbms-username');
+    $pass=$this->input->post('dbms-password');
+    log_message('info', sprintf('%s', i18n("info.setup.database_!")));
+
+    try {
+      $this->dbb = new db_builder($pass, $username, $engine, $ip, $port);
+      $dns = $this->dbb->make_db_config();
+      log_message('info', var_dump($dns));
+      // redirect("setup/installer/adminUser");
+    } catch (Exception $e) {
+        log_message('db',  $e->getMessage() );
+    }
+  }
+
+
+  /* alias method to have nice URL */
+  public function adminUser() { $this->requestCredentialsForAdminUser(); }
+  /*
+  * View: form to request the application administrator's credentials.
+  */
   public function requestCredentialsForAdminUser() {
     $this->load->helper('pages');
     $this->load->helper(array('form', 'url'));
@@ -79,34 +110,12 @@ class Installer extends CI_Controller {
     $pages->view('setup/admin-user', $data);
   }
 
-	/*
-	* alias method to have nice URL
-	*/
-	public function adminUser() { $this->requestCredentialsForAdminUser(); }
-
-   function setupDbms() {
-    // call to model/db_builder.php
-  	$ip=$this->input->post('dbms-ip');
-  	$port=$this->input->post('dbms-port');
-  	$engine=$this->input->post('dbms-engine');
-  	$username=$this->input->post('dbms-username');
-  	$pass=$this->input->post('dbms-password');
-  	log_message('info', sprintf('%s', i18n("info.setup.database_!")));
-
-  	require_once(BASEPATH.'core/Model.php'); // need for load models manualy
-  	require_once(APPPATH.'models/db_builder.php');
-  	try {
-  		$this->dbb = new db_builder($pass, $username, $engine, $ip, $port);
-  		$dns = $this->dbb->make_db_config();
-  	} catch (Exception $e) {
-  			log_message('db',  $e->getMessage() );
-  	}
-  }
-
+  /*
+  * Model: create administrator entry into DB and config file
+  */
 	function setupAdministrator() {
-    log_message('info', '$be->getMessage()');
     $administratorUsername = $this->input->post('administrator-username');
-    $administratorPassword  = $this->input->post('administrator-password');
+    $administratorPassword = $this->input->post('administrator-password');
     $administratorPasswordConfirmation  = $this->input->post('administrator-password-confirmation');
 
     if ($administratorPassword == $administratorPasswordConfirmation) {
@@ -116,14 +125,13 @@ class Installer extends CI_Controller {
         //Chercher l'user correspondant au couple login/pwd
         $user = $this->Service_User->register($administratorUsername, $administratorPassword);
         // $this->session->set_userdata("user", serialize($user));
+        redirect("admin");
       }
       catch(BusinessException $be) {
         //Message d'erreur dans la variable "msg" de la session. Impossible d'utiliser flashdata car il y a 2 redirections en cas d'erreur de login
         // $this->session->set_userdata("msg", $be->getMessage());
         log_message('error', $be->getMessage());
       }
-
-      redirect("admin");
     }
 	}
 }
