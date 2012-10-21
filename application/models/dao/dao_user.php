@@ -8,11 +8,11 @@ class Dao_User extends Dao_Database {
         parent::__construct();
     }
 
-    public function read($username, $pwd) {
+    public function read($userName, $pwd) {
     	$user = NULL;
     	$sql = "SELECT * FROM TA_USER WHERE USR_USERNAME=:username AND USR_PWD=:pwd";
     	$res = $this->probepdo->query($sql, array(
-    			":username" => $username,
+    			":username" => $userName,
     			":pwd" => $pwd
 			)
     	);
@@ -26,12 +26,12 @@ class Dao_User extends Dao_Database {
         return $user;
     }
 
-    public function write($username, $pwd) {
+    public function write($userName, $pwd) {
         $user = false;
 
         $sql = "INSERT INTO `TA_USER` (:username, :pwd);";
         $res = $this->probepdo->query($sql, array(
-                ":username" => $username,
+                ":username" => $userName,
                 ":pwd" => $pwd
             )
         );
