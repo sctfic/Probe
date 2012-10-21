@@ -7,7 +7,7 @@ class ProbePdo {
 	protected $username;
 	protected $password;
 	protected $database;
-	protected $dbdriver;
+	protected $dbEngine;
 	
 	/** 
 	 * Connection pdo
@@ -46,7 +46,7 @@ class ProbePdo {
 			$this->database = $params["database"];
 		}
 		
-		$this->dbdriver = $params["dbdriver"];
+		$this->dbEngine = $params["dbdriver"];
 		$this->initialize();
 	}
 	

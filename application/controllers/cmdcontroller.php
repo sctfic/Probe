@@ -119,10 +119,10 @@ class cmdController extends CI_Controller {
 		}
 	}
 	// clear;php5 -f /var/www/Probe/cli.php 'cmdcontroller/makeNewStation'
-	function makeNewStation($pass='', $user='root', $db_type='mysql', $host='localhost', $port=3306) {
+	function makeNewStation($pass='', $user='root', $dbEngine='mysql', $host='localhost', $port=3306) {
 		try {
 			include_once(APPPATH.'models/db_builder.php');
-			$dbb = new db_builder($pass, $user, $db_type, $host, $port);
+			$dbb = new db_builder($pass, $user, $dbEngine, $host, $port);
 			$dsn = $dbb->make_db_config();
 
 			$newID = current ($this->WS->availableID());
