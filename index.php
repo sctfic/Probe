@@ -19,7 +19,8 @@
  *
  */
 	define ('ENVIRONMENT', 'development');
-	DEFINE ('RUNNER', 'WEB');
+	if (!defined('RUNNER'))
+		DEFINE ('RUNNER', 'WEB');
 
 /*
  *---------------------------------------------------------------

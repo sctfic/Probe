@@ -118,8 +118,8 @@ class cmdController extends CI_Controller {
 			log_message('warning',  $e->getMessage());
 		}
 	}
-	// clear;php5 -f /var/www/Probe/cli.php 'cmdcontroller/makeNewStation'
-	function makeNewStation($pass='', $user='root', $db_type='mysql', $host='localhost', $port=3306) {
+	// 'cmdcontroller/makeNewStation'
+	function makeNewStation($pass='nbv4023', $user='root', $db_type='mysql', $host='localhost', $port=3306) {
 		try {
 			include_once(APPPATH.'models/db_builder.php');
 			$dbb = new db_builder($pass, $user, $db_type, $host, $port);
@@ -128,7 +128,6 @@ class cmdController extends CI_Controller {
 			$newID = current ($this->WS->availableID());
 			$this->WS->arrays2dbconfs($newID, $dsn);
 			return $this->WS->config($newID);
-			}
 		}
 		catch (Exception $e) {
 			log_message('warning',  $e->getMessage());

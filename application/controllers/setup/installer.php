@@ -8,12 +8,12 @@ class Installer extends CI_Controller {
 
 	public function __construct() {
   	parent::__construct();
+    $this->load->helper('url');
 
   	$this->i18n->setLocaleEnv($this->config->item('probe:locale'), 'global');
 	}
 
 	private function startSetup() {
-    $this->load->helper('url');
     # show form if config file missing
     if (!file_exists(APPPATH."config/db-default.php")) {
       // $this->requestDsnForConfigDb();
@@ -98,6 +98,7 @@ class Installer extends CI_Controller {
   	try {
   		$this->dbb = new db_builder($pass, $username, $engine, $ip, $port);
   		$dns = $this->dbb->make_db_config();
+      array2conf_php(APPPATH.'config/db-default.php', $dns, "db['default']");
   	} catch (Exception $e) {
   			log_message('db',  $e->getMessage() );
   	}

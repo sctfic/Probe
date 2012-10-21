@@ -73,7 +73,7 @@ $autoload['helper'] = array(
 	'toolbox',
 	'cli_tools',
 	's.i.converter',
-	'security',
+	'other',
 	'binary'
 );
 

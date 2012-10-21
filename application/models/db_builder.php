@@ -31,7 +31,6 @@ class db_builder extends CI_Model {
 		$this->user = $user;
 		$this->pass = $pass;
 		$this->db_type = $db_type;
-		$this->cryptor = $this->load->library('encrypt');
 		try {
 			$this->pdoConnection = new PDO($db_type.':host='.$host.';port='.$port, $user, $pass);
 		} catch (PDOException $e) {
@@ -82,7 +81,7 @@ class db_builder extends CI_Model {
 				$pass = $this->pass;
 			}
 			$this->make_table_config();
-			return $connectConf = array (
+			return array (
 				'dbdriver'=> 'pdo',
 				'username'=> $user,
 				'password'=> $pass,
@@ -178,15 +177,12 @@ class db_builder extends CI_Model {
 			}
 			$this->make_table_data($db_name);
 			
-			$connectConf = array (
+			return array ( // arrays2dbconfs($id, $conf)
 				'dbdriver'=> 'pdo',
 				'username'=> $user,
 				'password'=> $this->encrypt->encode($pass),
 				'hostname'=> $dbdriver.':host='.$host.';port='.$port,
 				'database'=> $db_name);
-
-			return $connectConf; // arrays2dbconfs($id, $conf)
-
 		} catch (PDOException $e) {
 			throw new Exception( $e->getMessage() );
 		}
