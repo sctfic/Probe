@@ -17,14 +17,14 @@
 
 		<!-- Server host/IP -->
 		<div class="control-group">
-			<label class="control-label" for="dbms-ip">
-				<?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('setup.dbms.ip'), i18n('required'), i18n('&nbsp;:')) ?>
+			<label class="control-label" for="dbms-host">
+				<?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('setup.dbms.host'), i18n('required'), i18n('&nbsp;:')) ?>
 			</label>
 			<div class="controls">
-				<input id="dbms-ip"
+				<input id="dbms-host"
 					type="text" required
-					name="dbms-ip" value="<?=$dbmsIp?>" 
-					class="input-medium" placeholder="<?=i18n('setup.dbms.ip.placeholder')?>"
+					name="dbms-host" value="<?=$dbmsHost?>" 
+					class="input-medium" placeholder="<?=i18n('setup.dbms.host.placeholder')?>"
 				>
 			</div>
 		</div>
