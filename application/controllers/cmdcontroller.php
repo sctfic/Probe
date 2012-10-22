@@ -8,9 +8,10 @@ class cmdController extends CI_Controller {
 		}
 		parent::__construct();
 		log_message('init',  __FUNCTION__.'('.__CLASS__.")\n".__FILE__.' ['.__LINE__.']');
-		/**
-		on charge notre modele avec le 3ieme parametre a TRUE pour qu'il charge la base par defaut
-		elle sera disponible sous la denominatiosn : $this->db->*
+		/*
+		* on charge notre modele avec le 3e parametre a TRUE pour qu'il charge 
+		* la base par defaut. 
+		* Elle sera disponible sous la denominatiosn : $this->db->*
 		**/
 		include_once(BASEPATH.'core/Model.php'); // need for load models manualy
 		include_once(APPPATH.'models/weatherstation.php');
@@ -118,16 +119,16 @@ class cmdController extends CI_Controller {
 			log_message('warning',  $e->getMessage());
 		}
 	}
-	// 'cmdcontroller/makeNewStation'
-	function makeNewStation($pass='nbv4023', $user='root', $db_type='mysql', $host='localhost', $port=3306) {
+	// clear;php5 -f /var/www/Probe/cli.php 'cmdcontroller/makeNewStation'
+	function makeNewStation($pass='', $user='root', $dbEngine='mysql', $host='localhost', $port=3306) {
 		try {
 			include_once(APPPATH.'models/db_builder.php');
-			$dbb = new db_builder($pass, $user, $db_type, $host, $port);
+			$dbb = new db_builder($dbEngine, $user, $pass, $host, $port);
+			$this->dbb->createAppDb();
+			$dns = $this->dbb->getDsn();
 
 			$newID = current ($this->WS->availableID());
-			log_message('id',$newID);
 			$this->WS->arrays2dbconfs($newID, $dsn);
-			$dsn = $dbb->make_db_data('VP2-'.$newID);
 			return $this->WS->config($newID);
 		}
 		catch (Exception $e) {

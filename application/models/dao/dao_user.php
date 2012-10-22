@@ -8,12 +8,12 @@ class Dao_User extends Dao_Database {
         parent::__construct();
     }
 
-    public function read($username, $pwd) {
+    public function read($userName, $userPassword) {
     	$user = NULL;
     	$sql = "SELECT * FROM TA_USER WHERE USR_USERNAME=:username AND USR_PWD=:pwd";
     	$res = $this->probepdo->query($sql, array(
-    			":username" => $username,
-    			":pwd" => $pwd
+    			":username" => $userName,
+    			":pwd" => $userPassword
 			)
     	);
 
@@ -26,19 +26,40 @@ class Dao_User extends Dao_Database {
         return $user;
     }
 
-    public function write($username, $pwd) {
+    public function write($userName, $userPassword, $firstName, $familyName, $email, $role) {
         $user = false;
 
-        $sql = "INSERT INTO `TA_USER` (:username, :pwd);";
+        $sql = "INSERT INTO `probe`.`TA_USER` (
+                `USR_ID` ,
+                `USR_USERNAME` ,
+                `USR_PWD` ,
+                `USR_FIRST_NAME` ,
+                `USR_FAMILY_NAME`,
+                `USR_EMAIL` ,
+                `ROL_ID`
+                )
+                VALUES (
+                NULL , 
+                ':userName', 
+                ':userPassword', 
+                ':firstName', 
+                ':familyName',
+                ':email', 
+                ':role'
+            );";
         $res = $this->probepdo->query($sql, array(
-                ":username" => $username,
-                ":pwd" => $pwd
+                ":userName" => $userName,
+                ":userPassword" => $userPassword,
+                ':firstName' => $firstName, 
+                ':familyName' => $familyName,
+                ':email' => $email, 
+                ':role' => $role
             )
         );
 
         // Si un user est bien insérer.
         if($res->rowCount() > 0) {
-            $user = $this->read($userInserted, $pwd);
+            $user = $this->read($userInserted, $userPassword);
         }
         return $user;
     }

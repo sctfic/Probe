@@ -7,16 +7,16 @@ class Service_User extends Service {
 
         //Daos
         $this->load->model('dao/Dao_User');
+        $this->load->library('encrypt');
+        $this->encrypt->set_cipher(MCRYPT_BLOWFISH);
     }
 
 	/*
 	* return an User object when for authentified user, otherwise throw an error
 	*/
-    public function authentify($username, $pwd) {
-    	include_once(APPPATH.'libraries/PROBE_rev_crypt.php');
-    	$crypt = new PROBE_rev_crypt('db-default');
-    	$encryptedPwd = $crypt->code($pwd);
-    	$user = $this->Dao_User->read($username, $encryptedPwd);
+    public function authentify($userName, $userPassword) {
+        $this->load->library('encrypt');
+    	$user = $this->Dao_User->read($userName, $this->encrypt->encode($userPassword) );
 
     	if($user == NULL) {
     		throw new BusinessException( i18n('login.fail.username.password.incorrect') );
@@ -29,14 +29,17 @@ class Service_User extends Service {
     /*
     * return an User object when for authentified user, otherwise throw an error
     */
-    public function register($username, $pwd) {
-        include_once(APPPATH.'libraries/PROBE_rev_crypt.php');
-        $crypt = new PROBE_rev_crypt('db-default');
-        $encryptedPwd = $crypt->code($pwd);
-        $user = $this->Dao_User->write($username, $encryptedPwd);
+    public function register($userName, $userPassword, $firstName = null, $familyName = null, $email = null, $role = 0) {
+        $this->load->library('encrypt');
+        $user = $this->Dao_User->write(
+            $userName, $this->encrypt->encode($userPassword),
+            $firstName, $familyName, 
+            $email, 
+            $role
+        );
 
         if($user == NULL) {
-            throw new BusinessException( i18n('login.fail.username.password.incorrect') );
+            throw new BusinessException( i18n('register.fail.username.password.incorrect') );
         }
 
         $user->setRegistered(true);
