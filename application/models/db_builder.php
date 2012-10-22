@@ -31,11 +31,9 @@ class db_builder extends CI_Model {
 		$this->user = $user;
 		$this->pass = $pass;
 		$this->dbdriver = $db_type;
-		log_message('var', $pass.' - '.$user.' - '.$db_type.':host='.$host.';port='.$port);
 		try {
 			$this->pdoConnection = new PDO($db_type.':host='.$host.';port='.$port, $user, $pass);
 		} catch (PDOException $e) {
-		log_message('PDOException',  __FUNCTION__.'('.__CLASS__.")\n".__FILE__.' ['.__LINE__.']');
 			throw new Exception( $e->getMessage() );
 		}
 	}

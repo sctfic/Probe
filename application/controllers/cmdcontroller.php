@@ -123,10 +123,11 @@ class cmdController extends CI_Controller {
 		try {
 			include_once(APPPATH.'models/db_builder.php');
 			$dbb = new db_builder($pass, $user, $db_type, $host, $port);
-			$dsn = $dbb->make_db_config();
 
 			$newID = current ($this->WS->availableID());
+			log_message('id',$newID);
 			$this->WS->arrays2dbconfs($newID, $dsn);
+			$dsn = $dbb->make_db_data('VP2-'.$newID);
 			return $this->WS->config($newID);
 		}
 		catch (Exception $e) {
