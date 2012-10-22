@@ -29,9 +29,14 @@ class Service_User extends Service {
     /*
     * return an User object when for authentified user, otherwise throw an error
     */
-    public function register($userName, $userPassword) {
+    public function register($userName, $userPassword, $firstName = null, $familyName = null, $email = null, $role = 0) {
         $this->load->library('encrypt');
-        $user = $this->Dao_User->write($userName, $this->encrypt->encode($userPassword) );
+        $user = $this->Dao_User->write(
+            $userName, $this->encrypt->encode($userPassword),
+            $firstName, $familyName, 
+            $email, 
+            $role
+        );
 
         if($user == NULL) {
             throw new BusinessException( i18n('register.fail.username.password.incorrect') );

@@ -26,7 +26,7 @@ class Dao_User extends Dao_Database {
         return $user;
     }
 
-    public function write($userName, $userPassword) {
+    public function write($userName, $userPassword, $firstName, $familyName, $email, $role) {
         $user = false;
 
         $sql = "INSERT INTO `probe`.`TA_USER` (
@@ -40,16 +40,20 @@ class Dao_User extends Dao_Database {
                 )
                 VALUES (
                 NULL , 
-                ':username', 
+                ':userName', 
                 ':userPassword', 
-                'Édouard', 
-                'Lopez',
-                'missing@email.dev', 
-                '1'
+                ':firstName', 
+                ':familyName',
+                ':email', 
+                ':role'
             );";
         $res = $this->probepdo->query($sql, array(
-                ":username" => $userName,
-                ":userPassword" => $userPassword
+                ":userName" => $userName,
+                ":userPassword" => $userPassword,
+                ':firstName' => $firstName, 
+                ':familyName' => $familyName,
+                ':email' => $email, 
+                ':role' => $role
             )
         );
 

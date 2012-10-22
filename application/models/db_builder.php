@@ -234,6 +234,19 @@ class db_builder extends CI_Model {
 			COMMENT = 'Available roles for the users';",
 			APP_DB
 		);
+		$sqlAddRoleAdmin = sprintf(
+			"INSERT INTO `%s`.`TR_ROLE` (
+				`ROL_ID` ,
+				`ROL_CODE` ,
+				`ROL_LABEL`
+				)
+				VALUES (
+				NULL , 'app-admin', %s
+				);
+			",
+			APP_DB,
+			i18n('table.role.label')
+		);
 		$sqlCreateConfigsTable = sprintf(
 			"CREATE  TABLE IF NOT EXISTS `%s`.`TR_CONFIG` (
 			`CFG_STATION_ID` TINYINT(4) NOT NULL ,
@@ -270,6 +283,7 @@ class db_builder extends CI_Model {
 		$this->pdoConnection->query($sqlCreateSchema);
 		$this->pdoConnection->query($sqlCreateUsersTable);
 		$this->pdoConnection->query($sqlCreateRolesTable);
+		$this->pdoConnection->query($sqlAddRoleAdmin);
 		$this->pdoConnection->query($sqlCreateConfigsTable);
 		$this->pdoConnection->query($sqlCreateLogsTable);
 	}
