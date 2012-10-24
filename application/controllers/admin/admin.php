@@ -44,7 +44,7 @@ class Admin extends Authentification {
 		// build view data
 		$data = pageFetchConfig('login'); // fetch information to build the HTML header
 		$data['msg'] = $this->session->userdata("msg"); // message to display in the page
-		$data['username'] = NULL;
+		$data['userName'] = NULL;
 
 		$this->session->set_userdata("msg", NULL); // reset session message
 
@@ -53,6 +53,7 @@ class Admin extends Authentification {
 		$this->form_validation->set_rules('password', i18n('Password'), 'required');
 		$this->form_validation->set_rules('confirm', i18n('Password Confirmation'), 'required');
 
+var_export($data);
 		// display the view
 		$pages = new Pages();
 		$pages->view('login', $data);

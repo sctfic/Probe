@@ -21,6 +21,7 @@ class Installer extends CI_Controller {
       redirect("setup/installer/dbms");
     } else { # file exists, 
       try { # connect to the db and check if there is any admin user
+    log_message('loader',  __FUNCTION__.'('.__CLASS__.")\n".__FILE__.' ['.__LINE__.']');
         $this->load->database();
         $query = $this->query("SELECT COUNT(*) AS `AdminCount`
           FROM `TA_USER` INNER JOIN `TR_ROLE`
@@ -79,7 +80,10 @@ class Installer extends CI_Controller {
     $dbPort=$this->input->post('dbms-port');
 
     try {
+    log_message('db',  __FUNCTION__.'('.__CLASS__.")\n".__FILE__.' ['.__LINE__.']'.$dbEngine.' - '.$userPassword.' - '.$userName.' - '.$dbHost.' - '.$dbPort);
+
       $this->dbb = new db_builder($dbEngine, $userPassword, $userName, $dbHost, $dbPort);
+
       $this->dbb->createAppDb();
       $dns = $this->dbb->getDsn();
       array2conf_php(APPPATH.'config/db-default.php', $dns, "db['default']");
@@ -106,6 +110,7 @@ class Installer extends CI_Controller {
     $data['administratorPassword'] = NULL;
     $data['administratorPasswordConfirmation'] = NULL;
     
+     redirect("admin/admin");
     // display the view
     $pages = new Pages();
     $pages->view('setup/admin-user', $data);
