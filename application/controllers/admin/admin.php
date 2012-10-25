@@ -53,7 +53,6 @@ class Admin extends Authentification {
 		$this->form_validation->set_rules('password', i18n('Password'), 'required');
 		$this->form_validation->set_rules('confirm', i18n('Password Confirmation'), 'required');
 
-var_export($data);
 		// display the view
 		$pages = new Pages();
 		$pages->view('login', $data);

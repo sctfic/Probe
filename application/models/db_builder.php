@@ -142,7 +142,7 @@ class db_builder extends CI_Model {
 		$this->setWorkUserName('probe_user');
 		$this->setWorkUserPassword(randomPassword(10));
 		// Creation of user
-		$this->pdoConnection->query("CREATE USER IF NOT EXISTS '".$this->WorkUserName."'@'%' IDENTIFIED BY PASSWORD('".$this->WorkUserPassword."');");
+		$this->pdoConnection->query("CREATE USER IF NOT EXISTS '".$this->WorkUserName."'@'%' IDENTIFIED BY '';");
 		// Adding all privileges on our newly created database
 		$this->pdoConnection->query("GRANT ALL PRIVILEGES on `".$this->DbName."`.* TO '".$this->WorkUserName."'@'%';");
 		// define the password

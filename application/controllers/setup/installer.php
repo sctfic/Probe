@@ -110,7 +110,7 @@ class Installer extends CI_Controller {
     $data['administratorPassword'] = NULL;
     $data['administratorPasswordConfirmation'] = NULL;
     
-     redirect("admin/admin");
+//     redirect("admin/admin"); // ca c l'ancien avec le soleil
     // display the view
     $pages = new Pages();
     $pages->view('setup/admin-user', $data);
