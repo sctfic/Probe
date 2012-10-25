@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: probe\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-25 23:37+0100\n"
-"PO-Revision-Date: 2012-10-25 23:39+0100\n"
+"POT-Creation-Date: 2012-10-25 23:58+0100\n"
+"PO-Revision-Date: 2012-10-26 00:01+0100\n"
 "Last-Translator: Édouard Lopez <dev+i18n@edouard-lopez.com>\n"
 "Language-Team: probe <dev+probe@edouard-lopez.com>\n"
 "Language: \n"
@@ -34,9 +34,9 @@ msgstr ""
 msgid ":author"
 msgstr ""
 
-#: models/db_builder.php:241
-msgid "table.role.label"
-msgstr ""
+#: models/db_builder.php:219
+msgid "database.table.role:admin.label"
+msgstr "Administrateur"
 
 #: models/weatherstation.php:97
 msgid "Aucune configuration valide n'est disponible"
@@ -121,11 +121,11 @@ msgstr ""
 
 #: models/service/service_user.php:22
 msgid "login.fail.username.password.incorrect"
-msgstr ""
+msgstr "Le mot de passe ne correspond à celui associé à l'utilisateur."
 
 #: models/service/service_user.php:42
 msgid "register.fail.username.password.incorrect"
-msgstr ""
+msgstr "Le mot de passe est invalide pour créer un compte"
 
 #: views/login.php:16
 msgid "username"
@@ -331,6 +331,10 @@ msgstr ""
 msgid "Weather Station Web Data Share"
 msgstr ""
 
+#: controllers/setup/installer.php:39
+msgid "error.setup.dbms.connect"
+msgstr "La connexion à la base de données n'a pas pu être établie. Veuillez vérifier les informations soumises et l'existence de la base de données."
+
 #: controllers/admin/admin.php:31
 msgid "admin.welcome"
 msgstr ""
@@ -346,11 +350,6 @@ msgstr ""
 #: controllers/admin/admin.php:54
 msgid "Password Confirmation"
 msgstr ""
-
-#~ msgid "error.setup.dbms.connect"
-#~ msgstr ""
-#~ "La connexion à la base de données n'a pas pu être établie. Veuillez "
-#~ "vérifier les informations soumises et l'existence de la base de données."
 
 #~ msgid "setup.administrator.password-confirm.placeholder"
 #~ msgstr "pour éviter les erreurs de saisi"
