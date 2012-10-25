@@ -1,5 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+define('APP_DB', 'probe');
+
 /*
 try {
 	include_once(BASEPATH.'core/Model.php'); // need for load models manualy
@@ -191,6 +193,31 @@ class db_builder extends CI_Model {
 			APP_DB,
 			APP_DB
 		);
+		$sqlCreateRolesTable = sprintf(
+			"CREATE  TABLE IF NOT EXISTS `%s`.`TR_ROLE` (
+			`ROL_ID` INT(11) NOT NULL AUTO_INCREMENT ,
+			`ROL_CODE` VARCHAR(32) NOT NULL ,
+			`ROL_LABEL` VARCHAR(64) NOT NULL ,
+			PRIMARY KEY (`ROL_ID`) )
+			ENGINE = InnoDB
+			DEFAULT CHARACTER SET = utf8
+			COLLATE = utf8_general_ci
+			COMMENT = 'Available roles for the users';",
+			APP_DB
+		);
+		$sqlAddRoleAdmin = sprintf(
+			"INSERT INTO `%s`.`TR_ROLE` (
+				`ROL_ID` ,
+				`ROL_CODE` ,
+				`ROL_LABEL`
+				)
+				VALUES (
+				NULL , 'app-admin', '%s'
+				);
+			",
+			APP_DB,
+			i18n('database.table.role:admin.label')
+		);
 		$sqlCreateUsersTable = sprintf(
 			"CREATE  TABLE IF NOT EXISTS `%s`.`TA_USER` (
 			`USR_ID` INT(11) NOT NULL AUTO_INCREMENT ,
@@ -213,32 +240,6 @@ class db_builder extends CI_Model {
 			COMMENT = 'User list for this application';",
 			APP_DB,
 			APP_DB
-		);
-
-		$sqlCreateRolesTable = sprintf(
-			"CREATE  TABLE IF NOT EXISTS `%s`.`TR_ROLE` (
-			`ROL_ID` INT(11) NOT NULL AUTO_INCREMENT ,
-			`ROL_CODE` VARCHAR(32) NOT NULL ,
-			`ROL_LABEL` VARCHAR(64) NOT NULL ,
-			PRIMARY KEY (`ROL_ID`) )
-			ENGINE = InnoDB
-			DEFAULT CHARACTER SET = utf8
-			COLLATE = utf8_general_ci
-			COMMENT = 'Available roles for the users';",
-			APP_DB
-		);
-		$sqlAddRoleAdmin = sprintf(
-			"INSERT INTO `%s`.`TR_ROLE` (
-				`ROL_ID` ,
-				`ROL_CODE` ,
-				`ROL_LABEL`
-				)
-				VALUES (
-				NULL , 'app-admin', %s
-				);
-			",
-			APP_DB,
-			i18n('table.role.label')
 		);
 		$sqlCreateConfigsTable = sprintf(
 			"CREATE  TABLE IF NOT EXISTS `%s`.`TR_CONFIG` (
@@ -274,9 +275,9 @@ class db_builder extends CI_Model {
 		);
 
 		$this->pdoConnection->query($sqlCreateSchema);
-		$this->pdoConnection->query($sqlCreateUsersTable);
 		$this->pdoConnection->query($sqlCreateRolesTable);
 		$this->pdoConnection->query($sqlAddRoleAdmin);
+		$this->pdoConnection->query($sqlCreateUsersTable);
 		$this->pdoConnection->query($sqlCreateConfigsTable);
 		$this->pdoConnection->query($sqlCreateLogsTable);
 	}
