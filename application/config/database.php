@@ -43,17 +43,10 @@
 | The $active_record variables lets you determine whether or not to load
 | the active record class
 */
-global $db, $active_group, $active_record;
+//global $db, $active_group, $active_record;
 
 $active_group = 'default';
 $active_record = TRUE;
-
-
-/* Copy the database.default.php to database.php, 
- * change the credential in the database.php,
- * run your apps, then remove the line: $crypt->write('YOUR PASSWORD');
- * So your password is store only encrypted
- */
 
 /**----------------------------------------------------------------*/
 

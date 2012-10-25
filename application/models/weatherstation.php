@@ -28,16 +28,17 @@ class weatherstation extends CI_Model {
 			FROM `TR_CONFIG` 
 			WHERE `CFG_LABEL`=\'_name\' 
 			LIMIT 16');
-
-		log_message('db', 'Request list of sation');
-		foreach($lst->result() as $item) { // on met en forme les resultat sous forme de tableau
-			$this->lst[$item->CFG_STATION_ID] = $item->CFG_VALUE;
+		if ($lst->num_rows() > 0)
+		{
+			log_message('db', 'Request list of sation');
+			foreach($lst->result() as $item) { // on met en forme les resultat sous forme de tableau
+				$this->lst[$item->CFG_STATION_ID] = $item->CFG_VALUE;
+			}
+			if (is_array($this->lst))
+				return $this->lst;
 		}
-		if (!is_array($this->lst)){
-			log_message('warning', 'List of Weather Station is empty!');
-			return false;
-		}
-		return $this->lst;
+		log_message('warning', 'List of Weather Station is empty!');
+		return false;
 	}
 	/**
 	 * recupere les premier ID nom utilisé parmis la liste des ID des stations
@@ -60,11 +61,13 @@ class weatherstation extends CI_Model {
 	 */
 	function config($item = null)
 	{
-		$this->lst = $this->lstNames();
+		if (!is_array($this->lst = $this->lstNames()))
+			return array();
 		if (!empty($item)) {
-			if (is_numeric($item) && array_key_exists($item, $this->lst))
+			if (is_numeric($item) && array_key_exists($item, $this->lst)) {
 			//dans le cas ou je connais deja de ID de ma station
 				$lst[$item]=$this->lst[$item];
+			}
 			elseif (in_array($item, $this->lst))
 			//dans le cas ou je ne connais que le nom
 				$lst[array_search($item, $this->lst)]=$item;
@@ -93,8 +96,9 @@ class weatherstation extends CI_Model {
 		if (count($confs) == 0){
 			throw new Exception(_('Aucune configuration valide n\'est disponible'));
 		}
+//		var_export($confs);
 		// on decode le password.
-		$confs['password'] = $this->encrypt->decode($confs['password']);
+		$confs[$item]['password'] = $this->encrypt->decode($confs[$item]['password']);
 		return $confs;
 	}
 	function HilowCollector() {
