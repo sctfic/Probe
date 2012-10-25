@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: probe\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-10-25 22:28+0100\n"
-"PO-Revision-Date: 2012-10-25 22:38+0100\n"
+"PO-Revision-Date: 2012-10-25 22:59+0100\n"
 "Last-Translator: Édouard Lopez <dev+i18n@edouard-lopez.com>\n"
 "Language-Team: probe <dev+probe@edouard-lopez.com>\n"
 "Language: \n"
@@ -214,7 +214,7 @@ msgstr "Configuration du compte administrateur"
 
 #: views/setup/admin-user.php:21
 msgid "setup.administrator.username"
-msgstr "Compte administrateur"
+msgstr "Utilisateur «&nbsp;admin&nbsp;»"
 
 #: views/setup/admin-user.php:27
 msgid "setup.administrator.username.placeholder"
