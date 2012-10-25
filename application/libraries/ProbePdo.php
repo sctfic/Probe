@@ -61,8 +61,13 @@ class ProbePdo {
 	
 	
 	public function query($sql, $param, $fetch = PDO::FETCH_ASSOC) {
-		$requete = $this->connection->prepare($sql);
-		$requete->execute($param);
+		try {
+			// log_message('info', var_dump($param));
+			$requete = $this->connection->prepare($sql);
+			$requete->execute($param);
+		} catch (PDOException $e) {
+			throw new Exception( $e->getMessage() );
+		}
 		
 		// Instanciation d'un résultat
 		$driver			= $this->load_rdriver();
