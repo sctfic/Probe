@@ -133,10 +133,10 @@ class User implements Serializable {
 	    return $this->firstName;
 	}
 
-	public function setPwd($userPassword	) {
+	public function setUserPassword($userPassword	) {
 	    $this->userPassword = $userPassword;
 	}
-	public function getPwd() {
+	public function getUserPassword() {
 	    return $this->userPassword;
 	}
 	
