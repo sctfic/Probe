@@ -133,13 +133,13 @@ class db_builder extends CI_Model {
 	* @param $userName
 	* @param $userPassword
 	*/
-	function addDbUser() {
+	function addDbUser($user = 'probe_user') {
 		// supprime les utilisateur vide qui provoque des probleme de connection
 		// $this->pdoConnection->query("DELETE FROM user WHERE user = '';");
-		$this->setWorkUserName('probe_user');
+		$this->setWorkUserName($user);
 		$this->setWorkUserPassword(randomPassword(10));
 		// Creation of user
-		$this->pdoConnection->query("CREATE USER IF NOT EXISTS '".$this->WorkUserName."'@'%' IDENTIFIED BY PASSWORD('".$this->WorkUserPassword."');");
+		$this->pdoConnection->query("CREATE USER IF NOT EXISTS '".$this->WorkUserName."'@'%' IDENTIFIED BY '';");
 		// Adding all privileges on our newly created database
 		$this->pdoConnection->query("GRANT ALL PRIVILEGES on `".$this->DbName."`.* TO '".$this->WorkUserName."'@'%';");
 		// define the password
@@ -157,7 +157,6 @@ class db_builder extends CI_Model {
 	function createAppDb() {
 		// the database MUST be name 'probe' !
 		try {
-			$this->dbExists('noBase');
 			// dans le cas ou la base est fournie avec l'user adequat pas besoin de le refaire
 			if ( ! $this->dbExists(APP_DB) ) {
 				// create the 'probe' database
@@ -252,7 +251,7 @@ class db_builder extends CI_Model {
 			ENGINE = InnoDB
 			DEFAULT CHARACTER SET = utf8
 			COLLATE = utf8_general_ci
-			COMMENT = 'Stock each station's properties/value and access datetime';",
+			COMMENT = 'Stock each station\'s properties/value and access datetime';",
 			APP_DB
 		);
 		$sqlCreateLogsTable = sprintf(
@@ -296,7 +295,7 @@ class db_builder extends CI_Model {
 			if (!$this->dbExists($dbName)) {				
 				//Creation of database "probe"
 				$sqlCreate = sprintf("CREATE DATABASE IF NOT EXISTS `%s`;", $this->DbName);
-				$this->pdoConnection->query();
+				$this->pdoConnection->query($sqlCreate);
 
 				//Creation of user
 				$this->addDbUser();

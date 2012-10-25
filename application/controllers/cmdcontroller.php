@@ -120,15 +120,18 @@ class cmdController extends CI_Controller {
 		}
 	}
 	// clear;php5 -f /var/www/Probe/cli.php 'cmdcontroller/makeNewStation'
-	function makeNewStation($pass='', $user='root', $dbEngine='mysql', $host='localhost', $port=3306) {
+	function makeNewStation() {
+	//	global $db;
 		try {
 			include_once(APPPATH.'models/db_builder.php');
-			$dbb = new db_builder($dbEngine, $user, $pass, $host, $port);
-			$this->dbb->createAppDb();
-			$dns = $this->dbb->getDsn();
-
+			include(APPPATH.'config/db-default.php');
 			$newID = current ($this->WS->availableID());
-			$this->WS->arrays2dbconfs($newID, $dsn);
+
+			$dbb = new db_builder('mysql',$db['default']['password'],$db['default']['username'],'localhost',3306,$db['default']['database']);
+			$dbb->createStationDb('Probe_Weather-'.$newID);
+			$dsn = $dbb->getDsn();
+
+			$this->WS->arrays2dbconfs($newID, array_merge(array('_ip'=>'', '_port'=>'', '_name'=>'', '_type'=>''), $dsn));
 			return $this->WS->config($newID);
 		}
 		catch (Exception $e) {

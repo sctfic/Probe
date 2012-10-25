@@ -24,7 +24,7 @@
 				<input id="dbms-host"
 					type="text" required
 					name="dbms-host" value="<?=$dbmsHost?>" 
-					class="input-medium" placeholder="<?=i18n('setup.dbms.host.placeholder')?>"
+					class="input-large" placeholder="<?=i18n('setup.dbms.host.placeholder')?>"
 				>
 			</div>
 		</div>
