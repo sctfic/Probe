@@ -2,6 +2,7 @@
 	<ul class="breadcrumb">
 	    <li><a href="/setup/installer/dbms"><?=i18n("setup.breadcrumb.dbms")?></a> <span class="divider">/</span></li>
 	    <li class="active"><a href="/setup/installer/adminUser"><?=i18n("setup.breadcrumb.administrator")?></a> <span class="divider">/</span></li>
+	    <li class="disabled"><?=i18n("setup.breadcrumb.dashboard")?> <span class="divider">/</span></li>
 	</ul>
 </div>
 

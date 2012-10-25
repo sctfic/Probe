@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: probe\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-25 22:28+0100\n"
-"PO-Revision-Date: 2012-10-25 22:59+0100\n"
+"POT-Creation-Date: 2012-10-25 23:37+0100\n"
+"PO-Revision-Date: 2012-10-25 23:39+0100\n"
 "Last-Translator: Édouard Lopez <dev+i18n@edouard-lopez.com>\n"
 "Language-Team: probe <dev+probe@edouard-lopez.com>\n"
 "Language: \n"
@@ -34,31 +34,31 @@ msgstr ""
 msgid ":author"
 msgstr ""
 
-#: models/db_builder.php:253
+#: models/db_builder.php:241
 msgid "table.role.label"
 msgstr ""
 
-#: models/weatherstation.php:94
+#: models/weatherstation.php:97
 msgid "Aucune configuration valide n'est disponible"
 msgstr ""
 
-#: models/weatherstation.php:106
-#: models/weatherstation.php:122
-#: models/weatherstation.php:146
-#: models/weatherstation.php:165
+#: models/weatherstation.php:110
+#: models/weatherstation.php:126
+#: models/weatherstation.php:150
+#: models/weatherstation.php:169
 #, php-format
 msgid "Impossible de se connecter à %s par %s:%s"
 msgstr ""
 
-#: models/weatherstation.php:109
-#: models/weatherstation.php:125
-#: models/weatherstation.php:150
-#: models/weatherstation.php:173
+#: models/weatherstation.php:113
+#: models/weatherstation.php:129
+#: models/weatherstation.php:154
+#: models/weatherstation.php:177
 #, php-format
 msgid "Fermeture de %s impossible"
 msgstr ""
 
-#: models/weatherstation.php:168
+#: models/weatherstation.php:172
 #, php-format
 msgid "Lecture des config de %s impossible"
 msgstr ""
@@ -134,35 +134,35 @@ msgstr ""
 #: views/login.php:16
 #: views/login.php:19
 #: views/login.php:25
-#: views/setup/admin-user.php:21
-#: views/setup/admin-user.php:34
-#: views/setup/admin-user.php:47
-#: views/setup/dbms.php:21
-#: views/setup/dbms.php:35
-#: views/setup/dbms.php:49
-#: views/setup/dbms.php:58
-#: views/setup/dbms.php:66
-#: views/setup/dbms.php:75
-#: views/setup/dbms.php:80
-#: views/setup/dbms.php:84
-#: views/setup/dbms.php:108
-#: views/setup/dbms.php:122
+#: views/setup/admin-user.php:22
+#: views/setup/admin-user.php:35
+#: views/setup/admin-user.php:48
+#: views/setup/dbms.php:22
+#: views/setup/dbms.php:36
+#: views/setup/dbms.php:50
+#: views/setup/dbms.php:59
+#: views/setup/dbms.php:67
+#: views/setup/dbms.php:76
+#: views/setup/dbms.php:81
+#: views/setup/dbms.php:85
+#: views/setup/dbms.php:109
+#: views/setup/dbms.php:123
 msgid "required"
 msgstr ""
 
 #: views/login.php:16
 #: views/login.php:19
 #: views/login.php:25
-#: views/setup/admin-user.php:21
-#: views/setup/admin-user.php:34
-#: views/setup/admin-user.php:47
-#: views/setup/dbms.php:21
-#: views/setup/dbms.php:35
-#: views/setup/dbms.php:49
-#: views/setup/dbms.php:75
-#: views/setup/dbms.php:92
-#: views/setup/dbms.php:108
-#: views/setup/dbms.php:122
+#: views/setup/admin-user.php:22
+#: views/setup/admin-user.php:35
+#: views/setup/admin-user.php:48
+#: views/setup/dbms.php:22
+#: views/setup/dbms.php:36
+#: views/setup/dbms.php:50
+#: views/setup/dbms.php:76
+#: views/setup/dbms.php:93
+#: views/setup/dbms.php:109
+#: views/setup/dbms.php:123
 msgid "&nbsp;:"
 msgstr ""
 
@@ -208,127 +208,128 @@ msgstr "Base de données"
 msgid "setup.breadcrumb.administrator"
 msgstr "Compte administrateur"
 
-#: views/setup/admin-user.php:12
+#: views/setup/admin-user.php:5
+#: views/setup/dbms.php:5
+msgid "setup.breadcrumb.dashboard"
+msgstr "Tableau de bord"
+
+#: views/setup/admin-user.php:13
 msgid "setup.administrator.legend"
 msgstr "Configuration du compte administrateur"
 
-#: views/setup/admin-user.php:21
+#: views/setup/admin-user.php:22
 msgid "setup.administrator.username"
 msgstr "Utilisateur «&nbsp;admin&nbsp;»"
 
-#: views/setup/admin-user.php:27
+#: views/setup/admin-user.php:28
 msgid "setup.administrator.username.placeholder"
 msgstr "gestionnaire de l'application"
 
-#: views/setup/admin-user.php:34
+#: views/setup/admin-user.php:35
 msgid "setup.administrator.password"
 msgstr "Mot de passe"
 
-#: views/setup/admin-user.php:40
+#: views/setup/admin-user.php:41
 msgid "setup.administrator.password.placeholder"
 msgstr "plus long c'est mieux"
 
-#: views/setup/admin-user.php:47
+#: views/setup/admin-user.php:48
 msgid "setup.administrator.password-confirmation"
 msgstr "Confirmer"
 
-#: views/setup/admin-user.php:53
+#: views/setup/admin-user.php:54
 msgid "setup.administrator.password-confirmation.placeholder"
 msgstr "pour éviter les erreurs de saisi"
 
-#: views/setup/admin-user.php:59
+#: views/setup/admin-user.php:60
 msgid "setup.administrator.configure"
 msgstr "Configurer →"
 
-#: views/setup/dbms.php:12
+#: views/setup/dbms.php:13
 msgid "setup.dbms.legend"
 msgstr "Configuration de la base de données"
 
-#: views/setup/dbms.php:21
+#: views/setup/dbms.php:22
 msgid "setup.dbms.host"
 msgstr "Nom d'hôte"
 
-#: views/setup/dbms.php:27
+#: views/setup/dbms.php:28
 msgid "setup.dbms.host.placeholder"
 msgstr "exemple.fr, localhost ou 127.0.0.1"
 
-#: views/setup/dbms.php:35
+#: views/setup/dbms.php:36
 msgid "setup.dbms.port"
 msgstr "Port"
 
-#: views/setup/dbms.php:41
+#: views/setup/dbms.php:42
 msgid "setup.dbms.port.placeholder"
 msgstr "défault: 3306"
 
-#: views/setup/dbms.php:49
+#: views/setup/dbms.php:50
 msgid "setup.dbms.engine"
 msgstr "Moteur de la Base"
 
-#: views/setup/dbms.php:58
+#: views/setup/dbms.php:59
 msgid "setup.dbms.engine-mysql"
 msgstr "MySQL 5+"
 
-#: views/setup/dbms.php:66
+#: views/setup/dbms.php:67
 msgid "setup.dbms.engine-sqlite"
 msgstr "SQLite 3+"
 
-#: views/setup/dbms.php:75
+#: views/setup/dbms.php:76
 msgid "setup.dbms.database.selection"
 msgstr "Choix de la base"
 
-#: views/setup/dbms.php:80
+#: views/setup/dbms.php:81
 msgid "setup.dbms.database-reuse"
 msgstr "base existante"
 
-#: views/setup/dbms.php:84
+#: views/setup/dbms.php:85
 msgid "setup.dbms.database-create"
 msgstr "nouvelle base"
 
-#: views/setup/dbms.php:92
+#: views/setup/dbms.php:93
 msgid "setup.dbms.database-name"
 msgstr "Nom de la base"
 
-#: views/setup/dbms.php:108
+#: views/setup/dbms.php:109
 msgid "setup.dbms.username"
 msgstr "Utilisateur"
 
-#: views/setup/dbms.php:114
+#: views/setup/dbms.php:115
 msgid "setup.dbms.username.placeholder"
 msgstr "gestionnaire de la base"
 
-#: views/setup/dbms.php:122
+#: views/setup/dbms.php:123
 msgid "setup.dbms.password"
 msgstr "Mot de passe"
 
-#: views/setup/dbms.php:128
+#: views/setup/dbms.php:129
 msgid "setup.dbms.password.placeholder"
 msgstr "mot de passe du gestionnaire"
 
-#: views/setup/dbms.php:135
+#: views/setup/dbms.php:136
 msgid "setup.dbms.configure"
 msgstr "Configurer →"
 
-#: views/admin/dashboard.php:29
+#: views/admin/dashboard.php:30
 #, php-format
 msgid "edit %s properties"
 msgstr ""
 
-#: views/admin/dashboard.php:32
+#: views/admin/dashboard.php:33
 msgid "Model"
 msgstr ""
 
-#: views/admin/dashboard.php:56
 #: views/admin/dashboard.php:57
+#: views/admin/dashboard.php:58
 msgid "logOut"
 msgstr ""
 
 #: views/templates/footer.php:1
 msgid "Weather Station Web Data Share"
 msgstr ""
-
-#: controllers/setup/installer.php:38
-msgid "error.setup.dbms.connect"
-msgstr "La connexion à la table n'a pas pu être. Veuillez vérifier les informations soumises."
 
 #: controllers/admin/admin.php:31
 msgid "admin.welcome"
@@ -345,6 +346,11 @@ msgstr ""
 #: controllers/admin/admin.php:54
 msgid "Password Confirmation"
 msgstr ""
+
+#~ msgid "error.setup.dbms.connect"
+#~ msgstr ""
+#~ "La connexion à la base de données n'a pas pu être établie. Veuillez "
+#~ "vérifier les informations soumises et l'existence de la base de données."
 
 #~ msgid "setup.administrator.password-confirm.placeholder"
 #~ msgstr "pour éviter les erreurs de saisi"
