@@ -38,7 +38,7 @@
 |
 */
 
-$route['default_controller'] = "admin/admin";
+$route['default_controller'] = "setup/installer";
 // $route['default_controller'] = "welcome";
 $route['404_override'] = '';
 
