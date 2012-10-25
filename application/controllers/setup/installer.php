@@ -2,7 +2,7 @@
 
 // require_once APPPATH."/controllers/checkSetup.php";
 require_once APPPATH."/controllers/pages.php";
-
+define('ADMIN_ROLE_ID', 1); // it's the first role created so it's 1
 
 class Installer extends CI_Controller {
 
@@ -35,7 +35,8 @@ class Installer extends CI_Controller {
           redirect("setup/installer/adminUser");
         }
       } catch (Exception $e) {
-        log_message('error', printf('%s', i18n("error.setup.dbms.connect") ) );
+        // sprintf("<p>%s</p>",  sprintf('%s', i18n("error.setup.dbms.connect") ) );
+        log_message('error', sprintf('%s', i18n("error.setup.dbms.connect") ) );
       }
     }
   }
@@ -129,7 +130,13 @@ class Installer extends CI_Controller {
 
       try {
         //Chercher l'user correspondant au couple login/pwd
-        $user = $this->Service_User->register($administratorUsername, $administratorPassword);
+        $user = $this->Service_User->register(
+          $administratorUsername, $administratorPassword,
+          null, // $firstName
+          null, // $familyName
+          null, // $email
+          ADMIN_ROLE_ID // $role
+        );
         // $this->session->set_userdata("user", serialize($user));
         redirect("admin");
       }
