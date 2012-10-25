@@ -204,7 +204,5 @@ if (defined('ENVIRONMENT'))
  */
 require_once BASEPATH.'core/CodeIgniter.php';
 
-define('APP_DB', 'probe');
-
 /* End of file index.php */
 /* Location: ./index.php */
