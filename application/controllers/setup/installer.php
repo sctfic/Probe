@@ -21,15 +21,18 @@ class Installer extends CI_Controller {
       redirect("setup/installer/dbms");
     } else { # file exists, 
       try { # connect to the db and check if there is any admin user
-    log_message('loader',  __FUNCTION__.'('.__CLASS__.")\n".__FILE__.' ['.__LINE__.']');
-        $this->load->database();
-        $query = $this->query("SELECT COUNT(*) AS `AdminCount`
+        $sqlCountAdmin = "SELECT COUNT(*) AS `AdminCount`
           FROM `TA_USER` INNER JOIN `TR_ROLE`
           ON `TA_USER`.`ROL_ID` = `TR_ROLE`.`ROL_ID` 
-          WHERE `TR_ROLE`.`ROL_CODE` = 'admin';"
-        );
-        if (count($query->result_array()) == 0) { # no admin yet
-          $this->requestCredentialsForAdminUser();
+          WHERE `TR_ROLE`.`ROL_CODE` = 'admin' 
+          LIMIT 1;";
+          
+        $this->load->database();
+        $row = $this->db->query($sqlCountAdmin)->row();
+
+        // log_message('info', $row->AdminCount );
+        if ($row->AdminCount == 0) { # no admin yet
+          redirect("setup/installer/adminUser");
         }
       } catch (Exception $e) {
         log_message('error', printf('%s', i18n("error.setup.dbms.connect") ) );
@@ -110,7 +113,6 @@ class Installer extends CI_Controller {
     $data['administratorPassword'] = NULL;
     $data['administratorPasswordConfirmation'] = NULL;
     
-     redirect("admin/admin");
     // display the view
     $pages = new Pages();
     $pages->view('setup/admin-user', $data);
