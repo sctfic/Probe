@@ -1,8 +1,5 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-define('APP_DB', 'probe');
-
-
 /*
 try {
 	include_once(BASEPATH.'core/Model.php'); // need for load models manualy
