@@ -2,7 +2,8 @@
 // clear;php5 -f /var/www/Probe/cli.php 'cmdcontroller'
 class cmdController extends CI_Controller {
 	function __construct() {
-		if (isset($_SERVER['REMOTE_ADDR'])) { // n'est pas definie en php5-cli
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
+if (isset($_SERVER['REMOTE_ADDR'])) { // n'est pas definie en php5-cli
 			log_message('warning',  'CLI script access allowed only');
 			die();
 		}
@@ -22,13 +23,15 @@ class cmdController extends CI_Controller {
 	// la fonction qui ce lancera par defaut dans cette classe 
 	// clear;php5 -f /var/www/Probe/cli.php 'cmdcontroller'
 	function index() {
-		$this->configCollectors();
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
+$this->configCollectors();
 		$this->dataCollectors();
 	}
 
 	// clear;php5 -f /var/www/Probe/cli.php 'cmdcontroller/hilowCollectors'
 	function hilowCollectors($station = null) {
-		try {
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
+try {
 			if ($item_ID = array_search($station, $this->WS->lst)) {
 				// on rapelle cette meme fonction mais avec de vrai paarametre : Toutes les stations
 				// on recupere les confs de $station
@@ -45,7 +48,8 @@ class cmdController extends CI_Controller {
 	
 	// clear;php5 -f /var/www/Probe/cli.php 'cmdcontroller/curentCollectors'
 	function curentCollectors($station = null) {
-		try {
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
+try {
 			if ($item_ID = array_search($station, $this->WS->lst)) {
 				// on rapelle cette meme fonction mais avec de vrai paarametre : Toutes les stations
 				// on recupere les confs de $station
@@ -62,7 +66,8 @@ class cmdController extends CI_Controller {
 
 	// clear;php5 -f /var/www/Probe/cli.php 'cmdcontroller/dataCollectors'
 	function dataCollectors($station = null) {
-		if (is_array($station)) {
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
+if (is_array($station)) {
 			foreach ($station as $item) {
 				// on rapelle cette meme fonction mais individuellement pour chaque station
 				$this->dataCollectors($item);
@@ -90,7 +95,8 @@ class cmdController extends CI_Controller {
 	
 	// clear;php5 -f /var/www/Probe/cli.php 'cmdcontroller/configCollectors'
 	function configCollectors($station = null, $force = false) {
-		if (is_array($station)) {
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
+if (is_array($station)) {
 			foreach ($station as $item) {
 				// on rapelle cette meme fonction mais individuellement pour chaque station
 				$this->configCollectors($item);
@@ -121,14 +127,15 @@ class cmdController extends CI_Controller {
 	}
 	// clear;php5 -f /var/www/Probe/cli.php 'cmdcontroller/makeNewStation'
 	function makeNewStation() {
-	//	global $db;
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
+
 		try {
 			include_once(APPPATH.'models/db_builder.php');
 			include(APPPATH.'config/db-default.php');
-			$newID = current ($this->WS->availableID());
+			$newID = current ($this->WS->availableID()); // prend le 1er ID vide parmis ceux disponible
 
-			$dbb = new db_builder('mysql',$db['default']['password'],$db['default']['username'],'localhost',3306,$db['default']['database']);
-			$dbb->createStationDb('Probe_Weather-'.$newID);
+			$dbb = new db_builder('mysql','nbv4023','root','localhost',3306,'');
+			$dbb->createStationDb('ProbeWeather'.$newID);
 			$dsn = $dbb->getDsn();
 
 			$this->WS->arrays2dbconfs($newID, array_merge(array('_ip'=>'', '_port'=>'', '_name'=>'', '_type'=>''), $dsn));

@@ -12,6 +12,7 @@ class Admin extends Authentification {
 	protected $urlWhenLogged= NULL; # when user is authentified go to this URL
 
 	public function __construct() {
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		parent::__construct();
 
 		$this->i18n->setLocaleEnv($this->config->item('probe:locale'), 'global'); // set language
@@ -28,6 +29,7 @@ class Admin extends Authentification {
 	}
 
 	public function index() {
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		i18n('admin.welcome');
 	}
 
@@ -36,6 +38,7 @@ class Admin extends Authentification {
 	* see Authentification.php for the abstract class
 	*/
 	public function connexion() {
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		// requirements
 		$this->load->helper('pages');
 		$this->load->helper(array('form', 'url'));
@@ -63,6 +66,7 @@ class Admin extends Authentification {
 	* see Authentification.php for the abstract class
 	*/
 	public function connect() {
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		$userName =	$this->input->post('username');
 		$userPassword	=	$this->input->post('password');
 		try {

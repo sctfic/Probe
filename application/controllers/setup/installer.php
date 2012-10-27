@@ -7,15 +7,16 @@ define('ADMIN_ROLE_ID', 1); // it's the first role created so it's 1
 class Installer extends CI_Controller {
 
 	public function __construct() {
-  	parent::__construct();
+where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
+		  	parent::__construct();
     $this->load->helper('url');
-
+    $this->load->library('bcrypt');
   	$this->i18n->setLocaleEnv($this->config->item('probe:locale'), 'global');
 	}
 
 	private function startSetup() {
-    $this->load->helper('url');
-    # show form if config file missing
+where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
+		    # show form if config file missing
     if (!file_exists(APPPATH."config/db-default.php")) {
       // $this->requestDsnForConfigDb();
       redirect("setup/installer/dbms");
@@ -42,17 +43,22 @@ class Installer extends CI_Controller {
   }
 
   /* CI require a landing function called: 'index' */
-  public function index() { $this->startSetup(); }
+  public function index() {
+    where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
+		$this->startSetup(); }
   
 
   /* alias method to have nice URL */
-  public function dbms() { $this->requestDsnForConfigDb(); }
+  public function dbms() {
+    where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
+		$this->requestDsnForConfigDb(); }
   /*
   * View: form to request the application administrator's credentials.
   */
   public function requestDsnForConfigDb() {
-    $this->load->helper('pages');
-    $this->load->helper(array('form', 'url'));
+    where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
+		$this->load->helper('pages');
+    $this->load->helper(array('form'));
     $this->load->library('form_validation');
 
     // build view data
@@ -73,8 +79,8 @@ class Installer extends CI_Controller {
   * Model: create the database and relative configuration' files
   */
   function setupDbms() {
-    $this->load->helper('url');
-    require_once(BASEPATH.'core/Model.php'); // need for load models manualy
+    where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
+	  require_once(BASEPATH.'core/Model.php'); // need for load models manualy
     require_once(APPPATH.'models/db_builder.php');
 
     $dbEngine=$this->input->post('dbms-engine');
@@ -99,13 +105,16 @@ class Installer extends CI_Controller {
 
 
   /* alias method to have nice URL */
-  public function adminUser() { $this->requestCredentialsForAdminUser(); }
+  public function adminUser() {
+    where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
+		 $this->requestCredentialsForAdminUser(); }
   /*
   * View: form to request the application administrator's credentials.
   */
   public function requestCredentialsForAdminUser() {
-    $this->load->helper('pages');
-    $this->load->helper(array('form', 'url'));
+    where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
+		$this->load->helper('pages');
+    $this->load->helper(array('form'));
     $this->load->library('form_validation');
 
     // build view data
@@ -121,7 +130,8 @@ class Installer extends CI_Controller {
 
 
 	function setupAdministrator() {
-    $administratorUsername = $this->input->post('administrator-username');
+    where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
+		    $administratorUsername = $this->input->post('administrator-username');
     $administratorPassword = $this->input->post('administrator-password');
     $administratorPasswordConfirmation  = $this->input->post('administrator-password-confirmation');
 

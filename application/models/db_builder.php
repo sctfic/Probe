@@ -34,6 +34,7 @@ class db_builder extends CI_Model {
 
 	//$dsn = "<driver>://<username>:<password>@<host>:<port>/<database>";
 	function __construct($engine='mysql', $userPassword='', $userName='root', $host='localhost', $port=3306, $dbName = 'probe' ) {
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		parent::__construct();
 		log_message('init',  __FUNCTION__.'('.__CLASS__.")\n".__FILE__.' ['.__LINE__.']');
 		$this->setEngine($engine);
@@ -63,45 +64,55 @@ class db_builder extends CI_Model {
 
 /* DB Host's setter/getter */
 	protected function setHost($value) {
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		$this->Host = $value;
 	}
 /* DB Port's setter/getter */
 	protected function setPort($value) {
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		$this->Port = $value;
 	}
 /* DB UserName's setter/getter */
 	protected function setUserName($value) {
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		$this->UserName = $value;
 	}
 /* DB UserPassword's setter/getter */
 	protected function setUserPassword($value) {
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		$this->UserPassword = $value;
 	}
 /* DB UserName's setter/getter */
 	protected function setWorkUserName($value) {
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		$this->WorkUserName = $value;
 	}
 /* DB UserPassword's setter/getter */
 	protected function setWorkUserPassword($value) {
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		$this->WorkUserPassword = $value;
 	}
 /* DB Engine's setter/getter */
 	protected function setEngine($value) {
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		$this->Engine = $value;
 	}
 /* DB Name's setter/getter */
 	protected function setDbName($value) {
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		$this->DbName = $value;
 	}
 /* DB Data Source Name's setter/getter */
 	protected function setDsn($value) {
-	/* @TODO: parse a DSN string to set the properties of the object
+	where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
+		/* @TODO: parse a DSN string to set the properties of the object
 		"<driver>://<username>:<password>@<host>:<port>/<database>";
 		// "<(.+)>://<(.+)>:<(.+)>@<(.+)>:<([0-9]+)>/<(.+)>";
 	*/
 		$this->dsn = $value;
 	}
 	public function getDsn() {
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		return array (
 			'dbdriver'=> 'pdo',
 			'username'=> $this->WorkUserName,
@@ -118,13 +129,15 @@ class db_builder extends CI_Model {
 	 * @return boolean
 	 */
 	function dbExists($dbName) {
-// 		$this->pdoConnection->query("SELECT IF(EXISTS (SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '$dbName'), TRUE, FALSE)");
+where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
+		// 		$this->pdoConnection->query("SELECT IF(EXISTS (SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '$dbName'), TRUE, FALSE)");
 		$result = $this->pdoConnection->query("SELECT COUNT(*) AS NBR FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '$dbName'")->fetch();
 
 		if ($result['NBR']!='0') {
-			log_message('db', $dbName." existe deja, les tables seront créée dedans!\n");
-			return true;}
-		log_message('db',$dbName." N'existe PAS, elle va etre crée !\n");
+			log_message('db', $dbName." existe deja, les tables seront créée dedans!");
+			return true;
+		}
+		log_message('db',$dbName." N'existe PAS, elle va etre crée !");
 		return false;
 	}
 
@@ -136,6 +149,7 @@ class db_builder extends CI_Model {
 	* @param $userPassword
 	*/
 	function addDbUser($user = 'probe_user') {
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		// supprime les utilisateur vide qui provoque des probleme de connection
 		// $this->pdoConnection->query("DELETE FROM user WHERE user = '';");
 		$this->setWorkUserName($user);
@@ -157,6 +171,7 @@ class db_builder extends CI_Model {
 	 *	- stations configurations (host, port, etc.)
 	 */
 	function createAppDb() {
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		// the database MUST be name 'probe' !
 		try {
 			// dans le cas ou la base est fournie avec l'user adequat pas besoin de le refaire
@@ -184,6 +199,7 @@ class db_builder extends CI_Model {
 	*	- TA_LOG: access log
 	*/
 	protected function createAppTables() {
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		$sqlCreateSchema = sprintf(
 			"SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 			SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
@@ -289,18 +305,21 @@ class db_builder extends CI_Model {
 	 * @return array ()
 	 */
 	function createStationDb($dbName) {
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		if (empty($dbName)) return false;
-		$this->setDbName($dbName);
 		try {
 			// dans le cas ou la base est fournie avec l'user adequat pas besoin de le refaire
 			if (!$this->dbExists($dbName)) {				
 				//Creation of database "probe"
-				$sqlCreate = sprintf("CREATE DATABASE IF NOT EXISTS `%s`;", $this->DbName);
+				$sqlCreate = sprintf("CREATE DATABASE IF NOT EXISTS `%s`;", $dbName);
 				$this->pdoConnection->query($sqlCreate);
 
 				//Creation of user
-				$this->addDbUser();
+				$this->addDbUser($dbName);
 			}
+			else echo "existe deja\n";
+			$this->setDbName($dbName);
+
 			$this->createStationTables();
 		} catch (PDOException $e) {
 			throw new Exception( $e->getMessage() );
@@ -309,6 +328,7 @@ class db_builder extends CI_Model {
 	}
 	
 	protected function createStationTables() {
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		$sqlCreateSchema = sprintf(
 			"SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 			SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
@@ -470,7 +490,6 @@ class db_builder extends CI_Model {
 			$this->DbName,
 			$this->DbName
 		);
-
 
 		$this->pdoConnection->query($sqlCreateSchema);
 		$this->pdoConnection->query($sqlCreateSensorsTable);

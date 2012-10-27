@@ -1,6 +1,14 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
-/*
+/**
+php
+https://github.com/studiousapp/codeigniter-bcrypt
+
+js
+https://github.com/fdmanana/bcrypt.js
+*/
+
+/**
 |--------------------------------------------------------------------------
 | Iteration count
 |--------------------------------------------------------------------------
@@ -12,7 +20,7 @@
 */
 $config['iteration_count'] = 8;
 
-/*
+/**
 |--------------------------------------------------------------------------
 | Portable hashes
 |--------------------------------------------------------------------------

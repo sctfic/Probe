@@ -1,5 +1,5 @@
 <?php
-#
+# https://github.com/studiousapp/codeigniter-bcrypt
 # Portable PHP password hashing framework.
 #
 # Version 0.3 / adapted for CodeIgniter by Dwight Watson.

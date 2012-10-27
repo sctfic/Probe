@@ -11,6 +11,7 @@ class weatherstation extends CI_Model {
 	
 	function __construct()
 	{
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		parent::__construct();
 		log_message('init',  __FUNCTION__.'('.__CLASS__.")\n".__FILE__.' ['.__LINE__.']');
 		$this->load->database(); // charge la base par defaut
@@ -22,7 +23,9 @@ class weatherstation extends CI_Model {
 	 * @return	array (db_ID => Name)
 	 */
 	function lstNames()
-	{// on demande la liste des NOM des stations meteo et les ID assoc
+	{
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
+		// on demande la liste des NOM des stations meteo et les ID assoc
 	$lst = $this->db->query( 
 			'SELECT `CFG_STATION_ID`, `CFG_VALUE` 
 			FROM `TR_CONFIG` 
@@ -45,11 +48,12 @@ class weatherstation extends CI_Model {
 	 * @return array ()
 	 **/
 	function availableID () {
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		// given array : $this->lst. [0,1,  3,4,  6,7  ]
 		// construct a new array :   [0,1,2,3,4,5,6,7,8]
 		// use array_diff to get the missing elements 
 		if (empty($this->lst))
-			return array(1);
+			return array(0);
 		return array_diff (range(0, max(array_keys($this->lst))+1), array_keys($this->lst)); // [2,5,8]
 	}
 	/**
@@ -59,8 +63,8 @@ class weatherstation extends CI_Model {
 		si item est ommis alors toutes les conf de toutes les stations sont retourné
 	 * @return array ('name' => array (configs))
 	 */
-	function config($item = null)
-	{
+	function config($item = null)	{
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		if (!is_array($this->lst = $this->lstNames()))
 			return array();
 		if (!empty($item)) {
@@ -102,6 +106,7 @@ class weatherstation extends CI_Model {
 		return $confs;
 	}
 	function HilowCollector() {
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		$type = strtolower($conf['_type']);
 		include_once(APPPATH.'models/'.$type.'.php');
 		$Current_WS = new $type($conf);
@@ -118,6 +123,7 @@ class weatherstation extends CI_Model {
 		return true;
 	}
 	function LpsCollector() {
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		$type = strtolower($conf['_type']);
 		include_once(APPPATH.'models/'.$type.'.php');
 		$Current_WS = new $type($conf);
