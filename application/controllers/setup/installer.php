@@ -7,16 +7,16 @@ define('ADMIN_ROLE_ID', 1); // it's the first role created so it's 1
 class Installer extends CI_Controller {
 
 	public function __construct() {
-where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
-		  	parent::__construct();
+  	parent::__construct();
+    where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
     $this->load->helper('url');
     $this->load->library('bcrypt');
   	$this->i18n->setLocaleEnv($this->config->item('probe:locale'), 'global');
 	}
 
 	private function startSetup() {
-where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
-		    # show form if config file missing
+    where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
+		# show form if config file missing
     if (!file_exists(APPPATH."config/db-default.php")) {
       // $this->requestDsnForConfigDb();
       redirect("setup/installer/dbms");
@@ -90,8 +90,6 @@ where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
     $dbPort=$this->input->post('dbms-port');
 
     try {
-    log_message('db',  __FUNCTION__.'('.__CLASS__.")\n".__FILE__.' ['.__LINE__.']'.$dbEngine.' - '.$userPassword.' - '.$userName.' - '.$dbHost.' - '.$dbPort);
-
       $this->dbb = new db_builder($dbEngine, $userPassword, $userName, $dbHost, $dbPort);
 
       $this->dbb->createAppDb();
@@ -107,7 +105,7 @@ where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
   /* alias method to have nice URL */
   public function adminUser() {
     where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
-		 $this->requestCredentialsForAdminUser(); }
+		$this->requestCredentialsForAdminUser(); }
   /*
   * View: form to request the application administrator's credentials.
   */
@@ -131,7 +129,7 @@ where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 
 	function setupAdministrator() {
     where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
-		    $administratorUsername = $this->input->post('administrator-username');
+		$administratorUsername = $this->input->post('administrator-username');
     $administratorPassword = $this->input->post('administrator-password');
     $administratorPasswordConfirmation  = $this->input->post('administrator-password-confirmation');
 

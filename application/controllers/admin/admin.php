@@ -12,8 +12,8 @@ class Admin extends Authentification {
 	protected $urlWhenLogged= NULL; # when user is authentified go to this URL
 
 	public function __construct() {
-		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		parent::__construct();
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 
 		$this->i18n->setLocaleEnv($this->config->item('probe:locale'), 'global'); // set language
 		$this->encrypt->set_cipher(MCRYPT_BLOWFISH);

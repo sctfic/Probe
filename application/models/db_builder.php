@@ -36,7 +36,7 @@ class db_builder extends CI_Model {
 	function __construct($engine='mysql', $userPassword='', $userName='root', $host='localhost', $port=3306, $dbName = 'probe' ) {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		parent::__construct();
-		log_message('init',  __FUNCTION__.'('.__CLASS__.")\n".__FILE__.' ['.__LINE__.']');
+
 		$this->setEngine($engine);
 		$this->setUserName($userName);
 		$this->setUserPassword($userPassword);
@@ -56,7 +56,6 @@ class db_builder extends CI_Model {
 			);
 
 		} catch (PDOException $e) {
-		log_message('PDOException',  __FUNCTION__.'('.__CLASS__.")\n".__FILE__.' ['.__LINE__.']');
 			throw new Exception( $e->getMessage() );
 		}
 	}
@@ -121,74 +120,76 @@ class db_builder extends CI_Model {
 	 * @return boolean
 	 */
 	function dbExists($dbName) {
-where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
-		// 		$this->pdoConnection->query("SELECT IF(EXISTS (SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '$dbName'), TRUE, FALSE)");
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		$result = $this->pdoConnection->query("SELECT COUNT(*) AS NBR FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '$dbName'")->fetch();
 
-		if ($result['NBR']!='0') {
-			log_message('db', $dbName." existe deja, les tables seront créée dedans!");
+		if ($result['NBR']!='0')
 			return true;
-		}
-		log_message('db',$dbName." N'existe PAS, elle va etre crée !");
+		log_message('db',$dbName.' > N EXISTE PAS !!!');
 		return false;
 	}
 
 
 	/**
 	* Add admin user to the given database
-	* @param $dbName, the name of the database to administrate
-	* @param $userName
+	* @param $dbID, the ID of the database to administrate
+	* @param $userName => WARNING the username lenght is limited to 16 chars !
 	* @param $userPassword
 	*/
-	function addDbUser($user = 'probe_user') {
+	function addDbUser($dbID='') {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		// supprime les utilisateur vide qui provoque des probleme de connection
 		// $this->pdoConnection->query("DELETE FROM user WHERE user = '';");
-		$this->setWorkUserName($user);
+		$this->setWorkUserName('ProbeUsr'.$dbID);
 		$this->setWorkUserPassword(randomPassword(10));
 		// Creation of user
-		$this->pdoConnection->query("CREATE USER IF NOT EXISTS '".$this->WorkUserName."'@'%' IDENTIFIED BY '';");
+		$this->pdoConnection->query("CREATE USER '".$this->WorkUserName."'@'%' IDENTIFIED BY '".$this->WorkUserPassword."';");
+
 		// Adding all privileges on our newly created database
 		$this->pdoConnection->query("GRANT ALL PRIVILEGES on `".$this->DbName."`.* TO '".$this->WorkUserName."'@'%';");
-		// define the password
-		$this->pdoConnection->query("SET PASSWORD FOR  '".$this->WorkUserName."'@'%' = PASSWORD('".$this->WorkUserPassword."');");
+
 		// recharge les privileges
 		$this->pdoConnection->query("FLUSH PRIVILEGES;");
 	}
 
 
 	/**
-	 * @description: Create application's database. It will contains :
-	 * 	- app configuration (users, roles, etc.)
-	 *	- stations configurations (host, port, etc.)
+	 * @description: Create database for given
+	 * @param $dbID
+	 * @return array ()
 	 */
-	function createAppDb() {
+	function createAppDb($dbID=APP_DB) {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
-		// the database MUST be name 'probe' !
 		try {
+			$this->setDbName(is_numeric($dbID) ? 'Probe_Weather'.$dbID : APP_DB);
 			// dans le cas ou la base est fournie avec l'user adequat pas besoin de le refaire
-			if ( ! $this->dbExists(APP_DB) ) {
-				// create the 'probe' database
-				$sqlCreateDb = sprintf("CREATE DATABASE IF NOT EXISTS `%s`;", APP_DB);
-				$this->pdoConnection->query($sqlCreateDb);
+			if (!$this->dbExists($this->DbName)) {
+				//Creation of database
+				$sqlCreate = sprintf("CREATE DATABASE IF NOT EXISTS `%s`;", $this->DbName);
+				$this->pdoConnection->query($sqlCreate);
+				if ( ! $this->dbExists($this->DbName) )
+					throw new Exception( 'Impossible de créer la base ! '.$this->DbName );
+				else log_message('db', $this->DbName.' est maintenant disponible !');
 
-				$this->setDbName(APP_DB);
-				// create an admin user for this base
-				$this->addDbUser();
+				//Creation of user
+				$this->addDbUser(is_numeric($dbID) ? $dbID : 'Admin');
 			}
-			$this->createAppTables();
+			if (is_numeric($dbID))
+				$this->createStationTables();
+			else
+				$this->createAppTables();
 		} catch (PDOException $e) {
 			throw new Exception( $e->getMessage() );
 		}
+		return false;
 	}
 
-
 	/**
-	* @description: Create application's tables for administrative use:
-	* 	- TA_USER: users list
-	*	- TR_ROLE: available roles user can be granted
-	*	- TR_CONFIG: station's configurations
-	*	- TA_LOG: access log
+	description: Create application's tables for administrative use:
+	- TA_USER: users list
+	- TR_ROLE: available roles user can be granted
+	- TR_CONFIG: station's configurations
+	- TA_LOG: access log
 	*/
 	protected function createAppTables() {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
@@ -291,33 +292,7 @@ where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 	}
 
 
-	/**
-	 * @description: Create database for given
-	 * @param $dbName
-	 * @return array ()
-	 */
-	function createStationDb($dbName) {
-		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
-		if (empty($dbName)) return false;
-		try {
-			// dans le cas ou la base est fournie avec l'user adequat pas besoin de le refaire
-			if (!$this->dbExists($dbName)) {				
-				//Creation of database "probe"
-				$sqlCreate = sprintf("CREATE DATABASE IF NOT EXISTS `%s`;", $dbName);
-				$this->pdoConnection->query($sqlCreate);
 
-				//Creation of user
-				$this->addDbUser($dbName);
-			}
-			else echo "existe deja\n";
-			$this->setDbName($dbName);
-
-			$this->createStationTables();
-		} catch (PDOException $e) {
-			throw new Exception( $e->getMessage() );
-		}
-		return false;
-	}
 	
 	protected function createStationTables() {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());

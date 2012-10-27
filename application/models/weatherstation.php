@@ -2,7 +2,7 @@
 // http://fmaz.developpez.com/tutoriels/php/comprendre-pdo/
 class weatherstation extends CI_Model {
 	protected $DBConf = NULL;
-	protected $lst = NULL;
+	public $lst = NULL;
 	protected $data = NULL;
 	protected $confExtend = NULL;	
 	protected $type = NULL;
@@ -13,9 +13,8 @@ class weatherstation extends CI_Model {
 	{
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		parent::__construct();
-		log_message('init',  __FUNCTION__.'('.__CLASS__.")\n".__FILE__.' ['.__LINE__.']');
 		$this->load->database(); // charge la base par defaut
-		$this->lst = $this->lstNames();
+		$this->lstNames();
 	}
 	
 	/**
@@ -33,7 +32,6 @@ class weatherstation extends CI_Model {
 			LIMIT 16');
 		if ($lst->num_rows() > 0)
 		{
-			log_message('db', 'Request list of sation');
 			foreach($lst->result() as $item) { // on met en forme les resultat sous forme de tableau
 				$this->lst[$item->CFG_STATION_ID] = $item->CFG_VALUE;
 			}
@@ -81,7 +79,6 @@ class weatherstation extends CI_Model {
 		}
 		
 		$query = 'SELECT * FROM `TR_CONFIG` WHERE `CFG_STATION_ID`=? LIMIT 100';
-		log_message('Step',  __FUNCTION__.'('.__CLASS__.")\n".__FILE__.' ['.__LINE__.']');
 
 		foreach($lst as $id => $item)
 		{ // pour chaque station meteo on dresse la liste des configs
@@ -102,10 +99,10 @@ class weatherstation extends CI_Model {
 		}
 //		var_export($confs);
 		// on decode le password.
-		$confs[$item]['password'] = $this->encrypt->decode($confs[$item]['password']);
+//		$confs[$item]['password'] = $this->encrypt->decode($confs[$item]['password']);
 		return $confs;
 	}
-	function HilowCollector() {
+	function HilowCollector($conf) {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		$type = strtolower($conf['_type']);
 		include_once(APPPATH.'models/'.$type.'.php');
@@ -122,7 +119,7 @@ class weatherstation extends CI_Model {
 		}
 		return true;
 	}
-	function LpsCollector() {
+	function LpsCollector($conf) {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		$type = strtolower($conf['_type']);
 		include_once(APPPATH.'models/'.$type.'.php');

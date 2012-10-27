@@ -73,12 +73,12 @@ class cmdController extends CI_Controller {
 			}
 			return false;
 		}
-		elseif ($station===null && is_array($this->WS->lst)) {
+		elseif ($station===null && !empty($this->WS->lst)) {
 			// on rapelle cette meme fonction mais avec de vrai paarametre : Toutes les stations
 			$this->dataCollectors (array_keys ($this->WS->lst));
 			return false;
 		}
-		else return false;
+//		else return false;
 		try {
 			// on recupere les confs de $station
 			$conf = end($this->WS->config($station)); // $station est le ID ou le nom
@@ -102,13 +102,12 @@ class cmdController extends CI_Controller {
 			}
 			return false;
 		}
-		elseif (empty($station)) {
-			// on rapelle cette meme fonction mais avec de vrai paarametre : Toutes les stations
-			if (!empty($this->WS->lst))
-				$this->configCollectors (array_keys ($this->WS->lst));
+		elseif ($station===null && !empty($this->WS->lst)) {
+			// on rapelle cette meme fonction mais avec de vrai parametre : les ID de toutes les stations
+			$this->configCollectors (array_keys ($this->WS->lst));
 			return false;
 		}
-		else return false;
+//		else return false;
 		try {
 			$conf = end($this->WS->config($station));
 			if (count($conf)<10 or $force==true) {
@@ -134,7 +133,7 @@ class cmdController extends CI_Controller {
 			$newID = current ($this->WS->availableID()); // prend le 1er ID vide parmis ceux disponible
 
 			$dbb = new db_builder('mysql','nbv4023','root','localhost',3306,'');
-			$dbb->createStationDb('Probe_Weather'.$newID);
+			$dbb->createAppDb($newID);
 			$dsn = $dbb->getDsn();
 
 			$this->WS->arrays2dbconfs($newID, array_merge(array('_ip'=>'', '_port'=>'', '_name'=>'', '_type'=>''), $dsn));

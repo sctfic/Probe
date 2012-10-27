@@ -22,5 +22,5 @@ function array2conf_php($file, $conf_val, $conf_name="db['default']") {
 	return true;
 }
 function where_I_Am ($f, $c, $fn, $l, $args) {
-			log_message('current',  basename($f).'['.$l."]:\n".$c.'->'.$fn.'('.implode(', ',$args).')');
+			log_message('current',  basename($f).'['.$l."]: ".$c.'->'.$fn.'('.(empty($args)?'':"\n".str_replace(array(" ","\t","\r","\n",'['),array('','','','',' ['),print_r($args,true))).' )');
 }

@@ -2,7 +2,7 @@
 class vp2 extends CI_Model {
 	protected $fp=NULL;	// Pointer of VP2 Connection
 	protected $backLightScreen=FALSE; // actual state of backlight screen
-	public $_version = 0.25;
+	public $_version = 0.28;
 	protected $conf = null;
 	
 	protected $prep_EAV = NULL;
@@ -17,7 +17,7 @@ class vp2 extends CI_Model {
 	protected $dataDB = NULL;
 	protected $current_data = NULL;
 	
-	protected function __construct($conf)
+	function __construct($conf)
 	{
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		parent::__construct();
@@ -61,7 +61,7 @@ class vp2 extends CI_Model {
 // 				INNER JOIN `TA_VARIOUS` ON `ID` = `VAR_ID` 
 // 				WHERE `VAR_DATE` >= :SINCE AND `SEN_ID` =:SENSOR_ID ;';
 	}
-	protected function initConnection()	{
+	function initConnection()	{
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		$errno = 0;
 		$this->fp = @fsockopen (
@@ -82,7 +82,7 @@ class vp2 extends CI_Model {
 		}
 		return FALSE;
 	}
-	protected function CloseConnection()	{
+	function CloseConnection()	{
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		$this->toggleBacklight(0);
 		if (fclose($this->fp)) {
@@ -96,7 +96,7 @@ class vp2 extends CI_Model {
 	@return: renvoi TRUE si deja a l'heure , renvoi l'heure en cas de Synchro reuci et FALSE en cas d'echec
 	@param: maxLag est la valeur maxi toleré pour le decalage, force==TRUE ignorera le decalage et force l'heure serveur'.
 	*/
-	protected function clockSync($maxLag, $force=false) {
+	function clockSync($maxLag, $force=false) {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		$TIME = False;
 		$realLag = abs(strtotime($this->fetchStationTime()) - strtotime(date('Y/m/d H:i:s')));
@@ -115,7 +115,7 @@ class vp2 extends CI_Model {
 		log_message('Step',  __FUNCTION__.'('.__CLASS__.")\n".__FILE__.' ['.__LINE__.']');
 		return $TIME;
 	}
-	protected function wakeUp()	{
+	function wakeUp()	{
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		for ($i=0;$i<=3;$i++) {
 			@fwrite ($this->fp, LF);
@@ -125,7 +125,7 @@ class vp2 extends CI_Model {
 		}
 		return FALSE;
 	}
-	protected function toggleBacklight($force=-1) {
+	function toggleBacklight($force=-1) {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		if ($force==-1) {
 			fwrite ($this->fp,'LAMPS '.(($this->backLightScreen)?'0':'1').LF);
@@ -240,7 +240,7 @@ class vp2 extends CI_Model {
 		array ('Date Heure' => array ( Conf1, Conf2, ... ));
 	@param: none
 	*/
-	protected function GetConfig() {
+	function GetConfig() {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		 //
 		$CONFS = false;
@@ -271,7 +271,7 @@ class vp2 extends CI_Model {
 		}
 		return $CONFS;
 	}
-	protected function GetHiLow() {
+	function GetHiLow() {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		 //
 		$HILOW = false;
@@ -282,7 +282,7 @@ class vp2 extends CI_Model {
 			$data = fread($this->fp, 436+2);
 			$this->VerifAnswersAndCRC($data, 436+2);
 			log_message('probe', '[LPS] : Download the current Values');
-			$HILOW = $this->RawConverter($this->HILOW, $data),
+			$HILOW = $this->RawConverter($this->HILOW, $data);
 		}
 		catch (Exception $e) {
 			log_message('warning',  $e->getMessage());
@@ -299,7 +299,7 @@ class vp2 extends CI_Model {
 			... );
 	@param: Nombre de cycle CURRENT a relever (Par defaut 1 seul).
 	*/
-	protected function GetLPS ($type=3, $nbr=1) {
+	function GetLPS ($type=3, $nbr=1) {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		$_NBR = $nbr;
 		$LPS = false;
@@ -317,14 +317,14 @@ class vp2 extends CI_Model {
 					file_put_contents (BASEPATH.'data/LOOP.json',
 						json_encode(
 							array_merge(
-								'UTC_date'=>date('Y/m/d H:i:s'),
+								array('UTC_date'=>date('Y/m/d H:i:s')),
 								$LPS = $this->RawConverter($this->Loop, $data) )));
 						break;
 					case 1:
 					file_put_contents (BASEPATH.'data/LOOP2.json',
 						json_encode(
 							array_merge(
-								'UTC_date'=>date('Y/m/d H:i:s'),
+								array('UTC_date'=>date('Y/m/d H:i:s')),
 								$LPS = $this->RawConverter($this->Loop, $data) )));
 					break;
 					case 2:
@@ -350,7 +350,7 @@ class vp2 extends CI_Model {
 			... );
 	@param: Date de la 1ere archive a lire (par defaut : 2012/01/01 00:00:00)
 	*/
-	protected function GetDmpAft($last, $save=true) {
+	function GetDmpAft($last, $save=true) {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		 //
 		$DATAS=false;
@@ -538,7 +538,7 @@ class vp2 extends CI_Model {
 		log_message('warning', 'Resultat inutilisable ('.$name.')');
 	}
 	
-	protected function get_Last_Date() {
+	function get_Last_Date() {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		$date = $this->dataDB->query('SELECT MAX(VAR_DATE) as LAST_ARCH_DATETIME FROM `TA_VARIOUS`;');
 		if (count($date->result_array())==1) {

@@ -248,7 +248,7 @@
 	'No:Current:Hum:Out#5:DailyLow'                 =>	array( 'pos' => 280,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
 	'No:Current:Hum:Out#6:DailyLow'                 =>	array( 'pos' => 281,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
 	'No:Current:Hum:Out#7:DailyLow'                 =>	array( 'pos' => 282,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
-	'No:Current:Hum:Out#8:DailyLow'                 =>	array( 'pos' => 283,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),8
+	'No:Current:Hum:Out#8:DailyLow'                 =>	array( 'pos' => 283,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
 
 	'No:Current:Hum:Out:DailyHigh'                =>	array( 'pos' => 284,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
 	'No:Current:Hum:Out#2:DailyHigh'                =>	array( 'pos' => 285,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
