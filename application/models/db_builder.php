@@ -64,42 +64,34 @@ class db_builder extends CI_Model {
 
 /* DB Host's setter/getter */
 	protected function setHost($value) {
-		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		$this->Host = $value;
 	}
 /* DB Port's setter/getter */
 	protected function setPort($value) {
-		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		$this->Port = $value;
 	}
 /* DB UserName's setter/getter */
 	protected function setUserName($value) {
-		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		$this->UserName = $value;
 	}
 /* DB UserPassword's setter/getter */
 	protected function setUserPassword($value) {
-		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		$this->UserPassword = $value;
 	}
 /* DB UserName's setter/getter */
 	protected function setWorkUserName($value) {
-		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		$this->WorkUserName = $value;
 	}
 /* DB UserPassword's setter/getter */
 	protected function setWorkUserPassword($value) {
-		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		$this->WorkUserPassword = $value;
 	}
 /* DB Engine's setter/getter */
 	protected function setEngine($value) {
-		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		$this->Engine = $value;
 	}
 /* DB Name's setter/getter */
 	protected function setDbName($value) {
-		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		$this->DbName = $value;
 	}
 /* DB Data Source Name's setter/getter */

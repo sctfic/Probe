@@ -26,7 +26,7 @@ class weatherstation extends CI_Model {
 	{
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		// on demande la liste des NOM des stations meteo et les ID assoc
-	$lst = $this->db->query( 
+		$lst = $this->db->query( 
 			'SELECT `CFG_STATION_ID`, `CFG_VALUE` 
 			FROM `TR_CONFIG` 
 			WHERE `CFG_LABEL`=\'_name\' 

@@ -21,7 +21,6 @@ class vp2 extends CI_Model {
 	{
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		parent::__construct();
-		log_message('init',  __FUNCTION__.'('.__CLASS__.' ('.$conf['_name'].':'.($conf['_name']).') '.")\n".__FILE__.' ['.__LINE__.']');
 		$this->conf = $conf;
 
 		require (APPPATH.'models/vp2/EepromDumpAfter.h.php');
