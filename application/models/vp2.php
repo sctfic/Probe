@@ -209,7 +209,7 @@ class vp2 extends CI_Model {
 				return NULL;
 			return $val;
 		}
-		return 'No protected function to convert !';
+		return '<!> No function to convert <!>';
 	}
 	protected function convertUnit($Value, $limits) {
 	// Retourne la valeur numerique coverti en unité SI
@@ -263,24 +263,26 @@ class vp2 extends CI_Model {
 		}
 		return $CONFS;
 	}
-	function GetHiLow() {
+	function GetHiLows() {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
-		 //
 		$HILOW = false;
-		 try {
+		try {
 			log_message('probe', '[EEBRD] : Download the current Config');
 			
-			$this->RequestCmd("HILOW\n");
+			$this->RequestCmd("HILOWS\n");
 			$data = fread($this->fp, 436+2);
-			$this->VerifAnswersAndCRC($data, 436+2);
 			log_message('probe', '[LPS] : Download the current Values');
-			$HILOW = $this->RawConverter($this->HILOW, $data);
-		}
+			$this->VerifAnswersAndCRC($data, 436+2);
+			saveDataOnFile(
+				'HILOWS',
+				array_merge( array('UTC_date'=>date('Y/m/d H:i:s')), $HILOWS = $this->RawConverter($this->HiLows, $data)),
+				FORMAT_PHP + FORMAT_TXT + FORMAT_JSON + FORMAT_SERIALIZED + FORMAT_XML);		}
 		catch (Exception $e) {
 			log_message('warning',  $e->getMessage());
 			return false;
 		}
-		return $HILOW;
+
+		return $HILOWS;
 	}
 	/**
 	@description: Lis les valeur courante de tous les capteur disponible sur la station
@@ -304,20 +306,19 @@ class vp2 extends CI_Model {
 // 				$packet_type = $this->convertUnit( $this->convertRaw( $this->subRaw( $data, $this->Loop['NO:::PacketType']), $this->Loop['NO:::PacketType']), $this->Loop['NO:::PacketType']);
 				$packet_type = $this->RawConverter(array('NO:::PacketType'=>$this->Loop['NO:::PacketType']), $data);
 				// log_message('type', 'Type'.$packet_type."\n".__FUNCTION__.'('.__CLASS__.' ('.$this->conf['_name'].':'.($this->conf['database']).') '.")\n".__FILE__.' ['.__LINE__.']');
+				print_r($packet_type);
 				switch($packet_type['NO:::PacketType']) {
 					case 0:
-					file_put_contents (FCPATH.'data/LOOP.json',
-						json_encode(
-							array_merge(
-								array('UTC_date'=>date('Y/m/d H:i:s')),
-								$LPS = $this->RawConverter($this->Loop, $data) )));
+					saveDataOnFile(
+						'LOOP',
+						array_merge( array('UTC_date'=>date('Y/m/d H:i:s')), $LPS = $this->RawConverter($this->Loop, $data)),
+						FORMAT_PHP + FORMAT_TXT + FORMAT_JSON + FORMAT_SERIALIZED + FORMAT_XML);
 						break;
 					case 1:
-					file_put_contents (FCPATH.'data/LOOP2.json',
-						json_encode(
-							array_merge(
-								array('UTC_date'=>date('Y/m/d H:i:s')),
-								$LPS = $this->RawConverter($this->Loop, $data) )));
+					saveDataOnFile(
+						'LOOP2',
+						array_merge( array('UTC_date'=>date('Y/m/d H:i:s')), $LPS = $this->RawConverter($this->Loop2, $data)),
+						FORMAT_PHP + FORMAT_TXT + FORMAT_JSON + FORMAT_SERIALIZED + FORMAT_XML);
 					break;
 					case 2:
 						break;

@@ -25,12 +25,12 @@ class cmdController extends CI_Controller {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		// $this->configCollectors();
 		// $this->dataCollectors();
-		$this->hilowCollectors(0);
-		// $this->curentCollectors(0);
+		// $this->hilowsCollectors(0);
+		$this->curentCollectors(0);
 	}
 
 	// clear;php5 -f /var/www/Probe/cli.php 'cmdcontroller/hilowCollectors'
-	function hilowCollectors($station = null) {
+	function hilowsCollectors($station = null) {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		try {
 			$item_ID = is_numeric($station) ? array_search($station, $this->WS->lst) : $station;
@@ -38,7 +38,7 @@ class cmdController extends CI_Controller {
 				// on rapelle cette meme fonction mais avec de vrai paarametre : Toutes les stations
 				// on recupere les confs de $station
 				$itemConf = end($this->WS->config($item_ID)); // $station est le ID ou le nom
-				$this->WS->HilowCollector ($itemConf);
+				$this->WS->HilowsCollector ($itemConf);
 				return false;
 			}
 			else return false;

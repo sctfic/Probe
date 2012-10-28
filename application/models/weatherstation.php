@@ -102,7 +102,7 @@ class weatherstation extends CI_Model {
 //		$confs[$item]['password'] = $this->encrypt->decode($confs[$item]['password']);
 		return $confs;
 	}
-	function HilowCollector($conf) {
+	function HilowsCollector($conf) {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__);
 		$type = strtolower($conf['_type']);
 		include_once(APPPATH.'models/'.$type.'.php');
@@ -110,10 +110,9 @@ class weatherstation extends CI_Model {
 		try {
 			if ( !$Current_WS->initConnection() )
 				throw new Exception( sprintf( _('Impossible de se connecter à %s par %s:%s'), $conf['_name'], $conf['_ip'], $conf['_port']));
-			$this->data = $Current_WS->GetHiLow ( );
+			$this->data = $Current_WS->GetHiLows ( );
 			if ( !$Current_WS->closeConnection() )
 				throw new Exception( sprintf( _('Fermeture de %s impossible'), $conf['_name']) );
-			print_r($this->data);
 		}
 		catch (Exception $e) {
 			throw new Exception($e->getMessage());

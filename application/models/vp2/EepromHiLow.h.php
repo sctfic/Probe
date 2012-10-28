@@ -6,7 +6,7 @@
 /// broken up into sections of related data values.
 // ##############################################################################################
 
-	$this->HiLow = array (
+	$this->HiLows = array (
 	'No:Current:Various:Bar:DailyLow'               =>	array( 'pos' => 0,      'len' => 2,	'fn'=>'_0001',      'SI'=>'inHg2hPa',         'min'=>25,      'max'=>33,	'err'=>0,       'unit'=> 'in.Hg'),
 	'No:Current:Various:Bar:DailyHigh'              =>	array( 'pos' => 2,      'len' => 2,	'fn'=>'_0001',      'SI'=>'inHg2hPa',         'min'=>25,      'max'=>33,	'err'=>0,       'unit'=> 'in.Hg'),
 	'No:Current:Various:Bar:MonthLow'               =>	array( 'pos' => 4,      'len' => 2,	'fn'=>'_0001',      'SI'=>'inHg2hPa',         'min'=>25,      'max'=>33,	'err'=>0,       'unit'=> 'in.Hg'),

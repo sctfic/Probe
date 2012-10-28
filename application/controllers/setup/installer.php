@@ -94,7 +94,7 @@ class Installer extends CI_Controller {
 
       $this->dbb->createAppDb();
       $dns = $this->dbb->getDsn();
-      array2conf_php(APPPATH.'config/db-default.php', $dns, "db['default']");
+      saveDataOnFile(APPPATH.'config/db-default.php', $dns, FORMAT_PHP, "db['default']");
       redirect("setup/installer/adminUser");
     } catch (Exception $e) {
         log_message('db',  $e->getMessage() );
