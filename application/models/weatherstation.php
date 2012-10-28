@@ -103,16 +103,17 @@ class weatherstation extends CI_Model {
 		return $confs;
 	}
 	function HilowCollector($conf) {
-		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__);
 		$type = strtolower($conf['_type']);
 		include_once(APPPATH.'models/'.$type.'.php');
 		$Current_WS = new $type($conf);
 		try {
 			if ( !$Current_WS->initConnection() )
 				throw new Exception( sprintf( _('Impossible de se connecter à %s par %s:%s'), $conf['_name'], $conf['_ip'], $conf['_port']));
-			$this->data = $Current_WS->GetHilow ( );
+			$this->data = $Current_WS->GetHiLow ( );
 			if ( !$Current_WS->closeConnection() )
 				throw new Exception( sprintf( _('Fermeture de %s impossible'), $conf['_name']) );
+			print_r($this->data);
 		}
 		catch (Exception $e) {
 			throw new Exception($e->getMessage());
@@ -120,7 +121,7 @@ class weatherstation extends CI_Model {
 		return true;
 	}
 	function LpsCollector($conf) {
-		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__);
 		$type = strtolower($conf['_type']);
 		include_once(APPPATH.'models/'.$type.'.php');
 		$Current_WS = new $type($conf);
@@ -145,6 +146,7 @@ class weatherstation extends CI_Model {
 	 */
 	function ArchCollector($conf)
 	{
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__);
 		$type = strtolower($conf['_type']);
 		include_once(APPPATH.'models/'.$type.'.php');
 		$Current_WS = new $type($conf);
@@ -164,6 +166,7 @@ class weatherstation extends CI_Model {
 
 	function ConfCollector($conf)
 	{
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__);
 		$type = strtolower($conf['_type']);
 		include_once(APPPATH.'models/'.$type.'.php');
 		$Current_WS = new $type($conf);
@@ -193,6 +196,7 @@ class weatherstation extends CI_Model {
 	la conf n'existe pas > INSERT INTO
 	la conf existe mais ne change pas de valeur > on ni change rien ! ou on reecris la meme valeur.
 	la conf existe mais la valeur et modifier > UPDATE de la valeur et de la date */
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__);
 		foreach ($conf as $label => $value) {
 			$val = $this->db->escape($value);
 		// http://codeigniter.com/user_guide/database/queries.html

@@ -23,19 +23,22 @@ class cmdController extends CI_Controller {
 	// clear;php5 -f /var/www/Probe/cli.php 'cmdcontroller'
 	function index() {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
-		$this->configCollectors();
-		$this->dataCollectors();
+		// $this->configCollectors();
+		// $this->dataCollectors();
+		$this->hilowCollectors(0);
+		// $this->curentCollectors(0);
 	}
 
 	// clear;php5 -f /var/www/Probe/cli.php 'cmdcontroller/hilowCollectors'
 	function hilowCollectors($station = null) {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		try {
-			if ($item_ID = array_search($station, $this->WS->lst)) {
+			$item_ID = is_numeric($station) ? array_search($station, $this->WS->lst) : $station;
+			if (isset($item_ID)) {
 				// on rapelle cette meme fonction mais avec de vrai paarametre : Toutes les stations
 				// on recupere les confs de $station
-				$conf = end($this->WS->config($item_ID)); // $station est le ID ou le nom
-				$this->WS->HilowCollector ($item);
+				$itemConf = end($this->WS->config($item_ID)); // $station est le ID ou le nom
+				$this->WS->HilowCollector ($itemConf);
 				return false;
 			}
 			else return false;
@@ -49,11 +52,12 @@ class cmdController extends CI_Controller {
 	function curentCollectors($station = null) {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		try {
-			if ($item_ID = array_search($station, $this->WS->lst)) {
+			$item_ID = is_numeric($station) ? array_search($station, $this->WS->lst) : $station;
+			if (isset($item_ID)) {
 				// on rapelle cette meme fonction mais avec de vrai paarametre : Toutes les stations
 				// on recupere les confs de $station
-				$conf = end($this->WS->config($item_ID)); // $station est le ID ou le nom
-				$this->WS->LpsCollector ($item);
+				$itemConf = end($this->WS->config($item_ID)); // $station est le ID ou le nom
+				$this->WS->LpsCollector ($itemConf);
 				return false;
 			}
 			else return false;
@@ -110,7 +114,9 @@ class cmdController extends CI_Controller {
 //		else return false;
 		try {
 			$conf = end($this->WS->config($station));
-			if (count($conf)<10 or $force==true) {
+			log_message('count', count($conf));
+
+			if (count($conf)<30 or $force==true) {
 				$readconf = $this->WS->ConfCollector($conf);
 				foreach ($readconf as $key => $val) {
 					if (strpos($key, 'TR:Config:')!==FALSE)

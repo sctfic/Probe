@@ -116,6 +116,13 @@
 		return 'Rev B';
 	}
 	function BTrend($str) {// ...
+		$TREND = array(
+			196=>'Falling Rapidly',
+			236=>'Falling Slowly',
+			0=>'Steady',
+			20=>'Rising Slowly',
+			60=>'Rising Rapidly',
+			80=>'Rev A');
 		return $TREND[s2uc($str)];
 	}
 

@@ -21,6 +21,6 @@ function array2conf_php($file, $conf_val, $conf_name="db['default']") {
 		throw new Exception( i18n('Impossible d ecrire le fichier de config : '.APPPATH.'config/db-default.php') );
 	return true;
 }
-function where_I_Am ($f, $c, $fn, $l, $args) {
+function where_I_Am ($f, $c, $fn, $l, $args=null) {
 			log_message('current',  basename($f).'['.$l."]: ".$c.'->'.$fn.'('.(empty($args)?'':"\n".str_replace(array(" ","\t","\r","\n",'['),array('','','','',' ['),print_r($args,true))).' )');
 }
