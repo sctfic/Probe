@@ -103,7 +103,7 @@ class vp2 extends CI_Model {
 		log_message('Step',  __FUNCTION__.'('.__CLASS__.")\n".__FILE__.' ['.__LINE__.']');
 		if ($realLag > $maxLag || $force) {
 			Waiting( 0, sprintf( _('Default Clock synchronize : %ssec'), $realLag) );
-			if ($realLag < 3600-$maxLag || $realLag > 3600*12 || $force) {	// OK
+			if ($realLag < 3600+$maxLag || $realLag > 3600*12 || $force) {	// OK
 				if ($TIME = $this->updateStationTime()) {							// OK
 					log_message('probe', _('Clock synchronizing.'));					// OK
 				}

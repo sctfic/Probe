@@ -89,7 +89,7 @@ class weatherstation extends CI_Model {
 			{ // on integre chacune des configs dans un tableau a 2 dimensions qui sera utilisé par la suite
 				$confs[$item][strtolower($val->CFG_LABEL)] = $val->CFG_VALUE;
 			}
-			if (!isset($confs[$item]['username']) || !isset($confs[$item]['password']) || !isset($confs[$item]['dbdriver']) || !isset($confs[$item]['_ip']) || !isset($confs[$item]['_port']) || !isset($confs[$item]['_type'])) {
+			if (empty($confs[$item]['username']) || empty($confs[$item]['password']) || empty($confs[$item]['dbdriver']) || empty($confs[$item]['_ip']) || empty($confs[$item]['_port']) || empty($confs[$item]['_type'])) {
 				log_message('warning', 'Missing confs for '.$item.' > Skipped!');
 				unset($confs[$item]);
 			}
@@ -97,9 +97,8 @@ class weatherstation extends CI_Model {
 		if (count($confs) == 0){
 			throw new Exception(_('Aucune configuration valide n\'est disponible'));
 		}
-//		var_export($confs);
 		// on decode le password.
-//		$confs[$item]['password'] = $this->encrypt->decode($confs[$item]['password']);
+		$confs[$item]['password'] = $this->encrypt->decode($confs[$item]['password']);
 		return $confs;
 	}
 	function HilowsCollector($conf) {
@@ -196,6 +195,9 @@ class weatherstation extends CI_Model {
 	la conf existe mais ne change pas de valeur > on ni change rien ! ou on reecris la meme valeur.
 	la conf existe mais la valeur et modifier > UPDATE de la valeur et de la date */
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__);
+		if (isset($conf['password']))
+			$conf['password'] = $this->encrypt->encode($conf['password']);
+
 		foreach ($conf as $label => $value) {
 			$val = $this->db->escape($value);
 		// http://codeigniter.com/user_guide/database/queries.html

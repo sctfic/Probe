@@ -23,10 +23,10 @@ class cmdController extends CI_Controller {
 	// clear;php5 -f /var/www/Probe/cli.php 'cmdcontroller'
 	function index() {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
-		// $this->configCollectors();
-		// $this->dataCollectors();
+		$this->configCollectors();
+		$this->dataCollectors();
 		// $this->hilowsCollectors(0);
-		$this->curentCollectors(0);
+		// $this->curentCollectors(0);
 	}
 
 	// clear;php5 -f /var/www/Probe/cli.php 'cmdcontroller/hilowCollectors'
