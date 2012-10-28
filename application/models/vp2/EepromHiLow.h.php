@@ -6,7 +6,7 @@
 /// broken up into sections of related data values.
 // ##############################################################################################
 
-	$this->HiLow = array (
+	$this->HiLows = array (
 	'No:Current:Various:Bar:DailyLow'               =>	array( 'pos' => 0,      'len' => 2,	'fn'=>'_0001',      'SI'=>'inHg2hPa',         'min'=>25,      'max'=>33,	'err'=>0,       'unit'=> 'in.Hg'),
 	'No:Current:Various:Bar:DailyHigh'              =>	array( 'pos' => 2,      'len' => 2,	'fn'=>'_0001',      'SI'=>'inHg2hPa',         'min'=>25,      'max'=>33,	'err'=>0,       'unit'=> 'in.Hg'),
 	'No:Current:Various:Bar:MonthLow'               =>	array( 'pos' => 4,      'len' => 2,	'fn'=>'_0001',      'SI'=>'inHg2hPa',         'min'=>25,      'max'=>33,	'err'=>0,       'unit'=> 'in.Hg'),
@@ -248,7 +248,7 @@
 	'No:Current:Hum:Out#5:DailyLow'                 =>	array( 'pos' => 280,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
 	'No:Current:Hum:Out#6:DailyLow'                 =>	array( 'pos' => 281,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
 	'No:Current:Hum:Out#7:DailyLow'                 =>	array( 'pos' => 282,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
-	'No:Current:Hum:Out#8:DailyLow'                 =>	array( 'pos' => 283,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),8
+	'No:Current:Hum:Out#8:DailyLow'                 =>	array( 'pos' => 283,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
 
 	'No:Current:Hum:Out:DailyHigh'                =>	array( 'pos' => 284,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),
 	'No:Current:Hum:Out#2:DailyHigh'                =>	array( 'pos' => 285,	'len' => 1,	'fn'=>'s2uc',       'SI'=>NULL,               'min'=>0,       'max'=>100,	'err'=>255,     'unit'=> '%'),

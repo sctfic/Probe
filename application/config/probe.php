@@ -8,13 +8,6 @@ $config['mainDb'] = 'probe';
 $config['probe:username'] = '';
 // $config['probe:password'] = 'edouard.lopez';
 $config['probe:password'] = '';
-/**
-	include(APPPATH.'libraries/PROBE_rev_crypt.php');
-	$crypt = new PROBE_rev_crypt('database_root');
-//	$crypt->write('P@$$w0rd');
-	$config['probe:password'] = $crypt->read();
-	unset($crypt);
-**/
 
 // Locale/language to use for the interface
 $config['probe:locale'] = 'fr';
@@ -32,11 +25,6 @@ $config['require_directories']	= array("entity", "exceptions");
 $config['require_blacklist'] = array( "Address");
 
 
-
-
-
-
-
 //###################################### REQUIRES ######################################
 $absoluteAppPath = str_replace(
         end(explode('/', $_SERVER['SCRIPT_FILENAME'])),
@@ -46,11 +34,9 @@ $absoluteAppPath = str_replace(
     .''.APPPATH;
 // echo $absoluteAppPath."<br/>";
 
-
 foreach($config['require_directories'] as $unDossier) {
 	require_once_file_autoload($absoluteAppPath."".$unDossier , $config['require_blacklist']);
 }
-
 
 function require_once_file_autoload($chemin , $exclude = array() ) {
 

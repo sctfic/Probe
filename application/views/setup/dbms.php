@@ -2,6 +2,7 @@
 	<ul class="breadcrumb">
 	    <li class="active"><a href="/setup/installer/dbms"><?=i18n("setup.breadcrumb.dbms")?></a> <span class="divider">/</span></li>
 	    <li class="disabled"><?=i18n("setup.breadcrumb.administrator")?> <span class="divider">/</span></li>
+	    <li class="disabled"><?=i18n("setup.breadcrumb.dashboard")?> <span class="divider">/</span></li>
 	</ul>
 </div>
 
@@ -17,14 +18,14 @@
 
 		<!-- Server host/IP -->
 		<div class="control-group">
-			<label class="control-label" for="dbms-ip">
-				<?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('setup.dbms.ip'), i18n('required'), i18n('&nbsp;:')) ?>
+			<label class="control-label" for="dbms-host">
+				<?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('setup.dbms.host'), i18n('required'), i18n('&nbsp;:')) ?>
 			</label>
 			<div class="controls">
-				<input id="dbms-ip"
+				<input id="dbms-host"
 					type="text" required
-					name="dbms-ip" value="<?=$dbmsIp?>" 
-					class="input-medium" placeholder="<?=i18n('setup.dbms.ip.placeholder')?>"
+					name="dbms-host" value="<?=$dbmsHost?>" 
+					class="input-large" placeholder="<?=i18n('setup.dbms.host.placeholder')?>"
 				>
 			</div>
 		</div>

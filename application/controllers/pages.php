@@ -4,7 +4,8 @@ class Pages extends CI_Controller {
 /*
 @description: wrap page in HTML
 */
-function view($page, $data = null) { //
+function view($page, $data = null) {where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
+		 //
 // echo $page;
     if ( ! file_exists('application/views/'.$page.'.php')) {
         // Whoops, we don't have a page for that!
@@ -18,7 +19,8 @@ function view($page, $data = null) { //
 }
 
 //     function __construct() {
-//         parent::__construct();
+//where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
+		//         parent::__construct();
 // //         $this->setPathToWorkingDir($GLOBALS['workingFolder']);
 //     }
 

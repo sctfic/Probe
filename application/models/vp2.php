@@ -2,7 +2,7 @@
 class vp2 extends CI_Model {
 	protected $fp=NULL;	// Pointer of VP2 Connection
 	protected $backLightScreen=FALSE; // actual state of backlight screen
-	public $_version = 0.25;
+	public $_version = 0.28;
 	protected $conf = null;
 	
 	protected $prep_EAV = NULL;
@@ -13,65 +13,24 @@ class vp2 extends CI_Model {
 
 	protected $prep_VARIOUS = NULL;
 	protected $key_VARIOUS = array(':UTC_date', ':rainfall', ':max_rainfall', ':P0', ':srad', ':max_srad', ':wspeed', ':max_wspeed', ':dir_higtspeed', ':dir_dominant', ':uv', ':max_uv', ':forecast', ':et');
-
-	protected $T_12H = NULL;
 	
 	protected $dataDB = NULL;
 	protected $current_data = NULL;
 	
-	protected function __construct($conf)
+	function __construct($conf)
 	{
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__);
 		parent::__construct();
-		log_message('init',  __FUNCTION__.'('.__CLASS__.' ('.$conf['_name'].':'.($base = $conf['_db']).') '.")\n".__FILE__.' ['.__LINE__.']');
 		$this->conf = $conf;
-		$this->load->helper(array('binary','s.i.converter'));
-		global $auge, $altitude, $latitude, $longitude, $Zone, $WindCup;
-		$auge = $conf['rain:collector:size'];
-		$WindCup = $conf['wind:cup:large'];
-		$altitude = $conf['geo:elevation:ocean'];
-		$latitude = $conf['geo:latitude:nordvalue'];
-		$longitude = $conf['geo:longitude:estvalue'];
-		$Zone = $conf['geo:time:zone'];
-		
-	/**
-	[bar::unit] => 0
-	[bar:calibration:cal] => 0.004
-	[bar:calibration:gain] => 0
-	[bar:calibration:offset] => -36
-	[daylight:savings:enable] => 0
-	[daylight:savings:manual] => 1
-	[geo:elevation:ocean] => 240
-	[geo:elevation:unit] => 0
->	[geo:latitude:nord] => 44.5
-? >	[geo:latitude:north] => 0
-? >	[geo:longitude:east] => 0
->	[geo:longitude:est] => 0.3
-	[geo:time:zone] => 21
-	[hum:calibration:@33%] => -1
-	[hum:calibration:@80%] => -1
-	[rain::seasonstart] => 1
-	[rain:collector:size] => 0
-	[rain:display:unit] => 0
-	[temp:display:unit] => 0
-	[temp:log:average] => 1
-	[time:archive:period] => 5
-	[time:format:day/month] => 0
-	[time:gmt:enable] => 1
-	[time:gmt:offset] => 2:00
-	[time:mode:am/pm] => 0
-	[time:mode:isam] => 0
-	[wind:cup:large] => 0
-	[wind:display:unit] => 0
-	**/
 
 		require (APPPATH.'models/vp2/EepromDumpAfter.h.php');
 		require (APPPATH.'models/vp2/EepromLoop.h.php');
 		require (APPPATH.'models/vp2/EepromLoop2.h.php');
 		require (APPPATH.'models/vp2/EepromHiLow.h.php');
 		require (APPPATH.'models/vp2/EepromConfig.h.php');
-		
-		$this->dataDB = $this->load->database($base, TRUE);
-		
+
+		$this->dataDB = $this->load->database($conf, TRUE);
+
 		$this->prep_EAV_T = $this->dataDB->conn_id->prepare(
 			'REPLACE 
 				INTO TA_TEMPERATURE (ID, VALUE, SEN_ID) 
@@ -102,7 +61,8 @@ class vp2 extends CI_Model {
 // 				INNER JOIN `TA_VARIOUS` ON `ID` = `VAR_ID` 
 // 				WHERE `VAR_DATE` >= :SINCE AND `SEN_ID` =:SENSOR_ID ;';
 	}
-	protected function initConnection()	{
+	function initConnection()	{
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		$errno = 0;
 		$this->fp = @fsockopen (
 			$this->conf['_ip'],
@@ -122,7 +82,8 @@ class vp2 extends CI_Model {
 		}
 		return FALSE;
 	}
-	protected function CloseConnection()	{
+	function CloseConnection()	{
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		$this->toggleBacklight(0);
 		if (fclose($this->fp)) {
 			log_message('probe', sprintf( _('Fermeture de %s correcte.'), $this->conf['_name'] ) );
@@ -135,13 +96,14 @@ class vp2 extends CI_Model {
 	@return: renvoi TRUE si deja a l'heure , renvoi l'heure en cas de Synchro reuci et FALSE en cas d'echec
 	@param: maxLag est la valeur maxi toleré pour le decalage, force==TRUE ignorera le decalage et force l'heure serveur'.
 	*/
-	protected function clockSync($maxLag, $force=false) {
+	function clockSync($maxLag, $force=false) {
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		$TIME = False;
 		$realLag = abs(strtotime($this->fetchStationTime()) - strtotime(date('Y/m/d H:i:s')));
 		log_message('Step',  __FUNCTION__.'('.__CLASS__.")\n".__FILE__.' ['.__LINE__.']');
 		if ($realLag > $maxLag || $force) {
 			Waiting( 0, sprintf( _('Default Clock synchronize : %ssec'), $realLag) );
-			if ($realLag < 3600-$maxLag || $realLag > 3600*12 || $force) {	// OK
+			if ($realLag < 3600+$maxLag || $realLag > 3600*12 || $force) {	// OK
 				if ($TIME = $this->updateStationTime()) {							// OK
 					log_message('probe', _('Clock synchronizing.'));					// OK
 				}
@@ -153,7 +115,8 @@ class vp2 extends CI_Model {
 		log_message('Step',  __FUNCTION__.'('.__CLASS__.")\n".__FILE__.' ['.__LINE__.']');
 		return $TIME;
 	}
-	protected function wakeUp()	{
+	function wakeUp()	{
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		for ($i=0;$i<=3;$i++) {
 			@fwrite ($this->fp, LF);
 			if (fread($this->fp,6)==LFCR)
@@ -162,7 +125,8 @@ class vp2 extends CI_Model {
 		}
 		return FALSE;
 	}
-	protected function toggleBacklight($force=-1) {
+	function toggleBacklight($force=-1) {
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		if ($force==-1) {
 			fwrite ($this->fp,'LAMPS '.(($this->backLightScreen)?'0':'1').LF);
 		}
@@ -204,7 +168,8 @@ class vp2 extends CI_Model {
 	@return: protected functionReturn
 	@param: returnValue
 	*/
-	protected function RequestCmd($cmd) { //
+	protected function RequestCmd($cmd) {
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		fwrite ($this->fp, $cmd);
 		$r = fread($this->fp, 1);
 		if ($r == ACK){
@@ -244,7 +209,7 @@ class vp2 extends CI_Model {
 				return NULL;
 			return $val;
 		}
-		return 'No protected function to convert !';
+		return '<!> No function to convert <!>';
 	}
 	protected function convertUnit($Value, $limits) {
 	// Retourne la valeur numerique coverti en unité SI
@@ -256,7 +221,7 @@ class vp2 extends CI_Model {
 		}
 		return $Value;
 	}
-	protected function RawConverter($DataModele, $RawStr) { //
+	protected function RawConverter($DataModele, $RawStr) {
 		$data = array();
 		foreach($DataModele as $key=>$limits)
 			$data[$key] = $this->convertUnit( $this->convertRaw( $this->subRaw( $RawStr, $limits), $limits), $limits);
@@ -268,7 +233,8 @@ class vp2 extends CI_Model {
 		array ('Date Heure' => array ( Conf1, Conf2, ... ));
 	@param: none
 	*/
-	protected function GetConfig() { //
+	function GetConfig() {
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		$CONFS = false;
 		 try {
 			log_message('probe', '[EEBRD] : Download the current Config');
@@ -297,22 +263,26 @@ class vp2 extends CI_Model {
 		}
 		return $CONFS;
 	}
-	protected function GetHiLow() { //
+	function GetHiLows() {
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		$HILOW = false;
-		 try {
+		try {
 			log_message('probe', '[EEBRD] : Download the current Config');
 			
-			$this->RequestCmd("HILOW\n");
+			$this->RequestCmd("HILOWS\n");
 			$data = fread($this->fp, 436+2);
-			$this->VerifAnswersAndCRC($data, 436+2);
 			log_message('probe', '[LPS] : Download the current Values');
-			$HILOW = $this->RawConverter($this->HILOW, $data),
-		}
+			$this->VerifAnswersAndCRC($data, 436+2);
+			saveDataOnFile(
+				'HILOWS',
+				array_merge( array('UTC_date'=>date('Y/m/d H:i:s')), $HILOWS = $this->RawConverter($this->HiLows, $data)),
+				FORMAT_PHP + FORMAT_TXT + FORMAT_JSON + FORMAT_SERIALIZED + FORMAT_XML);		}
 		catch (Exception $e) {
 			log_message('warning',  $e->getMessage());
 			return false;
 		}
-		return $HILOW;
+
+		return $HILOWS;
 	}
 	/**
 	@description: Lis les valeur courante de tous les capteur disponible sur la station
@@ -323,7 +293,8 @@ class vp2 extends CI_Model {
 			... );
 	@param: Nombre de cycle CURRENT a relever (Par defaut 1 seul).
 	*/
-	protected function GetLPS ($type=3, $nbr=1) {
+	function GetLPS ($type=3, $nbr=1) {
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		$_NBR = $nbr;
 		$LPS = false;
 		try {
@@ -334,21 +305,20 @@ class vp2 extends CI_Model {
 				log_message('probe', '[LPS] : Download the current Values');
 // 				$packet_type = $this->convertUnit( $this->convertRaw( $this->subRaw( $data, $this->Loop['NO:::PacketType']), $this->Loop['NO:::PacketType']), $this->Loop['NO:::PacketType']);
 				$packet_type = $this->RawConverter(array('NO:::PacketType'=>$this->Loop['NO:::PacketType']), $data);
-				log_message('type', 'Type'.$packet_type."\n".__FUNCTION__.'('.__CLASS__.' ('.$conf['_name'].':'.($base = $conf['_db']).') '.")\n".__FILE__.' ['.__LINE__.']');
-				switch($packet_type) {
+				// log_message('type', 'Type'.$packet_type."\n".__FUNCTION__.'('.__CLASS__.' ('.$this->conf['_name'].':'.($this->conf['database']).') '.")\n".__FILE__.' ['.__LINE__.']');
+				print_r($packet_type);
+				switch($packet_type['NO:::PacketType']) {
 					case 0:
-					file_put_contents (BASEPATH.'data/LOOP.json',
-						json_encode(
-							array_merge(
-								'UTC_date'=>date('Y/m/d H:i:s'),
-								$LPS = $this->RawConverter($this->Loop, $data) )));
+					saveDataOnFile(
+						'LOOP',
+						array_merge( array('UTC_date'=>date('Y/m/d H:i:s')), $LPS = $this->RawConverter($this->Loop, $data)),
+						FORMAT_PHP + FORMAT_TXT + FORMAT_JSON + FORMAT_SERIALIZED + FORMAT_XML);
 						break;
 					case 1:
-					file_put_contents (BASEPATH.'data/LOOP2.json',
-						json_encode(
-							array_merge(
-								'UTC_date'=>date('Y/m/d H:i:s'),
-								$LPS = $this->RawConverter($this->Loop, $data) )));
+					saveDataOnFile(
+						'LOOP2',
+						array_merge( array('UTC_date'=>date('Y/m/d H:i:s')), $LPS = $this->RawConverter($this->Loop2, $data)),
+						FORMAT_PHP + FORMAT_TXT + FORMAT_JSON + FORMAT_SERIALIZED + FORMAT_XML);
 					break;
 					case 2:
 						break;
@@ -373,7 +343,9 @@ class vp2 extends CI_Model {
 			... );
 	@param: Date de la 1ere archive a lire (par defaut : 2012/01/01 00:00:00)
 	*/
-	protected function GetDmpAft($last, $save=true) { //
+	function GetDmpAft($last, $save=true) {
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
+		 //
 		$DATAS=false;
 		try {
 			$firstDate2Get=is_date($last);
@@ -398,7 +370,7 @@ class vp2 extends CI_Model {
 					throw new Exception(_('Please retry later to finish, Data sensors must be checked in few second.'));
 				}
 				$Page = fread($this->fp, 267);
-				log_message('dl', 'Archive PAGE #'.$j.' since : '.DMPAFT_GetVP2Date(substr($Page,1+52*($firstArch),4)));
+				log_message('infos', 'Archive PAGE #'.$j."\t".'Since: '.DMPAFT_GetVP2Date(substr($Page,1+52*($firstArch),4)).' Sheets #[1,2,3,4,5]');
 				$this->VerifAnswersAndCRC($Page, 267);
 				fwrite ($this->fp, ACK);
 				for ($k=$firstArch; $k<=4; $k++) {			// ignore les 1er valeur hors champ.
@@ -410,7 +382,7 @@ class vp2 extends CI_Model {
 						$DATAS = $this->RawConverter($this->DumpAfter, $ArchiveStrRaw);
 						if ($save) {
 							$this->save_Archive($DATAS);
-							log_message('save', sprintf(_('Page #%d-%d of %s archived Ok.'),$j, $k, $ArchDate));
+							// log_message('save', sprintf(_('Page #%d-%d of %s archived Ok.'),$j, $k, $ArchDate));
 						}
 						$LastArchDate = $ArchDate;
 					}
@@ -432,7 +404,9 @@ class vp2 extends CI_Model {
 	@return: retourne l'heure de la station ou FALSE en cas d'echec
 	@param: none
 	*/
-	protected function fetchStationTime() {// 0x35 16 00 1d 0c 6f  0x7c 44  ==  2011/12/29 00:22:53
+	protected function fetchStationTime() {
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
+		// 0x35 16 00 1d 0c 6f  0x7c 44  ==  2011/12/29 00:22:53
 		$TIME = False;
 		try {
 			$this->RequestCmd("GETTIME\n");
@@ -457,7 +431,9 @@ class vp2 extends CI_Model {
 	@return: renvoi la nouvelle heure ou FALSE en cas d'echec
 	@param: none
 	*/
-	protected function updateStationTime() {// 0x35 16 00 1d 0c 6f  0x7c 44  ==  2011/12/29 00:22:53
+	protected function updateStationTime() {
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
+		// 0x35 16 00 1d 0c 6f  0x7c 44  ==  2011/12/29 00:22:53
 		try {
 			$this->RequestCmd("SETTIME\n");
 			list($_date, $_clock) = explode(' ', date('Y/m/d H:i:s'));
@@ -550,7 +526,8 @@ class vp2 extends CI_Model {
 		log_message('warning', 'Resultat inutilisable ('.$name.')');
 	}
 	
-	protected function get_Last_Date() {
+	function get_Last_Date() {
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		$date = $this->dataDB->query('SELECT MAX(VAR_DATE) as LAST_ARCH_DATETIME FROM `TA_VARIOUS`;');
 		if (count($date->result_array())==1) {
 			return $date->result_array[0]['LAST_ARCH_DATETIME'];

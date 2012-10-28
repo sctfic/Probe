@@ -28,7 +28,7 @@ class CI_Log {
 	protected $_verbose	= 1;
 	protected $_date_fmt	= 'Y-m-d H:i:s';
 	protected $_enabled	= TRUE;
-	protected $_levels	= array('ERROR' => 1, 'DEBUG' => 2, 'WARNING' => 3, 'INFO' => 4, 'CLI' => 5, 'PROBE' => 6, 'ALL' => 9);
+	protected $_levels	= array('ERROR' => 1, 'DEBUG' => 2, 'WARNING' => 3, 'INFO' => 4, 'CLI' => 5, 'PROBE' => 6, 'I18N' => 7, 'CURRENT' => 8, 'ALL' => 9);
 
 	public function __construct()
 	{
@@ -77,12 +77,14 @@ class CI_Log {
 		if ( ! $fp = @fopen($filepath, FOPEN_WRITE_CREATE))	{
 			return FALSE;
 		}
-		$message .= $level."\t- ".date($this->_date_fmt). ' --> '.str_replace ("\n", "\n\t\t\t\t > ", $msg)."\n";
+		$message .= $level."\t- ".date($this->_date_fmt). ' -> '.str_replace ("\n", "\n\t\t\t\t > ", $msg)."\n";
 		
 		if ($this->_levels[$level] <= $this->_verbose && $this->_levels[$level] > 2)	{
-			if (isset($_SERVER['REMOTE_ADDR'])) // en web
+			if (RUNNER=='WEB' and $this->_levels[$level]<=3) // en web
 				echo nl2br($message);
-			else // en CLI
+			elseif (RUNNER=='WEB') // en web
+				echo '<!-- '.nl2br($message).' -->';
+			elseif(RUNNER=='CLI') // en CLI
 				echo $message;
 		}
 		

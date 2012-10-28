@@ -13,6 +13,7 @@ class Admin extends Authentification {
 
 	public function __construct() {
 		parent::__construct();
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 
 		$this->i18n->setLocaleEnv($this->config->item('probe:locale'), 'global'); // set language
 		$this->encrypt->set_cipher(MCRYPT_BLOWFISH);
@@ -28,9 +29,8 @@ class Admin extends Authentification {
 	}
 
 	public function index() {
-		$this->lang->load('admin', 'french');
-
-		echo "PAGE ACCUEIL ADMIN : ".$this->lang->line('admin.bienvenue');
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
+		i18n('admin.welcome');
 	}
 
 	/*
@@ -38,6 +38,7 @@ class Admin extends Authentification {
 	* see Authentification.php for the abstract class
 	*/
 	public function connexion() {
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		// requirements
 		$this->load->helper('pages');
 		$this->load->helper(array('form', 'url'));
@@ -46,7 +47,7 @@ class Admin extends Authentification {
 		// build view data
 		$data = pageFetchConfig('login'); // fetch information to build the HTML header
 		$data['msg'] = $this->session->userdata("msg"); // message to display in the page
-		$data['username'] = NULL;
+		$data['userName'] = NULL;
 
 		$this->session->set_userdata("msg", NULL); // reset session message
 
@@ -65,11 +66,12 @@ class Admin extends Authentification {
 	* see Authentification.php for the abstract class
 	*/
 	public function connect() {
-		$username =	$this->input->post('username');
-		$pwd	=	$this->input->post('password');
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
+		$userName =	$this->input->post('username');
+		$userPassword	=	$this->input->post('password');
 		try {
 			//Chercher l'user correspondant au couple login/pwd
-			$user = $this->Service_User->authentify($username, $pwd);
+			$user = $this->Service_User->authentify($userName, $userPassword);
 			$this->session->set_userdata("user", serialize($user));
 		}
 		catch(BusinessException $be) {

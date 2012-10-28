@@ -14,11 +14,11 @@
     <?=validation_errors()?>
 
     <?=form_label( sprintf('%s <span class="hidden">(%s)</span>%s', i18n('username'), i18n('required'), i18n('&nbsp;:')), 'username')?>
-    <?=form_input( 'username', $username, sprintf('placeholder="%s"',i18n('fill in your username') ) )?>
+    <?=form_input( 'username', $userName, sprintf('placeholder="%s"',i18n('fill in your username') ) )?>
 
     <?=form_label( sprintf('%s <span class="hidden">(%s)</span>%s', i18n('password'), i18n('required'),i18n('&nbsp;:')), 'password')?>
-    <?= sprintf('');//form_password( 'password', $username, sprintf('placeholder="%s" %s',i18n('longer is better'), getStatus('password') ) )?>
-    <?=form_password( 'password', $username, sprintf('placeholder="%s"',i18n('longer is better') ) )?>
+    <?= sprintf('');//form_password( 'password', $userName, sprintf('placeholder="%s" %s',i18n('longer is better'), getStatus('password') ) )?>
+    <?=form_password( 'password', $userName, sprintf('placeholder="%s"',i18n('longer is better') ) )?>
 
     <?php
     if ( _empty($this->config->item('probe:username') ) ) {?>

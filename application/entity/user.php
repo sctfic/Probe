@@ -31,7 +31,7 @@ class User implements Serializable {
     /**
      * @ORM\Column(name=USR_PWD)
      */
-    private $pwd;
+    private $userPassword;
 
     /**
      * @ORM\Column(name=USR_EMAIL)
@@ -45,6 +45,8 @@ class User implements Serializable {
 
 	private $authentified;
 
+	private $registered;
+
 	public function __construct() { }
 
 
@@ -55,7 +57,7 @@ class User implements Serializable {
 			'firstName' => $this->firstName,
 			'familyName' => $this->familyName,
 			'email' => $this->email,
-			'pwd' => $this->pwd,
+			'pwd' => $this->userPassword,
 			'roleId' => $this->roleId,
 			'authentified' => $this->authentified
 		));
@@ -131,11 +133,11 @@ class User implements Serializable {
 	    return $this->firstName;
 	}
 
-	public function setPwd($pwd	) {
-	    $this->pwd = $pwd;
+	public function setUserPassword($userPassword	) {
+	    $this->userPassword = $userPassword;
 	}
-	public function getPwd() {
-	    return $this->pwd;
+	public function getUserPassword() {
+	    return $this->userPassword;
 	}
 	
 	public function setRoleId($roleId	) {
@@ -159,6 +161,14 @@ class User implements Serializable {
 
 	public function setAuthentified($authentified) {
 		$this->authentified = $authentified;
+	}
+
+	public function setRegistered($registered) {
+		$this->registered = $registered;
+	}
+
+	public function isRegistered() {
+	    return $this->registered;
 	}
 
 	public function __toString() {
