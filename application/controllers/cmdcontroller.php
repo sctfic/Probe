@@ -1,11 +1,13 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 // clear;php5 -f /var/www/Probe/cli.php 'cmdcontroller'
 class cmdController extends CI_Controller {
+
 	function __construct() {
 		if (isset($_SERVER['REMOTE_ADDR'])) { // n'est pas definie en php5-cli
 			log_message('warning',  'CLI script access allowed only');
 			die();
 		}
+		
 		parent::__construct();
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		/*
@@ -19,6 +21,7 @@ class cmdController extends CI_Controller {
 		$this->WS = new weatherstation();
 	}
 
+
 	// la fonction qui ce lancera par defaut dans cette classe 
 	// clear;php5 -f /var/www/Probe/cli.php 'cmdcontroller'
 	function index() {
@@ -28,6 +31,7 @@ class cmdController extends CI_Controller {
 		// $this->hilowsCollectors(0);
 		// $this->curentCollectors(0);
 	}
+
 
 	// clear;php5 -f /var/www/Probe/cli.php 'cmdcontroller/hilowCollectors'
 	function hilowsCollectors($station = null) {
@@ -48,6 +52,7 @@ class cmdController extends CI_Controller {
 		}
 	}
 	
+
 	// clear;php5 -f /var/www/Probe/cli.php 'cmdcontroller/curentCollectors'
 	function curentCollectors($station = null) {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
@@ -66,6 +71,7 @@ class cmdController extends CI_Controller {
 			log_message('warning',  $e->getMessage());
 		}
 	}
+
 
 	// clear;php5 -f /var/www/Probe/cli.php 'cmdcontroller/dataCollectors'
 	function dataCollectors($station = null) {
@@ -129,6 +135,8 @@ class cmdController extends CI_Controller {
 			log_message('warning',  $e->getMessage());
 		}
 	}
+
+
 	// clear;php5 -f /var/www/Probe/cli.php 'cmdcontroller/makeNewStation'
 	function makeNewStation() {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
