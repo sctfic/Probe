@@ -17,6 +17,7 @@ class weatherstation extends CI_Model {
 		$this->lstNames();
 	}
 	
+	
 	/**
 	 * retourne un tableau de tous les noms et db_ID de toute les stations
 	 * @return	array (db_ID => Name)
@@ -41,10 +42,12 @@ class weatherstation extends CI_Model {
 		log_message('warning', 'List of Weather Station is empty!');
 		return false;
 	}
-	/**
+
+
+	/*
 	 * recupere les premier ID nom utilisé parmis la liste des ID des stations
 	 * @return array ()
-	 **/
+	 */
 	function availableID () {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		// given array : $this->lst. [0,1,  3,4,  6,7  ]
@@ -54,7 +57,9 @@ class weatherstation extends CI_Model {
 			return array(0);
 		return array_diff (range(0, max(array_keys($this->lst))+1), array_keys($this->lst)); // [2,5,8]
 	}
-	/**
+
+
+	/*
 	 * recupere sous forme de table l'ensemble des configs d'une ou de toutes les station
 	 * @var item
 		item peut etre le Numero db_ID ou le nom de la station dont on veut les confs
@@ -101,6 +106,8 @@ class weatherstation extends CI_Model {
 		$confs[$item]['password'] = $this->encrypt->decode($confs[$item]['password']);
 		return $confs;
 	}
+
+
 	function HilowsCollector($conf) {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__);
 		$type = strtolower($conf['_type']);
@@ -118,6 +125,8 @@ class weatherstation extends CI_Model {
 		}
 		return true;
 	}
+
+
 	function LpsCollector($conf) {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__);
 		$type = strtolower($conf['_type']);
@@ -135,7 +144,9 @@ class weatherstation extends CI_Model {
 		}
 		return true;
 	}
-	/**
+
+
+	/*
 	 * recupere sous forme de table l'ensemble des configs d'une ou de toutes les station
 	 * @var item
 		item peut etre le Numero db_ID ou le nom de la station dont on veut les confs
@@ -162,6 +173,7 @@ class weatherstation extends CI_Model {
 		return true;
 	}
 
+
 	function ConfCollector($conf)
 	{
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__);
@@ -185,8 +197,6 @@ class weatherstation extends CI_Model {
 		}
 		return $realconf;
 	}
-	
-	
 	
 		
 	function arrays2dbconfs($id, $conf)
