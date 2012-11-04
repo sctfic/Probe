@@ -8,6 +8,7 @@ class ProbePdo {
 	protected $password;
 	protected $database;
 	protected $engine;
+	protected $dns;
 	
 	/** 
 	 * Connection pdo
@@ -39,9 +40,13 @@ class ProbePdo {
 		}
 		
 		$params = $db[$groupBD];
-		$this->hostname = $params["engine"].':host='.$params["hostname"].';port='.$params["port"];
+		//$dsn = "<driver>://<username>:<password>@<host>:<port>/<database>";
+		$this->hostname = $params['engine'].':dbname='.$params['database'].':host='.$params["hostname"].';port='.$params["port"];
 		$this->userName = $params["username"];
 		$this->password = $params["password"];
+
+    // $this->dsn = $params["engine"].':dbname='.$this->database.";host=".$params["hostname"];
+
 		if(isset($params["database"])) {
 			$this->database = $params["database"];
 		}
