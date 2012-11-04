@@ -1,20 +1,25 @@
 <div class="navbar navbar-inverse navbar-fixed-top">
 	<ul class="breadcrumb">
-	    <li><a href="/setup/installer/dbms"><?=i18n("setup.breadcrumb.dbms")?></a> <span class="divider">/</span></li>
-	    <li class="active"><a href="/setup/installer/adminUser"><?=i18n("setup.breadcrumb.administrator")?></a> <span class="divider">/</span></li>
+	    <li><a href="/install/dbms"><?=i18n("setup.breadcrumb.dbms")?></a> <span class="divider">/</span></li>
+	    <li class="active"><a href="/install/adminUser"><?=i18n("setup.breadcrumb.administrator")?></a> <span class="divider">/</span></li>
 	    <li class="disabled"><?=i18n("setup.breadcrumb.dashboard")?> <span class="divider">/</span></li>
 	</ul>
 </div>
 
 <div class="container">
-	<?=form_open('setup/installer/setupAdministrator', array('class' => 'modal setup form-horizontal', 'id' => 'administrator'))?>
+	<?=form_open('install/setupAdministrator', array('class' => 'modal setup form-horizontal', 'id' => 'administrator'))?>
 		<div class="modal-header">
 			<!-- <legend> -->
 				<h3><?=i18n("setup.administrator.legend")?></h3>
 			<!-- </legend>	 -->
 		</div>
+
 		<fieldset class="modal-body">
 			<?=validation_errors()?>
+
+    <div class="alert alert-info">
+    	<?=i18n('setup.administrator.description')?>
+    </div>
 
 			<!-- Admin Username -->
 			<div class="control-group">

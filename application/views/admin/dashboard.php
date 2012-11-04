@@ -1,16 +1,25 @@
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <ul class="breadcrumb">
+        <li><a href="/install/dbms"><?=i18n("setup.breadcrumb.dbms")?></a> <span class="divider">/</span></li>
+        <li class="active"><a href="/install/adminUser"><?=i18n("setup.breadcrumb.administrator")?></a> <span class="divider">/</span></li>
+        <li class="disabled"><?=i18n("setup.breadcrumb.dashboard")?> <span class="divider">/</span></li>
+    </ul>
+</div>
+
 <?php
 //     require_once($GLOBALS['workingFolder'].'../resources/php/toolbox.phpc');
 //     require_once($GLOBALS['workingFolder'].'../resources/php/configManager.phpc');
 //     $stationConf = configManager::getConfig('station');
 
 // echo getcwd();
-
 // just for prototyping
 require_once '../config/stations.conf.php';
 ?>
 <article id="admin-station">
 
-
+<a href="#" class="btn btn-success">
+    <i class="icon-white icon-plus"></i> Ajouter une station
+</a>
 
     <nav id="stations-list" class="nav-tabs">
         <ol>

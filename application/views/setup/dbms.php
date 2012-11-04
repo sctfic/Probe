@@ -1,12 +1,12 @@
 <div class="navbar navbar-inverse navbar-fixed-top">
 	<ul class="breadcrumb">
-	    <li class="active"><a href="/setup/installer/dbms"><?=i18n("setup.breadcrumb.dbms")?></a> <span class="divider">/</span></li>
+	    <li class="active"><a href="/install/dbms"><?=i18n("setup.breadcrumb.dbms")?></a> <span class="divider">/</span></li>
 	    <li class="disabled"><?=i18n("setup.breadcrumb.administrator")?> <span class="divider">/</span></li>
 	    <li class="disabled"><?=i18n("setup.breadcrumb.dashboard")?> <span class="divider">/</span></li>
 	</ul>
 </div>
 
-<?=form_open('setup/installer/setupDbms', array('class' => 'modal setup form-horizontal', 'id' => 'dbms'))?>
+<?=form_open('install/setupDbms', array('class' => 'modal setup form-horizontal', 'id' => 'dbms'))?>
 
 	<div class="modal-header">
 		<!-- <legend> -->

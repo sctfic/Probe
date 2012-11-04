@@ -38,12 +38,12 @@
 |
 */
 
-$route['default_controller'] = "setup/installer";
+$route['default_controller'] = "install";
 // $route['default_controller'] = "welcome";
 $route['404_override'] = '';
 
 $route['admin'] = "admin/admin";
-$route['setup'] = "setup/installer";
+$route['install'] = "install/start";
 
 
 /* End of file routes.php */

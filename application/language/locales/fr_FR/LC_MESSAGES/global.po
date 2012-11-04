@@ -38,27 +38,27 @@ msgstr ""
 msgid "database.table.role:admin.label"
 msgstr "Administrateur"
 
-#: models/weatherstation.php:97
+#: models/Station.php:97
 msgid "Aucune configuration valide n'est disponible"
 msgstr ""
 
-#: models/weatherstation.php:110
-#: models/weatherstation.php:126
-#: models/weatherstation.php:150
-#: models/weatherstation.php:169
+#: models/Station.php:110
+#: models/Station.php:126
+#: models/Station.php:150
+#: models/Station.php:169
 #, php-format
 msgid "Impossible de se connecter à %s par %s:%s"
 msgstr ""
 
-#: models/weatherstation.php:113
-#: models/weatherstation.php:129
-#: models/weatherstation.php:154
-#: models/weatherstation.php:177
+#: models/Station.php:113
+#: models/Station.php:129
+#: models/Station.php:154
+#: models/Station.php:177
 #, php-format
 msgid "Fermeture de %s impossible"
 msgstr ""
 
-#: models/weatherstation.php:172
+#: models/Station.php:172
 #, php-format
 msgid "Lecture des config de %s impossible"
 msgstr ""
@@ -331,7 +331,7 @@ msgstr ""
 msgid "Weather Station Web Data Share"
 msgstr ""
 
-#: controllers/setup/installer.php:39
+#: controllers/install.php:39
 msgid "error.setup.dbms.connect"
 msgstr "La connexion à la base de données n'a pas pu être établie. Veuillez vérifier les informations soumises et l'existence de la base de données."
 
