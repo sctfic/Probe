@@ -134,35 +134,35 @@ msgstr ""
 #: views/login.php:16
 #: views/login.php:19
 #: views/login.php:25
-#: views/setup/admin-user.php:22
-#: views/setup/admin-user.php:35
-#: views/setup/admin-user.php:48
-#: views/setup/dbms.php:22
-#: views/setup/dbms.php:36
-#: views/setup/dbms.php:50
-#: views/setup/dbms.php:59
-#: views/setup/dbms.php:67
-#: views/setup/dbms.php:76
-#: views/setup/dbms.php:81
-#: views/setup/dbms.php:85
-#: views/setup/dbms.php:109
-#: views/setup/dbms.php:123
+#: views/install/admin-user.php:22
+#: views/install/admin-user.php:35
+#: views/install/admin-user.php:48
+#: views/install/dbms.php:22
+#: views/install/dbms.php:36
+#: views/install/dbms.php:50
+#: views/install/dbms.php:59
+#: views/install/dbms.php:67
+#: views/install/dbms.php:76
+#: views/install/dbms.php:81
+#: views/install/dbms.php:85
+#: views/install/dbms.php:109
+#: views/install/dbms.php:123
 msgid "required"
 msgstr ""
 
 #: views/login.php:16
 #: views/login.php:19
 #: views/login.php:25
-#: views/setup/admin-user.php:22
-#: views/setup/admin-user.php:35
-#: views/setup/admin-user.php:48
-#: views/setup/dbms.php:22
-#: views/setup/dbms.php:36
-#: views/setup/dbms.php:50
-#: views/setup/dbms.php:76
-#: views/setup/dbms.php:93
-#: views/setup/dbms.php:109
-#: views/setup/dbms.php:123
+#: views/install/admin-user.php:22
+#: views/install/admin-user.php:35
+#: views/install/admin-user.php:48
+#: views/install/dbms.php:22
+#: views/install/dbms.php:36
+#: views/install/dbms.php:50
+#: views/install/dbms.php:76
+#: views/install/dbms.php:93
+#: views/install/dbms.php:109
+#: views/install/dbms.php:123
 msgid "&nbsp;:"
 msgstr ""
 
@@ -198,119 +198,119 @@ msgstr ""
 msgid "You're now logged out."
 msgstr ""
 
-#: views/setup/admin-user.php:3
-#: views/setup/dbms.php:3
-msgid "setup.breadcrumb.dbms"
+#: views/install/admin-user.php:3
+#: views/install/dbms.php:3
+msgid "install.breadcrumb.dbms"
 msgstr "Base de données"
 
-#: views/setup/admin-user.php:4
-#: views/setup/dbms.php:4
-msgid "setup.breadcrumb.administrator"
+#: views/install/admin-user.php:4
+#: views/install/dbms.php:4
+msgid "install.breadcrumb.administrator"
 msgstr "Compte administrateur"
 
-#: views/setup/admin-user.php:5
-#: views/setup/dbms.php:5
-msgid "setup.breadcrumb.dashboard"
+#: views/install/admin-user.php:5
+#: views/install/dbms.php:5
+msgid "install.breadcrumb.dashboard"
 msgstr "Tableau de bord"
 
-#: views/setup/admin-user.php:13
-msgid "setup.administrator.legend"
+#: views/install/admin-user.php:13
+msgid "install.administrator.legend"
 msgstr "Configuration du compte administrateur"
 
-#: views/setup/admin-user.php:22
-msgid "setup.administrator.username"
+#: views/install/admin-user.php:22
+msgid "install.administrator.username"
 msgstr "Utilisateur «&nbsp;admin&nbsp;»"
 
-#: views/setup/admin-user.php:28
-msgid "setup.administrator.username.placeholder"
+#: views/install/admin-user.php:28
+msgid "install.administrator.username.placeholder"
 msgstr "gestionnaire de l'application"
 
-#: views/setup/admin-user.php:35
-msgid "setup.administrator.password"
+#: views/install/admin-user.php:35
+msgid "install.administrator.password"
 msgstr "Mot de passe"
 
-#: views/setup/admin-user.php:41
-msgid "setup.administrator.password.placeholder"
+#: views/install/admin-user.php:41
+msgid "install.administrator.password.placeholder"
 msgstr "plus long c'est mieux"
 
-#: views/setup/admin-user.php:48
-msgid "setup.administrator.password-confirmation"
+#: views/install/admin-user.php:48
+msgid "install.administrator.password-confirmation"
 msgstr "Confirmer"
 
-#: views/setup/admin-user.php:54
-msgid "setup.administrator.password-confirmation.placeholder"
+#: views/install/admin-user.php:54
+msgid "install.administrator.password-confirmation.placeholder"
 msgstr "pour éviter les erreurs de saisi"
 
-#: views/setup/admin-user.php:60
-msgid "setup.administrator.configure"
+#: views/install/admin-user.php:60
+msgid "install.administrator.configure"
 msgstr "Configurer →"
 
-#: views/setup/dbms.php:13
-msgid "setup.dbms.legend"
+#: views/install/dbms.php:13
+msgid "install.dbms.legend"
 msgstr "Configuration de la base de données"
 
-#: views/setup/dbms.php:22
-msgid "setup.dbms.host"
+#: views/install/dbms.php:22
+msgid "install.dbms.host"
 msgstr "Nom d'hôte"
 
-#: views/setup/dbms.php:28
-msgid "setup.dbms.host.placeholder"
+#: views/install/dbms.php:28
+msgid "install.dbms.host.placeholder"
 msgstr "exemple.fr, localhost ou 127.0.0.1"
 
-#: views/setup/dbms.php:36
-msgid "setup.dbms.port"
+#: views/install/dbms.php:36
+msgid "install.dbms.port"
 msgstr "Port"
 
-#: views/setup/dbms.php:42
-msgid "setup.dbms.port.placeholder"
+#: views/install/dbms.php:42
+msgid "install.dbms.port.placeholder"
 msgstr "défault: 3306"
 
-#: views/setup/dbms.php:50
-msgid "setup.dbms.engine"
+#: views/install/dbms.php:50
+msgid "install.dbms.engine"
 msgstr "Moteur de la Base"
 
-#: views/setup/dbms.php:59
-msgid "setup.dbms.engine-mysql"
+#: views/install/dbms.php:59
+msgid "install.dbms.engine-mysql"
 msgstr "MySQL 5+"
 
-#: views/setup/dbms.php:67
-msgid "setup.dbms.engine-sqlite"
+#: views/install/dbms.php:67
+msgid "install.dbms.engine-sqlite"
 msgstr "SQLite 3+"
 
-#: views/setup/dbms.php:76
-msgid "setup.dbms.database.selection"
+#: views/install/dbms.php:76
+msgid "install.dbms.database.selection"
 msgstr "Choix de la base"
 
-#: views/setup/dbms.php:81
-msgid "setup.dbms.database-reuse"
+#: views/install/dbms.php:81
+msgid "install.dbms.database-reuse"
 msgstr "base existante"
 
-#: views/setup/dbms.php:85
-msgid "setup.dbms.database-create"
+#: views/install/dbms.php:85
+msgid "install.dbms.database-create"
 msgstr "nouvelle base"
 
-#: views/setup/dbms.php:93
-msgid "setup.dbms.database-name"
+#: views/install/dbms.php:93
+msgid "install.dbms.database-name"
 msgstr "Nom de la base"
 
-#: views/setup/dbms.php:109
-msgid "setup.dbms.username"
+#: views/install/dbms.php:109
+msgid "install.dbms.username"
 msgstr "Utilisateur"
 
-#: views/setup/dbms.php:115
-msgid "setup.dbms.username.placeholder"
+#: views/install/dbms.php:115
+msgid "install.dbms.username.placeholder"
 msgstr "gestionnaire de la base"
 
-#: views/setup/dbms.php:123
-msgid "setup.dbms.password"
+#: views/install/dbms.php:123
+msgid "install.dbms.password"
 msgstr "Mot de passe"
 
-#: views/setup/dbms.php:129
-msgid "setup.dbms.password.placeholder"
+#: views/install/dbms.php:129
+msgid "install.dbms.password.placeholder"
 msgstr "mot de passe du gestionnaire"
 
-#: views/setup/dbms.php:136
-msgid "setup.dbms.configure"
+#: views/install/dbms.php:136
+msgid "install.dbms.configure"
 msgstr "Configurer →"
 
 #: views/admin/dashboard.php:30
@@ -332,7 +332,7 @@ msgid "Weather Station Web Data Share"
 msgstr ""
 
 #: controllers/install.php:39
-msgid "error.setup.dbms.connect"
+msgid "error.install.dbms.connect"
 msgstr "La connexion à la base de données n'a pas pu être établie. Veuillez vérifier les informations soumises et l'existence de la base de données."
 
 #: controllers/admin/admin.php:31
@@ -351,23 +351,23 @@ msgstr ""
 msgid "Password Confirmation"
 msgstr ""
 
-#~ msgid "setup.administrator.password-confirm.placeholder"
+#~ msgid "install.administrator.password-confirm.placeholder"
 #~ msgstr "pour éviter les erreurs de saisi"
 
-#~ msgid "setup.dbms.ip"
+#~ msgid "install.dbms.ip"
 #~ msgstr "Hôte"
 
-#~ msgid "setup.dbms.ip.placeholder"
+#~ msgid "install.dbms.ip.placeholder"
 #~ msgstr "adresse IP ou nom de domaine"
 
-#~ msgid "setup.dbms.database-name.placeholder"
+#~ msgid "install.dbms.database-name.placeholder"
 #~ msgstr "base existante"
 
-#~ msgid "setup.dbms.engine-mysql.placeholder"
+#~ msgid "install.dbms.engine-mysql.placeholder"
 #~ msgstr "MySQL 5+"
 
-#~ msgid "setup.dbms.engine-sqlite.placeholder"
+#~ msgid "install.dbms.engine-sqlite.placeholder"
 #~ msgstr "SQLite 3+"
 
-#~ msgid "setup.dbms.do-it"
+#~ msgid "install.dbms.do-it"
 #~ msgstr "Configurer la base"
