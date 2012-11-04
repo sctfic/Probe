@@ -1,57 +1,42 @@
 <div class="navbar navbar-inverse navbar-fixed-top">
 	<ul class="breadcrumb">
-	    <li><a href="/configuration/stations-list"><?=i18n("configuration.breadcrumb.stations-list")?></a> <span class="divider">/</span></li>
+	    <li><a href="/configuration/stations-list"><?=i18n("configuration.stations.breadcrumb")?></a> <span class="divider">/</span></li>
 	</ul>
 </div>
 
 
-<article id="stations-list" class="row">
-	<section class="span2">
-		<nav>
-			<ol>
-				<?php foreach ($stationList as $station): ?>
-					<li><?=$station['name']?></li>
-				<?php endforeach ?>
-			</ol>
-		</nav>
-	</section>
+<div class="container">
+	<!-- <div class="row"> -->
+		<article class="row-fluid">
+			<section id="stations-list" class="span3">
+				<nav>
+					<ol>
+						<?php if (!empty($stationsList)): ?>
+							<?php foreach ($stationsList as $station): ?>
+								<li><?=$station['name']?></li>
+							<?php endforeach ?>					
+						<?php else: ?>
+							<li><a href="configuration/add-station"><?=i18n('configuration.stations.add-new.station')?></a></li>
+						<?php endif;?>
+					</ol>
+				</nav>
+			</section>
+			<section id="stations-form" class="span4">
+				<?php if (!empty($stationsList)): ?>
+					<?php foreach ($stationsConfig as $config => $value) {
+						$data = array(
+			               'title' => 'My Title',
+			               'heading' => 'My Heading',
+			               'message' => 'My Message'
+			          );
 
-	<section class="span10">
-			<!-- <a href="#" class="btn"><i class="fam-add"></i> Add New Station</a> -->
-	<a href="#" class="btn btn-success"><i class="icon-white icon-plus"></i><?=i18n('configuration.stations-list.add-new.station')?></a>
-
-		<fieldset>
-			<legend>
-				<h2><?=i18n('configuration.stations-list.legend.stem');?></h2>
-			</legend>
-
-		<!-- Server host/IP -->
-		<div class="control-group">
-			<label class="control-label" for="station-host">
-				<?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('configuration.station.host'), i18n('required'), i18n('&nbsp;:')) ?>
-			</label>
-			<div class="controls">
-				<input id="station-host"
-					type="text" required
-					name="station-host" value="<?=$stationHost?>" 
-					class="input-large" placeholder="<?=i18n('configuration.station.host.placeholder')?>"
-				>
-			</div>
-		</div>
-
-		<!-- Server port (range between: 1-65535) -->
-		<div class="control-group">
-			<label class="control-label" for="station-port">
-				<?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('configuration.station.port'), i18n('required'), i18n('&nbsp;:')) ?>
-			</label>
-			<div class="controls">
-				<input id="station-port"
-					type="number" min="1" max="65535" 
-					name="station-port" value="<?=$stationPort?>" 
-					class="input-mini" placeholder="<?=i18n('configuration.station.port.placeholder')?>"
-				>
-			</div>
-		</div>
-		</fieldset>
-	</section>
-</article>
+						$this->load->view('configuration/stations-form', $data);
+					}
+				?>
+				<?php endif;?>
+				<!-- <a href="#" class="btn"><i class="fam-add"></i> Add New Station</a> -->
+				<a href="configuration/add-station" class="btn btn-success"><i class="icon-white icon-plus"></i><?=i18n('configuration.stations.add-new.station')?></a>
+			</section>
+		</article>
+	<!-- </div> -->
+</div>
