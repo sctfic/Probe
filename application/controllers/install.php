@@ -36,8 +36,8 @@ class Install extends CI_Controller {
           redirect("install/adminUser");
         }
       } catch (Exception $e) {
-        // sprintf("<p>%s</p>",  sprintf('%s', i18n("error.setup.dbms.connect") ) );
-        log_message('error', sprintf('%s', i18n("error.setup.dbms.connect") ) );
+        // sprintf("<p>%s</p>",  sprintf('%s', i18n("error.install.dbms.connect") ) );
+        log_message('error', sprintf('%s', i18n("error.install.dbms.connect") ) );
       }
     }
   }
@@ -71,7 +71,7 @@ class Install extends CI_Controller {
     
     // display the view
     $pages = new Pages();
-    $pages->view('setup/dbms', $data);
+    $pages->view('install/dbms', $data);
   }
 
 
@@ -123,7 +123,7 @@ class Install extends CI_Controller {
     
     // display the view
     $pages = new Pages();
-    $pages->view('setup/admin-user', $data);
+    $pages->view('install/admin-user', $data);
   }
 
 
