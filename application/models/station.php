@@ -3,7 +3,7 @@
 // http://fmaz.developpez.com/tutoriels/php/comprendre-pdo/
 class Station extends CI_Model {
 	protected $DBConf = NULL;
-	public $stationsList = NULL;
+	public $stationsList = array();
 	protected $data = NULL;
 	protected $confExtend = NULL;	
 	protected $type = NULL;
@@ -27,27 +27,25 @@ class Station extends CI_Model {
 	{
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 
-			$sqlStationsList = "SELECT `CFG_STATION_ID`, `CFG_VALUE` 
-													FROM `TR_CONFIG` 
-													WHERE `CFG_LABEL`='_name' 
-													LIMIT 16;";
 		// on demande la liste des NOM des stations meteo et les ID assoc
-		$stationsList = $this->db->query( $sqlStationsList );
-		if ($stationsList->num_rows() > 0)
+		$sqlStationsList = 
+			" SELECT `CFG_STATION_ID`, `CFG_VALUE` 
+				FROM `TR_CONFIG` 
+				WHERE `CFG_LABEL`='_name' 
+				LIMIT 16;
+			";
+		$dbStationsList = $this->db->query( $sqlStationsList );
+
+		if ($dbStationsList->num_rows() > 0)
 		{
-			foreach($stationsList->result() as $item) { // on met en forme les resultat sous forme de tableau
+			foreach($dbStationsList->result() as $item) { // on met en forme les resultat sous forme de tableau
 				$this->stationsList[$item->CFG_STATION_ID] = $item->CFG_VALUE;
 			}
-			if (is_array($this->stationsList))
+			if (is_array($this->stationsList) and !empty($this->stationsList))
 				return $this->stationsList;
 		}
-		log_message('warning', 'List of Weather Station is empty!');
+		// log_message('warning', 'List of Weather Station is empty!');
 		return false;
-	}
-
-	public function getStationsList()
-	{
-		return 
 	}
 
 
