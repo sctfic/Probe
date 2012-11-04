@@ -23,8 +23,12 @@ class cmdController extends CI_Controller {
 	// clear;php5 -f /var/www/Probe/cli.php 'cmdcontroller'
 	function index() {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
-		$this->configCollectors();
-		$this->dataCollectors();
+		print_r($this->WS->lstNames());
+		print_r($this->WS->config(0));
+		print_r($this->WS->config(1));
+
+//		$this->configCollectors();
+//		$this->dataCollectors();
 		// $this->hilowsCollectors(0);
 		// $this->curentCollectors(0);
 	}
@@ -85,7 +89,7 @@ class cmdController extends CI_Controller {
 //		else return false;
 		try {
 			// on recupere les confs de $station
-			$conf = end($this->WS->config($station)); // $station est le ID ou le nom
+			$conf = end($this->WS->config(0)); // $station est le ID ou le nom
 			
 			// on lance la recup des Archives de cette station
 			$this->WS->ArchCollector($conf);
@@ -114,7 +118,6 @@ class cmdController extends CI_Controller {
 //		else return false;
 		try {
 			$conf = end($this->WS->config($station));
-			log_message('count', count($conf));
 
 			if (count($conf)<30 or $force==true) {
 				$readconf = $this->WS->ConfCollector($conf);

@@ -39,26 +39,30 @@ function saveDataOnFile($file,$data,$format,$data_var_name=null) {
 		$data_var_name = basename($file);
 
 	where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,array(dirname($file),$file,$format,$data_var_name));
-
-
-	if (($format & FORMAT_TXT) == FORMAT_TXT) {
-		file_put_contents( $file.'.txt', print_r($data, TRUE) );
+	
+	if (!is_writable(dirname($file))) {
+		log_message('error', dirname($file).' is not writable !');
+		throw new Exception( dirname($file).' is not writable !' );
 	}
+	else {
+		if (($format & FORMAT_TXT) == FORMAT_TXT) {
+			file_put_contents( $file.'.txt', print_r($data, TRUE) );
+		}
 
-	if (($format & FORMAT_SERIALIZED) == FORMAT_SERIALIZED) {
-		file_put_contents( $file.'.serialized', serialize($data) );
+		if (($format & FORMAT_SERIALIZED) == FORMAT_SERIALIZED) {
+			file_put_contents( $file.'.serialized', serialize($data) );
+		}
+
+		if (($format & FORMAT_PHP) == FORMAT_PHP) {
+			file_put_contents( $file.'.php', "<?php\n\$".$data_var_name." = ".var_export($data, TRUE).";" );
+		}
+
+		if (($format & FORMAT_JSON) == FORMAT_JSON) {
+			file_put_contents ( $file.'.json', json_encode($data) );
+		}
+
+		if ($format & FORMAT_XML == FORMAT_XML) {
+			file_put_contents( $file.'.xml', highlight_string( print_r($data, TRUE), TRUE ) );
+		}		
 	}
-
-	if (($format & FORMAT_PHP) == FORMAT_PHP) {
-		file_put_contents( $file.'.php', "<?php\n\$".$data_var_name." = ".var_export($data, TRUE).";" );
-	}
-
-	if (($format & FORMAT_JSON) == FORMAT_JSON) {
-		file_put_contents ( $file.'.json', json_encode($data) );
-	}
-
-	if ($format & FORMAT_XML == FORMAT_XML) {
-		file_put_contents( $file.'.xml', highlight_string( print_r($data, TRUE), TRUE ) );
-	}
-
 }

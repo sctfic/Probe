@@ -71,8 +71,8 @@ class vp2 extends CI_Model {
 		if ($this->fp && $errno==0) {
 			stream_set_timeout ($this->fp, 0, 2500000);
 			if ($this->wakeUp()) {
-				if ($this->config->item('verbose_threshold') > 2)
-					$this->toggleBacklight (1);
+				// if ($this->config->item('verbose_threshold') > 2)
+				// 	$this->toggleBacklight (1);
 				log_message('probe', _( sprintf('Ouverture de la connexion à %s', $this->conf['_name']) ) );
 				return TRUE;
 			}
