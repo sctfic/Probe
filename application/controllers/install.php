@@ -84,16 +84,17 @@ class Install extends CI_Controller {
     require_once(APPPATH.'models/db_builder.php');
 
     $dbEngine=$this->input->post('dbms-engine');
-    $userName=$this->input->post('dbms-username');
-    $userPassword=$this->input->post('dbms-password');
+    $dbUserName=$this->input->post('dbms-username');
+    $dbUserPassword=$this->input->post('dbms-password');
     $dbHost=$this->input->post('dbms-host');
     $dbPort=$this->input->post('dbms-port');
 
     try {
-      $this->dbb = new db_builder($dbEngine, $userPassword, $userName, $dbHost, $dbPort);
+      $this->dbb = new db_builder($dbEngine, $dbUserPassword, $dbUserName, $dbHost, $dbPort);
 
       $this->dbb->createAppDb();
       $dns = $this->dbb->getDsn();
+
       saveDataOnFile(APPPATH.'config/db-default', $dns, FORMAT_PHP, "db['default']");
       redirect("install/adminUser");
     } catch (Exception $e) {
