@@ -110,7 +110,7 @@ class db_builder extends CI_Model {
 			'username'=> $this->workUserName,
 			'password'=> $this->workUserPassword,
 			// 'hostname'=> $this->engine.':host='.$this->host.';port='.$this->port,
-			'host' => $this->host,
+			'hostname' => $this->host,
 			'port' => $this->port,
 			'database'=> $this->dbName
 		);

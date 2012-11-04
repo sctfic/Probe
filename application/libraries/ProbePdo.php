@@ -39,7 +39,7 @@ class ProbePdo {
 		}
 		
 		$params = $db[$groupBD];
-		$this->hostname = $params["hostname"];
+		$this->hostname = $params["engine"].':host='.$params["hostname"].';port='.$params["port"];
 		$this->userName = $params["username"];
 		$this->password = $params["password"];
 		if(isset($params["database"])) {
