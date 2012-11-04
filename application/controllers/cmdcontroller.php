@@ -146,11 +146,26 @@ class cmdController extends CI_Controller {
 			include(APPPATH.'config/db-default.php');
 			$newID = current ($this->station->availableID()); // prend le 1er ID vide parmis ceux disponible
 
-			$dbb = new db_builder('mysql','nbv4023','root','localhost',3306,'');
+			// $dbb = new db_builder('mysql','nbv4023','root','localhost',3306,'');
+			$workingDb = $db['default']; // this should be dynamic
+			$dbb = new db_builder(
+				$workingDb['engine'],
+				$workingDb['username'],
+				$workingDb['password'],
+				$workingDb['hostname'],
+				$workingDb['port'],
+				$workingDb['database']
+			);
 			$dbb->createAppDb($newID);
 			$dsn = $dbb->getDsn();
 
-			$this->station->arrays2dbconfs($newID, array_merge(array('_ip'=>'', '_port'=>'', '_name'=>'', '_type'=>''), $dsn));
+			$this->station->arrays2dbconfs(
+				$newID, 
+				array_merge(
+					array('_ip'=>'', '_port'=>'', '_name'=>'', '_type'=>''), 
+					$dsn
+				)
+			);
 			return $this->station->config($newID);
 		}
 		catch (Exception $e) {
