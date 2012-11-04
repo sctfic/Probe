@@ -1,8 +1,9 @@
-<?php
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
 // http://fmaz.developpez.com/tutoriels/php/comprendre-pdo/
-class weatherstation extends CI_Model {
+class Station extends CI_Model {
 	protected $DBConf = NULL;
-	public $lst = NULL;
+	public $stationsList = NULL;
 	protected $data = NULL;
 	protected $confExtend = NULL;	
 	protected $type = NULL;
@@ -14,7 +15,7 @@ class weatherstation extends CI_Model {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		parent::__construct();
 		$this->load->database(); // charge la base par defaut
-		$this->lstNames();
+		$this->listStations();
 	}
 	
 	
@@ -22,25 +23,31 @@ class weatherstation extends CI_Model {
 	 * retourne un tableau de tous les noms et db_ID de toute les stations
 	 * @return	array (db_ID => Name)
 	 */
-	function lstNames()
+	function listStations()
 	{
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
+
+			$sqlStationsList = "SELECT `CFG_STATION_ID`, `CFG_VALUE` 
+													FROM `TR_CONFIG` 
+													WHERE `CFG_LABEL`='_name' 
+													LIMIT 16;";
 		// on demande la liste des NOM des stations meteo et les ID assoc
-		$lst = $this->db->query( 
-			'SELECT `CFG_STATION_ID`, `CFG_VALUE` 
-			FROM `TR_CONFIG` 
-			WHERE `CFG_LABEL`=\'_name\' 
-			LIMIT 16');
-		if ($lst->num_rows() > 0)
+		$stationsList = $this->db->query( $sqlStationsList );
+		if ($stationsList->num_rows() > 0)
 		{
-			foreach($lst->result() as $item) { // on met en forme les resultat sous forme de tableau
-				$this->lst[$item->CFG_STATION_ID] = $item->CFG_VALUE;
+			foreach($stationsList->result() as $item) { // on met en forme les resultat sous forme de tableau
+				$this->stationsList[$item->CFG_STATION_ID] = $item->CFG_VALUE;
 			}
-			if (is_array($this->lst))
-				return $this->lst;
+			if (is_array($this->stationsList))
+				return $this->stationsList;
 		}
 		log_message('warning', 'List of Weather Station is empty!');
 		return false;
+	}
+
+	public function getStationsList()
+	{
+		return 
 	}
 
 
@@ -50,12 +57,12 @@ class weatherstation extends CI_Model {
 	 */
 	function availableID () {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
-		// given array : $this->lst. [0,1,  3,4,  6,7  ]
+		// given array : $this->stationsList. [0,1,  3,4,  6,7  ]
 		// construct a new array :   [0,1,2,3,4,5,6,7,8]
 		// use array_diff to get the missing elements 
-		if (empty($this->lst))
+		if (empty($this->stationsList))
 			return array(0);
-		return array_diff (range(0, max(array_keys($this->lst))+1), array_keys($this->lst)); // [2,5,8]
+		return array_diff (range(0, max(array_keys($this->stationsList))+1), array_keys($this->stationsList)); // [2,5,8]
 	}
 
 
@@ -68,24 +75,24 @@ class weatherstation extends CI_Model {
 	 */
 	function config($item = null)	{
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
-		if (!is_array($this->lst = $this->lstNames()))
+		if (!is_array($this->stationsList = $this->listStations()))
 			return array();
 		if (!empty($item)) {
-			if (is_numeric($item) && array_key_exists($item, $this->lst)) {
+			if (is_numeric($item) && array_key_exists($item, $this->stationsList)) {
 			//dans le cas ou je connais deja de ID de ma station
-				$lst[$item]=$this->lst[$item];
+				$stationsList[$item]=$this->stationsList[$item];
 			}
-			elseif (in_array($item, $this->lst))
+			elseif (in_array($item, $this->stationsList))
 			//dans le cas ou je ne connais que le nom
-				$lst[array_search($item, $this->lst)]=$item;
+				$stationsList[array_search($item, $this->stationsList)]=$item;
 		}
 		else {
-			$lst=$this->lst;
+			$stationsList=$this->stationsList;
 		}
 		
 		$query = 'SELECT * FROM `TR_CONFIG` WHERE `CFG_STATION_ID`=? LIMIT 100';
 
-		foreach($lst as $id => $item)
+		foreach($stationsList as $id => $item)
 		{ // pour chaque station meteo on dresse la liste des configs
 			log_message('db', "Load DB confs for : $item (id:$id)");
 			$CurentStation = $this->db->query($query, $id);
