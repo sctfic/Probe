@@ -40,6 +40,9 @@ function saveDataOnFile($file,$data,$format,$data_var_name=null) {
 
 	where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,array(dirname($file),$file,$format,$data_var_name));
 	
+	if (!is_dir(dirname($file)))
+		if (!mkdir(dirname($file), 0777, true))
+			throw new Exception( 'Unable to create : '.dirname($file).' !' );
 	if (!is_writable(dirname($file))) {
 		log_message('error', dirname($file).' is not writable !');
 		throw new Exception( dirname($file).' is not writable !' );

@@ -38,12 +38,18 @@
 |
 */
 
-$route['default_controller'] = "setup/installer";
+$route['default_controller'] = "install";
 // $route['default_controller'] = "welcome";
 $route['404_override'] = '';
 
 $route['admin'] = "admin/admin";
-$route['setup'] = "setup/installer";
+$route['install'] = "install/start";
+$route['configuration/add-station'] = "configuration/addStation";
+$route['configuration/remove-station'] = "configuration/removeStation";
+$route['configuration/remove-station/(:any)'] = "configuration/removeStation/$1";
+$route['configuration/update-station'] = "configuration/updateStation";
+$route['configuration/update-station/(:any)'] = "configuration/updateStation/$1";
+$route['configuration/stations-list'] = 'configuration';
 
 
 /* End of file routes.php */

@@ -4,7 +4,7 @@
 require_once APPPATH."/controllers/pages.php";
 define('ADMIN_ROLE_ID', 1); // it's the first role created so it's 1
 
-class Installer extends CI_Controller {
+class Install extends CI_Controller {
 
 	public function __construct() {
   	parent::__construct();
@@ -19,7 +19,7 @@ class Installer extends CI_Controller {
 		# show form if config file missing
     if (!file_exists(APPPATH."config/db-default.php")) {
       // $this->requestDsnForConfigDb();
-      redirect("setup/installer/dbms");
+      redirect("install/dbms");
     } else { # file exists, 
       try { # connect to the db and check if there is any admin user
         $sqlCountAdmin = "SELECT COUNT(*) AS `AdminCount`
@@ -33,11 +33,11 @@ class Installer extends CI_Controller {
 
         // log_message('info', $row->AdminCount );
         if ($row->AdminCount == 0) { # no admin yet
-          redirect("setup/installer/adminUser");
+          redirect("install/adminUser");
         }
       } catch (Exception $e) {
-        // sprintf("<p>%s</p>",  sprintf('%s', i18n("error.setup.dbms.connect") ) );
-        log_message('error', sprintf('%s', i18n("error.setup.dbms.connect") ) );
+        // sprintf("<p>%s</p>",  sprintf('%s', i18n("error.install.dbms.connect") ) );
+        log_message('error', sprintf('%s', i18n("error.install.dbms.connect") ) );
       }
     }
   }
@@ -71,7 +71,7 @@ class Installer extends CI_Controller {
     
     // display the view
     $pages = new Pages();
-    $pages->view('setup/dbms', $data);
+    $pages->view('install/dbms', $data);
   }
 
 
@@ -84,18 +84,19 @@ class Installer extends CI_Controller {
     require_once(APPPATH.'models/db_builder.php');
 
     $dbEngine=$this->input->post('dbms-engine');
-    $userName=$this->input->post('dbms-username');
-    $userPassword=$this->input->post('dbms-password');
+    $dbUserName=$this->input->post('dbms-username');
+    $dbUserPassword=$this->input->post('dbms-password');
     $dbHost=$this->input->post('dbms-host');
     $dbPort=$this->input->post('dbms-port');
 
     try {
-      $this->dbb = new db_builder($dbEngine, $userPassword, $userName, $dbHost, $dbPort);
+      $this->dbb = new db_builder($dbEngine, $dbUserPassword, $dbUserName, $dbHost, $dbPort);
 
       $this->dbb->createAppDb();
       $dns = $this->dbb->getDsn();
+
       saveDataOnFile(APPPATH.'config/db-default', $dns, FORMAT_PHP, "db['default']");
-      redirect("setup/installer/adminUser");
+      redirect("install/adminUser");
     } catch (Exception $e) {
         log_message('db',  $e->getMessage() );
     }
@@ -123,7 +124,7 @@ class Installer extends CI_Controller {
     
     // display the view
     $pages = new Pages();
-    $pages->view('setup/admin-user', $data);
+    $pages->view('install/admin-user', $data);
   }
 
 

@@ -21,14 +21,14 @@ catch (Exception $e) {
 }
 */
 class db_builder extends CI_Model {
-	protected $Host = NULL;
-	protected $Port = NULL;
-	protected $UserName = NULL;
-	protected $UserPassword = NULL;
-	protected $WorkUserName = NULL;
-	protected $WorkUserPassword = NULL;
-	protected $Engine = NULL; // MySQL, SQLite, PostgreSQL
-	protected $DbName = NULL;
+	protected $host = NULL;
+	protected $port = NULL;
+	protected $userName = NULL;
+	protected $userPassword = NULL;
+	protected $workUserName = NULL;
+	protected $workUserPassword = NULL;
+	protected $engine = NULL; // MySQL, SQLite, PostgreSQL
+	protected $dbName = NULL;
 	protected $pdoConnection = NULL;
 	protected $dsn = array(); // Database Source Name
 
@@ -48,11 +48,11 @@ class db_builder extends CI_Model {
 
 		try {
 			$this->pdoConnection = new PDO(
-				$this->Engine
-				.':host='.$this->Host
-				.';port='.$this->Port, 
-				$this->UserName, 
-				$this->UserPassword
+				$this->engine
+				.':host='.$this->host
+				.';port='.$this->port, 
+				$this->userName, 
+				$this->userPassword
 			);
 
 		} catch (PDOException $e) {
@@ -63,39 +63,39 @@ class db_builder extends CI_Model {
 
 /* DB Host's setter/getter */
 	protected function setHost($value) {
-		$this->Host = $value;
+		$this->host = $value;
 	}
 /* DB Port's setter/getter */
 	protected function setPort($value) {
-		$this->Port = $value;
+		$this->port = $value;
 	}
 /* DB UserName's setter/getter */
 	protected function setUserName($value) {
-		$this->UserName = $value;
+		$this->userName = $value;
 	}
 /* DB UserPassword's setter/getter */
 	protected function setUserPassword($value) {
-		$this->UserPassword = $value;
+		$this->userPassword = $value;
 	}
 /* DB UserName's setter/getter */
 	protected function setWorkUserName($value) {
-		$this->WorkUserName = $value;
+		$this->workUserName = $value;
 	}
 /* DB UserPassword's setter/getter */
 	protected function setWorkUserPassword($value) {
-		$this->WorkUserPassword = $value;
+		$this->workUserPassword = $value;
 	}
 /* DB Engine's setter/getter */
 	protected function setEngine($value) {
-		$this->Engine = $value;
+		$this->engine = $value;
 	}
 /* DB Name's setter/getter */
 	protected function setDbName($value) {
-		$this->DbName = $value;
+		$this->dbName = $value;
 	}
 /* DB Data Source Name's setter/getter */
 	protected function setDsn($value) {
-	where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
+	where_I_Am(__FILE__,__CLASS__,__FUCNTION__,__LINE__,func_get_args());
 		/* @TODO: parse a DSN string to set the properties of the object
 		"<driver>://<username>:<password>@<host>:<port>/<database>";
 		// "<(.+)>://<(.+)>:<(.+)>@<(.+)>:<([0-9]+)>/<(.+)>";
@@ -105,11 +105,15 @@ class db_builder extends CI_Model {
 	public function getDsn() {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		return array (
-			'dbdriver'=> 'pdo',
-			'username'=> $this->WorkUserName,
-			'password'=> $this->WorkUserPassword,
-			'hostname'=> $this->Engine.':host='.$this->Host.';port='.$this->Port,
-			'database'=> $this->DbName
+			// 'dbdriver'=> 'pdo', // why the heck is it 'pdo' here ?
+			'dbdriver'=> $this->engine,
+			'engine'=> $this->engine,
+			'username'=> $this->workUserName,
+			'password'=> $this->workUserPassword,
+			// 'hostname'=> $this->engine.':host='.$this->host.';port='.$this->port,
+			'hostname' => $this->host,
+			'port' => $this->port,
+			'database'=> $this->dbName
 		);
 	}
 
@@ -143,10 +147,10 @@ class db_builder extends CI_Model {
 		$this->setWorkUserName('ProbeUsr'.$dbID);
 		$this->setWorkUserPassword(randomPassword(10));
 		// Creation of user
-		$this->pdoConnection->query("CREATE USER '".$this->WorkUserName."'@'%' IDENTIFIED BY '".$this->WorkUserPassword."';");
+		$this->pdoConnection->query("CREATE USER '".$this->workUserName."'@'%' IDENTIFIED BY '".$this->workUserPassword."';");
 
 		// Adding all privileges on our newly created database
-		$this->pdoConnection->query("GRANT ALL PRIVILEGES on `".$this->DbName."`.* TO '".$this->WorkUserName."'@'%';");
+		$this->pdoConnection->query("GRANT ALL PRIVILEGES on `".$this->dbName."`.* TO '".$this->workUserName."'@'%';");
 
 		// recharge les privileges
 		$this->pdoConnection->query("FLUSH PRIVILEGES;");
@@ -163,13 +167,13 @@ class db_builder extends CI_Model {
 		try {
 			$this->setDbName(is_numeric($dbID) ? 'Probe_Weather'.$dbID : APP_DB);
 			// dans le cas ou la base est fournie avec l'user adequat pas besoin de le refaire
-			if (!$this->dbExists($this->DbName)) {
+			if (!$this->dbExists($this->dbName)) {
 				//Creation of database
-				$sqlCreate = sprintf("CREATE DATABASE IF NOT EXISTS `%s`;", $this->DbName);
+				$sqlCreate = sprintf("CREATE DATABASE IF NOT EXISTS `%s`;", $this->dbName);
 				$this->pdoConnection->query($sqlCreate);
-				if ( ! $this->dbExists($this->DbName) )
-					throw new Exception( 'Impossible de créer la base ! '.$this->DbName );
-				else log_message('db', $this->DbName.' est maintenant disponible !');
+				if ( ! $this->dbExists($this->dbName) )
+					throw new Exception( 'Impossible de créer la base ! '.$this->dbName );
+				else log_message('db', $this->dbName.' est maintenant disponible !');
 
 				//Creation of user
 				$this->addDbUser(is_numeric($dbID) ? $dbID : 'Admin');
@@ -184,13 +188,13 @@ class db_builder extends CI_Model {
 		return false;
 	}
 
-	/**
+/*
 	description: Create application's tables for administrative use:
 	- TA_USER: users list
 	- TR_ROLE: available roles user can be granted
 	- TR_CONFIG: station's configurations
 	- TA_LOG: access log
-	*/
+*/
 	protected function createAppTables() {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		$sqlCreateSchema = sprintf(
@@ -302,8 +306,8 @@ class db_builder extends CI_Model {
 			SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL';
 			CREATE SCHEMA IF NOT EXISTS `%s` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
 			USE `%s`;", 
-			$this->DbName,
-			$this->DbName
+			$this->dbName,
+			$this->dbName
 		);
 		$sqlCreateSensorsTable = sprintf(
 			"CREATE  TABLE IF NOT EXISTS `%s`.`TR_SENSOR` (
@@ -325,7 +329,7 @@ class db_builder extends CI_Model {
 			DEFAULT CHARACTER SET = utf8
 			COLLATE = utf8_general_ci
 			COMMENT = 'Table descriptive des capteurs present sur la station';",
-			$this->DbName
+			$this->dbName
 		);
 		$sqlCreateVariousTable = sprintf(
 			"CREATE  TABLE IF NOT EXISTS `%s`.`TA_VARIOUS` (
@@ -351,7 +355,7 @@ class db_builder extends CI_Model {
 			DEFAULT CHARACTER SET = utf8
 			COLLATE = utf8_general_ci
 			COMMENT = 'Table des capteurs unique (d autre du meme type ne peuvent e' /* comment truncated */;",
-			$this->DbName
+			$this->dbName
 		);
 
 		$sqlCreateTemperatureTable = sprintf(
@@ -375,9 +379,9 @@ class db_builder extends CI_Model {
 			DEFAULT CHARACTER SET = utf8
 			COLLATE = utf8_general_ci
 			COMMENT = 'Regroupe les relevés de tous les capteurs de temperature (en' /* comment truncated */;",
-			$this->DbName,
-			$this->DbName,
-			$this->DbName
+			$this->dbName,
+			$this->dbName,
+			$this->dbName
 		);
 		$sqlCreateWetnessesTable = sprintf(
 			"CREATE  TABLE IF NOT EXISTS `%s`.`TA_WETNESSES` (
@@ -400,9 +404,9 @@ class db_builder extends CI_Model {
 			DEFAULT CHARACTER SET = utf8
 			COLLATE = utf8_general_ci
 			COMMENT = 'Regroupe les relevés de tous les capteurs de humidité du feu' /* comment truncated */;",
-			$this->DbName,
-			$this->DbName,
-			$this->DbName
+			$this->dbName,
+			$this->dbName,
+			$this->dbName
 		);
 		$sqlCreateMoistureTable = sprintf(
 			"CREATE  TABLE IF NOT EXISTS `%s`.`TA_MOISTURE` (
@@ -425,9 +429,9 @@ class db_builder extends CI_Model {
 			DEFAULT CHARACTER SET = utf8
 			COLLATE = utf8_general_ci
 			COMMENT = 'Regroupe les relevés de tous les capteurs de humidité du sol' /* comment truncated */;",
-			$this->DbName,
-			$this->DbName,
-			$this->DbName
+			$this->dbName,
+			$this->dbName,
+			$this->dbName
 		);
 		$sqlCreateHumidityTable = sprintf(
 			"CREATE  TABLE IF NOT EXISTS `%s`.`TA_HUMIDITY` (
@@ -453,9 +457,9 @@ class db_builder extends CI_Model {
 			SET SQL_MODE=@OLD_SQL_MODE;
 			SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 			SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;",
-			$this->DbName,
-			$this->DbName,
-			$this->DbName
+			$this->dbName,
+			$this->dbName,
+			$this->dbName
 		);
 
 		$this->pdoConnection->query($sqlCreateSchema);

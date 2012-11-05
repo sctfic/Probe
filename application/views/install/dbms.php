@@ -1,16 +1,16 @@
 <div class="navbar navbar-inverse navbar-fixed-top">
 	<ul class="breadcrumb">
-	    <li class="active"><a href="/setup/installer/dbms"><?=i18n("setup.breadcrumb.dbms")?></a> <span class="divider">/</span></li>
-	    <li class="disabled"><?=i18n("setup.breadcrumb.administrator")?> <span class="divider">/</span></li>
-	    <li class="disabled"><?=i18n("setup.breadcrumb.dashboard")?> <span class="divider">/</span></li>
+	    <li class="active"><a href="/install/dbms"><?=i18n("install.breadcrumb.dbms")?></a> <span class="divider">/</span></li>
+	    <li class="disabled"><?=i18n("install.breadcrumb.administrator")?> <span class="divider">/</span></li>
+	    <li class="disabled"><?=i18n("install.breadcrumb.dashboard")?> <span class="divider">/</span></li>
 	</ul>
 </div>
 
-<?=form_open('setup/installer/setupDbms', array('class' => 'modal setup form-horizontal', 'id' => 'dbms'))?>
+<?=form_open('install/setupDbms', array('class' => 'modal setup form-horizontal', 'id' => 'dbms'))?>
 
 	<div class="modal-header">
 		<!-- <legend> -->
-			<h3><?=i18n("setup.dbms.legend")?></h3>
+			<h3><?=i18n("install.dbms.legend")?></h3>
 		<!-- </legend>	 -->
 	</div>
 	<fieldset class="modal-body">
@@ -19,13 +19,13 @@
 		<!-- Server host/IP -->
 		<div class="control-group">
 			<label class="control-label" for="dbms-host">
-				<?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('setup.dbms.host'), i18n('required'), i18n('&nbsp;:')) ?>
+				<?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('install.dbms.host'), i18n('required'), i18n('&nbsp;:')) ?>
 			</label>
 			<div class="controls">
 				<input id="dbms-host"
 					type="text" required
 					name="dbms-host" value="<?=$dbmsHost?>" 
-					class="input-large" placeholder="<?=i18n('setup.dbms.host.placeholder')?>"
+					class="input-large" placeholder="<?=i18n('install.dbms.host.placeholder')?>"
 				>
 			</div>
 		</div>
@@ -33,13 +33,13 @@
 		<!-- Server port (range between: 1-65535) -->
 		<div class="control-group">
 			<label class="control-label" for="dbms-port">
-				<?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('setup.dbms.port'), i18n('required'), i18n('&nbsp;:')) ?>
+				<?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('install.dbms.port'), i18n('required'), i18n('&nbsp;:')) ?>
 			</label>
 			<div class="controls">
 				<input id="dbms-port"
 					type="number" min="1" max="65535" 
 					name="dbms-port" value="<?=$dbmsPort?>" 
-					class="input-mini" placeholder="<?=i18n('setup.dbms.port.placeholder')?>"
+					class="input-mini" placeholder="<?=i18n('install.dbms.port.placeholder')?>"
 				>
 			</div>
 		</div>
@@ -47,7 +47,7 @@
 		<!-- Engine: MySQL vs. SQLite  -->
 		<div class="control-group">
 			<label class="control-label">
-				<?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('setup.dbms.engine'), i18n('required'), i18n('&nbsp;:')) ?>
+				<?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('install.dbms.engine'), i18n('required'), i18n('&nbsp;:')) ?>
 			</label>
 			<div class="controls">
 				<label class="control-label inline" for="dbms-engine-mysql">
@@ -56,7 +56,7 @@
 						name="dbms-engine" value="mysql"
 						class="input-mini" 
 					>
-					<?=sprintf('%s <span class="hidden">(%s)</span>', i18n('setup.dbms.engine-mysql'), i18n('required')) ?>
+					<?=sprintf('%s <span class="hidden">(%s)</span>', i18n('install.dbms.engine-mysql'), i18n('required')) ?>
 				</label>
 				<label class="control-label inline" for="dbms-engine-sqlite">
 					<input id="dbms-engine-sqlite"
@@ -64,7 +64,7 @@
 						name="dbms-engine" value="sqlite"
 						class="input-mini" 
 					>
-					<?=sprintf('%s <span class="hidden">(%s)</span>', i18n('setup.dbms.engine-sqlite'), i18n('required')) ?>
+					<?=sprintf('%s <span class="hidden">(%s)</span>', i18n('install.dbms.engine-sqlite'), i18n('required')) ?>
 				</label>
 			</div>
 		</div>
@@ -73,16 +73,16 @@
 		<!-- Existing database vs. new one -->
 	<!-- 	<div class="control-group">
 			<label class="control-label">
-				<?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('setup.dbms.database.selection'), i18n('required'), i18n('&nbsp;:')) ?>
+				<?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('install.dbms.database.selection'), i18n('required'), i18n('&nbsp;:')) ?>
 			</label>
 			<div class="controls">
 				<label class="control-label inline" for="dbms-database-reuse">
 					<input type="radio" name="dbms-database-selection" id="dbms-database-reuse" value="<?=$dbmsPort?>" checked class="input-mini" >
-					<?=sprintf('%s <span class="hidden">(%s)</span>', i18n('setup.dbms.database-reuse'), i18n('required')) ?>
+					<?=sprintf('%s <span class="hidden">(%s)</span>', i18n('install.dbms.database-reuse'), i18n('required')) ?>
 				</label>
 				<label class="control-label inline" for="dbms-database-create">
 					<input type="radio" name="dbms-database-selection" id="dbms-database-create" value="<?=$dbmsPort?>" class="input-mini" >
-					<?=sprintf('%s <span class="hidden">(%s)</span>', i18n('setup.dbms.database-create'), i18n('required')) ?>
+					<?=sprintf('%s <span class="hidden">(%s)</span>', i18n('install.dbms.database-create'), i18n('required')) ?>
 				</label>
 			</div>
 		</div> -->
@@ -90,7 +90,7 @@
 		<div class="control-group">
 		<!-- Server database name -->
 			<label class="control-label" for="dbms-database-name">
-				<?=sprintf('%s %s', i18n('setup.dbms.database-name'), i18n('&nbsp;:'))?>
+				<?=sprintf('%s %s', i18n('install.dbms.database-name'), i18n('&nbsp;:'))?>
 			</label>
 			<div class="controls">
 				<input id="dbms-database-name"
@@ -106,13 +106,13 @@
 		<!-- Database's manager's username -->
 		<div class="control-group">		
 			<label class="control-label" for="dbms-username">
-				<?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('setup.dbms.username'), i18n('required'), i18n('&nbsp;:'))?>
+				<?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('install.dbms.username'), i18n('required'), i18n('&nbsp;:'))?>
 			</label>
 			<div class="controls">
 				<input id="dbms-username"
 					type="text" required
 					name="dbms-username" value="<?=$dbmsUsername?>" 
-					class="input-large" placeholder="<?=i18n('setup.dbms.username.placeholder')?>"
+					class="input-large" placeholder="<?=i18n('install.dbms.username.placeholder')?>"
 				>
 			</div>
 		</div>
@@ -120,20 +120,20 @@
 		<!-- Database's manager's password -->
 		<div class="control-group">		
 			<label class="control-label" for="dbms-password">
-				<?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('setup.dbms.password'), i18n('required'), i18n('&nbsp;:'))?>
+				<?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('install.dbms.password'), i18n('required'), i18n('&nbsp;:'))?>
 			</label>
 			<div class="controls">
 				<input id="dbms-password"
 					type="password" required
 					name="dbms-password" value="<?=$dbmsPassword?>"
-					class="input-large" placeholder="<?=i18n('setup.dbms.password.placeholder')?>"
+					class="input-large" placeholder="<?=i18n('install.dbms.password.placeholder')?>"
 				>
 			</div>
 		</div>
 
 	</fieldset>
 	<div class="modal-footer">
-		<?=form_submit('configure', i18n('setup.dbms.configure'), 'class="btn btn-primary pull-right"')?>
+		<?=form_submit('configure', i18n('install.dbms.configure'), 'class="btn btn-primary pull-right"')?>
 	</div>
 <?=form_close()?>
 <?
