@@ -489,10 +489,6 @@ class vp2 extends CI_Model {
 	}
 	protected function insert_VARIOUS($value_VARIOUS) {
 		$real_VARIOUS = array_combine($this->key_VARIOUS, $value_VARIOUS);
-// 		log_message('save', 'real_VARIOUS');
-// 		print_r($real_VARIOUS);
-// 		echo $this->prep_VARIOUS->queryString;
-// 		log_message('sql', 'insert_VARIOUS');
 		$this->prep_VARIOUS->execute($real_VARIOUS);
 	}
 	protected function get_TABLE_Dest($name) {

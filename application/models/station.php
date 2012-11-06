@@ -75,7 +75,7 @@ class Station extends CI_Model {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		if (!is_array($this->stationsList = $this->listStations()))
 			return array();
-		if (!empty($item)) {
+		if (isset($item)) {
 			if (is_numeric($item) && array_key_exists($item, $this->stationsList)) {
 			//dans le cas ou je connais deja de ID de ma station
 				$stationsList[$item]=$this->stationsList[$item];

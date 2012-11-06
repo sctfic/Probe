@@ -26,6 +26,7 @@ class cmdController extends CI_Controller {
 	// clear;php5 -f /var/www/Probe/cli.php 'cmdcontroller'
 	function index() {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
+
 		$this->configCollectors();
 		$this->dataCollectors();
 		// $this->hilowsCollectors(0);
@@ -119,8 +120,8 @@ class cmdController extends CI_Controller {
 		}
 //		else return false;
 		try {
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 			$conf = end($this->station->config($station));
-			log_message('count', count($conf));
 
 			if (count($conf)<30 or $force==true) {
 				$readconf = $this->station->ConfCollector($conf);
@@ -143,39 +144,32 @@ class cmdController extends CI_Controller {
 
 		try {
 			include_once(APPPATH.'models/db_builder.php');
-			include(APPPATH.'config/db-default.php');
 			$newID = current ($this->station->availableID()); // prend le 1er ID vide parmis ceux disponible
 
-// $db['default'] = array (
-//   'dbdriver' => 'pdo',
-//   'username' => 'ProbeUsrAdmin',
-//   'password' => 'LuD2L4STOT',
-//   'hostname' => 'mysql:host=localhost;port=3306',
-//   'database' => 'probe',
-// );
-			// $dbb = new db_builder('mysql','nbv4023','root','localhost',3306,'');
-			$workingDb = $db['default']; // this should be dynamic
+//			$dbb = new db_builder('mysql','nbv4023','root','localhost',3306,'');
+//			$workingDb = ??? ; // this should be dynamic
 			$dbb = new db_builder(
-				$workingDb['dbdriver'],
-				$workingDb['password'],
-				$workingDb['username'],
-				$workingDb['hostname'],
-				$workingDb['port'],
-				$workingDb['database']	);
+				$workingDb['dbdriver']='mysql',
+				$workingDb['password']='nbv4023',
+				$workingDb['username']='root',
+				$workingDb['hostname']='localhost',
+				$workingDb['port']=3306,
+				$workingDb['database']=NULL);
 			$dbb->createAppDb($newID);
 			$dsn = $dbb->getDsn();
 
 			$this->station->arrays2dbconfs(
 				$newID, 
 				array_merge(
-					array('_ip'=>'', '_port'=>'', '_name'=>'', '_type'=>''), 
+					array('_ip'=>'192.168.0.xxx', '_port'=>22222, '_name'=>'NewVP2-'.$newID, '_type'=>'vp2'), 
 					$dsn
 				)
 			);
-			return $this->station->config($newID);
+			return true; // after, you can read : $this->station->config($newID);
 		}
 		catch (Exception $e) {
 			log_message('warning',  $e->getMessage());
 		}
+		return false;
 	}
 }

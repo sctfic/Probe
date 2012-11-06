@@ -105,8 +105,7 @@ class db_builder extends CI_Model {
 	public function getDsn() {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		return array (
-			// 'dbdriver'=> 'pdo', // why the heck is it 'pdo' here ?
-			'dbdriver'=> $this->engine,
+			'dbdriver'=> 'pdo', // we work exclusively with PDO
 			'engine'=> $this->engine,
 			'username'=> $this->workUserName,
 			'password'=> $this->workUserPassword,
@@ -182,6 +181,7 @@ class db_builder extends CI_Model {
 				$this->createStationTables();
 			else
 				$this->createAppTables();
+			return true;
 		} catch (PDOException $e) {
 			throw new Exception( $e->getMessage() );
 		}
