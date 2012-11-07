@@ -71,7 +71,6 @@ function &DB($params = '', $active_record_override = NULL)
 		{
 			show_error('Invalid DB Connection String');
 		}
-
 		$params = array(
 							'dbdriver'	=> $dns['scheme'],
 							'hostname'	=> (isset($dns['host'])) ? rawurldecode($dns['host']) : '',
@@ -117,7 +116,6 @@ function &DB($params = '', $active_record_override = NULL)
 	{
 		$active_record = $active_record_override;
 	}
-
 	require_once(BASEPATH.'database/DB_driver.php');
 
 	if ( ! isset($active_record) OR $active_record == TRUE)

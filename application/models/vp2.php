@@ -19,7 +19,7 @@ class vp2 extends CI_Model {
 	
 	function __construct($conf)
 	{
-		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__);
 		parent::__construct();
 		$this->conf = $conf;
 
@@ -491,6 +491,9 @@ class vp2 extends CI_Model {
 		$real_VARIOUS = array_combine($this->key_VARIOUS, $value_VARIOUS);
 		$this->prep_VARIOUS->execute($real_VARIOUS);
 	}
+	/**
+	identifie la table qui correspond a notre type de donnée, parmis les tables EAV
+	*/
 	protected function get_TABLE_Dest($name) {
 		if (strpos($name, ':Temp:') !== false)
 			return 'TA_TEMPERATURE';
@@ -503,6 +506,19 @@ class vp2 extends CI_Model {
 		else
 			return 'TA_VARIOUS';
 	}
+	/**
+	determine la date de la derniere archive recupérée
+	*/
+	function get_Last_Date() {
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
+		$date = $this->dataDB->query('SELECT MAX(VAR_DATE) as LAST_ARCH_DATETIME FROM `TA_VARIOUS`;');
+		if (count($date->result_array())==1) {
+			return $date->result_array[0]['LAST_ARCH_DATETIME'];
+		}
+		log_message('warning', 'Resultat inutilisable : '.print_r($date));
+		return '2012/01/01 00:00:00';
+	}
+	
 	protected function get_SEN_ID($name, $table, $recursive = true) {
 		$min = array('TA_TEMPERATURE'=>-50,'TA_HUMIDITY'=>0,'TA_WETNESSES'=>0,'TA_MOISTURE'=>0,'TA_VARIOUS'=>0);
 		$max = array('TA_TEMPERATURE'=>80,'TA_HUMIDITY'=>100,'TA_WETNESSES'=>100,'TA_MOISTURE'=>100,'TA_VARIOUS'=>65000);
@@ -520,15 +536,5 @@ class vp2 extends CI_Model {
 			return $this->get_SEN_ID($name, false); // dataDB->insert_id(); // query('SELECT LAST_INSERT_ID();');
 		}
 		log_message('warning', 'Resultat inutilisable ('.$name.')');
-	}
-	
-	function get_Last_Date() {
-		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
-		$date = $this->dataDB->query('SELECT MAX(VAR_DATE) as LAST_ARCH_DATETIME FROM `TA_VARIOUS`;');
-		if (count($date->result_array())==1) {
-			return $date->result_array[0]['LAST_ARCH_DATETIME'];
-		}
-		log_message('warning', 'Resultat inutilisable : '.print_r($date));
-		return '2012/01/01 00:00:00';
 	}
 }

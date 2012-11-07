@@ -106,11 +106,11 @@ class db_builder extends CI_Model {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		return array (
 			'dbdriver'=> 'pdo', // we work exclusively with PDO
-			'engine'=> $this->engine,
+			// 'engine'=> $this->engine, // do not existe
 			'username'=> $this->workUserName,
 			'password'=> $this->workUserPassword,
-			// 'hostname'=> $this->engine.':host='.$this->host.';port='.$this->port,
-			'hostname' => $this->host,
+			'hostname'=> $this->engine.':host='.$this->host, // need DSN format
+			// 'hostname' => $this->host,
 			'port' => $this->port,
 			'database'=> $this->dbName
 		);
