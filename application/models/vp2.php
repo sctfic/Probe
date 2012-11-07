@@ -19,7 +19,7 @@ class vp2 extends CI_Model {
 	
 	function __construct($conf)
 	{
-		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__);
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		parent::__construct();
 		$this->conf = $conf;
 
@@ -84,7 +84,7 @@ class vp2 extends CI_Model {
 	}
 	function CloseConnection()	{
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
-		$this->toggleBacklight(0);
+		// $this->toggleBacklight(0);
 		if (fclose($this->fp)) {
 			log_message('probe', sprintf( _('Fermeture de %s correcte.'), $this->conf['_name'] ) );
 			return TRUE;

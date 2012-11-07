@@ -164,20 +164,25 @@ class Station extends CI_Model {
 		$type = strtolower($conf['_type']);
 		include_once(APPPATH.'models/'.$type.'.php');
 		$Current_WS = new $type($conf);
-		try {
-			if ( !$Current_WS->initConnection() )
-				throw new Exception( sprintf( _('Impossible de se connecter à %s par %s:%s'), $conf['_name'], $conf['_ip'], $conf['_port']));
-			$clock = $Current_WS->clockSync(5);
-			$this->data = $Current_WS->GetDmpAft ( $Current_WS->get_Last_Date() );
-			if ( !$Current_WS->closeConnection() )
-				throw new Exception( sprintf( _('Fermeture de %s impossible'), $conf['_name']) );
+		$Last_Arch = $Current_WS->get_Last_Date();
+
+		if (!isset($conf['time:archive:period']) || date ("Y/m/d H:i:s") > $Last_Arch + $conf['time:archive:period']*60*10) {
+			try {
+				if ( !$Current_WS->initConnection() )
+					throw new Exception( sprintf( _('Impossible de se connecter à %s par %s:%s'), $conf['_name'], $conf['_ip'], $conf['_port']));
+				$clock = $Current_WS->clockSync(5);
+				$this->data = $Current_WS->GetDmpAft ( $Last_Arch );
+				if ( !$Current_WS->closeConnection() )
+					throw new Exception( sprintf( _('Fermeture de %s impossible'), $conf['_name']) );
+			}
+			catch (Exception $e) {
+				throw new Exception($e->getMessage());
+			}
+			return true;
 		}
-		catch (Exception $e) {
-			throw new Exception($e->getMessage());
-		}
+		else log_message('wayting', sprintf(_( 'The latest collection of archives is only on %s'), $Last_Arch));
 		return true;
 	}
-
 
 	function ConfCollector($conf)
 	{
