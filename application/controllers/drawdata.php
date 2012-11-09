@@ -40,6 +40,12 @@ en vu de les retourner au scripte ajax qui les dessinera
 * @param since is the start date of result needed
 * @param lenght is the number of day
 * @param is the sensor name (one or more)
+*		 for each we return by period :
+*			[first period value,
+*			min period value,
+*			avg period value,
+*			max period value,
+*			last period value]
 */
 	function bracketCurve($since, $lenght){
 		
@@ -58,6 +64,13 @@ en vu de les retourner au scripte ajax qui les dessinera
 	function windrose($since, $lenght){
 
 	}
+/**
 
+* @
+* @param since is the start date of result needed
+* @param lenght is the number of day
+*/
+	function windrose_allInOne($since, $lenght){
 
+	}
 }

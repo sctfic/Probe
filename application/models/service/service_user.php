@@ -15,6 +15,7 @@ class Service_User extends Service {
 	* return an User object when for authentified user, otherwise throw an error
 	*/
 	public function authentify($userName, $userPassword) {
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__);
 		$this->load->library('encrypt');
 		$user = $this->Dao_User->read($userName, $this->encrypt->encode($userPassword) );
 
@@ -23,7 +24,6 @@ class Service_User extends Service {
 		}
 
 		$user['Authentified']=true;
-
 		return $user;
 	}
 
@@ -31,6 +31,7 @@ class Service_User extends Service {
 	* return an User object when for authentified user, otherwise throw an error
 	*/
 	public function register($userName, $userPassword, $firstName = null, $familyName = null, $email = null, $role = 0) {
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__);
 		$this->load->library('encrypt');
 		$user = $this->Dao_User->write(
 			$userName, 

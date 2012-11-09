@@ -10,6 +10,7 @@ class Dao_User extends CI_Model {
 	}
 
 	public function read($userName, $userPassword) {
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		$user = NULL;
 		try {
 			$this->db->where(array(
@@ -17,19 +18,19 @@ class Dao_User extends CI_Model {
 					'USR_PWD' => $userPassword
 					)
 				);
-			$users = $this->db->get('TA_USER')->result_array();
+			$query = $this->db->get('TA_USER');
 
-			// $users = $query->result_array(); //array of arrays
-
+			// on ne retournera que le 1er users qui as ces identifiants et mdp
+			$user = $query->row_array(); //array of arrays
 		} catch (PDOException $e) {
 			throw new Exception( $e->getMessage() );
 		}
-		return $users;
+		return $user;
 	}
 
 	public function write($userName, $userPassword, $firstName, $familyName, $email, $role) {
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		$user = false;
-
 		try {
 			$added = $this->db->insert(
 				'TA_USER',
@@ -42,8 +43,7 @@ class Dao_User extends CI_Model {
 					'ROL_ID' => $role
 					));
 
-			// Si un user est bien insérer.
-			if ($added)
+			if ($added==1) // Si un user est bien insérer
 				$user = $this->read($userName, $userPassword);
 
 		} catch (PDOException $e) {
