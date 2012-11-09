@@ -1,7 +1,7 @@
 <div class="navbar navbar-inverse navbar-fixed-top">
     <ul class="breadcrumb">
         <li><a href="/install/dbms"><?=i18n("install.breadcrumb.dbms")?></a> <span class="divider">/</span></li>
-        <li class="active"><a href="/install/adminUser"><?=i18n("install.breadcrumb.administrator")?></a> <span class="divider">/</span></li>
+        <li class="active"><a href="/install/admin-user"><?=i18n("install.breadcrumb.administrator")?></a> <span class="divider">/</span></li>
         <li class="disabled"><?=i18n("install.breadcrumb.dashboard")?> <span class="divider">/</span></li>
     </ul>
 </div>

@@ -33,7 +33,7 @@ class Install extends CI_Controller {
 
         // log_message('info', $row->AdminCount );
         if ($row->AdminCount == 0) { # no admin yet
-          redirect("install/adminUser");
+          redirect("install/admin-user");
         }
       } catch (Exception $e) {
         // sprintf("<p>%s</p>",  sprintf('%s', i18n("error.install.dbms.connect") ) );
@@ -96,7 +96,7 @@ class Install extends CI_Controller {
       $dns = $this->dbb->getDsn();
 
       saveDataOnFile(APPPATH.'config/db-default', $dns, FORMAT_PHP, "db['default']");
-      redirect("install/adminUser");
+      redirect("install/admin-user");
     } catch (Exception $e) {
         log_message('db',  $e->getMessage() );
     }
