@@ -1,6 +1,6 @@
 <?php
 /**
-* this function generate a random string
+ this function generate a random string
 * @param size of string
 * @param list of autorized char
 **/
@@ -12,7 +12,7 @@ function randomPassword($size=8, $alphabet = "abcdefghijklmnopqrstuwxyzABCDEFGHI
 	return implode($pass);
 }
 /**
-* this function write in APPPATH.'config/db-default.php' file the 
+ this function write in APPPATH.'config/db-default.php' file the 
 * necessary connection config to reconnect later
 * @param array () of config
 **/

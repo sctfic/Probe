@@ -22,7 +22,8 @@ class Service_User extends Service {
 			throw new BusinessException( i18n('login.fail.username.password.incorrect') );
 		}
 
-		$user->setAuthentified(true);
+		$user['Authentified']=true;
+
 		return $user;
 	}
 
@@ -44,7 +45,7 @@ class Service_User extends Service {
 			throw new BusinessException( i18n('register.fail.username.password.incorrect') );
 		}
 
-		$user->setRegistered(true);
+		$user['Registered']=true;
 		return $user;
 	}
 }

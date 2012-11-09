@@ -23,9 +23,26 @@ en vu de les retourner au scripte ajax qui les dessinera
 /**
 
 * @
+* @param since is the start date of result needed
+* @param lenght is the number of day
 * @param is the sensor name (one or more)
 */
-	function curves(){
+	function curves($since, $lenght){
+		
+		$args = func_get_args();
+	    foreach ($args as $value) {
+	     	
+	    }
+	}
+/**
+
+* @
+* @param since is the start date of result needed
+* @param lenght is the number of day
+* @param is the sensor name (one or more)
+*/
+	function bracketCurve($since, $lenght){
+		
 		$args = func_get_args();
 	    foreach ($args as $value) {
 	     	

@@ -89,7 +89,6 @@ class cmdController extends CI_Controller {
 			$this->dataCollectors (array_keys ($this->station->stationsList));
 			return false;
 		}
-//		else return false;
 		try {
 			// on recupere les confs de $station
 			$conf = end($this->station->config($station)); // $station est le ID ou le nom
@@ -118,9 +117,7 @@ class cmdController extends CI_Controller {
 			$this->configCollectors (array_keys ($this->station->stationsList));
 			return false;
 		}
-//		else return false;
 		try {
-		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 			$conf = end($this->station->config($station));
 
 			if (count($conf)<30 or $force==true) {
