@@ -22,8 +22,8 @@ class Dao_User extends CI_Model {
 
 			// on ne retournera que le 1er users qui as ces identifiants et mdp
 			$user = $query->row_array(); //array of arrays
-		} catch (PDOException $e) {
-			throw new Exception( $e->getMessage() );
+		} catch (Exception $e) {
+			echo $e->getMessage();
 		}
 		return $user;
 	}
@@ -46,8 +46,8 @@ class Dao_User extends CI_Model {
 			if ($added==1) // Si un user est bien insérer
 				$user = $this->read($userName, $userPassword);
 
-		} catch (PDOException $e) {
-			throw new Exception( $e->getMessage() );
+		} catch (Exception $e) {
+			echo $e->getMessage() ;
 		}
 		return $user;
 	}

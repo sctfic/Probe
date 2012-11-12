@@ -10,11 +10,7 @@ class cmdController extends CI_Controller {
 		
 		parent::__construct();
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
-		/*
-		* on charge notre modele avec le 3e parametre a TRUE pour qu'il charge 
-		* la base par defaut. 
-		* Elle sera disponible sous la denominatiosn : $this->db->*
-		**/
+
 		include_once(BASEPATH.'core/Model.php'); // need for load models manualy
 		include_once(APPPATH.'models/station.php');
 
