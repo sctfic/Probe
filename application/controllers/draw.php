@@ -1,5 +1,5 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-class dataForDraw extends CI_Controller {
+class Draw extends CI_Controller {
 /**
 Cette classe appelle les differentes requetes
 en vu de les retourner au scripte ajax qui les dessinera
