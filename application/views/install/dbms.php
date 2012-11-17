@@ -103,6 +103,10 @@
 			</div>
 		</div>
 
+    <div class="alert">
+    	<?=i18n('install.dbms.advanced-user.management')?>
+    </div>
+
 		<!-- Database's manager's username -->
 		<div class="control-group">		
 			<label class="control-label" for="dbms-username">
