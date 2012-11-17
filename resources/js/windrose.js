@@ -205,9 +205,10 @@ function drawComplexArcs(parent, plotData, colorFunc, arcTextFunc, complexArcOpt
         .attr("class", "calmcaption")
         .text("calm");
 }
-
-// Update the page text after the data has been loaded
-// Lots of template substitution here
+/**
+    Update the page text after the data has been loaded
+    Lots of template substitution here
+*/
 function updatePageText(d) {
     if (!('info' in d)) {
         // workaround for stations missing in the master list

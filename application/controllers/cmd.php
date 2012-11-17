@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-// clear;php5 -f /var/www/Probe/cli.php 'cmdcontroller'
-class cmdController extends CI_Controller {
+// clear;php5 -f /var/www/Probe/cli.php 'cmd'
+class cmd extends CI_Controller {
 
 	function __construct() {
 		if (isset($_SERVER['REMOTE_ADDR'])) { // n'est pas definie en php5-cli
@@ -19,7 +19,7 @@ class cmdController extends CI_Controller {
 
 
 	// la fonction qui ce lancera par defaut dans cette classe 
-	// clear;php5 -f /var/www/Probe/cli.php 'cmdcontroller'
+	// clear;php5 -f /var/www/Probe/cli.php 'cmd'
 	function index() {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 
@@ -30,7 +30,7 @@ class cmdController extends CI_Controller {
 	}
 
 
-	// clear;php5 -f /var/www/Probe/cli.php 'cmdcontroller/hilowCollectors'
+	// clear;php5 -f /var/www/Probe/cli.php 'cmd/hilowCollectors'
 	function hilowsCollectors($station = null) {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		try {
@@ -50,7 +50,7 @@ class cmdController extends CI_Controller {
 	}
 	
 
-	// clear;php5 -f /var/www/Probe/cli.php 'cmdcontroller/curentCollectors'
+	// clear;php5 -f /var/www/Probe/cli.php 'cmd/curentCollectors'
 	function curentCollectors($station = null) {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		try {
@@ -70,7 +70,7 @@ class cmdController extends CI_Controller {
 	}
 
 
-	// clear;php5 -f /var/www/Probe/cli.php 'cmdcontroller/dataCollectors'
+	// clear;php5 -f /var/www/Probe/cli.php 'cmd/dataCollectors'
 	function dataCollectors($station = null) {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		if (is_array($station)) {
@@ -98,7 +98,7 @@ class cmdController extends CI_Controller {
 	}
 	
 	
-	// clear;php5 -f /var/www/Probe/cli.php 'cmdcontroller/configCollectors'
+	// clear;php5 -f /var/www/Probe/cli.php 'cmd/configCollectors'
 	function configCollectors($station = null, $force = false) {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		if (is_array($station)) {
@@ -131,7 +131,7 @@ class cmdController extends CI_Controller {
 	}
 
 
-	// clear;php5 -f /var/www/Probe/cli.php 'cmdcontroller/makeNewStation'
+	// clear;php5 -f /var/www/Probe/cli.php 'cmd/makeNewStation'
 	function makeNewStation() {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 

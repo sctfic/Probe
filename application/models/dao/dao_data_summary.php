@@ -1,5 +1,5 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-class microDraw extends CI_Model {
+class filteredData extends CI_Model {
 /**
 Cette classe appelle les differentes requetes
 en vu de les retourner au scripte ajax qui les dessinera
