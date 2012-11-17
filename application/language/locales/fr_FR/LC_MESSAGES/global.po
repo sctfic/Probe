@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: probe\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-25 23:58+0100\n"
-"PO-Revision-Date: 2012-10-26 00:01+0100\n"
+"POT-Creation-Date: 2012-11-17 19:20+0100\n"
+"PO-Revision-Date: 2012-11-17 19:27+0100\n"
 "Last-Translator: Édouard Lopez <dev+i18n@edouard-lopez.com>\n"
 "Language-Team: probe <dev+probe@edouard-lopez.com>\n"
 "Language: \n"
@@ -18,10 +18,6 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: helpers/other_helper.php:21
-msgid "Impossible d ecrire le fichier de config : "
-msgstr ""
-
 #: helpers/pages_helper.php:12
 msgid ":title"
 msgstr "Titre"
@@ -34,96 +30,96 @@ msgstr ""
 msgid ":author"
 msgstr ""
 
-#: models/db_builder.php:219
+#: models/db_builder.php:232
 msgid "database.table.role:admin.label"
 msgstr "Administrateur"
 
-#: models/Station.php:97
-msgid "Aucune configuration valide n'est disponible"
-msgstr ""
-
-#: models/Station.php:110
-#: models/Station.php:126
-#: models/Station.php:150
-#: models/Station.php:169
-#, php-format
-msgid "Impossible de se connecter à %s par %s:%s"
-msgstr ""
-
-#: models/Station.php:113
-#: models/Station.php:129
-#: models/Station.php:154
-#: models/Station.php:177
-#, php-format
-msgid "Fermeture de %s impossible"
-msgstr ""
-
-#: models/Station.php:172
-#, php-format
-msgid "Lecture des config de %s impossible"
-msgstr ""
-
-#: models/vp2.php:87
+#: models/vp2.php:89
 #, php-format
 msgid "Fermeture de %s correcte."
 msgstr ""
 
-#: models/vp2.php:102
+#: models/vp2.php:105
 #, php-format
 msgid "Default Clock synchronize : %ssec"
 msgstr ""
 
-#: models/vp2.php:105
+#: models/vp2.php:108
 msgid "Clock synchronizing."
 msgstr ""
 
-#: models/vp2.php:107
+#: models/vp2.php:110
 msgid "Clock synch."
 msgstr ""
 
-#: models/vp2.php:109
+#: models/vp2.php:112
 #, php-format
 msgid "So mutch Default : %ssec. Please change it manualy"
 msgstr ""
 
-#: models/vp2.php:150
+#: models/vp2.php:155
 #, php-format
 msgid "Incomplete Data strlen = %d insted of : %d"
 msgstr ""
 
-#: models/vp2.php:155
+#: models/vp2.php:160
 #, php-format
 msgid "Wrong CRC, on good data : crc=0x%X 0x%X , strlen=%d"
 msgstr ""
 
-#: models/vp2.php:174
+#: models/vp2.php:180
 #, php-format
 msgid "Command [%s] not understand"
 msgstr ""
 
-#: models/vp2.php:177
+#: models/vp2.php:183
 msgid "Unknow Error, Reconnection"
 msgstr ""
 
-#: models/vp2.php:357
+#: models/vp2.php:370
 msgid "Please retry later to finish, Data sensors must be checked in few second."
 msgstr ""
 
-#: models/vp2.php:372
-#, php-format
-msgid "Page #%d-%d of %s archived Ok."
-msgstr ""
-
-#: models/vp2.php:377
+#: models/vp2.php:390
 #, php-format
 msgid "Page #%d-%d of %s Ignored (Out of Range)."
 msgstr ""
 
-#: models/service/service_user.php:22
+#: models/station.php:108
+msgid "Aucune configuration valide n'est disponible"
+msgstr ""
+
+#: models/station.php:123
+#: models/station.php:142
+#: models/station.php:172
+#: models/station.php:195
+#, php-format
+msgid "Impossible de se connecter à %s par %s:%s"
+msgstr ""
+
+#: models/station.php:126
+#: models/station.php:145
+#: models/station.php:176
+#: models/station.php:203
+#, php-format
+msgid "Fermeture de %s impossible"
+msgstr ""
+
+#: models/station.php:183
+#, php-format
+msgid "The latest collection of archives is only on %s"
+msgstr ""
+
+#: models/station.php:198
+#, php-format
+msgid "Lecture des config de %s impossible"
+msgstr ""
+
+#: models/service/service_user.php:23
 msgid "login.fail.username.password.incorrect"
 msgstr "Le mot de passe ne correspond à celui associé à l'utilisateur."
 
-#: models/service/service_user.php:42
+#: models/service/service_user.php:46
 msgid "register.fail.username.password.incorrect"
 msgstr "Le mot de passe est invalide pour créer un compte"
 
@@ -134,9 +130,9 @@ msgstr ""
 #: views/login.php:16
 #: views/login.php:19
 #: views/login.php:25
-#: views/install/admin-user.php:22
-#: views/install/admin-user.php:35
-#: views/install/admin-user.php:48
+#: views/install/admin-user.php:27
+#: views/install/admin-user.php:40
+#: views/install/admin-user.php:53
 #: views/install/dbms.php:22
 #: views/install/dbms.php:36
 #: views/install/dbms.php:50
@@ -145,24 +141,24 @@ msgstr ""
 #: views/install/dbms.php:76
 #: views/install/dbms.php:81
 #: views/install/dbms.php:85
-#: views/install/dbms.php:109
-#: views/install/dbms.php:123
+#: views/install/dbms.php:113
+#: views/install/dbms.php:127
 msgid "required"
 msgstr ""
 
 #: views/login.php:16
 #: views/login.php:19
 #: views/login.php:25
-#: views/install/admin-user.php:22
-#: views/install/admin-user.php:35
-#: views/install/admin-user.php:48
+#: views/install/admin-user.php:27
+#: views/install/admin-user.php:40
+#: views/install/admin-user.php:53
 #: views/install/dbms.php:22
 #: views/install/dbms.php:36
 #: views/install/dbms.php:50
 #: views/install/dbms.php:76
 #: views/install/dbms.php:93
-#: views/install/dbms.php:109
-#: views/install/dbms.php:123
+#: views/install/dbms.php:113
+#: views/install/dbms.php:127
 msgid "&nbsp;:"
 msgstr ""
 
@@ -198,50 +194,71 @@ msgstr ""
 msgid "You're now logged out."
 msgstr ""
 
+#: views/admin/dashboard.php:3
 #: views/install/admin-user.php:3
 #: views/install/dbms.php:3
 msgid "install.breadcrumb.dbms"
 msgstr "Base de données"
 
+#: views/admin/dashboard.php:4
 #: views/install/admin-user.php:4
 #: views/install/dbms.php:4
 msgid "install.breadcrumb.administrator"
 msgstr "Compte administrateur"
 
+#: views/admin/dashboard.php:5
 #: views/install/admin-user.php:5
 #: views/install/dbms.php:5
 msgid "install.breadcrumb.dashboard"
 msgstr "Tableau de bord"
 
+#: views/admin/dashboard.php:38
+#, php-format
+msgid "edit %s properties"
+msgstr ""
+
+#: views/admin/dashboard.php:41
+msgid "Model"
+msgstr ""
+
+#: views/admin/dashboard.php:65
+#: views/admin/dashboard.php:66
+msgid "logOut"
+msgstr ""
+
 #: views/install/admin-user.php:13
 msgid "install.administrator.legend"
 msgstr "Configuration du compte administrateur"
 
-#: views/install/admin-user.php:22
+#: views/install/admin-user.php:21
+msgid "install.administrator.description"
+msgstr "Utilisateur «&nbsp;admin&nbsp;»"
+
+#: views/install/admin-user.php:27
 msgid "install.administrator.username"
 msgstr "Utilisateur «&nbsp;admin&nbsp;»"
 
-#: views/install/admin-user.php:28
+#: views/install/admin-user.php:33
 msgid "install.administrator.username.placeholder"
 msgstr "gestionnaire de l'application"
 
-#: views/install/admin-user.php:35
+#: views/install/admin-user.php:40
 msgid "install.administrator.password"
 msgstr "Mot de passe"
 
-#: views/install/admin-user.php:41
+#: views/install/admin-user.php:46
 msgid "install.administrator.password.placeholder"
 msgstr "plus long c'est mieux"
 
-#: views/install/admin-user.php:48
+#: views/install/admin-user.php:53
 msgid "install.administrator.password-confirmation"
 msgstr "Confirmer"
 
-#: views/install/admin-user.php:54
+#: views/install/admin-user.php:59
 msgid "install.administrator.password-confirmation.placeholder"
 msgstr "pour éviter les erreurs de saisi"
 
-#: views/install/admin-user.php:60
+#: views/install/admin-user.php:65
 msgid "install.administrator.configure"
 msgstr "Configurer →"
 
@@ -293,61 +310,80 @@ msgstr "nouvelle base"
 msgid "install.dbms.database-name"
 msgstr "Nom de la base"
 
-#: views/install/dbms.php:109
+#: views/install/dbms.php:107
+msgid "install.dbms.advanced-user.management"
+msgstr "Le nom et le mot de passe sont ceux de l'utilisateur gérant la base de données « Probe »"
+
+#: views/install/dbms.php:113
 msgid "install.dbms.username"
 msgstr "Utilisateur"
 
-#: views/install/dbms.php:115
+#: views/install/dbms.php:119
 msgid "install.dbms.username.placeholder"
 msgstr "gestionnaire de la base"
 
-#: views/install/dbms.php:123
+#: views/install/dbms.php:127
 msgid "install.dbms.password"
 msgstr "Mot de passe"
 
-#: views/install/dbms.php:129
+#: views/install/dbms.php:133
 msgid "install.dbms.password.placeholder"
 msgstr "mot de passe du gestionnaire"
 
-#: views/install/dbms.php:136
+#: views/install/dbms.php:140
 msgid "install.dbms.configure"
 msgstr "Configurer →"
-
-#: views/admin/dashboard.php:30
-#, php-format
-msgid "edit %s properties"
-msgstr ""
-
-#: views/admin/dashboard.php:33
-msgid "Model"
-msgstr ""
-
-#: views/admin/dashboard.php:57
-#: views/admin/dashboard.php:58
-msgid "logOut"
-msgstr ""
 
 #: views/templates/footer.php:1
 msgid "Weather Station Web Data Share"
 msgstr ""
 
-#: controllers/install.php:39
+#: views/configuration/stations-form.php:5
+msgid "configuration.stations-list.legend.stem"
+msgstr "Configuration des stations"
+
+#: views/configuration/stations-form.php:11
+msgid "configuration.station.host"
+msgstr "Nom d'hôte"
+
+#: views/configuration/stations-form.php:17
+msgid "configuration.station.host.placeholder"
+msgstr "exemple.fr, localhost ou 127.0.0.1"
+
+#: views/configuration/stations-form.php:25
+msgid "configuration.station.port"
+msgstr "Port"
+
+#: views/configuration/stations-form.php:31
+msgid "configuration.station.port.placeholder"
+msgstr "défault: 3306"
+
+#: views/configuration/stations-list.php:3
+msgid "configuration.stations.breadcrumb"
+msgstr "Configuration des stations"
+
+#: views/configuration/stations-list.php:19
+#: views/configuration/stations-list.php:38
+msgid "configuration.stations.add-new.station"
+msgstr "Ajouter une station"
+
+#: controllers/install.php:40
 msgid "error.install.dbms.connect"
 msgstr "La connexion à la base de données n'a pas pu être établie. Veuillez vérifier les informations soumises et l'existence de la base de données."
 
-#: controllers/admin/admin.php:31
+#: controllers/admin/admin.php:33
 msgid "admin.welcome"
 msgstr ""
 
-#: controllers/admin/admin.php:52
+#: controllers/admin/admin.php:55
 msgid "Username"
 msgstr ""
 
-#: controllers/admin/admin.php:53
+#: controllers/admin/admin.php:56
 msgid "Password"
 msgstr ""
 
-#: controllers/admin/admin.php:54
+#: controllers/admin/admin.php:57
 msgid "Password Confirmation"
 msgstr ""
 

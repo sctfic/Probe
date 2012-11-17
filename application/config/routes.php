@@ -45,6 +45,7 @@ $route['404_override'] = '';
 $route['admin'] = "admin/admin";
 $route['install'] = "install/start";
 $route['install/admin-user'] = "install/adminUser";
+$route['install/setup-administrator'] = "install/setupAdministrator";
 $route['configuration/add-station'] = "configuration/addStation";
 $route['configuration/remove-station'] = "configuration/removeStation";
 $route['configuration/remove-station/(:any)'] = "configuration/removeStation/$1";
