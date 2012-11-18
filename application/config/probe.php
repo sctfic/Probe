@@ -16,9 +16,9 @@ $config['probe:locale'] = 'fr';
 *redirection URLs for the admin area
 */
 // landing page after user is successfully authentified
-$config['admin_dashboard']	= "/admin/admin/";
+$config['page-login']	= "admin/connexion";
 // Login page, un-authentified users will land on this page to provide their credentials
-$config['admin_connexion']	= "/admin/admin/connexion";
+$config['page-station-list']	= "configuration/stations-list";
 
 
 $config['require_directories']	= array("entity", "exceptions");

@@ -16,21 +16,21 @@ class Admin extends Authentification {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 
 		$this->i18n->setLocaleEnv($this->config->item('probe:locale'), 'global'); // set language
-		$this->encrypt->set_cipher(MCRYPT_BLOWFISH);
+		// $this->encrypt->set_cipher(MCRYPT_BLOWFISH);
 
 		//Modèles
 		$this->load->model('service/Service_User');
 
-		// set URL to login page (not yet authentified)
-		$this->urlConnexion = $this->config->item('admin_connexion');
-		// set URL to redirect to when user is authentified
-		$this->urlWhenLogged 	= $this->config->item('admin_dashboard');
+		// set URL to login page, i.e. not yet authentified (cf. config/probe.php)
+		$this->urlConnexion = $this->config->item('page-login');
+		// set URL to redirect to when user is authentified (cf. config/probe.php)
+		$this->urlWhenLogged 	= $this->config->item('page-station-list');
 		$this->checkConnexionStatus();
 	}
 
 	public function index() {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
-		i18n('admin.welcome');
+		$this->connexion();
 	}
 
 	/*
@@ -67,11 +67,13 @@ class Admin extends Authentification {
 	*/
 	public function connect() {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
-		$userName =	$this->input->post('username');
-		$userPassword	=	$this->input->post('password');
+		$userName =	$this->input->post('login-username');
+		$userPassword	=	$this->input->post('login-password');
 		try {
 			//Chercher l'user correspondant au couple login/pwd
 			$user = $this->Service_User->authentify($userName, $userPassword);
+			// var_dump($user);
+			// exit;
 			$this->session->set_userdata("user", serialize($user));
 		}
 		catch(BusinessException $be) {
@@ -79,8 +81,6 @@ class Admin extends Authentification {
 			$this->session->set_userdata("msg", $be->getMessage());
 		}
 
-// 			var_dump($user);
-// 			exit();
 		redirect($this->urlWhenLogged);
 	}
 }
