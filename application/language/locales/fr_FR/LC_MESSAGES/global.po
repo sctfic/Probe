@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: probe\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-11-18 03:59+0100\n"
-"PO-Revision-Date: 2012-11-18 04:14+0100\n"
+"POT-Creation-Date: 2012-11-18 11:28+0100\n"
+"PO-Revision-Date: 2012-11-18 11:29+0100\n"
 "Last-Translator: Édouard Lopez <dev+i18n@edouard-lopez.com>\n"
 "Language-Team: probe <dev+probe@edouard-lopez.com>\n"
 "Language: \n"
@@ -127,88 +127,123 @@ msgstr "Le mot de passe est invalide pour créer un compte"
 msgid "error.user-creation.invalid.email"
 msgstr ""
 
-#: views/login.php:16
-msgid "username"
-msgstr ""
-
-#: views/login.php:16
-#: views/login.php:19
-#: views/login.php:25
-#: views/install/admin-user.php:33
-#: views/install/admin-user.php:46
-#: views/install/admin-user.php:59
-#: views/install/dbms.php:22
-#: views/install/dbms.php:36
-#: views/install/dbms.php:50
-#: views/install/dbms.php:59
-#: views/install/dbms.php:67
-#: views/install/dbms.php:76
-#: views/install/dbms.php:81
-#: views/install/dbms.php:85
-#: views/install/dbms.php:113
-#: views/install/dbms.php:127
-msgid "required"
-msgstr ""
-
-#: views/login.php:16
-#: views/login.php:19
-#: views/login.php:25
-#: views/install/admin-user.php:33
-#: views/install/admin-user.php:46
-#: views/install/admin-user.php:59
-#: views/install/dbms.php:22
-#: views/install/dbms.php:36
-#: views/install/dbms.php:50
-#: views/install/dbms.php:76
-#: views/install/dbms.php:93
-#: views/install/dbms.php:113
-#: views/install/dbms.php:127
-msgid "&nbsp;:"
-msgstr ""
-
-#: views/login.php:17
-msgid "fill in your username"
-msgstr ""
-
-#: views/login.php:19
-msgid "password"
-msgstr ""
-
-#: views/login.php:21
-msgid "longer is better"
-msgstr ""
-
-#: views/login.php:25
-msgid "password confirmation"
-msgstr ""
-
-#: views/login.php:27
-msgid "so we can prevent mistakes"
-msgstr ""
-
-#: views/login.php:30
-msgid "login"
-msgstr ""
-
-#: views/login.php:35
-msgid "sunny weather"
-msgstr ""
-
-#: views/logout.php:2
-msgid "You're now logged out."
-msgstr ""
-
+#: views/login.php:3
 #: views/admin/dashboard.php:3
 #: views/install/admin-user.php:3
 #: views/install/dbms.php:3
 msgid "install.breadcrumb.dbms"
 msgstr "Base de données"
 
+#: views/login.php:4
 #: views/admin/dashboard.php:4
 #: views/install/admin-user.php:4
 #: views/install/dbms.php:4
 msgid "install.breadcrumb.administrator"
 msgstr "Compte administrateur"
+
+#: views/login.php:5
+msgid "install.breadcrumb.login"
+msgstr "Authentification"
+
+#: views/login.php:18
+msgid "login.legend"
+msgstr "Authentification à l'application"
+
+#: views/login.php:26
+#, fuzzy
+msgid "login.description"
+msgstr "Utilisateur responsable de l'application. Il peut ajouter et supprimer des stations."
+
+#: views/login.php:32
+msgid "login.username"
+msgstr "Utilisateur"
+
+#: views/login.php:32
+#: views/login.php:45
+#: views/login.php:55
+#: views/login.php:58
+#: views/login.php:63
+#: views/install/admin-user.php:31
+#: views/install/admin-user.php:44
+#: views/install/admin-user.php:57
+#: views/install/dbms.php:27
+#: views/install/dbms.php:41
+#: views/install/dbms.php:55
+#: views/install/dbms.php:64
+#: views/install/dbms.php:72
+#: views/install/dbms.php:81
+#: views/install/dbms.php:86
+#: views/install/dbms.php:90
+#: views/install/dbms.php:118
+#: views/install/dbms.php:132
+msgid "required"
+msgstr ""
+
+#: views/login.php:32
+#: views/login.php:45
+#: views/login.php:55
+#: views/login.php:58
+#: views/login.php:63
+#: views/install/admin-user.php:31
+#: views/install/admin-user.php:44
+#: views/install/admin-user.php:57
+#: views/install/dbms.php:27
+#: views/install/dbms.php:41
+#: views/install/dbms.php:55
+#: views/install/dbms.php:81
+#: views/install/dbms.php:98
+#: views/install/dbms.php:118
+#: views/install/dbms.php:132
+msgid "&nbsp;:"
+msgstr ""
+
+#: views/login.php:38
+msgid "login.username.placeholder"
+msgstr "gestionnaire ou exploitant"
+
+#: views/login.php:45
+msgid "login.password"
+msgstr "Mot de passe"
+
+#: views/login.php:51
+msgid "login.password.placeholder"
+msgstr "mot de passe du gestionnaire ou de l'exploitant"
+
+#: views/login.php:55
+msgid "userName"
+msgstr ""
+
+#: views/login.php:56
+msgid "fill in your userName"
+msgstr ""
+
+#: views/login.php:58
+msgid "password"
+msgstr ""
+
+#: views/login.php:60
+msgid "longer is better"
+msgstr ""
+
+#: views/login.php:63
+msgid "password confirmation"
+msgstr ""
+
+#: views/login.php:65
+msgid "so we can prevent mistakes"
+msgstr ""
+
+#: views/login.php:72
+msgid "sunny weather"
+msgstr ""
+
+#: views/login.php:77
+msgid "login.authentificate"
+msgstr "S'authentifier →"
+
+#: views/logout.php:2
+msgid "You're now logged out."
+msgstr ""
 
 #: views/admin/dashboard.php:5
 #: views/install/admin-user.php:5
@@ -230,111 +265,111 @@ msgstr ""
 msgid "logOut"
 msgstr ""
 
-#: views/install/admin-user.php:19
+#: views/install/admin-user.php:17
 msgid "install.administrator.legend"
 msgstr "Configuration du compte administrateur"
 
-#: views/install/admin-user.php:27
+#: views/install/admin-user.php:25
 msgid "install.administrator.description"
 msgstr "Utilisateur responsable de l'application. Il peut ajouter et supprimer des stations."
 
-#: views/install/admin-user.php:33
+#: views/install/admin-user.php:31
 msgid "install.administrator.username"
 msgstr "Utilisateur «&nbsp;admin&nbsp;»"
 
-#: views/install/admin-user.php:39
+#: views/install/admin-user.php:37
 msgid "install.administrator.username.placeholder"
 msgstr "gestionnaire de l'application"
 
-#: views/install/admin-user.php:46
+#: views/install/admin-user.php:44
 msgid "install.administrator.password"
 msgstr "Mot de passe"
 
-#: views/install/admin-user.php:52
+#: views/install/admin-user.php:50
 msgid "install.administrator.password.placeholder"
 msgstr "plus long c'est mieux"
 
-#: views/install/admin-user.php:59
+#: views/install/admin-user.php:57
 msgid "install.administrator.password-confirmation"
 msgstr "Confirmer"
 
-#: views/install/admin-user.php:65
+#: views/install/admin-user.php:63
 msgid "install.administrator.password-confirmation.placeholder"
 msgstr "pour éviter les erreurs de saisie"
 
-#: views/install/admin-user.php:71
+#: views/install/admin-user.php:69
 msgid "install.administrator.configure"
 msgstr "Configurer →"
 
-#: views/install/dbms.php:13
+#: views/install/dbms.php:18
 msgid "install.dbms.legend"
 msgstr "Configuration de la base de données"
 
-#: views/install/dbms.php:22
+#: views/install/dbms.php:27
 msgid "install.dbms.host"
 msgstr "Nom d'hôte"
 
-#: views/install/dbms.php:28
+#: views/install/dbms.php:33
 msgid "install.dbms.host.placeholder"
 msgstr "exemple.fr, localhost ou 127.0.0.1"
 
-#: views/install/dbms.php:36
+#: views/install/dbms.php:41
 msgid "install.dbms.port"
 msgstr "Port"
 
-#: views/install/dbms.php:42
+#: views/install/dbms.php:47
 msgid "install.dbms.port.placeholder"
 msgstr "défault: 3306"
 
-#: views/install/dbms.php:50
+#: views/install/dbms.php:55
 msgid "install.dbms.engine"
 msgstr "Moteur de la Base"
 
-#: views/install/dbms.php:59
+#: views/install/dbms.php:64
 msgid "install.dbms.engine-mysql"
 msgstr "MySQL 5+"
 
-#: views/install/dbms.php:67
+#: views/install/dbms.php:72
 msgid "install.dbms.engine-sqlite"
 msgstr "SQLite 3+"
 
-#: views/install/dbms.php:76
+#: views/install/dbms.php:81
 msgid "install.dbms.database.selection"
 msgstr "Choix de la base"
 
-#: views/install/dbms.php:81
+#: views/install/dbms.php:86
 msgid "install.dbms.database-reuse"
 msgstr "base existante"
 
-#: views/install/dbms.php:85
+#: views/install/dbms.php:90
 msgid "install.dbms.database-create"
 msgstr "nouvelle base"
 
-#: views/install/dbms.php:93
+#: views/install/dbms.php:98
 msgid "install.dbms.database-name"
 msgstr "Nom de la base"
 
-#: views/install/dbms.php:107
+#: views/install/dbms.php:112
 msgid "install.dbms.advanced-user.management"
 msgstr "Le nom et le mot de passe sont ceux de l'administrateur de la base de données (<abbr title=\"par exemple\">p. ex.</abbr>, <var>root</var> ou <em>plus restreint</em>)."
 
-#: views/install/dbms.php:113
+#: views/install/dbms.php:118
 msgid "install.dbms.username"
 msgstr "Utilisateur"
 
-#: views/install/dbms.php:119
+#: views/install/dbms.php:124
 msgid "install.dbms.username.placeholder"
 msgstr "gestionnaire de la base"
 
-#: views/install/dbms.php:127
+#: views/install/dbms.php:132
 msgid "install.dbms.password"
 msgstr "Mot de passe"
 
-#: views/install/dbms.php:133
+#: views/install/dbms.php:138
 msgid "install.dbms.password.placeholder"
 msgstr "mot de passe du gestionnaire"
 
-#: views/install/dbms.php:140
+#: views/install/dbms.php:145
 msgid "install.dbms.configure"
 msgstr "Configurer →"
 
@@ -389,25 +424,20 @@ msgid "error.database.unreachable.title"
 msgstr "Erreur : base de données inaccessible"
 
 #: controllers/install.php:23
-msgid "error.database.unreachable.header"
-msgstr "Base de données est inaccessible"
-
-#: controllers/install.php:24
 msgid "error.database.unreachable"
 msgstr "Le fichier de configuration contient des <strong>paramètres de connexion invalide</strong>. La base de données est inaccessible."
 
-#: controllers/install.php:25
+#: controllers/install.php:24
 msgid "solution.database.unreachable"
 msgstr "Vérifier que la base est présente ou que les configurations sont correctes. Sinon supprimez celui-ci."
 
-#: controllers/install.php:134
+#: controllers/install.php:27
+msgid "error.database.unreachable.header"
+msgstr "Base de données est inaccessible"
+
+#: controllers/install.php:135
 msgid "error.install.admin.exists"
 msgstr "Un utilisateur «&nbsp;admin&nbsp;» est déjà présent dans la base."
-
-#: controllers/install.php:148
-#, fuzzy
-msgid "error.database.unreachable===="
-msgstr "La base de données décrite dans le fichier de configuration est inaccessible."
 
 #: controllers/admin/admin.php:33
 msgid "admin.welcome"
@@ -424,6 +454,12 @@ msgstr ""
 #: controllers/admin/admin.php:57
 msgid "Password Confirmation"
 msgstr ""
+
+#, fuzzy
+#~ msgid "error.database.unreachable===="
+#~ msgstr ""
+#~ "La base de données décrite dans le fichier de configuration est "
+#~ "inaccessible."
 
 #~ msgid "install.administrator.password-confirm.placeholder"
 #~ msgstr "pour éviter les erreurs de saisi"
