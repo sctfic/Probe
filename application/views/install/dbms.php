@@ -6,7 +6,12 @@
 	</ul>
 </div>
 
-<?=form_open('install/setupDbms', array('class' => 'modal setup form-horizontal', 'id' => 'dbms'))?>
+<?=form_open('install/setupDbms', array(
+		'id' => 'dbms'
+		'class' => 'modal setup form-horizontal', 
+	)
+);
+?>
 
 	<div class="modal-header">
 		<!-- <legend> -->

@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: probe\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-11-18 00:24+0100\n"
-"PO-Revision-Date: 2012-11-18 00:31+0100\n"
+"POT-Creation-Date: 2012-11-18 03:59+0100\n"
+"PO-Revision-Date: 2012-11-18 04:14+0100\n"
 "Last-Translator: Édouard Lopez <dev+i18n@edouard-lopez.com>\n"
 "Language-Team: probe <dev+probe@edouard-lopez.com>\n"
 "Language: \n"
@@ -123,7 +123,7 @@ msgstr "Le mot de passe ne correspond à celui associé à l'utilisateur."
 msgid "register.fail.username.password.incorrect"
 msgstr "Le mot de passe est invalide pour créer un compte"
 
-#: models/dao/dao_user.php:54
+#: models/dao/dao_user.php:80
 msgid "error.user-creation.invalid.email"
 msgstr ""
 
@@ -134,9 +134,9 @@ msgstr ""
 #: views/login.php:16
 #: views/login.php:19
 #: views/login.php:25
-#: views/install/admin-user.php:27
-#: views/install/admin-user.php:40
-#: views/install/admin-user.php:53
+#: views/install/admin-user.php:33
+#: views/install/admin-user.php:46
+#: views/install/admin-user.php:59
 #: views/install/dbms.php:22
 #: views/install/dbms.php:36
 #: views/install/dbms.php:50
@@ -153,9 +153,9 @@ msgstr ""
 #: views/login.php:16
 #: views/login.php:19
 #: views/login.php:25
-#: views/install/admin-user.php:27
-#: views/install/admin-user.php:40
-#: views/install/admin-user.php:53
+#: views/install/admin-user.php:33
+#: views/install/admin-user.php:46
+#: views/install/admin-user.php:59
 #: views/install/dbms.php:22
 #: views/install/dbms.php:36
 #: views/install/dbms.php:50
@@ -230,39 +230,39 @@ msgstr ""
 msgid "logOut"
 msgstr ""
 
-#: views/install/admin-user.php:13
+#: views/install/admin-user.php:19
 msgid "install.administrator.legend"
 msgstr "Configuration du compte administrateur"
 
-#: views/install/admin-user.php:21
+#: views/install/admin-user.php:27
 msgid "install.administrator.description"
 msgstr "Utilisateur responsable de l'application. Il peut ajouter et supprimer des stations."
 
-#: views/install/admin-user.php:27
+#: views/install/admin-user.php:33
 msgid "install.administrator.username"
 msgstr "Utilisateur «&nbsp;admin&nbsp;»"
 
-#: views/install/admin-user.php:33
+#: views/install/admin-user.php:39
 msgid "install.administrator.username.placeholder"
 msgstr "gestionnaire de l'application"
 
-#: views/install/admin-user.php:40
+#: views/install/admin-user.php:46
 msgid "install.administrator.password"
 msgstr "Mot de passe"
 
-#: views/install/admin-user.php:46
+#: views/install/admin-user.php:52
 msgid "install.administrator.password.placeholder"
 msgstr "plus long c'est mieux"
 
-#: views/install/admin-user.php:53
+#: views/install/admin-user.php:59
 msgid "install.administrator.password-confirmation"
 msgstr "Confirmer"
 
-#: views/install/admin-user.php:59
+#: views/install/admin-user.php:65
 msgid "install.administrator.password-confirmation.placeholder"
 msgstr "pour éviter les erreurs de saisie"
 
-#: views/install/admin-user.php:65
+#: views/install/admin-user.php:71
 msgid "install.administrator.configure"
 msgstr "Configurer →"
 
@@ -341,7 +341,7 @@ msgstr "Configurer →"
 #: views/templates/footer.php:9
 #, php-format
 msgid "project.license.by%s,%s,%s"
-msgstr "est licensié par <a 	href=\"https://twitter.com/ProbeMeteo\"	xmlns:cc=\"http://creativecommons.org/ns#\" 	property=\"cc:attributionName\" 	rel=\"cc:attributionURL\"	>%s</a>, <!-- Legal: http://creativecommons.org/licenses/by-nc-sa/3.0/legalcode -->sous licence <a 	href=\"http://creativecommons.org/licenses/by-nc-sa/3.0/\"	rel=\"license\" ><img alt=\"%s\" title=\"%s\" src=\"/resources/License/CC-by-nc-sa_80px.png\"/></a>"
+msgstr "est licensié par <a \thref=\"https://twitter.com/ProbeMeteo\"\txmlns:cc=\"http://creativecommons.org/ns#\" \tproperty=\"cc:attributionName\" \trel=\"cc:attributionURL\"\t>%s</a>, <!-- Legal: http://creativecommons.org/licenses/by-nc-sa/3.0/legalcode -->sous licence <a \thref=\"http://creativecommons.org/licenses/by-nc-sa/3.0/\"\trel=\"license\" ><img alt=\"%s\" title=\"%s\" src=\"/resources/License/CC-by-nc-sa_80px.png\"/></a>"
 
 #: views/templates/footer.php:10
 msgid "project.team-name"
@@ -384,9 +384,30 @@ msgstr "Configuration des stations"
 msgid "configuration.stations.add-new.station"
 msgstr "Ajouter une station"
 
-#: controllers/install.php:51
-msgid "error.install.dbms.connect"
-msgstr "La connexion à la base de données n'a pas pu être établie. Veuillez vérifier les informations soumises et l'existence de la base de données."
+#: controllers/install.php:22
+msgid "error.database.unreachable.title"
+msgstr "Erreur : base de données inaccessible"
+
+#: controllers/install.php:23
+msgid "error.database.unreachable.header"
+msgstr "Base de données est inaccessible"
+
+#: controllers/install.php:24
+msgid "error.database.unreachable"
+msgstr "Le fichier de configuration contient des <strong>paramètres de connexion invalide</strong>. La base de données est inaccessible."
+
+#: controllers/install.php:25
+msgid "solution.database.unreachable"
+msgstr "Vérifier que la base est présente ou que les configurations sont correctes. Sinon supprimez celui-ci."
+
+#: controllers/install.php:134
+msgid "error.install.admin.exists"
+msgstr "Un utilisateur «&nbsp;admin&nbsp;» est déjà présent dans la base."
+
+#: controllers/install.php:148
+#, fuzzy
+msgid "error.database.unreachable===="
+msgstr "La base de données décrite dans le fichier de configuration est inaccessible."
 
 #: controllers/admin/admin.php:33
 msgid "admin.welcome"
