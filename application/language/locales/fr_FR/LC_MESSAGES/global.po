@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: probe\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-11-17 19:20+0100\n"
-"PO-Revision-Date: 2012-11-17 19:27+0100\n"
+"POT-Creation-Date: 2012-11-18 00:24+0100\n"
+"PO-Revision-Date: 2012-11-18 00:31+0100\n"
 "Last-Translator: Édouard Lopez <dev+i18n@edouard-lopez.com>\n"
 "Language-Team: probe <dev+probe@edouard-lopez.com>\n"
 "Language: \n"
@@ -123,6 +123,10 @@ msgstr "Le mot de passe ne correspond à celui associé à l'utilisateur."
 msgid "register.fail.username.password.incorrect"
 msgstr "Le mot de passe est invalide pour créer un compte"
 
+#: models/dao/dao_user.php:54
+msgid "error.user-creation.invalid.email"
+msgstr ""
+
 #: views/login.php:16
 msgid "username"
 msgstr ""
@@ -232,7 +236,7 @@ msgstr "Configuration du compte administrateur"
 
 #: views/install/admin-user.php:21
 msgid "install.administrator.description"
-msgstr "Utilisateur «&nbsp;admin&nbsp;»"
+msgstr "Utilisateur responsable de l'application. Il peut ajouter et supprimer des stations."
 
 #: views/install/admin-user.php:27
 msgid "install.administrator.username"
@@ -256,7 +260,7 @@ msgstr "Confirmer"
 
 #: views/install/admin-user.php:59
 msgid "install.administrator.password-confirmation.placeholder"
-msgstr "pour éviter les erreurs de saisi"
+msgstr "pour éviter les erreurs de saisie"
 
 #: views/install/admin-user.php:65
 msgid "install.administrator.configure"
@@ -312,7 +316,7 @@ msgstr "Nom de la base"
 
 #: views/install/dbms.php:107
 msgid "install.dbms.advanced-user.management"
-msgstr "Le nom et le mot de passe sont ceux de l'utilisateur gérant la base de données « Probe »"
+msgstr "Le nom et le mot de passe sont ceux de l'administrateur de la base de données (<abbr title=\"par exemple\">p. ex.</abbr>, <var>root</var> ou <em>plus restreint</em>)."
 
 #: views/install/dbms.php:113
 msgid "install.dbms.username"
@@ -334,9 +338,22 @@ msgstr "mot de passe du gestionnaire"
 msgid "install.dbms.configure"
 msgstr "Configurer →"
 
-#: views/templates/footer.php:1
-msgid "Weather Station Web Data Share"
-msgstr ""
+#: views/templates/footer.php:9
+#, php-format
+msgid "project.license.by%s,%s,%s"
+msgstr "est licensié par <a 	href=\"https://twitter.com/ProbeMeteo\"	xmlns:cc=\"http://creativecommons.org/ns#\" 	property=\"cc:attributionName\" 	rel=\"cc:attributionURL\"	>%s</a>, <!-- Legal: http://creativecommons.org/licenses/by-nc-sa/3.0/legalcode -->sous licence <a 	href=\"http://creativecommons.org/licenses/by-nc-sa/3.0/\"	rel=\"license\" ><img alt=\"%s\" title=\"%s\" src=\"/resources/License/CC-by-nc-sa_80px.png\"/></a>"
+
+#: views/templates/footer.php:10
+msgid "project.team-name"
+msgstr "l'équipe ProbeMeteo"
+
+#: views/templates/footer.php:11
+msgid "project.license.logo-alt"
+msgstr "Licence Creative Commons CC-by-nc-sa"
+
+#: views/templates/footer.php:12
+msgid "project.license.logo-title"
+msgstr "Licence Creative Commons CC-by-nc-sa"
 
 #: views/configuration/stations-form.php:5
 msgid "configuration.stations-list.legend.stem"
@@ -367,7 +384,7 @@ msgstr "Configuration des stations"
 msgid "configuration.stations.add-new.station"
 msgstr "Ajouter une station"
 
-#: controllers/install.php:40
+#: controllers/install.php:51
 msgid "error.install.dbms.connect"
 msgstr "La connexion à la base de données n'a pas pu être établie. Veuillez vérifier les informations soumises et l'existence de la base de données."
 

@@ -30,6 +30,9 @@ body {
 .breadcrumb .active {
     font-weight: bold; 
 }
+abbr {
+    text-transform: lowercase;
+}
 article {
     width: 90%;
     margin: 0 auto;
@@ -69,7 +72,7 @@ article {
     position: relative;
     top: auto;
     left: auto;
-    margin: 0 auto;
+    margin: 1em auto 0;
     max-height: 600px;
 }
     #authentification {
@@ -128,11 +131,18 @@ footer {
     .modal-body;
     text-align: center;
     margin-top: @loginFooterMarginTop; 
+    margin-top: 1em;
     .textShadowLight;
     width: 100%;
     .center-block();
+    padding: 1em 0;
 }
-
+footer {
+    > a > img {
+        vertical-align: middle;
+        width: 80px;
+    }
+}
 .form-errors {
     padding: @smallPadding;
     color: @errorText;
