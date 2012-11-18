@@ -5,12 +5,12 @@ Cette classe appelle les differentes requetes
 en vu de les retourner au scripte ajax qui les dessinera
 */
 
-	protected $ActiveStation=NULL; // name or ID nbr of station
+	protected $Station=NULL; // name or ID nbr of station
+	protected $sensors=NULL; // name or ID nbr of station
 	protected $Since=NULL; // start date of data
-	protected $StepUnit=NULL; // HOUR, DAY, WEEK, MONTH, (YEAR)
-	protected $StepNbr=NULL; // number of step 1-48
-	protected $Size=NULL; // micro or big
-
+	protected $StepUnit='HOUR'; // HOUR, DAY, WEEK, MONTH, (YEAR)
+	protected $StepNbr=12; // number of step 1-48
+	public $dataReader=NULL;
 
 	function __construct() {
 		parent::__construct();
@@ -18,22 +18,37 @@ en vu de les retourner au scripte ajax qui les dessinera
 		
 		include_once(BASEPATH.'core/Model.php'); // need for load models manualy
 		include_once(APPPATH.'models/station.php');
+		include_once(APPPATH.'models/dao/dao_data.php');
+		include_once(APPPATH.'models/dao/dao_data_summary.php');
+
 		$this->station = new Station();
 
-		$Station = $this->input->post('ActiveStation');
-		$this->Size = $this->input->post('Size');
-		if ($this->Size!='micro') {
-			$this->Since = $this->input->post('Since');
-			$this->StepUnit = $this->input->post('StepUnit');
-			$this->StepNbr = $this->input->post('StepNbr');
+		// print_r($this->input->get());
+		// encoded with javascript encodeURIComponent()
+		$station = rawurldecode($this->input->get('station'));
+		$this->setSensors($this->input->get('sensors'));
+		// $this->Size = $this->input->get('Size');
+		$this->Since = rawurldecode($this->input->get('Since'));
+		$this->StepUnit = $this->input->get('StepUnit');
+		$this->StepNbr = $this->input->get('StepNbr');
+
+		$this->Station = end($this->station->config($station));
+
+		if ($this->Since or $this->StepUnit or $this->StepNbr) {
+			$this->dataReader = new dao_data($this->Station);
+			// $this->load->model('dao/dao_data', 'dataReader'); // return $this->dataReader object
+		}
+		else {
+			$this->dataReader = new dao_data_summary($this->Station);
+			// $this->load->model('dao/dao_data_summary', 'dataReader'); // return $this->dataReader object
 		}
 
-		$this->ActiveStation = $this->station->config($Station);
-
-		$this->load->model($Size.'draw', 'drawer'); // return $this->drawer object
-
 	}
-
+	function setSensors($str) {
+		$this->sensors = explode(',', rawurldecode($str), 16+1);
+		if (isset($this->sensors[16])) unset($this->sensors[16]);
+		return $this->sensors;
+	}
 /**
 
 * @
@@ -41,7 +56,8 @@ en vu de les retourner au scripte ajax qui les dessinera
 * @param 
 */
 	function index(){
-		echo $Size;
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
+		print_r ($this->windRose());
 	}
 
 /**
@@ -72,13 +88,14 @@ en vu de les retourner au scripte ajax qui les dessinera
 	}
 
 /**
-
+http://probe.dev/draw?station=VP2_GTD&sensors=TA:Arch:Temp:Out:Average&Since=2012-10-26T00:00:00&StepUnit=DAY&StepNbr=6
 * @
 * @param since is the start date of result needed
 * @param lenght is the number of day
 */
-	function windrose(){
-		$data = $this->drawer->windrose ($this->Since, $this->StepUnit, $this->StepNbr);
+	function windRose(){
+		$data = $this->dataReader->windrose ($this->Since, $this->StepUnit, $this->StepNbr);
+		print_r($data);
 		$json = json_encode($data);
 		return $json;
 	}
@@ -88,7 +105,7 @@ en vu de les retourner au scripte ajax qui les dessinera
 * @param since is the start date of result needed
 * @param lenght is the number of day
 */
-	function windrose_allInOne($since, $lenght){
+	function windRose_allInOne($since, $lenght){
 
 	}
 }
