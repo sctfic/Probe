@@ -7,8 +7,8 @@
 </div>
 
 <?=form_open('install/setupDbms', array(
-		'id' => 'dbms'
-		'class' => 'modal setup form-horizontal', 
+		'id' => 'dbms',
+		'class' => 'modal setup form-horizontal'
 	)
 );
 ?>

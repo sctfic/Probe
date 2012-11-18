@@ -7,12 +7,10 @@
 </div>
 
 <div class="container">
-	<?=form_open('install/setup-administrator', 
-		array(
+	<?=form_open('install/setup-administrator', array(
 			'id' => 'administrator',
 			'class' => 'modal setup form-horizontal'
-			)
-		)
+			) );
 	?>
 		<div class="modal-header">
 			<!-- <legend> -->
