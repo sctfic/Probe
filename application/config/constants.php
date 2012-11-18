@@ -37,6 +37,9 @@ define('FOPEN_WRITE_CREATE_STRICT',				'xb');
 define('FOPEN_READ_WRITE_CREATE_STRICT',		'x+b');
 
 
+const ADMIN_ROLE_ID = 1; // it's the first role created so it's 1
+const ADMIN_ROLE_CODE = 'app-admin'; // it's the first code admin user
+
 /*
 |--------------------------------------------------------------------------
 | VP2 CONSTANT

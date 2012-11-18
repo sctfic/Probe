@@ -2,62 +2,75 @@
 
 // require_once APPPATH."/controllers/checkSetup.php";
 require_once APPPATH."/controllers/pages.php";
-define('ADMIN_ROLE_ID', 1); // it's the first role created so it's 1
+
 
 class Install extends CI_Controller {
 
-	public function __construct() {
-  	parent::__construct();
+  public function __construct() {
+    parent::__construct();
     where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
+
     $this->load->helper('url');
     $this->load->library('bcrypt');
-  	$this->i18n->setLocaleEnv($this->config->item('probe:locale'), 'global');
-	}
+    $this->i18n->setLocaleEnv($this->config->item('probe:locale'), 'global');
 
-	private function startSetup() {
+    if (file_exists(APPPATH."config/db-default.php")) {
+      try {
+        $this->load->database();
+      } catch (Exception $e) { 
+        show_error( array(
+            'error-title' => i18n('error.database.unreachable.title'),
+            'error-description' => i18n('error.database.unreachable'),
+            'error-solution' => i18n('solution.database.unreachable')
+          ),
+          500,
+          i18n('error.database.unreachable.header')
+        ); 
+        // show_error($e->getMessage(), 500, 'test'); 
+      }
+    }
+  }
+
+
+  /* 
+  * TODO: try not to use redirect() method for redirect
+  * @description: entry point to the install process
+      CI require a landing function called: 'index' 
+  */
+  public function index() {
     where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
+
 		# show form if config file missing
     if (!file_exists(APPPATH."config/db-default.php")) {
       // $this->requestDsnForConfigDb();
       redirect("install/dbms");
     } else { # file exists, 
-      try { # connect to the db and check if there is any admin user
-        $sqlCountAdmin = "SELECT COUNT(*) AS `AdminCount`
-          FROM `TA_USER` INNER JOIN `TR_ROLE`
-          ON `TA_USER`.`ROL_ID` = `TR_ROLE`.`ROL_ID` 
-          WHERE `TR_ROLE`.`ROL_CODE` = 'admin' 
-          LIMIT 1;";
-          
-        $this->load->database();
-        $row = $this->db->query($sqlCountAdmin)->row();
-
-        // log_message('info', $row->AdminCount );
-        if ($row->AdminCount == 0) { # no admin yet
-          redirect("install/admin-user");
-        }
-      } catch (Exception $e) {
-        // sprintf("<p>%s</p>",  sprintf('%s', i18n("error.install.dbms.connect") ) );
-        log_message('error', sprintf('%s', i18n("error.install.dbms.connect") ) );
-      }
+      redirect("install/admin-user");
     }
   }
 
-  /* CI require a landing function called: 'index' */
-  public function index() {
-    where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
-		$this->startSetup(); }
-  
 
-  /* alias method to have nice URL */
+/**
+* @description: check if it's necessary to display the 'dbms setup' screen. 
+*   Otherwise continue to 'admin setup'  screen.
+**/
   public function dbms() {
     where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
-		$this->requestDsnForConfigDb(); }
-  /*
-  * View: form to request the application administrator's credentials.
-  */
-  public function requestDsnForConfigDb() {
+
+    if (file_exists(APPPATH."config/db-default.php")) {
+      redirect('install/admin-user');
+    }
+
+  	$this->requestDsnForConfigDb(); 
+  }
+
+/**
+* View: form to request the application administrator's credentials.
+**/
+  private function requestDsnForConfigDb() {
     where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
-		$this->load->helper('pages');
+
+    $this->load->helper('pages');
     $this->load->helper(array('form'));
     $this->load->library('form_validation');
 
@@ -75,10 +88,10 @@ class Install extends CI_Controller {
   }
 
 
-  /*
-  * Model: create the database and relative configuration' files
-  */
-  function setupDbms() {
+  /**
+  * @description: create the database and relative configuration' files
+  **/
+  public function setupDbms() {
     where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 	  require_once(BASEPATH.'core/Model.php'); // need for load models manualy
     require_once(APPPATH.'models/db_builder.php');
@@ -103,15 +116,39 @@ class Install extends CI_Controller {
   }
 
 
-  /* alias method to have nice URL */
+  /**
+  * @description: check if it's necessary to display the 'admin setup' screen. 
+  *   Otherwise continue to 'login' screen.
+  **/
   public function adminUser() {
     where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
-		$this->requestCredentialsForAdminUser(); }
-  /*
-  * View: form to request the application administrator's credentials.
-  */
-  public function requestCredentialsForAdminUser() {
+
+    try {
+      $this->load->model('dao/Dao_User');
+      // $this->load->database();
+      $admin = $this->Dao_User->readAdmin();
+
+      if ($admin['count'] > 0) {
+        redirect("admin/admin/connexion");
+      } 
+    } catch (Exception $e) {
+      log_message('error', sprintf('%s', i18n("error.install.admin.exists") ) );
+    }
+		$this->requestCredentialsForAdminUser(); 
+  }
+
+  /**
+  * @description: form to request the application administrator's credentials.
+  **/
+  private function requestCredentialsForAdminUser() {
     where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
+
+    try {
+      $this->load->database();
+    } catch (Exception $e) {
+      show_error(i18n('error.database.unreachable====')); 
+    }
+
 		$this->load->helper('pages');
     $this->load->helper(array('form'));
     $this->load->library('form_validation');
@@ -128,7 +165,7 @@ class Install extends CI_Controller {
   }
 
 
-	function setupAdministrator() {
+	public function setupAdministrator() {
     where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		$administratorUsername = $this->input->post('administrator-username');
     $administratorPassword = $this->input->post('administrator-password');
