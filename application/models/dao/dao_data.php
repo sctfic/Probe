@@ -1,5 +1,5 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-class data extends CI_Model {
+class dao_data extends CI_Model {
 /**
 Cette classe appelle les differentes requetes
 en vu de les retourner au scripte ajax qui les dessinera
@@ -10,7 +10,6 @@ en vu de les retourner au scripte ajax qui les dessinera
 		parent::__construct();
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		$this->dataDB = $this->load->database($station, TRUE);
-
 	}
 
 /**
@@ -64,15 +63,16 @@ en vu de les retourner au scripte ajax qui les dessinera
 * @param since is the start date of result needed
 * @param lenght is the number of day
 */
-	function windrose($since='2012-01-01', $lenght=12, $step='MONTH'){
+	function windrose($since='2012-01-01', $step='MONTH', $lenght=12){
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		try {
 			$query = "SELECT CONCAT_WS(  ':', ".$step."(  `VAR_DATE` ) , IFNULL(  `VAR_WIND_SPEED_DOMINANT_DIR` * 22.5,  'NULL' ) ) AS Direction, COUNT( * ) AS NbSample, AVG(  `VAR_WIND_SPEED` ) AS SpeedAvg
 				FROM  `TA_VARIOUS` 
-				WHERE `VAR_DATE`>".$since." and `VAR_DATE`< date_add(".$since." ,  INTERVAL ".$lenght." ".$step.")
+				WHERE `VAR_DATE` > '".$since."' and `VAR_DATE`< date_add('".$since."' ,  INTERVAL ".$lenght." ".$step.")
 				GROUP BY ".$step."(  `VAR_DATE` ) ,  `VAR_WIND_SPEED_DOMINANT_DIR` 
 				LIMIT 0 , 300";
 			$qurey_result = $this->dataDB->query($query);
-			return result_array($qurey_result);
+			return $qurey_result->result_array($qurey_result);
 		} catch (PDOException $e) {
 			throw new Exception( $e->getMessage() );
 		}
