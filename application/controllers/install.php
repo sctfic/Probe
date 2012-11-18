@@ -11,7 +11,7 @@ class Install extends CI_Controller {
     where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 
     $this->load->helper('url');
-    $this->load->library('bcrypt');
+    // $this->load->library('bcrypt');
     $this->i18n->setLocaleEnv($this->config->item('probe:locale'), 'global');
 
     if (file_exists(APPPATH."config/db-default.php")) {
@@ -145,9 +145,7 @@ class Install extends CI_Controller {
 
     try {
       $this->load->database();
-    } catch (Exception $e) {
-      show_error(i18n('error.database.unreachable====')); 
-    }
+    } catch (Exception $e) {}
 
 		$this->load->helper('pages');
     $this->load->helper(array('form'));

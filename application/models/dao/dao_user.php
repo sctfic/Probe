@@ -22,13 +22,13 @@ class Dao_User extends CI_Model {
 		$user = NULL;
 		try {
 			$this->db->where('USR_USERNAME', $userName);
-			$this->db->where('USR_PWD', $userPassword);
+			// $this->db->where('USR_PWD', $userPassword); // password valitity is tested later
  			$this->db->limit(1);
 
 			$query = $this->db->get('TA_USER');
 
 			// only return the first user matching this user/password credentials
-			$user = $query->row_array(); //array of arrays
+			$user = $query->row_array();
 		} catch (Exception $e) {
 			echo $e->getMessage();
 		}

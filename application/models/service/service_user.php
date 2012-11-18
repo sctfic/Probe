@@ -7,23 +7,24 @@ class Service_User extends Service {
 
 		//Daos
 		$this->load->model('dao/Dao_User');
-		$this->load->library('encrypt');
-		$this->encrypt->set_cipher(MCRYPT_BLOWFISH);
+		$this->load->library('bcrypt');
 	}
 
 	/*
 	* return an User object when for authentified user, otherwise throw an error
 	*/
-	public function authentify($userName, $userPassword) {
+	public function authentify($userName, $password) {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__);
-		$this->load->library('encrypt');
-		$user = $this->Dao_User->read($userName, $this->encrypt->encode($userPassword) );
 
-		if($user == NULL) {
+		$matchingUser = $this->Dao_User->read($userName, $password );
+
+		if($matchingUser == NULL || !$this->bcrypt->check_password($password, $matchingUser['USR_PWD'])) {
 			throw new BusinessException( i18n('login.fail.username.password.incorrect') );
 		}
 
+		$user = $matchingUser;
 		$user['Authentified']=true;
+
 		return $user;
 	}
 
@@ -32,10 +33,10 @@ class Service_User extends Service {
 	*/
 	public function register($userName, $userPassword, $firstName = null, $familyName = null, $email = null, $role = 0) {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__);
-		$this->load->library('encrypt');
+
 		$user = $this->Dao_User->write(
 			$userName, 
-			$this->encrypt->encode($userPassword),
+			$this->bcrypt->hash_password($userPassword),
 			$firstName, 
 			$familyName, 
 			$email, 
