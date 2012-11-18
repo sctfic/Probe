@@ -91,27 +91,22 @@ function totalsToFrequencies(totals, speeds) {
 }
 
 // Filter input data, giving back frequencies for the selected month 
-function rollupForMonths(d, months) {
-    var totals = {}, speeds = {};
-    for (var i = 22.5; i < 361; i += 22.5) { totals[""+i] = 0; speeds[""+i] = 0 }
-    totals["null"] = 0; speeds["null"] = 0;
-     
+function rollupForStep(d, step) {
+    var totals = {"null":0,"0.0":0,"22.5":0,"45.0":0,"67.5":0,"90.0":0,"112.5":0,"135.0":0,"157.5":0,"180.0":0,"202.5":0,"225.0":0,"247.5":0,"270.0":0,"292.5":0,"315.0":0,"337.5":0};
+    var speeds = {"null":0,"0.0":0,"22.5":0,"45.0":0,"67.5":0,"90.0":0,"112.5":0,"135.0":0,"157.5":0,"180.0":0,"202.5":0,"225.0":0,"247.5":0,"270.0":0,"292.5":0,"315.0":0,"337.5":0};
+    //    console.log('==========================================================');
+    //return null;
     for (var key in d.data) {
-        var s = key.split(":")
-        if (s.length == 1) {
-            var direction = s[0];
-        } else {
-            var month = s[0];
-            var direction = s[1];
+        // console.log (d.data[key], d.data[key].Step*1);
+        var step = d.data[key].Step*1;
+        if (step == 45) {
+            var direction = d.data[key].Direction;
+            totals[direction] += d.data[key].NbSample *1;
+            speeds[direction] += d.data[key].SpeedAvg * d.data[key].NbSample *1;
+            // console.log (d.data[key].Direction, direction, totals[direction], speeds[direction]);
         }
-        
-        if (months && !months[month-1]) { continue; }
-        
-        // count up all samples with this key
-        totals[direction] += d.data[key][0];
-        // add in the average speed * count from this key
-        speeds[direction] += d.data[key][0] * d.data[key][1];  
     }
+    // console.log (totals, speeds);
     return totalsToFrequencies(totals, speeds);
 }
 
@@ -158,12 +153,12 @@ function speedToRadius(d) { return speedToRadiusScale(d.s); }
 // Options for drawing the complex arc chart
 var windroseArcOptions = {
     width: 10,
-    from: 34,
+    from: 32,
     to: probabilityToRadius
 }   
 var windspeedArcOptions = {
     width: 10,
-    from: 30,
+    from: 32,
     to: speedToRadius
 }
 // Draw a complete wind rose visualization, including axes and center text
@@ -249,7 +244,7 @@ function updateWindVisDiagrams(d) {
 // Update a specific digram to the newly selected months
 function updateBigWindrose(windroseData, container) {
     var vis = d3.select(container).select("svg");
-    var rollup = rollupForMonths(windroseData, selectedMonthControl.selected());
+    var rollup = rollupForStep(windroseData, selectedMonthControl.selected());
 
     if (container == "#windrose") {
         updateComplexArcs(vis, rollup, speedToColor, speedText, windroseArcOptions, probArcTextT);
@@ -350,8 +345,8 @@ function drawBigWindrose(windroseData, container, captionText) {
             return "translate(" + r + "," + p + ") rotate(" + d + ",0," + (r-p) + ")"})        
         .text(function(dir) { return dir; });
 
-    //var rollup = rollupForMonths(windroseData, selectedMonthControl.selected());
-    var rollup = rollupForMonths(windroseData, months);
+    //var rollup = rollupForStep(windroseData, selectedMonthControl.selected());
+    var rollup = rollupForStep(windroseData, months);
 
   
     if (container == "#windrose") {
@@ -418,7 +413,7 @@ drawBigWindrose(data, "#avg", "caption")
   
   
 //need to reformat the data to get smallPlot to work, not sure how yet
-//var rollup = rollupForMonths(data, months);
+//var rollup = rollupForStep(data, months);
 //var small = svg.append("g")
 //.attr("id", "small");
 //plotSmallRose(small, rollup)
