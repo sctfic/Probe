@@ -95,7 +95,7 @@ http://probe.dev/draw?station=VP2_GTD&sensors=TA:Arch:Temp:Out:Average&Since=201
 */
 	function windRose(){
 		$data = $this->dataReader->windrose ($this->Since, $this->StepUnit, $this->StepNbr);
-		print_r($data);
+//		print_r($data);
 		$json = json_encode($data);
 		return $json;
 	}
