@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: probe\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-11-18 11:28+0100\n"
-"PO-Revision-Date: 2012-11-18 11:29+0100\n"
+"POT-Creation-Date: 2012-11-20 01:06+0100\n"
+"PO-Revision-Date: 2012-11-20 01:09+0100\n"
 "Last-Translator: Édouard Lopez <dev+i18n@edouard-lopez.com>\n"
 "Language-Team: probe <dev+probe@edouard-lopez.com>\n"
 "Language: \n"
@@ -115,11 +115,11 @@ msgstr ""
 msgid "Lecture des config de %s impossible"
 msgstr ""
 
-#: models/service/service_user.php:23
+#: models/service/service_user.php:22
 msgid "login.fail.username.password.incorrect"
 msgstr "Le mot de passe ne correspond à celui associé à l'utilisateur."
 
-#: models/service/service_user.php:46
+#: models/service/service_user.php:47
 msgid "register.fail.username.password.incorrect"
 msgstr "Le mot de passe est invalide pour créer un compte"
 
@@ -169,13 +169,13 @@ msgstr "Utilisateur"
 #: views/install/dbms.php:27
 #: views/install/dbms.php:41
 #: views/install/dbms.php:55
-#: views/install/dbms.php:64
-#: views/install/dbms.php:72
-#: views/install/dbms.php:81
-#: views/install/dbms.php:86
-#: views/install/dbms.php:90
-#: views/install/dbms.php:118
-#: views/install/dbms.php:132
+#: views/install/dbms.php:63
+#: views/install/dbms.php:70
+#: views/install/dbms.php:79
+#: views/install/dbms.php:84
+#: views/install/dbms.php:88
+#: views/install/dbms.php:116
+#: views/install/dbms.php:130
 msgid "required"
 msgstr ""
 
@@ -190,10 +190,10 @@ msgstr ""
 #: views/install/dbms.php:27
 #: views/install/dbms.php:41
 #: views/install/dbms.php:55
-#: views/install/dbms.php:81
-#: views/install/dbms.php:98
-#: views/install/dbms.php:118
-#: views/install/dbms.php:132
+#: views/install/dbms.php:79
+#: views/install/dbms.php:96
+#: views/install/dbms.php:116
+#: views/install/dbms.php:130
 msgid "&nbsp;:"
 msgstr ""
 
@@ -325,51 +325,51 @@ msgstr "défault: 3306"
 msgid "install.dbms.engine"
 msgstr "Moteur de la Base"
 
-#: views/install/dbms.php:64
+#: views/install/dbms.php:63
 msgid "install.dbms.engine-mysql"
 msgstr "MySQL 5+"
 
-#: views/install/dbms.php:72
+#: views/install/dbms.php:70
 msgid "install.dbms.engine-sqlite"
 msgstr "SQLite 3+"
 
-#: views/install/dbms.php:81
+#: views/install/dbms.php:79
 msgid "install.dbms.database.selection"
 msgstr "Choix de la base"
 
-#: views/install/dbms.php:86
+#: views/install/dbms.php:84
 msgid "install.dbms.database-reuse"
 msgstr "base existante"
 
-#: views/install/dbms.php:90
+#: views/install/dbms.php:88
 msgid "install.dbms.database-create"
 msgstr "nouvelle base"
 
-#: views/install/dbms.php:98
+#: views/install/dbms.php:96
 msgid "install.dbms.database-name"
 msgstr "Nom de la base"
 
-#: views/install/dbms.php:112
+#: views/install/dbms.php:110
 msgid "install.dbms.advanced-user.management"
 msgstr "Le nom et le mot de passe sont ceux de l'administrateur de la base de données (<abbr title=\"par exemple\">p. ex.</abbr>, <var>root</var> ou <em>plus restreint</em>)."
 
-#: views/install/dbms.php:118
+#: views/install/dbms.php:116
 msgid "install.dbms.username"
 msgstr "Utilisateur"
 
-#: views/install/dbms.php:124
+#: views/install/dbms.php:122
 msgid "install.dbms.username.placeholder"
 msgstr "gestionnaire de la base"
 
-#: views/install/dbms.php:132
+#: views/install/dbms.php:130
 msgid "install.dbms.password"
 msgstr "Mot de passe"
 
-#: views/install/dbms.php:138
+#: views/install/dbms.php:136
 msgid "install.dbms.password.placeholder"
 msgstr "mot de passe du gestionnaire"
 
-#: views/install/dbms.php:145
+#: views/install/dbms.php:143
 msgid "install.dbms.configure"
 msgstr "Configurer →"
 
@@ -411,13 +411,81 @@ msgid "configuration.station.port.placeholder"
 msgstr "défault: 3306"
 
 #: views/configuration/stations-list.php:3
+#: views/configuration/list-stations.php:3
 msgid "configuration.stations.breadcrumb"
 msgstr "Configuration des stations"
 
 #: views/configuration/stations-list.php:19
 #: views/configuration/stations-list.php:38
+#: views/configuration/list-stations.php:19
 msgid "configuration.stations.add-new.station"
 msgstr "Ajouter une station"
+
+#: views/configuration/list-stations.php:40
+#: views/configuration/add-station.php:91
+msgid "configuration.station.add-new"
+msgstr "Ajouter une station"
+
+#: views/configuration/add-station.php:18
+msgid "configuration.station.settings.dbms"
+msgstr "Paramètres de la base de données"
+
+#: views/configuration/add-station.php:42
+#: views/configuration/add-station.php:52
+#, fuzzy
+msgid "install.dbms."
+msgstr "Hôte"
+
+#: views/configuration/add-station.php:59
+msgid "configuration.station.settings.network"
+msgstr "Paramètres réseau"
+
+#: language/i18n-collected-keys.php:10
+#, fuzzy
+msgid "configure-add-station:title"
+msgstr "Nom d'hôte"
+
+#: language/i18n-collected-keys.php:11
+#, fuzzy
+msgid "configure-add-station:description"
+msgstr "Ajouter une station"
+
+#: language/i18n-collected-keys.php:12
+#, fuzzy
+msgid "configure-add-station:author"
+msgstr "Nom d'hôte"
+
+#: language/i18n-collected-keys.php:13
+msgid "configuration.station.network._ip"
+msgstr "Adresse <abbr title=\"format #.#.#.#\">IP</abbr>"
+
+#: language/i18n-collected-keys.php:14
+msgid "configuration.station.network._ip.placeholder"
+msgstr "exemple : 127.0.0.1"
+
+#: language/i18n-collected-keys.php:15
+msgid "configuration.station.network._name"
+msgstr "Nom de la station"
+
+#: language/i18n-collected-keys.php:16
+msgid "configuration.station.network._name.placeholder"
+msgstr "p. ex. modèle de la station"
+
+#: language/i18n-collected-keys.php:17
+msgid "configuration.station.network._port"
+msgstr "Port"
+
+#: language/i18n-collected-keys.php:18
+msgid "configuration.station.network._port.placeholder"
+msgstr "p. ex. 2580"
+
+#: language/i18n-collected-keys.php:19
+msgid "configuration.station.network._type"
+msgstr "Modèle"
+
+#: language/i18n-collected-keys.php:20
+msgid "configuration.station.network._type.placeholder"
+msgstr "VP2, VP"
 
 #: controllers/install.php:22
 msgid "error.database.unreachable.title"
@@ -439,10 +507,6 @@ msgstr "Base de données est inaccessible"
 msgid "error.install.admin.exists"
 msgstr "Un utilisateur «&nbsp;admin&nbsp;» est déjà présent dans la base."
 
-#: controllers/admin/admin.php:33
-msgid "admin.welcome"
-msgstr ""
-
 #: controllers/admin/admin.php:55
 msgid "Username"
 msgstr ""
@@ -463,9 +527,6 @@ msgstr ""
 
 #~ msgid "install.administrator.password-confirm.placeholder"
 #~ msgstr "pour éviter les erreurs de saisi"
-
-#~ msgid "install.dbms.ip"
-#~ msgstr "Hôte"
 
 #~ msgid "install.dbms.ip.placeholder"
 #~ msgstr "adresse IP ou nom de domaine"

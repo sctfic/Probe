@@ -7,4 +7,14 @@
 	cd "$BASEPATH";
 	grep 'I18N' "$BASEPATH"/logs/log-*.php >> "$APPPATH"/language/i18n-collected-keys.php
 */
-_();
+i18n('configure-add-station:title')
+i18n('configure-add-station:description')
+i18n('configure-add-station:author')
+i18n('configuration.station.network._ip')
+i18n('configuration.station.network._ip.placeholder')
+i18n('configuration.station.network._name')
+i18n('configuration.station.network._name.placeholder')
+i18n('configuration.station.network._port')
+i18n('configuration.station.network._port.placeholder')
+i18n('configuration.station.network._type')
+i18n('configuration.station.network._type.placeholder')
