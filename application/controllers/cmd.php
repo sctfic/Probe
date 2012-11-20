@@ -20,13 +20,30 @@ class cmd extends CI_Controller {
 
 	// la fonction qui ce lancera par defaut dans cette classe 
 	// clear;php5 -f /var/www/Probe/cli.php 'cmd'
-	function index() {
+	function index($station = null) {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
+		if (is_array($station)) {
+			foreach ($station as $item) {
+				// on rapelle cette meme fonction mais individuellement pour chaque station
+				$this->index($item);
+			}
+			return false;
+		}
+		elseif ($station===null && !empty($this->station->stationsList)) {
+			// on rapelle cette meme fonction mais avec de vrai parametre : Toutes les stations
+			$this->index (array_keys ($this->station->stationsList));
+			return false;
+		}
 
-		$this->configCollectors();
-		$this->dataCollectors();
-		// $this->hilowsCollectors(0);
-		// $this->curentCollectors(0);
+		try {
+			// on recupere les confs de $station
+			$conf = end($this->station->config($station)); // $station est le ID ou le nom
+			// on lance la recup des Archives de cette station
+			$this->station->AllCollector ($conf);
+		}
+		catch (Exception $e) {
+			log_message('warning',  $e->getMessage());
+		}
 	}
 
 
@@ -55,14 +72,11 @@ class cmd extends CI_Controller {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		try {
 			$item_ID = is_numeric($station) ? array_search($station, $this->station->stationsList) : $station;
-			if (isset($item_ID)) {
-				// on rapelle cette meme fonction mais avec de vrai paarametre : Toutes les stations
-				// on recupere les confs de $station
-				$itemConf = end($this->station->config($item_ID)); // $station est le ID ou le nom
-				$this->station->LpsCollector ($itemConf);
-				return false;
-			}
-			else return false;
+			// on rapelle cette meme fonction mais avec de vrai paarametre : Toutes les stations
+			// on recupere les confs de $station
+			$itemConf = end($this->station->config($item_ID)); // $station est le ID ou le nom
+			$this->station->LpsCollector ($itemConf);
+			return true;
 		}
 		catch (Exception $e) {
 			log_message('warning',  $e->getMessage());
@@ -81,7 +95,7 @@ class cmd extends CI_Controller {
 			return false;
 		}
 		elseif ($station===null && !empty($this->station->stationsList)) {
-			// on rapelle cette meme fonction mais avec de vrai paarametre : Toutes les stations
+			// on rapelle cette meme fonction mais avec de vrai parametre : Toutes les stations
 			$this->dataCollectors (array_keys ($this->station->stationsList));
 			return false;
 		}
@@ -90,7 +104,7 @@ class cmd extends CI_Controller {
 			$conf = end($this->station->config($station)); // $station est le ID ou le nom
 			
 			// on lance la recup des Archives de cette station
-			$this->station->ArchCollector($conf);
+			$this->station->ArchCollector ($conf);
 		}
 		catch (Exception $e) {
 			log_message('warning',  $e->getMessage());

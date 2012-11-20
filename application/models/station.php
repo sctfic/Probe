@@ -73,20 +73,15 @@ class Station extends CI_Model {
 	 */
 	function config($item = null)	{
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
-		if (!is_array($this->stationsList = $this->listStations()))
-			return array();
-		if (isset($item)) {
-			if (is_numeric($item) && array_key_exists($item, $this->stationsList)) {
+		if (is_numeric($item) && array_key_exists($item, $this->stationsList)) {
 			//dans le cas ou je connais deja de ID de ma station
-				$stationsList[$item]=$this->stationsList[$item];
-			}
-			elseif (in_array($item, $this->stationsList))
+			$stationsList[$item]=$this->stationsList[$item];
+		}
+		elseif (in_array($item, $this->stationsList)){
 			//dans le cas ou je ne connais que le nom
-				$stationsList[array_search($item, $this->stationsList)]=$item;
+			$stationsList[array_search($item, $this->stationsList)]=$item;
 		}
-		else {
-			$stationsList=$this->stationsList;
-		}
+		else throw new Exception(_('Prarametre invalide !'));
 		
 		$query = 'SELECT * FROM `TR_CONFIG` WHERE `CFG_STATION_ID`=? LIMIT 100';
 
@@ -113,8 +108,14 @@ class Station extends CI_Model {
 	}
 
 
-	function HilowsCollector($conf) {
+	/**
+	 * retourne un tableau de tous les 
+	 * @return	array (db_ID => Value)
+	 */
+	function HilowsCollector($conf = null) {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__);
+		if (!isset($conf['_type']))
+			throw new Exception(_('Prarametre invalide !'));
 		$type = strtolower($conf['_type']);
 		include_once(APPPATH.'models/'.$type.'.php');
 		$Current_WS = new $type($conf);
@@ -132,8 +133,64 @@ class Station extends CI_Model {
 	}
 
 
+	/**
+	 * retourne un tableau de tous les 
+	 * @return	array ( => Value)
+	 */
+	function AllCollector($conf = null) {
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__);
+		if (!isset($conf['_type']))
+			throw new Exception(_('Prarametre invalide !'));
+		$type = strtolower($conf['_type']);
+		include_once(APPPATH.'models/'.$type.'.php');
+		$Current_WS = new $type($conf);
+		try {
+			if ( !$Current_WS->initConnection() )
+				throw new Exception( sprintf( _('Impossible de se connecter à %s par %s:%s'), $conf['_name'], $conf['_ip'], $conf['_port']));
+
+			// on lit et sauve les configs
+			$readconf = end ($Current_WS->GetConfig ( ));
+			foreach ($readconf as $key => $val) {
+				if (strpos($key, 'TR:Config:')!==FALSE) {
+					$ToStoreConfig[str_replace('TR:Config:', '', $key)] = $val;
+					$conf[str_replace('TR:Config:', '', $key)] = $val;
+				}
+			}
+			$this->station->arrays2dbconfs($conf['_id'], $ToStoreConfig);
+
+			// on synchronise les orloges
+			$Current_WS->clockSync(5);
+
+			// on lit et sauve les valeurs courantes
+			$Current_WS->GetLPS ( );
+
+			$Last_Arch = $Current_WS->get_Last_Date();
+			// on recupere les archives seulement si ca fait plus de 2 periode qu'on ne l'as pas fait
+			if (!isset($conf['time:archive:period'])
+				|| strtotime(date ("Y/m/d H:i:s")) > strtotime($Last_Arch) + $conf['time:archive:period']*60*2)
+					$this->data = $Current_WS->GetDmpAft ( $Last_Arch );
+
+			// on lit et sauve les maxi-mini
+			$this->data = $Current_WS->GetHiLows ( );
+
+			if ( !$Current_WS->closeConnection() )
+				throw new Exception( sprintf( _('Fermeture de %s impossible'), $conf['_name']) );
+		}
+		catch (Exception $e) {
+			throw new Exception($e->getMessage());
+		}
+		return true;
+	}
+
+
+	/**
+	 * retourne un tableau de tous les 
+	 * @return	array ( => Value)
+	 */
 	function LpsCollector($conf) {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__);
+		if (!isset($conf['_type']))
+			throw new Exception(_('Prarametre invalide !'));
 		$type = strtolower($conf['_type']);
 		include_once(APPPATH.'models/'.$type.'.php');
 		$Current_WS = new $type($conf);
@@ -158,15 +215,17 @@ class Station extends CI_Model {
 		si item est homis alors toutes les conf de toutes les stations sont retourné
 	 * @return array ('name' => array (configs))
 	 */
-	function ArchCollector($conf)
-	{
+	function ArchCollector($conf) {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__);
+		if (!isset($conf['_type']))
+			throw new Exception(_('Prarametre invalide !'));
 		$type = strtolower($conf['_type']);
 		include_once(APPPATH.'models/'.$type.'.php');
 		$Current_WS = new $type($conf);
 		$Last_Arch = $Current_WS->get_Last_Date();
 
-		if (!isset($conf['time:archive:period']) || date ("Y/m/d H:i:s") > $Last_Arch + $conf['time:archive:period']*60*10) {
+		if (!isset($conf['time:archive:period'])
+			|| strtotime(date ("Y/m/d H:i:s")) > strtotime($Last_Arch) + $conf['time:archive:period']*60*10) {
 			try {
 				if ( !$Current_WS->initConnection() )
 					throw new Exception( sprintf( _('Impossible de se connecter à %s par %s:%s'), $conf['_name'], $conf['_ip'], $conf['_port']));
@@ -180,13 +239,14 @@ class Station extends CI_Model {
 			}
 			return true;
 		}
-		else log_message('wayting', sprintf(_( 'The latest collection of archives is only on %s'), $Last_Arch));
+		else log_message('wayting', sprintf(_( 'The latest collection of archives is only on %s'), date ("Y/m/d H:i:s")));
 		return true;
 	}
 
-	function ConfCollector($conf)
-	{
+	function ConfCollector($conf) {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__);
+		if (!isset($conf['_type']))
+			throw new Exception(_('Prarametre invalide !'));
 		$type = strtolower($conf['_type']);
 		include_once(APPPATH.'models/'.$type.'.php');
 		$Current_WS = new $type($conf);
@@ -209,8 +269,7 @@ class Station extends CI_Model {
 	}
 	
 		
-	function arrays2dbconfs($id, $conf)
-	{/** 3 cas sont possible :
+	function arrays2dbconfs($id, $conf) {/** 3 cas sont possible :
 	la conf n'existe pas > INSERT INTO
 	la conf existe mais ne change pas de valeur > on ni change rien ! ou on reecris la meme valeur.
 	la conf existe mais la valeur et modifier > UPDATE de la valeur et de la date */

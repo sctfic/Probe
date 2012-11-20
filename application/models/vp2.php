@@ -274,7 +274,7 @@ class vp2 extends CI_Model {
 			log_message('probe', '[LPS] : Download the current Values');
 			$this->VerifAnswersAndCRC($data, 436+2);
 			saveDataOnFile(
-				'HILOWS',
+				'data/'.$this->conf['_name'].'/HILOWS'/*.'-'.date('Y/m/d H:i:s')*/,
 				array_merge( array('UTC_date'=>date('Y/m/d H:i:s')), $HILOWS = $this->RawConverter($this->HiLows, $data)),
 				FORMAT_PHP + FORMAT_TXT + FORMAT_JSON + FORMAT_SERIALIZED + FORMAT_XML);		}
 		catch (Exception $e) {
@@ -306,17 +306,16 @@ class vp2 extends CI_Model {
 // 				$packet_type = $this->convertUnit( $this->convertRaw( $this->subRaw( $data, $this->Loop['NO:::PacketType']), $this->Loop['NO:::PacketType']), $this->Loop['NO:::PacketType']);
 				$packet_type = $this->RawConverter(array('NO:::PacketType'=>$this->Loop['NO:::PacketType']), $data);
 				// log_message('type', 'Type'.$packet_type."\n".__FUNCTION__.'('.__CLASS__.' ('.$this->conf['_name'].':'.($this->conf['database']).') '.")\n".__FILE__.' ['.__LINE__.']');
-				print_r($packet_type);
 				switch($packet_type['NO:::PacketType']) {
 					case 0:
 					saveDataOnFile(
-						'LOOP',
+						'data/'.$this->conf['_name'].'/LOOP'/*.'-'.date('Y/m/d H:i:s')*/,
 						array_merge( array('UTC_date'=>date('Y/m/d H:i:s')), $LPS = $this->RawConverter($this->Loop, $data)),
 						FORMAT_PHP + FORMAT_TXT + FORMAT_JSON + FORMAT_SERIALIZED + FORMAT_XML);
 						break;
 					case 1:
 					saveDataOnFile(
-						'LOOP2',
+						'data/'.$this->conf['_name'].'/LOOP2'/*.'-'.date('Y/m/d H:i:s')*/,
 						array_merge( array('UTC_date'=>date('Y/m/d H:i:s')), $LPS = $this->RawConverter($this->Loop2, $data)),
 						FORMAT_PHP + FORMAT_TXT + FORMAT_JSON + FORMAT_SERIALIZED + FORMAT_XML);
 					break;
