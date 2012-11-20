@@ -45,13 +45,14 @@ $route['404_override'] = '';
 $route['admin'] = "admin/admin";
 $route['install/admin-user'] = "install/adminUser";
 $route['install/setup-administrator'] = "install/setupAdministrator";
+// $route['configuration'] = 'configuration/listStations';
+$route['configuration/stations'] = 'configuration/index';
+$route['configuration/list-stations'] = 'configuration/listStations';
 $route['configuration/add-station'] = "configuration/addStation";
 $route['configuration/remove-station'] = "configuration/removeStation";
 $route['configuration/remove-station/(:any)'] = "configuration/removeStation/$1";
 $route['configuration/update-station'] = "configuration/updateStation";
 $route['configuration/update-station/(:any)'] = "configuration/updateStation/$1";
-$route['configuration/stations-list'] = 'configuration';
-
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

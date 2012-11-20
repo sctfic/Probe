@@ -18,8 +18,7 @@ $config['probe:locale'] = 'fr';
 // landing page after user is successfully authentified
 $config['page-login']	= "admin/connexion";
 // Login page, un-authentified users will land on this page to provide their credentials
-$config['page-station-list']	= "configuration/stations-list";
-
+$config['page-station-list']	= "configuration/stations";
 
 $config['require_directories']	= array("entity", "exceptions");
 $config['require_blacklist'] = array( "Address");
