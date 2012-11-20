@@ -59,7 +59,6 @@
 					<input id="dbms-engine-mysql"
  						type="radio" checked 
 						name="dbms-engine" value="mysql"
-						class="input-mini" 
 					>
 					<?=sprintf('%s <span class="hidden">(%s)</span>', i18n('install.dbms.engine-mysql'), i18n('required')) ?>
 				</label>
@@ -67,7 +66,6 @@
 					<input id="dbms-engine-sqlite"
 						type="radio" 
 						name="dbms-engine" value="sqlite"
-						class="input-mini" 
 					>
 					<?=sprintf('%s <span class="hidden">(%s)</span>', i18n('install.dbms.engine-sqlite'), i18n('required')) ?>
 				</label>
