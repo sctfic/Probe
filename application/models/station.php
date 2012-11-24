@@ -142,42 +142,44 @@ class Station extends CI_Model {
 		if (!isset($conf['_type']))
 			throw new Exception(_('Prarametre invalide !'));
 		$type = strtolower($conf['_type']);
-		include_once(APPPATH.'models/'.$type.'.php');
-		$Current_WS = new $type($conf);
-		try {
-			if ( !$Current_WS->initConnection() )
-				throw new Exception( sprintf( _('Impossible de se connecter à %s par %s:%s'), $conf['_name'], $conf['_ip'], $conf['_port']));
-
-			// on lit et sauve les configs
-			$readconf = end ($Current_WS->GetConfig ( ));
-			foreach ($readconf as $key => $val) {
-				if (strpos($key, 'TR:Config:')!==FALSE) {
-					$ToStoreConfig[str_replace('TR:Config:', '', $key)] = $val;
-					$conf[str_replace('TR:Config:', '', $key)] = $val;
+		if (!isset($conf['time:archive:period'])
+			|| strtotime(date ("Y/m/d H:i:s")) > strtotime($Last_Arch) + $conf['time:archive:period']*60*2)
+		{
+			include_once(APPPATH.'models/'.$type.'.php');
+			$Current_WS = new $type($conf);
+			try {
+				if ( !$Current_WS->initConnection() )
+					throw new Exception( sprintf( _('Impossible de se connecter à %s par %s:%s'), $conf['_name'], $conf['_ip'], $conf['_port']));
+	
+				// on lit et sauve les configs
+				$readconf = end ($Current_WS->GetConfig ( ));
+				foreach ($readconf as $key => $val) {
+					if (strpos($key, 'TR:Config:')!==FALSE) {
+						$ToStoreConfig[str_replace('TR:Config:', '', $key)] = $val;
+						$conf[str_replace('TR:Config:', '', $key)] = $val;
+					}
 				}
+				$this->station->arrays2dbconfs($conf['_id'], $ToStoreConfig);
+	
+				// on synchronise les orloges
+				$Current_WS->clockSync(5);
+	
+				// on lit et sauve les valeurs courantes
+				$Current_WS->GetLPS ( );
+	
+				$Last_Arch = $Current_WS->get_Last_Date();
+				// on recupere les archives seulement si ca fait plus de 2 periode qu'on ne l'as pas fait
+				$this->data = $Current_WS->GetDmpAft ( $Last_Arch );
+	
+				// on lit et sauve les maxi-mini
+				$this->data = $Current_WS->GetHiLows ( );
+	
+				if ( !$Current_WS->closeConnection() )
+					throw new Exception( sprintf( _('Fermeture de %s impossible'), $conf['_name']) );
 			}
-			$this->station->arrays2dbconfs($conf['_id'], $ToStoreConfig);
-
-			// on synchronise les orloges
-			$Current_WS->clockSync(5);
-
-			// on lit et sauve les valeurs courantes
-			$Current_WS->GetLPS ( );
-
-			$Last_Arch = $Current_WS->get_Last_Date();
-			// on recupere les archives seulement si ca fait plus de 2 periode qu'on ne l'as pas fait
-			if (!isset($conf['time:archive:period'])
-				|| strtotime(date ("Y/m/d H:i:s")) > strtotime($Last_Arch) + $conf['time:archive:period']*60*2)
-					$this->data = $Current_WS->GetDmpAft ( $Last_Arch );
-
-			// on lit et sauve les maxi-mini
-			$this->data = $Current_WS->GetHiLows ( );
-
-			if ( !$Current_WS->closeConnection() )
-				throw new Exception( sprintf( _('Fermeture de %s impossible'), $conf['_name']) );
-		}
-		catch (Exception $e) {
-			throw new Exception($e->getMessage());
+			catch (Exception $e) {
+				throw new Exception($e->getMessage());
+			}
 		}
 		return true;
 	}
