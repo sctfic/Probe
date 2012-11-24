@@ -22,7 +22,7 @@ function randomPassword($size=8, $alphabet = "abcdefghijklmnopqrstuwxyzABCDEFGHI
 	return true;
 }*/
 function where_I_Am ($f, $c, $fn, $l, $args=null) {
-	log_message('current',  basename($f).'['.$l."]: ".$c.'->'.$fn.'('.(empty($args)?'':"\n".str_replace(array(" ","\t","\r","\n",'['),array('','','','',' ['),print_r($args,true))).' )');
+	//log_message('current',  basename($f).'['.$l."]: ".$c.'->'.$fn.'('.(empty($args)?'':"\n".str_replace(array(" ","\t","\r","\n",'['),array('','','','',' ['),print_r($args,true))).' )');
 }
 
 const FORMAT_TXT = 1;
