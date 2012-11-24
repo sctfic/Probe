@@ -11,9 +11,10 @@
 			<section id="stations-list" class="span3">
 				<nav>
 					<ol>
-						<?php if (!empty($stationsList)): ?>
-							<?php foreach ($stationsList as $station): ?>
-								<li><?=$station['name']?></li>
+						<?php
+						 if (!empty($stationsConf)): ?>
+							<?php foreach ($stationsConf as $_name=>$conf): ?>
+								<li><?=$_name?></li>
 							<?php endforeach ?>					
 						<?php else: ?>
 							<li><a href="configuration/add-station"><?=i18n('configuration.stations.add-new.station')?></a></li>
@@ -22,14 +23,13 @@
 				</nav>
 			</section>
 			<section id="stations-form" class="span4">
-				<?php if (!empty($stationsList)): ?>
-					<?php foreach ($stationsConfig as $config => $value) {
+				<?php if (!empty($stationsConf)): ?>
+					<?php foreach ($stationsConf as $_name => $conf) {
 						$data = array(
 			               'title' => 'My Title',
 			               'heading' => 'My Heading',
 			               'message' => 'My Message'
-			          );
-
+			        	);
 						$this->load->view('configuration/stations-form', $data);
 					}
 				?>
