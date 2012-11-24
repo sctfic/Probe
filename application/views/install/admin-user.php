@@ -65,7 +65,8 @@
 			</div>
 
 		</fieldset>
-		<div class="modal-footer">
+		<div class="modal-footer form-actions">
+      <a href="/install/dbms" class="btn"><?=i18n('form.action.cancel');?></a>
 			<?=form_submit('configure', i18n('install.administrator.configure'), 'class="btn btn-primary pull-right"')?>
 		</div>
 	<?=form_close()?>
