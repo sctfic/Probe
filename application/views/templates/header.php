@@ -7,7 +7,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-	<title><?=$title?></title>
+	<title><?=$title?> - Probe</title>
 	<meta name="description" content="<?=$description?>">
 	<meta name="author" content="<?=$author?>">
 
@@ -18,6 +18,9 @@
     <link rel="stylesheet/less" href="/resources/less/probe.less">
 	<script src="/resources/js/libs/less-1.3.0.min.js"></script>
 
+	<?php 
+		require_once 'js-libs.php';
+	?>
 	<!-- Use SimpLESS (Win/Linux/Mac) or LESS.app (Mac) to compile your .less files
 	to style.css, and replace the 2 lines above by this one:
 

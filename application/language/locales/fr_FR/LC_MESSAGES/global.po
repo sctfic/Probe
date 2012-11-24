@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: probe\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-11-20 01:06+0100\n"
-"PO-Revision-Date: 2012-11-20 01:09+0100\n"
+"POT-Creation-Date: 2012-11-24 18:21+0100\n"
+"PO-Revision-Date: 2012-11-24 18:24+0100\n"
 "Last-Translator: Édouard Lopez <dev+i18n@edouard-lopez.com>\n"
 "Language-Team: probe <dev+probe@edouard-lopez.com>\n"
 "Language: \n"
@@ -76,41 +76,52 @@ msgstr ""
 msgid "Unknow Error, Reconnection"
 msgstr ""
 
-#: models/vp2.php:370
+#: models/vp2.php:369
 msgid "Please retry later to finish, Data sensors must be checked in few second."
 msgstr ""
 
-#: models/vp2.php:390
+#: models/vp2.php:389
 #, php-format
 msgid "Page #%d-%d of %s Ignored (Out of Range)."
 msgstr ""
 
-#: models/station.php:108
+#: models/station.php:84
+#: models/station.php:118
+#: models/station.php:143
+#: models/station.php:195
+#: models/station.php:223
+#: models/station.php:251
+msgid "Prarametre invalide !"
+msgstr ""
+
+#: models/station.php:103
 msgid "Aucune configuration valide n'est disponible"
 msgstr ""
 
-#: models/station.php:123
-#: models/station.php:142
-#: models/station.php:172
-#: models/station.php:195
+#: models/station.php:124
+#: models/station.php:152
+#: models/station.php:201
+#: models/station.php:233
+#: models/station.php:257
 #, php-format
 msgid "Impossible de se connecter à %s par %s:%s"
 msgstr ""
 
-#: models/station.php:126
-#: models/station.php:145
-#: models/station.php:176
-#: models/station.php:203
+#: models/station.php:127
+#: models/station.php:178
+#: models/station.php:204
+#: models/station.php:237
+#: models/station.php:265
 #, php-format
 msgid "Fermeture de %s impossible"
 msgstr ""
 
-#: models/station.php:183
+#: models/station.php:244
 #, php-format
 msgid "The latest collection of archives is only on %s"
 msgstr ""
 
-#: models/station.php:198
+#: models/station.php:260
 #, php-format
 msgid "Lecture des config de %s impossible"
 msgstr ""
@@ -298,6 +309,10 @@ msgid "install.administrator.password-confirmation.placeholder"
 msgstr "pour éviter les erreurs de saisie"
 
 #: views/install/admin-user.php:69
+msgid "form.action.cancel"
+msgstr ""
+
+#: views/install/admin-user.php:70
 msgid "install.administrator.configure"
 msgstr "Configurer →"
 
@@ -417,38 +432,42 @@ msgstr "Configuration des stations"
 
 #: views/configuration/stations-list.php:19
 #: views/configuration/stations-list.php:38
-#: views/configuration/list-stations.php:19
+#: views/configuration/list-stations.php:20
 msgid "configuration.stations.add-new.station"
 msgstr "Ajouter une station"
 
 #: views/configuration/list-stations.php:40
-#: views/configuration/add-station.php:91
 msgid "configuration.station.add-new"
 msgstr "Ajouter une station"
 
-#: views/configuration/add-station.php:18
-msgid "configuration.station.settings.dbms"
-msgstr "Paramètres de la base de données"
+#: views/configuration/add-station.php:17
+msgid "configuration.station.tab."
+msgstr "dynamic"
 
-#: views/configuration/add-station.php:42
-#: views/configuration/add-station.php:52
-#, fuzzy
+#: views/configuration/add-station.php:30
+msgid "configuration.station.settings.dbms.info"
+msgstr "Configuration des paramètres de la base de données"
+
+#: views/configuration/add-station.php:55
+#: views/configuration/add-station.php:65
 msgid "install.dbms."
-msgstr "Hôte"
+msgstr "dynamic"
 
-#: views/configuration/add-station.php:59
-msgid "configuration.station.settings.network"
-msgstr "Paramètres réseau"
+#: views/configuration/add-station.php:75
+msgid "configuration.station.settings.network.info"
+msgstr "Configuration des paramètres réseaux."
+
+#: views/configuration/add-station.php:113
+msgid "configuration.station.add-new.valid"
+msgstr "Ajouter la station"
 
 #: language/i18n-collected-keys.php:10
-#, fuzzy
 msgid "configure-add-station:title"
-msgstr "Nom d'hôte"
+msgstr "Ajouter une station"
 
 #: language/i18n-collected-keys.php:11
-#, fuzzy
 msgid "configure-add-station:description"
-msgstr "Ajouter une station"
+msgstr "Ajouter une nouvelle station"
 
 #: language/i18n-collected-keys.php:12
 #, fuzzy
@@ -486,6 +505,40 @@ msgstr "Modèle"
 #: language/i18n-collected-keys.php:20
 msgid "configuration.station.network._type.placeholder"
 msgstr "VP2, VP"
+
+#: language/i18n-collected-keys.php:21
+msgid "configure-station-list:title"
+msgstr "Liste des stations"
+
+#: language/i18n-collected-keys.php:22
+msgid "configure-station-list:description"
+msgstr "Liste des stations gérées"
+
+#: language/i18n-collected-keys.php:23
+#, fuzzy
+msgid "configure-station-list:author"
+msgstr "Nom d'hôte"
+
+#: language/i18n-collected-keys.php:24
+msgid "login:title"
+msgstr "Connexion"
+
+#: language/i18n-collected-keys.php:25
+msgid "login:description"
+msgstr "Connexion à l'interface d'administration"
+
+#: language/i18n-collected-keys.php:26
+#, fuzzy
+msgid "login:author"
+msgstr "Mot de passe"
+
+#: language/i18n-collected-keys.php:27
+msgid "configuration.station.tab.dbms"
+msgstr "Base de données"
+
+#: language/i18n-collected-keys.php:28
+msgid "configuration.station.tab.network"
+msgstr "Réseau"
 
 #: controllers/install.php:22
 msgid "error.database.unreachable.title"

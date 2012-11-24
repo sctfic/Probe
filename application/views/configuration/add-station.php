@@ -1,23 +1,34 @@
-<?=form_open('install/setupDbms', array(
-		'id' => 'dbms',
-		'class' => 'modal setup form-horizontal'
+<?=form_open('configuration/add-station', array(
+		'id' => 'add-station',
+		'class' => 'modal setup form-horizontal  tabbable'
 	)
 );
 ?>
 
-	<!-- <div class="modal-header"> -->
-		<!-- <legend> -->
-			<!-- <h3><?=i18n("install.dbms.legend")?></h3> -->
-		<!-- </legend>	 -->
-	<!-- </div> -->
+	<div class="modal-header">
+		<ul class="nav nav-tabs" id="tabs-step">
+		<?php 
+			$active = 'active';
+			$i = 1;
+			foreach ($form as $label => $type): 
+		?>
+			<li class="<?=$active; $active=null; ?>">
+				<a href="#settings-<?=$label?>" data-toggle="tab">
+					<?=$i++.'. '.i18n('configuration.station.tab.'.$label, true)?>
+				</a>
+			</li>
+		<?php endforeach; ?>
+		</ul>
+	</div>
 
-	<article class="modal-body">
+	<article class="modal-body tab-content">
+	<!-- <article class="tab-content"> -->
 		<?=validation_errors()?>
 
-		<fieldset id="settings-dbms">
-			<legend>
-				<h4><?=i18n('configuration.station.settings.dbms')?></h4>
-			</legend>
+		<fieldset id="settings-dbms" class="tab-pane active">
+			<p class="alert alert-info">
+				<?=i18n('configuration.station.settings.dbms.info')?>
+			</p>
 			<?php foreach ($form['dbms'] as $input => $type): ?>
 				<!-- <?=$input?> <?=$type?> -->
 				<div class="control-group">
@@ -59,10 +70,10 @@
 			<?php endforeach; ?>
 		</fieldset>
 
-		<fieldset id="settings-network">
-			<legend>
-				<h4><?=i18n('configuration.station.settings.network')?></h4>
-			</legend>
+		<fieldset id="settings-network" class="tab-pane">
+			<p class="alert alert-info">
+				<?=i18n('configuration.station.settings.network.info')?>
+			</p>
 			<?php foreach ($form['network'] as $input => $type): ?>
 				<!-- <?=$input?> <?=$type?> -->
 				<div class="control-group">
@@ -98,7 +109,14 @@
 
 
 	</article>
-	<!-- <div class="modal-footer"> -->
-		<!-- <?=form_submit('configure', i18n('configuration.station.add-new'), 'class="btn btn-primary pull-right"')?> -->
-	<!-- </div> -->
+	<div class="modal-footer">
+		<?=form_submit('configure', i18n('configuration.station.add-new.valid'), 'class="btn btn-primary pull-right"')?>
+	</div>
 <?=form_close()?>
+
+<script>
+	$('#tabs-step a').click(function (e) {
+    e.preventDefault();
+    $(this).tab('show');
+  })
+</script>
