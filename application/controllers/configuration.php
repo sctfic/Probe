@@ -30,7 +30,7 @@ class Configuration extends CI_Controller {
 		$data = pageFetchConfig('configure-station-list'); // fetch information to build the HTML header
 		foreach ($this->station->stationsList as $id => $station) {
 			$data['stationsConf'][$station] = current($this->station->config($id));
-			unset($data['stationsConf'][$station]['_name']);
+			// unset($data['stationsConf'][$station]['_name']);
 			// unset($data['stationsConf'][$station]['password']);
 		}
 		// display the view

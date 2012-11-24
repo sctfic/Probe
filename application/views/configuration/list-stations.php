@@ -12,28 +12,31 @@
 				<nav>
 					<ol>
 						<?php
-						 if (!empty($stationsConf)): ?>
-							<?php foreach ($stationsConf as $_name=>$conf): ?>
+						if (!empty($stationsConf)){
+						 	foreach ($stationsConf as $_name=>$conf){
+						 		?>
 								<li><?=$_name?></li>
-							<?php endforeach ?>					
-						<?php else: ?>
+								<?php
+							}
+						}
+						else {
+							?>
 							<li><a href="configuration/add-station"><?=i18n('configuration.stations.add-new.station')?></a></li>
-						<?php endif;?>
+							<?php
+						}
+						?>
 					</ol>
 				</nav>
 			</section>
-			<section id="stations-form" class="span4">
-				<?php if (!empty($stationsConf)): ?>
-					<?php foreach ($stationsConf as $_name => $conf) {
-						$data = array(
-			               'title' => 'My Title',
-			               'heading' => 'My Heading',
-			               'message' => 'My Message'
-			        	);
-						$this->load->view('configuration/stations-form', $data);
+			<section id="kstations-form" class="span4">
+				<?php
+				if (!empty($stationsConf)){
+					foreach ($stationsConf as $_name => $conf) {
+						$confs['confs']=$conf;
+						$this->load->view('configuration/stations-form', $confs);
 					}
+				}
 				?>
-				<?php endif;?>
 				<!-- <a href="#" class="btn"><i class="fam-add"></i> Add New Station</a> -->
 				<a href="configuration/add-station" class="btn btn-success"><i class="icon-white icon-plus"></i><?=i18n('configuration.stations.add-new.station')?></a>
 			</section>
