@@ -142,11 +142,12 @@ class Station extends CI_Model {
 		if (!isset($conf['_type']))
 			throw new Exception(_('Prarametre invalide !'));
 		$type = strtolower($conf['_type']);
+		include_once(APPPATH.'models/'.$type.'.php');
+		$Current_WS = new $type($conf);
+		$Last_Arch = $Current_WS->get_Last_Date();
 		if (!isset($conf['time:archive:period'])
 			|| strtotime(date ("Y/m/d H:i:s")) > strtotime($Last_Arch) + $conf['time:archive:period']*60*2)
 		{
-			include_once(APPPATH.'models/'.$type.'.php');
-			$Current_WS = new $type($conf);
 			try {
 				if ( !$Current_WS->initConnection() )
 					throw new Exception( sprintf( _('Impossible de se connecter à %s par %s:%s'), $conf['_name'], $conf['_ip'], $conf['_port']));
@@ -167,7 +168,6 @@ class Station extends CI_Model {
 				// on lit et sauve les valeurs courantes
 				$Current_WS->GetLPS ( );
 	
-				$Last_Arch = $Current_WS->get_Last_Date();
 				// on recupere les archives seulement si ca fait plus de 2 periode qu'on ne l'as pas fait
 				$this->data = $Current_WS->GetDmpAft ( $Last_Arch );
 	

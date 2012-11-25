@@ -21,14 +21,14 @@
 						}
 						else {
 							?>
-							<li><a href="configuration/add-station"><?=i18n('configuration.stations.add-new.station')?></a></li>
+							<li><a href="/configuration/add-station"><?=i18n('configuration.stations.add-new.station')?></a></li>
 							<?php
 						}
 						?>
 					</ol>
 				</nav>
 			</section>
-			<section id="kstations-form" class="span4">
+			<section id="stations-form" class="span4">
 				<?php
 				if (!empty($stationsConf)){
 					foreach ($stationsConf as $_name => $conf) {
@@ -38,7 +38,10 @@
 				}
 				?>
 				<!-- <a href="#" class="btn"><i class="fam-add"></i> Add New Station</a> -->
-				<a href="configuration/add-station" class="btn btn-success"><i class="icon-white icon-plus"></i><?=i18n('configuration.stations.add-new.station')?></a>
+				<a href="/configuration/add-station" class="btn btn-success">
+					<i class="icon-white icon-plus"></i>
+					<?=i18n('configuration.station.add-new')?>
+				</a>
 			</section>
 		</article>
 	<!-- </div> -->
