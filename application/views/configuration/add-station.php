@@ -1,4 +1,4 @@
-<?=form_open('configuration/add-station', array(
+<?=form_open('configuration/do/add-station', array(
 		'id' => 'add-station',
 		'class' => 'modal setup form-horizontal  tabbable'
 	)
@@ -58,9 +58,12 @@
 						?>
 						</label>
 						<div class="controls">
+							<?=var_dump($input, $type);?>
 							<input id="dbms-<?=$input?>"
-								type="text" required
-								name="dbms-<?=$input?>" value="" 
+								required
+								type="<?=$type?>" 
+								name="dbms-<?=$input?>" 
+								value="<?=set_value('dbms-'.$input)?>"
 								class="input-large" 
 								placeholder="<?=i18n('install.dbms.'.$input.'.placeholder')?>"
 							>
@@ -93,11 +96,12 @@
 						<div class="controls">
 							<input id="network-<?=$input?>"
 								<?php 
-									if (strpos($type, 'pattern') === FALSE) { echo 'type="<?=$type?>"'; }
+									if (strpos($type, 'pattern') === FALSE) { echo sprintf('type="%s"', $type); }
 									else { echo $type; }
 							 	?>
 								required
-								name="network-<?=$input?>" value="" 
+								name="network-<?=$input?>" 
+								value="<?=set_value('network-'.$input)?>"
 								class="input-large" 
 								placeholder="<?=i18n(sprintf('configuration.station.network.%s.placeholder', $input), true)?>"
 							>
