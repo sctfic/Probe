@@ -3,13 +3,13 @@
 class cmd extends CI_Controller {
 
 	function __construct() {
-		if (isset($_SERVER['REMOTE_ADDR'])) { // n'est pas definie en php5-cli
-			log_message('warning',  'CLI script access allowed only');
-			die();
-		}
-		
-		parent::__construct();
-		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
+		// if (isset($_SERVER['REMOTE_ADDR'])) { // n'est pas definie en php5-cli
+		// 	log_message('warning',  'CLI script access allowed only');
+		// 	die();
+		// }
+
+	parent::__construct();
+	where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 
 		include_once(BASEPATH.'core/Model.php'); // need for load models manualy
 		include_once(APPPATH.'models/station.php');
@@ -149,6 +149,26 @@ class cmd extends CI_Controller {
 	function makeNewStation() {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 
+		$this->load->helper(array('form', 'url'));
+		$this->load->library('form_validation');
+
+		$formFields = $this->config->item('add-station-form');
+		foreach ($formFields as $section => $fields) {
+			foreach ($fields as $field => $value) {
+				if ($field != 'port') {
+					$this->form_validation->set_rules(
+						$field, i18n(sprintf("install.%s.%s", $section, $field)), 'trim|required');
+				}
+			}
+		}
+		$this->form_validation->set_rules('dbms-password', i18n('install.dbms.password'), 'minlength[8]');
+
+		if ($this->form_validation->run() == FALSE) {
+			$this->load->view('configuration/add-station');
+		} else {
+			$this->load->view('configuration/add-station/success');
+		}
+
 		try {
 			include_once(APPPATH.'models/db_builder.php');
 			$newID = current ($this->station->availableID()); // prend le 1er ID vide parmis ceux disponible
@@ -157,7 +177,7 @@ class cmd extends CI_Controller {
 //			$workingDb = ??? ; // this should be dynamic
 			$dbb = new db_builder(
 				$workingDb['dbdriver']='mysql',
-				$workingDb['password']='nbv4023',
+				$workingDb['password']='*****',
 				$workingDb['username']='root',
 				$workingDb['hostname']='localhost',
 				$workingDb['port']=3306,
@@ -168,10 +188,15 @@ class cmd extends CI_Controller {
 			$this->station->arrays2dbconfs(
 				$newID, 
 				array_merge(
-					array('_ip'=>'192.168.0.xxx', '_port'=>22222, '_name'=>'NewVP2-'.$newID, '_type'=>'vp2'), 
+					array(
+						'_ip'=>'192.168.0.xxx', 
+						'_port'=>22222, 
+						'_name'=>'NewVP2-'.$newID, 
+						'_type'=>'vp2'
+						), 
 					$dsn
-				)
-			);
+					)
+				);
 			return true; // after, you can read : $this->station->config($newID);
 		}
 		catch (Exception $e) {

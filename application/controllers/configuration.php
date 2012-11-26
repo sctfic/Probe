@@ -43,34 +43,7 @@ class Configuration extends CI_Controller {
 		$this->load->library('form_validation');
 
 		$data = pageFetchConfig('configure-add-station'); // fetch information to build the HTML header
-		$data['form'] = array(
-			'dbms' => array(
-				'engine' => array(
-					'type' => 'radio',
-					'values' => array(
-						'mysql',
-						'sqlite'
-					)
-				),
-				'username' => 'text',
-				'password' => 'password',
-				'host' => 'text',
-				'port' => 'number', // already
-
-				// 'database' => 'text',
-				// 'dbdriver' => 'text', // fixed: pdo
-				// 'hostname' => 'mysql:host=localhost;port=3306',
-				// 'password' => 'password',
-				// 'username' => 'text', 
-			),
-			'network' => array(
-				// '_ip' => 'pattern="([0-2][0-5][0-5]\.){4}"',
-				'_ip' => 'pattern="\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b"',
-				'_name' => 'text',
-				'_port' => 'number',
-				'_type' => 'text',
-			)
-		);
+		$data['form'] = $this->config->item('add-station-form');
 
 		$data['dbmsUsername'] = null;
 		$data['dbmsPassword'] = null;
