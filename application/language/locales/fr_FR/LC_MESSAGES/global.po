@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: probe\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-11-24 18:21+0100\n"
-"PO-Revision-Date: 2012-11-24 18:24+0100\n"
+"PO-Revision-Date: 2012-11-26 22:59+0100\n"
 "Last-Translator: Édouard Lopez <dev+i18n@edouard-lopez.com>\n"
 "Language-Team: probe <dev+probe@edouard-lopez.com>\n"
 "Language: \n"
@@ -446,7 +446,7 @@ msgstr "dynamic"
 
 #: views/configuration/add-station.php:30
 msgid "configuration.station.settings.dbms.info"
-msgstr "Configuration des paramètres de la base de données"
+msgstr "Configuration de la base de données qui stockera les données recueillie."
 
 #: views/configuration/add-station.php:55
 #: views/configuration/add-station.php:65
@@ -455,7 +455,7 @@ msgstr "dynamic"
 
 #: views/configuration/add-station.php:75
 msgid "configuration.station.settings.network.info"
-msgstr "Configuration des paramètres réseaux."
+msgstr "Configuration réseaux permettant de contacter la station."
 
 #: views/configuration/add-station.php:113
 msgid "configuration.station.add-new.valid"

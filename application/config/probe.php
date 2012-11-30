@@ -23,6 +23,34 @@ $config['page-station-list']	= "configuration/stations";
 $config['require_directories']	= array("entity", "exceptions");
 $config['require_blacklist'] = array( "Address");
 
+$config['add-station-form'] = array(
+			'dbms' => array(
+				'engine' => array(
+					'type' => 'radio',
+					'values' => array(
+						'mysql',
+						'sqlite'
+					)
+				),
+				'username' => 'text',
+				'password' => 'password',
+				'host' => 'text',
+				'port' => 'number', // already
+
+				// 'database' => 'text',
+				// 'dbdriver' => 'text', // fixed: pdo
+				// 'hostname' => 'mysql:host=localhost;port=3306',
+				// 'password' => 'password',
+				// 'username' => 'text', 
+			),
+			'network' => array(
+				// '_ip' => 'pattern="([0-2][0-5][0-5]\.){4}"',
+				'_ip' => 'pattern="\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b"',
+				'_name' => 'text',
+				'_port' => 'number',
+				'_type' => 'text',
+			)
+		);
 
 //###################################### REQUIRES ######################################
 $absoluteAppPath = str_replace(
