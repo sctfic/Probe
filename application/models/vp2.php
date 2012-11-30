@@ -2,7 +2,7 @@
 class vp2 extends CI_Model {
 	protected $fp=NULL;	// Pointer of VP2 Connection
 	protected $backLightScreen=FALSE; // actual state of backlight screen
-	public $_version = 0.28;
+	public $_version = 0.31;
 	protected $conf = null;
 	
 	protected $prep_EAV = NULL;
@@ -414,16 +414,29 @@ class vp2 extends CI_Model {
 			$TIME = (ord($TIME[5])+1900)
 				.'/'.str_pad(ord($TIME[4]),2,'0',STR_PAD_LEFT)
 				.'/'.str_pad(ord($TIME[3]),2,'0',STR_PAD_LEFT)
-				.' '.str_pad(ord($TIME[2]),2,'0',STR_PAD_LEFT)
+				.'T'.str_pad(ord($TIME[2]),2,'0',STR_PAD_LEFT)
 				.':'.str_pad(ord($TIME[1]),2,'0',STR_PAD_LEFT)
 				.':'.str_pad(ord($TIME[0]),2,'0',STR_PAD_LEFT);
-			log_message('probe',  'Real : '.date('Y/m/d H:i:s').' vs VP2 : '.$TIME);
+			$TIME = $this->VP2FullTime ($TIME);
+
+			log_message('probe',  'Real : '.date('c').' vs VP2 : '.$TIME);
 			return $TIME;
 		}
 		catch (Exception $e) {
 			log_message('warning',  $e->getMessage());
 		}
 		return $TIME;
+	}
+
+	protected function VP2FullTime ($TIME) {
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
+		if ($this->conf['time:gmt:enable']==1) {
+			return $TIME.($this->conf['time:Gmt:offset']>0?'+':'').$this->conf['time:gmt:offset'];
+		}
+		elseif ($this->conf['time:gmt:enable']==0) {
+			return $TIME.GetVP2ZoneOffset($this->conf['geo:time:zone']);
+		}
+		else throw new Exception ("this->conf['time:gmt:enable']  doit etre un nombre !" );
 	}
 	/**
 	@description: Force l´heure de la station a la meme heure que le serveur web

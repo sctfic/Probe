@@ -99,7 +99,7 @@ class CI_Log {
 		fwrite($fp, $header.$message);
 		flock($fp, LOCK_UN);
 		fclose($fp);
-		@chmod($filepath, FILE_WRITE_MODE);
+		//@chmod($filepath, FILE_WRITE_MODE);
 		return TRUE;
 	}
 }

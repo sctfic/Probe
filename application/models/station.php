@@ -134,8 +134,10 @@ class Station extends CI_Model {
 
 
 	/**
-	 * retourne un tableau de tous les 
-	 * @return	array ( => Value)
+	 * teste depuis combien de temps on ne s'est pas connecter a la station
+	 * si besoin alors on s'y connecte et on lit les configs, les datas et on refait une synchro.
+	 * @param array (toute les dernieres config de la station a verifier)
+	 * @return retourne true si tous s'est bien passé
 	 */
 	function AllCollector($conf = null) {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__);
@@ -146,7 +148,7 @@ class Station extends CI_Model {
 		$Current_WS = new $type($conf);
 		$Last_Arch = $Current_WS->get_Last_Date();
 		if (!isset($conf['time:archive:period'])
-			|| strtotime(date ("Y/m/d H:i:s")) > strtotime($Last_Arch) + $conf['time:archive:period']*60*2)
+			|| strtotime(date ("Y/m/d H:i:s")) > strtotime($Last_Arch) )//+ $conf['time:archive:period']*60*2)
 		{
 			try {
 				if ( !$Current_WS->initConnection() )

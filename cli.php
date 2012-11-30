@@ -6,7 +6,9 @@
 if (isset($_SERVER['REMOTE_ADDR'])) {
 	die(); // Empêche l'exécution de ce fichier par le navigateur
 }
+
 DEFINE ('RUNNER', 'CLI');
+
 set_time_limit(0);
 
 $_SERVER['PATH_INFO'] = $_SERVER['REQUEST_URI'] = $argv[1];

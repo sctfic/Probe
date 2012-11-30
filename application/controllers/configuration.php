@@ -39,7 +39,7 @@ class Configuration extends CI_Controller {
 	}
 
 
-  public function addStation() {
+	public function addStation() {
 		$this->load->library('form_validation');
 
 		$data = pageFetchConfig('configure-add-station'); // fetch information to build the HTML header
@@ -51,15 +51,15 @@ class Configuration extends CI_Controller {
 		$data['dbmsPort'] = 3306;
 		$data['dbmsDatabaseName'] = null;
 
-	// display the view
-	$pages = new Pages();
-	$pages->view('configuration/add-station', $data);
-  }
-public function removeStation() {
+		// display the view
+		$pages = new Pages();
+		$pages->view('configuration/add-station', $data);
+	}
+	public function removeStation() {
 
-}
-public function updateStation() {
+	}
+	public function updateStation() {
 
-}
+	}
 
 }
