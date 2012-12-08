@@ -183,7 +183,7 @@ class Station extends CI_Model {
 				throw new Exception($e->getMessage());
 			}
 		}
-		return true;
+		else throw new Exception(sprintf( _('Les archives de "%s" sont a jour (en date du : %s)'), $conf['_name'], $Last_Arch));
 	}
 
 
