@@ -91,30 +91,7 @@ class vp2 extends CI_Model {
 		}
 		return FALSE;
 	}
-	/**
-	@description: compare l'heure de la station a celle du serveur web et lance la synchro si besoin
-	@return: renvoi TRUE si deja a l'heure , renvoi l'heure en cas de Synchro reuci et FALSE en cas d'echec
-	@param: maxLag est la valeur maxi toleré pour le decalage, force==TRUE ignorera le decalage et force l'heure serveur'.
-	*/
-	function clockSync($maxLag, $force=false) {
-		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
-		$TIME = False;
-		$realLag = abs(strtotime($this->fetchStationTime()) - strtotime(date('Y/m/d H:i:s')));
-		log_message('Step',  __FUNCTION__.'('.__CLASS__.")\n".__FILE__.' ['.__LINE__.']');
-		if ($realLag > $maxLag || $force) {
-			Waiting( 0, sprintf( _('Default Clock synchronize : %ssec'), $realLag) );
-			if ($realLag < 3600+$maxLag || $realLag > 3600*12 || $force) {	// OK
-				if ($TIME = $this->updateStationTime()) {							// OK
-					log_message('probe', _('Clock synchronizing.'));					// OK
-				}
-				else log_message('warning', _( 'Clock synch.'));
-			}
-			else log_message('warning', sprintf( _('So mutch Default : %ssec. Please change it manualy'), $realLag) );
-		}
-		else return true;
-		log_message('Step',  __FUNCTION__.'('.__CLASS__.")\n".__FILE__.' ['.__LINE__.']');
-		return $TIME;
-	}
+
 	function wakeUp()	{
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		for ($i=0;$i<=3;$i++) {
@@ -259,7 +236,7 @@ class vp2 extends CI_Model {
 		}
 		catch (Exception $e) {
 			log_message('warning',  $e->getMessage());
-			return false;
+			return array();
 		}
 		return $CONFS;
 	}
@@ -351,6 +328,7 @@ class vp2 extends CI_Model {
 			$this->RequestCmd("DMPAFT\n");
 			$RawDate = DMPAFT_SetVP2Date($firstDate2Get);
 			fwrite($this->fp, $RawDate);				// Send this date (parametre #1)
+
 			$crc = CalculateCRC($RawDate);			// define the CRC of my date
 			$this->RequestCmd($crc);					// Send the CRC (parametre #2)
 			$data = fread($this->fp, 6);				// we read the properties : item count and first item position
@@ -360,7 +338,7 @@ class vp2 extends CI_Model {
 // 			$retry = $this->retry-1;
 			$nbrPages = hexToDec (strrev(substr($data,0,2)));	// Split Bytes in revers order : Nbr of page
 			$firstArch = hexToDec (strrev(substr($data,2,2)));	// Split Bytes in revers order : # of first archived
-				log_message('probe', 'There are '.$nbrPages.'p. in queue, from archive '.$firstArch.' on first page since '.$last.'.');
+				log_message('infos', 'There are '.$nbrPages.'p. in queue, from archive '.$firstArch.' on first page since '.$last.'.');
 			fwrite($this->fp, ACK);				// Send ACK to start
 			for ($j=0; $j<$nbrPages; $j++) {
 				$ISS_time = time()%300;
@@ -398,6 +376,30 @@ class vp2 extends CI_Model {
 		}
 		return false;
 	}
+
+	/**
+	@description: compare l'heure de la station a celle du serveur web et lance la synchro si besoin
+	@return: renvoi TRUE si deja a l'heure , renvoi l'heure en cas de Synchro reuci et FALSE en cas d'echec
+	@param: maxLag est la valeur maxi toleré pour le decalage, force==TRUE ignorera le decalage et force l'heure serveur'.
+	*/
+	function clockSync($maxLag, $force=false) {
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
+		$TIME = False;
+		$realLag = abs(strtotime($this->fetchStationTime()) - strtotime(date('Y/m/d H:i:s')));
+		if ($realLag > $maxLag || $force) {
+			Waiting( 0, sprintf( _('Default Clock synchronize : %ssec'), $realLag) );
+			if ($realLag < 3600+$maxLag || $realLag > 3600*12 || $force) {
+				// if ($TIME = $this->updateStationTime()) {
+				// 	log_message('probe', _('Clock synchronizing.'));
+				// }
+				// else log_message('warning', _( 'Clock synch.'));
+			}
+			else log_message('warning', sprintf( _('So mutch Default : %ssec. Please change it manualy'), $realLag) );
+		}
+		else return true;
+		log_message('Step',  __FUNCTION__.'('.__CLASS__.")\n".__FILE__.' ['.__LINE__.']');
+		return $TIME;
+	}
 	/**
 	@description: Lis l'heure de la station
 	@return: retourne l'heure de la station ou FALSE en cas d'echec
@@ -431,7 +433,7 @@ class vp2 extends CI_Model {
 	protected function VP2FullTime ($TIME) {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		if ($this->conf['time:gmt:enable']==1) {
-			return $TIME.($this->conf['time:Gmt:offset']>0?'+':'').$this->conf['time:gmt:offset'];
+			return $TIME.$this->conf['time:gmt:offset'];
 		}
 		elseif ($this->conf['time:gmt:enable']==0) {
 			return $TIME.GetVP2ZoneOffset($this->conf['geo:time:zone']);

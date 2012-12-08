@@ -79,7 +79,14 @@
 	
 	function GMT($str) {// ...
 		$val = s2sSht($str);
-		return (int)($val/100).":".str_pad((abs($val)%100),2,"0",STR_PAD_LEFT);
+		return (abs($val)<1000 ?
+			($val<0 ?
+				'-0'.(int)(abs($val)/100):
+				'+0'.(int)($val/100))
+			:(int)($val/100))
+		.":".str_pad((abs($val)%100),2,"0",STR_PAD_LEFT);
+
+		// return (int)($val/100).":".str_pad((abs($val)%100),2,"0",STR_PAD_LEFT);
 	}
 	function Station($str) {// ...
 		return null;
