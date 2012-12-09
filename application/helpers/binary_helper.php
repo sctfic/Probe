@@ -3,7 +3,7 @@
 		return hexdec(bin2hex($hex));
 	}
 	function Bool($str) {// 
-		return ord($str) ? TRUE : FALSE ;
+		return ord($str) ? 1 : 0 ;
 	}
 	function Char2Signed($val) {
 	// Char2Signed http://en.wikipedia.org/wiki/Two%27s_complement

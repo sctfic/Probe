@@ -148,7 +148,7 @@ class Station extends CI_Model {
 		$Current_WS = new $type($conf);
 		$Last_Arch = $Current_WS->get_Last_Date();
 		if (!isset($conf['time:archive:period'])
-			|| strtotime(date ("Y/m/d H:i:s")) > strtotime($Last_Arch) )//+ $conf['time:archive:period']*60*2)
+			|| strtotime(date ("Y/m/d H:i:s")) > strtotime($Last_Arch) + $conf['time:archive:period']*60*2)
 		{
 			try {
 				if ( !$Current_WS->initConnection() )
@@ -183,7 +183,7 @@ class Station extends CI_Model {
 				throw new Exception($e->getMessage());
 			}
 		}
-		return true;
+		else throw new Exception(sprintf( _('Les archives de "%s" sont a jour (en date du : %s)'), $conf['_name'], $Last_Arch));
 	}
 
 
@@ -280,7 +280,6 @@ class Station extends CI_Model {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__);
 		if (isset($conf['password']))
 			$conf['password'] = $this->encrypt->encode($conf['password']);
-
 		foreach ($conf as $label => $value) {
 			$val = $this->db->escape($value);
 		// http://codeigniter.com/user_guide/database/queries.html
