@@ -38,6 +38,9 @@ class pages extends CI_Controller
             // Whoops, we don't have a page for that!
             show_404();
         }
+        if (!isset($data['viewer'])) {
+            $data['viewer'] = false;
+        }
 
         $this->load->view('templates/header', $data);
         $this->load->view($page, $data);
