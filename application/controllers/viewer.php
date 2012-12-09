@@ -38,26 +38,26 @@ class viewer extends CI_Controller
     /**
      * [index description]
      *
-     * @param string $d3Binder D3js script to bind data to current page
+     * @param string $dataBinder D3js script to bind data to current page
      *
      * @return [type] [description]
      */
-    public function index($d3Binder = null)
+    public function index($dataBinder = null)
     {
         $this->load->helper('pages');
 
-        if (empty($d3Binder) || !isset($d3Binder)) {
+        if (empty($dataBinder) || !isset($dataBinder)) {
             show_404();
         }
 
         // build view data and fetch information to build the HTML header
-        $data = pageFetchConfig($d3Binder);
+        $data = pageFetchConfig($dataBinder);
         $data['viewer'] = true;
         // remove the controller name
-        $data['d3Binder'] = $d3Binder;
+        $data['dataBinder'] = $dataBinder;
 
         // display the view
         $pages = new Pages();
-        $pages->view('d3/'.$d3Binder, $data);
+        $pages->view('d3/'.$dataBinder, $data);
     }
 }

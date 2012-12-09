@@ -20,7 +20,7 @@
 
 <?php if ($viewer === true) : ?>
     <script src="/resources/js/libs/d3.v2.min.js"></script>
-    <script src="/resources/js/<?=$d3Binder;?>.js"></script>
+    <script src="/resources/js/<?=$dataBinder;?>.js"></script>
 <?php endif; ?>
 
 <!-- Custom javascript -->
