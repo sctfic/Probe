@@ -55,5 +55,7 @@ $route['configuration/remove-station/(:any)'] = "configuration/removeStation/$1"
 $route['configuration/update-station'] = "configuration/updateStation";
 $route['configuration/update-station/(:any)'] = "configuration/updateStation/$1";
 
+$route['viewer/(:any)'] = "viewer/index/$1";
+
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */
