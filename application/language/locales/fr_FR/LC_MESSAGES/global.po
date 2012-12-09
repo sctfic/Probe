@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: probe\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-12-09 05:34+0100\n"
-"PO-Revision-Date: 2012-12-09 05:36+0100\n"
+"POT-Creation-Date: 2012-12-09 06:03+0100\n"
+"PO-Revision-Date: 2012-12-09 06:05+0100\n"
 "Last-Translator: Édouard Lopez <dev+i18n@edouard-lopez.com>\n"
 "Language-Team: probe <dev+probe@edouard-lopez.com>\n"
 "Language: \n"
@@ -24,11 +24,11 @@ msgstr "Titre"
 
 #: Probe/application/helpers/pages_helper.php:13
 msgid ":description"
-msgstr ""
+msgstr "Probe est une application web moderne pour gérer les stations météo de la marque Davis Instrument™ et archiver les relevés"
 
 #: Probe/application/helpers/pages_helper.php:14
 msgid ":author"
-msgstr ""
+msgstr "Probe Team"
 
 #: Probe/application/models/station.php:84
 #: Probe/application/models/station.php:118
@@ -61,6 +61,11 @@ msgstr ""
 msgid "Fermeture de %s impossible"
 msgstr ""
 
+#: Probe/application/models/station.php:186
+#, php-format
+msgid "Les archives de \"%s\" sont a jour (en date du : %s)"
+msgstr ""
+
 #: Probe/application/models/station.php:246
 #, php-format
 msgid "The latest collection of archives is only on %s"
@@ -71,55 +76,47 @@ msgstr ""
 msgid "Lecture des config de %s impossible"
 msgstr ""
 
-#: Probe/application/models/vp2.php:89
+#: Probe/application/models/vp2.php:91
 #, php-format
 msgid "Fermeture de %s correcte."
 msgstr ""
 
-#: Probe/application/models/vp2.php:105
-#, php-format
-msgid "Default Clock synchronize : %ssec"
-msgstr ""
-
-#: Probe/application/models/vp2.php:108
-msgid "Clock synchronizing."
-msgstr ""
-
-#: Probe/application/models/vp2.php:110
-msgid "Clock synch."
-msgstr ""
-
-#: Probe/application/models/vp2.php:112
-#, php-format
-msgid "So mutch Default : %ssec. Please change it manualy"
-msgstr ""
-
-#: Probe/application/models/vp2.php:155
+#: Probe/application/models/vp2.php:134
 #, php-format
 msgid "Incomplete Data strlen = %d insted of : %d"
 msgstr ""
 
-#: Probe/application/models/vp2.php:160
+#: Probe/application/models/vp2.php:139
 #, php-format
 msgid "Wrong CRC, on good data : crc=0x%X 0x%X , strlen=%d"
 msgstr ""
 
-#: Probe/application/models/vp2.php:180
+#: Probe/application/models/vp2.php:159
 #, php-format
 msgid "Command [%s] not understand"
 msgstr ""
 
-#: Probe/application/models/vp2.php:183
+#: Probe/application/models/vp2.php:162
 msgid "Unknow Error, Reconnection"
 msgstr ""
 
-#: Probe/application/models/vp2.php:369
+#: Probe/application/models/vp2.php:352
 msgid "Please retry later to finish, Data sensors must be checked in few second."
 msgstr ""
 
-#: Probe/application/models/vp2.php:389
+#: Probe/application/models/vp2.php:372
 #, php-format
 msgid "Page #%d-%d of %s Ignored (Out of Range)."
+msgstr ""
+
+#: Probe/application/models/vp2.php:394
+#, php-format
+msgid "Default Clock synchronize : %ssec"
+msgstr ""
+
+#: Probe/application/models/vp2.php:401
+#, php-format
+msgid "So mutch Default : %ssec. Please change it manualy"
 msgstr ""
 
 #: Probe/application/models/db_builder.php:232

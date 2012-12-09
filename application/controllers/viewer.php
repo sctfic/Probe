@@ -32,6 +32,9 @@ class viewer extends CI_Controller
     public function __construct()
     {
         parent::__construct();
+
+        $this->i18n->setLocaleEnv($this->config->item('probe:locale'), 'global');
+
         where_I_Am(__FILE__, __CLASS__, __FUNCTION__, __LINE__, func_get_args());
     }
 
