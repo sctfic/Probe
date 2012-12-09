@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: probe\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-11-24 18:21+0100\n"
-"PO-Revision-Date: 2012-11-26 22:59+0100\n"
+"POT-Creation-Date: 2012-12-09 05:34+0100\n"
+"PO-Revision-Date: 2012-12-09 05:36+0100\n"
 "Last-Translator: Édouard Lopez <dev+i18n@edouard-lopez.com>\n"
 "Language-Team: probe <dev+probe@edouard-lopez.com>\n"
 "Language: \n"
@@ -18,559 +18,575 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: helpers/pages_helper.php:12
+#: Probe/application/helpers/pages_helper.php:12
 msgid ":title"
 msgstr "Titre"
 
-#: helpers/pages_helper.php:13
+#: Probe/application/helpers/pages_helper.php:13
 msgid ":description"
 msgstr ""
 
-#: helpers/pages_helper.php:14
+#: Probe/application/helpers/pages_helper.php:14
 msgid ":author"
 msgstr ""
 
-#: models/db_builder.php:232
-msgid "database.table.role:admin.label"
-msgstr "Administrateur"
-
-#: models/vp2.php:89
-#, php-format
-msgid "Fermeture de %s correcte."
-msgstr ""
-
-#: models/vp2.php:105
-#, php-format
-msgid "Default Clock synchronize : %ssec"
-msgstr ""
-
-#: models/vp2.php:108
-msgid "Clock synchronizing."
-msgstr ""
-
-#: models/vp2.php:110
-msgid "Clock synch."
-msgstr ""
-
-#: models/vp2.php:112
-#, php-format
-msgid "So mutch Default : %ssec. Please change it manualy"
-msgstr ""
-
-#: models/vp2.php:155
-#, php-format
-msgid "Incomplete Data strlen = %d insted of : %d"
-msgstr ""
-
-#: models/vp2.php:160
-#, php-format
-msgid "Wrong CRC, on good data : crc=0x%X 0x%X , strlen=%d"
-msgstr ""
-
-#: models/vp2.php:180
-#, php-format
-msgid "Command [%s] not understand"
-msgstr ""
-
-#: models/vp2.php:183
-msgid "Unknow Error, Reconnection"
-msgstr ""
-
-#: models/vp2.php:369
-msgid "Please retry later to finish, Data sensors must be checked in few second."
-msgstr ""
-
-#: models/vp2.php:389
-#, php-format
-msgid "Page #%d-%d of %s Ignored (Out of Range)."
-msgstr ""
-
-#: models/station.php:84
-#: models/station.php:118
-#: models/station.php:143
-#: models/station.php:195
-#: models/station.php:223
-#: models/station.php:251
+#: Probe/application/models/station.php:84
+#: Probe/application/models/station.php:118
+#: Probe/application/models/station.php:145
+#: Probe/application/models/station.php:197
+#: Probe/application/models/station.php:225
+#: Probe/application/models/station.php:253
 msgid "Prarametre invalide !"
 msgstr ""
 
-#: models/station.php:103
+#: Probe/application/models/station.php:103
 msgid "Aucune configuration valide n'est disponible"
 msgstr ""
 
-#: models/station.php:124
-#: models/station.php:152
-#: models/station.php:201
-#: models/station.php:233
-#: models/station.php:257
+#: Probe/application/models/station.php:124
+#: Probe/application/models/station.php:155
+#: Probe/application/models/station.php:203
+#: Probe/application/models/station.php:235
+#: Probe/application/models/station.php:259
 #, php-format
 msgid "Impossible de se connecter à %s par %s:%s"
 msgstr ""
 
-#: models/station.php:127
-#: models/station.php:178
-#: models/station.php:204
-#: models/station.php:237
-#: models/station.php:265
+#: Probe/application/models/station.php:127
+#: Probe/application/models/station.php:180
+#: Probe/application/models/station.php:206
+#: Probe/application/models/station.php:239
+#: Probe/application/models/station.php:267
 #, php-format
 msgid "Fermeture de %s impossible"
 msgstr ""
 
-#: models/station.php:244
+#: Probe/application/models/station.php:246
 #, php-format
 msgid "The latest collection of archives is only on %s"
 msgstr ""
 
-#: models/station.php:260
+#: Probe/application/models/station.php:262
 #, php-format
 msgid "Lecture des config de %s impossible"
 msgstr ""
 
-#: models/service/service_user.php:22
-msgid "login.fail.username.password.incorrect"
-msgstr "Le mot de passe ne correspond à celui associé à l'utilisateur."
+#: Probe/application/models/vp2.php:89
+#, php-format
+msgid "Fermeture de %s correcte."
+msgstr ""
 
-#: models/service/service_user.php:47
-msgid "register.fail.username.password.incorrect"
-msgstr "Le mot de passe est invalide pour créer un compte"
+#: Probe/application/models/vp2.php:105
+#, php-format
+msgid "Default Clock synchronize : %ssec"
+msgstr ""
 
-#: models/dao/dao_user.php:80
+#: Probe/application/models/vp2.php:108
+msgid "Clock synchronizing."
+msgstr ""
+
+#: Probe/application/models/vp2.php:110
+msgid "Clock synch."
+msgstr ""
+
+#: Probe/application/models/vp2.php:112
+#, php-format
+msgid "So mutch Default : %ssec. Please change it manualy"
+msgstr ""
+
+#: Probe/application/models/vp2.php:155
+#, php-format
+msgid "Incomplete Data strlen = %d insted of : %d"
+msgstr ""
+
+#: Probe/application/models/vp2.php:160
+#, php-format
+msgid "Wrong CRC, on good data : crc=0x%X 0x%X , strlen=%d"
+msgstr ""
+
+#: Probe/application/models/vp2.php:180
+#, php-format
+msgid "Command [%s] not understand"
+msgstr ""
+
+#: Probe/application/models/vp2.php:183
+msgid "Unknow Error, Reconnection"
+msgstr ""
+
+#: Probe/application/models/vp2.php:369
+msgid "Please retry later to finish, Data sensors must be checked in few second."
+msgstr ""
+
+#: Probe/application/models/vp2.php:389
+#, php-format
+msgid "Page #%d-%d of %s Ignored (Out of Range)."
+msgstr ""
+
+#: Probe/application/models/db_builder.php:232
+msgid "database.table.role:admin.label"
+msgstr "Administrateur"
+
+#: Probe/application/models/dao/dao_user.php:80
 msgid "error.user-creation.invalid.email"
 msgstr ""
 
-#: views/login.php:3
-#: views/admin/dashboard.php:3
-#: views/install/admin-user.php:3
-#: views/install/dbms.php:3
+#: Probe/application/models/service/service_user.php:22
+msgid "login.fail.username.password.incorrect"
+msgstr "Le mot de passe ne correspond à celui associé à l'utilisateur."
+
+#: Probe/application/models/service/service_user.php:47
+msgid "register.fail.username.password.incorrect"
+msgstr "Le mot de passe est invalide pour créer un compte"
+
+#: Probe/application/views/login.php:3
 msgid "install.breadcrumb.dbms"
 msgstr "Base de données"
 
-#: views/login.php:4
-#: views/admin/dashboard.php:4
-#: views/install/admin-user.php:4
-#: views/install/dbms.php:4
+#: Probe/application/views/login.php:4
 msgid "install.breadcrumb.administrator"
 msgstr "Compte administrateur"
 
-#: views/login.php:5
+#: Probe/application/views/login.php:5
 msgid "install.breadcrumb.login"
 msgstr "Authentification"
 
-#: views/login.php:18
+#: Probe/application/views/login.php:18
 msgid "login.legend"
 msgstr "Authentification à l'application"
 
-#: views/login.php:26
+#: Probe/application/views/login.php:26
 #, fuzzy
 msgid "login.description"
 msgstr "Utilisateur responsable de l'application. Il peut ajouter et supprimer des stations."
 
-#: views/login.php:32
+#: Probe/application/views/login.php:32
 msgid "login.username"
 msgstr "Utilisateur"
 
-#: views/login.php:32
-#: views/login.php:45
-#: views/login.php:55
-#: views/login.php:58
-#: views/login.php:63
-#: views/install/admin-user.php:31
-#: views/install/admin-user.php:44
-#: views/install/admin-user.php:57
-#: views/install/dbms.php:27
-#: views/install/dbms.php:41
-#: views/install/dbms.php:55
-#: views/install/dbms.php:63
-#: views/install/dbms.php:70
-#: views/install/dbms.php:79
-#: views/install/dbms.php:84
-#: views/install/dbms.php:88
-#: views/install/dbms.php:116
-#: views/install/dbms.php:130
+#: Probe/application/views/login.php:32
+#: Probe/application/views/login.php:45
+#: Probe/application/views/login.php:55
+#: Probe/application/views/login.php:58
+#: Probe/application/views/login.php:63
+#: Probe/application/views/configuration/add-station.php:37
+#: Probe/application/views/configuration/add-station.php:47
+#: Probe/application/views/configuration/add-station.php:56
+#: Probe/application/views/configuration/add-station.php:92
 msgid "required"
 msgstr ""
 
-#: views/login.php:32
-#: views/login.php:45
-#: views/login.php:55
-#: views/login.php:58
-#: views/login.php:63
-#: views/install/admin-user.php:31
-#: views/install/admin-user.php:44
-#: views/install/admin-user.php:57
-#: views/install/dbms.php:27
-#: views/install/dbms.php:41
-#: views/install/dbms.php:55
-#: views/install/dbms.php:79
-#: views/install/dbms.php:96
-#: views/install/dbms.php:116
-#: views/install/dbms.php:130
+#: Probe/application/views/login.php:32
+#: Probe/application/views/login.php:45
+#: Probe/application/views/login.php:55
+#: Probe/application/views/login.php:58
+#: Probe/application/views/login.php:63
+#: Probe/application/views/configuration/add-station.php:37
+#: Probe/application/views/configuration/add-station.php:57
+#: Probe/application/views/configuration/add-station.php:93
 msgid "&nbsp;:"
 msgstr ""
 
-#: views/login.php:38
+#: Probe/application/views/login.php:38
 msgid "login.username.placeholder"
 msgstr "gestionnaire ou exploitant"
 
-#: views/login.php:45
+#: Probe/application/views/login.php:45
 msgid "login.password"
 msgstr "Mot de passe"
 
-#: views/login.php:51
+#: Probe/application/views/login.php:51
 msgid "login.password.placeholder"
 msgstr "mot de passe du gestionnaire ou de l'exploitant"
 
-#: views/login.php:55
+#: Probe/application/views/login.php:55
 msgid "userName"
 msgstr ""
 
-#: views/login.php:56
+#: Probe/application/views/login.php:56
 msgid "fill in your userName"
 msgstr ""
 
-#: views/login.php:58
+#: Probe/application/views/login.php:58
 msgid "password"
 msgstr ""
 
-#: views/login.php:60
+#: Probe/application/views/login.php:60
 msgid "longer is better"
 msgstr ""
 
-#: views/login.php:63
+#: Probe/application/views/login.php:63
 msgid "password confirmation"
 msgstr ""
 
-#: views/login.php:65
+#: Probe/application/views/login.php:65
 msgid "so we can prevent mistakes"
 msgstr ""
 
-#: views/login.php:72
+#: Probe/application/views/login.php:72
 msgid "sunny weather"
 msgstr ""
 
-#: views/login.php:77
+#: Probe/application/views/login.php:77
 msgid "login.authentificate"
 msgstr "S'authentifier →"
 
-#: views/logout.php:2
+#: Probe/application/views/logout.php:2
 msgid "You're now logged out."
 msgstr ""
 
-#: views/admin/dashboard.php:5
-#: views/install/admin-user.php:5
-#: views/install/dbms.php:5
-msgid "install.breadcrumb.dashboard"
-msgstr "Tableau de bord"
+#: Probe/application/views/d3/probe_d3.php:14
+msgid "warning.javascript.disable"
+msgstr "Pour consulter cette page au maximum de son potentiel veuillez activer Javascript sur votre navigateur."
 
-#: views/admin/dashboard.php:38
-#, php-format
-msgid "edit %s properties"
-msgstr ""
+#: Probe/application/views/configuration/add-station.php:17
+msgid "configuration.station.tab."
+msgstr "dynamic"
 
-#: views/admin/dashboard.php:41
-msgid "Model"
-msgstr ""
+#: Probe/application/views/configuration/add-station.php:30
+msgid "configuration.station.settings.dbms.info"
+msgstr "Configuration de la base de données pour les relevés"
 
-#: views/admin/dashboard.php:65
-#: views/admin/dashboard.php:66
-msgid "logOut"
-msgstr ""
-
-#: views/install/admin-user.php:17
-msgid "install.administrator.legend"
-msgstr "Configuration du compte administrateur"
-
-#: views/install/admin-user.php:25
-msgid "install.administrator.description"
-msgstr "Utilisateur responsable de l'application. Il peut ajouter et supprimer des stations."
-
-#: views/install/admin-user.php:31
-msgid "install.administrator.username"
-msgstr "Utilisateur «&nbsp;admin&nbsp;»"
-
-#: views/install/admin-user.php:37
-msgid "install.administrator.username.placeholder"
-msgstr "gestionnaire de l'application"
-
-#: views/install/admin-user.php:44
-msgid "install.administrator.password"
-msgstr "Mot de passe"
-
-#: views/install/admin-user.php:50
-msgid "install.administrator.password.placeholder"
-msgstr "plus long c'est mieux"
-
-#: views/install/admin-user.php:57
-msgid "install.administrator.password-confirmation"
-msgstr "Confirmer"
-
-#: views/install/admin-user.php:63
-msgid "install.administrator.password-confirmation.placeholder"
-msgstr "pour éviter les erreurs de saisie"
-
-#: views/install/admin-user.php:69
-msgid "form.action.cancel"
-msgstr ""
-
-#: views/install/admin-user.php:70
-msgid "install.administrator.configure"
-msgstr "Configurer →"
-
-#: views/install/dbms.php:18
-msgid "install.dbms.legend"
-msgstr "Configuration de la base de données"
-
-#: views/install/dbms.php:27
-msgid "install.dbms.host"
-msgstr "Nom d'hôte"
-
-#: views/install/dbms.php:33
-msgid "install.dbms.host.placeholder"
-msgstr "exemple.fr, localhost ou 127.0.0.1"
-
-#: views/install/dbms.php:41
-msgid "install.dbms.port"
-msgstr "Port"
-
-#: views/install/dbms.php:47
-msgid "install.dbms.port.placeholder"
-msgstr "défault: 3306"
-
-#: views/install/dbms.php:55
+#: Probe/application/views/configuration/add-station.php:37
 msgid "install.dbms.engine"
 msgstr "Moteur de la Base"
 
-#: views/install/dbms.php:63
-msgid "install.dbms.engine-mysql"
-msgstr "MySQL 5+"
+#: Probe/application/views/configuration/add-station.php:55
+#: Probe/application/views/configuration/add-station.php:68
+msgid "install.dbms."
+msgstr "dynamic"
 
-#: views/install/dbms.php:70
-msgid "install.dbms.engine-sqlite"
-msgstr "SQLite 3+"
+#: Probe/application/views/configuration/add-station.php:78
+msgid "configuration.station.settings.network.info"
+msgstr "Configuration réseaux permettant de contacter la station."
 
-#: views/install/dbms.php:79
-msgid "install.dbms.database.selection"
-msgstr "Choix de la base"
+#: Probe/application/views/configuration/add-station.php:117
+msgid "configuration.station.add-new.valid"
+msgstr "Ajouter la station"
 
-#: views/install/dbms.php:84
-msgid "install.dbms.database-reuse"
-msgstr "base existante"
+#: Probe/application/views/configuration/stations-list.php:3
+#: Probe/application/views/configuration/list-stations.php:3
+msgid "configuration.stations.breadcrumb"
+msgstr "Configuration des stations"
 
-#: views/install/dbms.php:88
-msgid "install.dbms.database-create"
-msgstr "nouvelle base"
+#: Probe/application/views/configuration/stations-list.php:19
+#: Probe/application/views/configuration/stations-list.php:38
+#: Probe/application/views/configuration/list-stations.php:24
+msgid "configuration.stations.add-new.station"
+msgstr "Ajouter une station"
 
-#: views/install/dbms.php:96
-msgid "install.dbms.database-name"
-msgstr "Nom de la base"
+#: Probe/application/views/configuration/list-stations.php:43
+msgid "configuration.station.add-new"
+msgstr "Ajouter une station"
 
-#: views/install/dbms.php:110
-msgid "install.dbms.advanced-user.management"
-msgstr "Le nom et le mot de passe sont ceux de l'administrateur de la base de données (<abbr title=\"par exemple\">p. ex.</abbr>, <var>root</var> ou <em>plus restreint</em>)."
+#: Probe/application/views/configuration/stations-form.php:5
+msgid "configuration.stations-list.legend.stem"
+msgstr "Configuration des stations"
 
-#: views/install/dbms.php:116
-msgid "install.dbms.username"
-msgstr "Utilisateur"
+#: Probe/application/views/configuration/stations-form.php:12
+#, fuzzy
+msgid "configuration.station."
+msgstr "Nom d'hôte"
 
-#: views/install/dbms.php:122
-msgid "install.dbms.username.placeholder"
-msgstr "gestionnaire de la base"
+#: Probe/application/views/configuration/stations-form.php:18
+msgid "configuration.station.host.placeholder"
+msgstr "exemple.fr, localhost ou 127.0.0.1"
 
-#: views/install/dbms.php:130
-msgid "install.dbms.password"
-msgstr "Mot de passe"
-
-#: views/install/dbms.php:136
-msgid "install.dbms.password.placeholder"
-msgstr "mot de passe du gestionnaire"
-
-#: views/install/dbms.php:143
-msgid "install.dbms.configure"
-msgstr "Configurer →"
-
-#: views/templates/footer.php:9
+#: Probe/application/views/templates/footer.php:20
 #, php-format
 msgid "project.license.by%s,%s,%s"
 msgstr "est licensié par <a \thref=\"https://twitter.com/ProbeMeteo\"\txmlns:cc=\"http://creativecommons.org/ns#\" \tproperty=\"cc:attributionName\" \trel=\"cc:attributionURL\"\t>%s</a>, <!-- Legal: http://creativecommons.org/licenses/by-nc-sa/3.0/legalcode -->sous licence <a \thref=\"http://creativecommons.org/licenses/by-nc-sa/3.0/\"\trel=\"license\" ><img alt=\"%s\" title=\"%s\" src=\"/resources/License/CC-by-nc-sa_80px.png\"/></a>"
 
-#: views/templates/footer.php:10
+#: Probe/application/views/templates/footer.php:21
 msgid "project.team-name"
 msgstr "l'équipe ProbeMeteo"
 
-#: views/templates/footer.php:11
+#: Probe/application/views/templates/footer.php:22
 msgid "project.license.logo-alt"
 msgstr "Licence Creative Commons CC-by-nc-sa"
 
-#: views/templates/footer.php:12
+#: Probe/application/views/templates/footer.php:23
 msgid "project.license.logo-title"
 msgstr "Licence Creative Commons CC-by-nc-sa"
 
-#: views/configuration/stations-form.php:5
-msgid "configuration.stations-list.legend.stem"
-msgstr "Configuration des stations"
+#: Probe/application/views/install/admin-user.php:16
+#: Probe/application/views/install/dbms.php:5
+#: Probe/application/views/admin/dashboard.php:5
+msgid "install.breadcrumb.dashboard"
+msgstr "Tableau de bord"
 
-#: views/configuration/stations-form.php:11
-msgid "configuration.station.host"
-msgstr "Nom d'hôte"
+#: Probe/application/views/install/admin-user.php:32
+msgid "install.administrator.legend"
+msgstr "Configuration du compte administrateur"
 
-#: views/configuration/stations-form.php:17
-msgid "configuration.station.host.placeholder"
-msgstr "exemple.fr, localhost ou 127.0.0.1"
+#: Probe/application/views/install/admin-user.php:40
+msgid "install.administrator.description"
+msgstr "Utilisateur responsable de l'application. Il peut ajouter et supprimer des stations."
 
-#: views/configuration/stations-form.php:25
-msgid "configuration.station.port"
-msgstr "Port"
+#: Probe/application/views/install/admin-user.php:46
+msgid "install.administrator.username"
+msgstr "Utilisateur «&nbsp;admin&nbsp;»"
 
-#: views/configuration/stations-form.php:31
-msgid "configuration.station.port.placeholder"
-msgstr "défault: 3306"
+#: Probe/application/views/install/admin-user.php:52
+msgid "install.administrator.username.placeholder"
+msgstr "gestionnaire de l'application"
 
-#: views/configuration/stations-list.php:3
-#: views/configuration/list-stations.php:3
-msgid "configuration.stations.breadcrumb"
-msgstr "Configuration des stations"
-
-#: views/configuration/stations-list.php:19
-#: views/configuration/stations-list.php:38
-#: views/configuration/list-stations.php:20
-msgid "configuration.stations.add-new.station"
-msgstr "Ajouter une station"
-
-#: views/configuration/list-stations.php:40
-msgid "configuration.station.add-new"
-msgstr "Ajouter une station"
-
-#: views/configuration/add-station.php:17
-msgid "configuration.station.tab."
-msgstr "dynamic"
-
-#: views/configuration/add-station.php:30
-msgid "configuration.station.settings.dbms.info"
-msgstr "Configuration de la base de données qui stockera les données recueillie."
-
-#: views/configuration/add-station.php:55
-#: views/configuration/add-station.php:65
-msgid "install.dbms."
-msgstr "dynamic"
-
-#: views/configuration/add-station.php:75
-msgid "configuration.station.settings.network.info"
-msgstr "Configuration réseaux permettant de contacter la station."
-
-#: views/configuration/add-station.php:113
-msgid "configuration.station.add-new.valid"
-msgstr "Ajouter la station"
-
-#: language/i18n-collected-keys.php:10
-msgid "configure-add-station:title"
-msgstr "Ajouter une station"
-
-#: language/i18n-collected-keys.php:11
-msgid "configure-add-station:description"
-msgstr "Ajouter une nouvelle station"
-
-#: language/i18n-collected-keys.php:12
-#, fuzzy
-msgid "configure-add-station:author"
-msgstr "Nom d'hôte"
-
-#: language/i18n-collected-keys.php:13
-msgid "configuration.station.network._ip"
-msgstr "Adresse <abbr title=\"format #.#.#.#\">IP</abbr>"
-
-#: language/i18n-collected-keys.php:14
-msgid "configuration.station.network._ip.placeholder"
-msgstr "exemple : 127.0.0.1"
-
-#: language/i18n-collected-keys.php:15
-msgid "configuration.station.network._name"
-msgstr "Nom de la station"
-
-#: language/i18n-collected-keys.php:16
-msgid "configuration.station.network._name.placeholder"
-msgstr "p. ex. modèle de la station"
-
-#: language/i18n-collected-keys.php:17
-msgid "configuration.station.network._port"
-msgstr "Port"
-
-#: language/i18n-collected-keys.php:18
-msgid "configuration.station.network._port.placeholder"
-msgstr "p. ex. 2580"
-
-#: language/i18n-collected-keys.php:19
-msgid "configuration.station.network._type"
-msgstr "Modèle"
-
-#: language/i18n-collected-keys.php:20
-msgid "configuration.station.network._type.placeholder"
-msgstr "VP2, VP"
-
-#: language/i18n-collected-keys.php:21
-msgid "configure-station-list:title"
-msgstr "Liste des stations"
-
-#: language/i18n-collected-keys.php:22
-msgid "configure-station-list:description"
-msgstr "Liste des stations gérées"
-
-#: language/i18n-collected-keys.php:23
-#, fuzzy
-msgid "configure-station-list:author"
-msgstr "Nom d'hôte"
-
-#: language/i18n-collected-keys.php:24
-msgid "login:title"
-msgstr "Connexion"
-
-#: language/i18n-collected-keys.php:25
-msgid "login:description"
-msgstr "Connexion à l'interface d'administration"
-
-#: language/i18n-collected-keys.php:26
-#, fuzzy
-msgid "login:author"
+#: Probe/application/views/install/admin-user.php:59
+msgid "install.administrator.password"
 msgstr "Mot de passe"
 
-#: language/i18n-collected-keys.php:27
-msgid "configuration.station.tab.dbms"
-msgstr "Base de données"
+#: Probe/application/views/install/admin-user.php:65
+msgid "install.administrator.password.placeholder"
+msgstr "plus long c'est mieux"
 
-#: language/i18n-collected-keys.php:28
-msgid "configuration.station.tab.network"
-msgstr "Réseau"
+#: Probe/application/views/install/admin-user.php:72
+msgid "install.administrator.password-confirmation"
+msgstr "Confirmer"
 
-#: controllers/install.php:22
+#: Probe/application/views/install/admin-user.php:78
+msgid "install.administrator.password-confirmation.placeholder"
+msgstr "pour éviter les erreurs de saisie"
+
+#: Probe/application/views/install/admin-user.php:84
+msgid "form.action.back"
+msgstr "Retour"
+
+#: Probe/application/views/install/admin-user.php:85
+msgid "install.administrator.configure"
+msgstr "Configurer →"
+
+#: Probe/application/views/install/dbms.php:18
+msgid "install.dbms.legend"
+msgstr "Configuration de la base de données"
+
+#: Probe/application/views/install/dbms.php:27
+msgid "install.dbms.host"
+msgstr "Nom d'hôte"
+
+#: Probe/application/views/install/dbms.php:33
+msgid "install.dbms.host.placeholder"
+msgstr "exemple.fr, localhost ou 127.0.0.1"
+
+#: Probe/application/views/install/dbms.php:41
+msgid "install.dbms.port"
+msgstr "Port"
+
+#: Probe/application/views/install/dbms.php:47
+msgid "install.dbms.port.placeholder"
+msgstr "défault: 3306"
+
+#: Probe/application/views/install/dbms.php:63
+msgid "install.dbms.engine-mysql"
+msgstr "MySQL 5+"
+
+#: Probe/application/views/install/dbms.php:70
+msgid "install.dbms.engine-sqlite"
+msgstr "SQLite 3+"
+
+#: Probe/application/views/install/dbms.php:79
+msgid "install.dbms.database.selection"
+msgstr "Choix de la base"
+
+#: Probe/application/views/install/dbms.php:84
+msgid "install.dbms.database-reuse"
+msgstr "base existante"
+
+#: Probe/application/views/install/dbms.php:88
+msgid "install.dbms.database-create"
+msgstr "nouvelle base"
+
+#: Probe/application/views/install/dbms.php:96
+msgid "install.dbms.database-name"
+msgstr "Nom de la base"
+
+#: Probe/application/views/install/dbms.php:110
+msgid "install.dbms.advanced-user.management"
+msgstr "Le nom et le mot de passe sont ceux de l'administrateur de la base de données (<abbr title=\"par exemple\">p. ex.</abbr>, <var>root</var> ou <em>plus restreint</em>)."
+
+#: Probe/application/views/install/dbms.php:116
+msgid "install.dbms.username"
+msgstr "Utilisateur"
+
+#: Probe/application/views/install/dbms.php:122
+msgid "install.dbms.username.placeholder"
+msgstr "gestionnaire de la base"
+
+#: Probe/application/views/install/dbms.php:130
+msgid "install.dbms.password"
+msgstr "Mot de passe"
+
+#: Probe/application/views/install/dbms.php:136
+msgid "install.dbms.password.placeholder"
+msgstr "mot de passe du gestionnaire"
+
+#: Probe/application/views/install/dbms.php:143
+msgid "install.dbms.configure"
+msgstr "Configurer →"
+
+#: Probe/application/views/admin/dashboard.php:38
+#, php-format
+msgid "edit %s properties"
+msgstr ""
+
+#: Probe/application/views/admin/dashboard.php:41
+msgid "Model"
+msgstr ""
+
+#: Probe/application/views/admin/dashboard.php:65
+#: Probe/application/views/admin/dashboard.php:66
+msgid "logOut"
+msgstr ""
+
+#: Probe/application/controllers/install.php:46
 msgid "error.database.unreachable.title"
 msgstr "Erreur : base de données inaccessible"
 
-#: controllers/install.php:23
+#: Probe/application/controllers/install.php:47
 msgid "error.database.unreachable"
 msgstr "Le fichier de configuration contient des <strong>paramètres de connexion invalide</strong>. La base de données est inaccessible."
 
-#: controllers/install.php:24
+#: Probe/application/controllers/install.php:48
 msgid "solution.database.unreachable"
 msgstr "Vérifier que la base est présente ou que les configurations sont correctes. Sinon supprimez celui-ci."
 
-#: controllers/install.php:27
+#: Probe/application/controllers/install.php:51
 msgid "error.database.unreachable.header"
 msgstr "Base de données est inaccessible"
 
-#: controllers/install.php:135
+#: Probe/application/controllers/install.php:169
 msgid "error.install.admin.exists"
 msgstr "Un utilisateur «&nbsp;admin&nbsp;» est déjà présent dans la base."
 
-#: controllers/admin/admin.php:55
+#: Probe/application/controllers/admin/admin.php:81
 msgid "Username"
 msgstr ""
 
-#: controllers/admin/admin.php:56
+#: Probe/application/controllers/admin/admin.php:82
 msgid "Password"
 msgstr ""
 
-#: controllers/admin/admin.php:57
+#: Probe/application/controllers/admin/admin.php:83
 msgid "Password Confirmation"
+msgstr "Confirmation du mot de passe"
+
+#: Probe/application/language/i18n-collected-keys.php:10
+msgid "configure-add-station:title"
+msgstr "Ajouter une station"
+
+#: Probe/application/language/i18n-collected-keys.php:11
+msgid "configure-add-station:description"
+msgstr "Ajouter une nouvelle station"
+
+#: Probe/application/language/i18n-collected-keys.php:12
+msgid "configure-add-station:author"
+msgstr "Nom d'hôte"
+
+#: Probe/application/language/i18n-collected-keys.php:13
+msgid "configuration.station.network._ip"
+msgstr "Adresse <abbr title=\"format #.#.#.#\">IP</abbr>"
+
+#: Probe/application/language/i18n-collected-keys.php:14
+msgid "configuration.station.network._ip.placeholder"
+msgstr "exemple : 127.0.0.1"
+
+#: Probe/application/language/i18n-collected-keys.php:15
+msgid "configuration.station.network._name"
+msgstr "Nom de la station"
+
+#: Probe/application/language/i18n-collected-keys.php:16
+msgid "configuration.station.network._name.placeholder"
+msgstr "p. ex. modèle de la station"
+
+#: Probe/application/language/i18n-collected-keys.php:17
+msgid "configuration.station.network._port"
+msgstr "Port"
+
+#: Probe/application/language/i18n-collected-keys.php:18
+msgid "configuration.station.network._port.placeholder"
+msgstr "p. ex. 2580"
+
+#: Probe/application/language/i18n-collected-keys.php:19
+msgid "configuration.station.network._type"
+msgstr "Modèle"
+
+#: Probe/application/language/i18n-collected-keys.php:20
+msgid "configuration.station.network._type.placeholder"
+msgstr "VP2, VP"
+
+#: Probe/application/language/i18n-collected-keys.php:21
+msgid "configure-station-list:title"
+msgstr "Liste des stations"
+
+#: Probe/application/language/i18n-collected-keys.php:22
+msgid "configure-station-list:description"
+msgstr "Liste des stations gérées"
+
+#: Probe/application/language/i18n-collected-keys.php:23
+msgid "configure-station-list:author"
+msgstr "Nom d'hôte"
+
+#: Probe/application/language/i18n-collected-keys.php:24
+msgid "login:title"
+msgstr "Connexion"
+
+#: Probe/application/language/i18n-collected-keys.php:25
+msgid "login:description"
+msgstr "Connexion à l'interface d'administration"
+
+#: Probe/application/language/i18n-collected-keys.php:26
+msgid "login:author"
+msgstr "Probe Team"
+
+#: Probe/application/language/i18n-collected-keys.php:27
+msgid "configuration.station.tab.dbms"
+msgstr "Base de données"
+
+#: Probe/application/language/i18n-collected-keys.php:28
+msgid "configuration.station.tab.network"
+msgstr "Réseau"
+
+#: Probe/application/language/i18n-collected-keys.php:29
+msgid "setup-dbms:title"
+msgstr "Configuration de la base de données des relevés"
+
+#: Probe/application/language/i18n-collected-keys.php:30
+msgid "setup-dbms:description"
+msgstr "Configuration des paramètres de connexions à la base de données stockant les relevés"
+
+#: Probe/application/language/i18n-collected-keys.php:31
+msgid "setup-dbms:author"
+msgstr "Probe Team"
+
+#: Probe/application/language/i18n-collected-keys.php:32
+msgid "setup-admin-user:title"
+msgstr "Configuration de l'administrateur"
+
+#: Probe/application/language/i18n-collected-keys.php:33
+msgid "setup-admin-user:description"
+msgstr "Configuration de l'utilisateur responsable de l'application. Il peut ajouter et supprimer des stations."
+
+#: Probe/application/language/i18n-collected-keys.php:34
+msgid "setup-admin-user:author"
+msgstr "Probe Team"
+
+#: Probe/application/language/i18n-collected-keys.php:35
+#, fuzzy
+msgid "probe_d3:title"
+msgstr "Titre"
+
+#: Probe/application/language/i18n-collected-keys.php:36
+#, fuzzy
+msgid "probe_d3:description"
+msgstr "Connexion à l'interface d'administration"
+
+#: Probe/application/language/i18n-collected-keys.php:37
+msgid "probe_d3:author"
 msgstr ""
+
+#~ msgid "configuration.station.port"
+#~ msgstr "Port"
+
+#~ msgid "configuration.station.port.placeholder"
+#~ msgstr "défault: 3306"
 
 #, fuzzy
 #~ msgid "error.database.unreachable===="
