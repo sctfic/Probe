@@ -13,13 +13,5 @@
 	<div id="graph_1" class="canvas">
 	</div>
     <!-- d3 content should be -dynamically- placed here -->
-    <noscript>
-<?=i18n('warning.javascript.disable');?></noscript>
-</div>
-
-<div id="display" style="width: 930.3px; height: 379px; ">
-	<svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="tributary_svg">
-		<g id="windrose" transform="translate(35,100)"></g>
-		<g id="avg" transform="translate(464,100)"></g>
-	</svg>
+    <noscript><?=i18n('warning.javascript.disable');?></noscript>
 </div>

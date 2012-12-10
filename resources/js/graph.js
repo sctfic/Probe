@@ -1,3 +1,5 @@
+
+
 function graphe (div, width, height, margin, datas, labelX, labelY, ticksX, ticksY, formatDate, genLine, genArea, genZoom)
 {
 	// Var for loops

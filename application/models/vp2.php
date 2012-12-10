@@ -469,7 +469,6 @@ class vp2 extends CI_Model {
 	}
 	protected function save_Archive($data){
 		$this->current_data = $data;
-		echo $data['TA:Arch:Various:Time:UTC']."\n";
 		$this->insert_VARIOUS(array(
 			$data['TA:Arch:Various:Time:UTC'], 
 			$data['TA:Arch:Rain:RainFall:Sample'], 

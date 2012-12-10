@@ -47,6 +47,10 @@
 	function ft2m($val){
 		return round($val/3.2808, 2);
 	}
+	function none($val){
+		return $val;
+	}
+
 	
 /**
 	function P_Alt_0($P_VP2, $Elevation_in_m, $Temp_in_K, $gravity = 9.80665) {
