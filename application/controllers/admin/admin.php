@@ -19,7 +19,7 @@ class admin extends Authentification
 {
     /**
     * Url sur laquelle l'user sera redirigé une fois connecté
-    *     Les classes filles peuvent la redéfinir. Par défaut, la redirection se fait sur "base_url"
+    * Les classes filles peuvent la redéfinir. Par défaut, la redirection se fait sur "base_url"
     * @var String
     */
     protected $urlWhenLogged = null; // when user is authentified go to this URL
@@ -35,13 +35,13 @@ class admin extends Authentification
         $this->i18n->setLocaleEnv($this->config->item('probe:locale'), 'global'); // set language
         // $this->encrypt->set_cipher(MCRYPT_BLOWFISH);
 
-        //Modèles
+        // Modèles
         $this->load->model('service/Service_User');
 
         // set URL to login page, i.e. not yet authentified (cf. config/probe.php)
         $this->urlConnexion = $this->config->item('page-login');
         // set URL to redirect to when user is authentified (cf. config/probe.php)
-        $this->urlWhenLogged 	= $this->config->item('page-station-list');
+        $this->urlWhenLogged    = $this->config->item('page-station-list');
         $this->checkConnexionStatus();
     }
 
@@ -104,11 +104,12 @@ class admin extends Authentification
             // var_dump($user);
             // exit;
             $this->session->set_userdata("user", serialize($user));
+            redirect($this->urlWhenLogged);
         } catch (BusinessException $be) {
             //Message d'erreur dans la variable "msg" de la session. Impossible d'utiliser flashdata car il y a 2 redirections en cas d'erreur de login
             $this->session->set_userdata("msg", $be->getMessage());
+            // the password is wrong, retry.
+            redirect($this->urlConnexion);
         }
-
-        redirect($this->urlWhenLogged);
     }
 }

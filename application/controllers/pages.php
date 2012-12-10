@@ -32,7 +32,7 @@ class pages extends CI_Controller
      */
     public function view($page, $data = null)
     {
-        where_I_Am(__FILE__, __CLASS__, __FUNCTION__, __LINE__, func_get_args());
+        where_I_Am(__FILE__, __CLASS__, __FUNCTION__, __LINE__);
 
         if ( ! file_exists('application/views/'.$page.'.php')) {
             // Whoops, we don't have a page for that!

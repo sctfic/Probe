@@ -191,7 +191,7 @@ class vp2 extends CI_Model {
 				return NULL;
 			return $val;
 		}
-		return '<!> Missing function : "'.$limits['fn'].'" to convert RAW data.<!>';
+		return '<!> Missing function : ['.$limits['fn'].'] to convert RAW data.<!>';
 	}
 	protected function convertUnit($Value, $limits) {
 	// Retourne la valeur numerique coverti en unité SI
@@ -469,6 +469,7 @@ class vp2 extends CI_Model {
 	}
 	protected function save_Archive($data){
 		$this->current_data = $data;
+		echo $data['TA:Arch:Various:Time:UTC']."\n";
 		$this->insert_VARIOUS(array(
 			$data['TA:Arch:Various:Time:UTC'], 
 			$data['TA:Arch:Rain:RainFall:Sample'], 

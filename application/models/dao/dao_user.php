@@ -15,7 +15,14 @@ class Dao_User extends CI_Model {
 * @description: try to read if there is a given user whom Username and password match.
 * @param: $userName, string
 * @param: $userPassword, string
-* @return: array
+* @return: Array(
+				[USR_ID]=>43
+				[USR_USERNAME]=>me
+				[USR_PWD]=>$2a$08$arNx0pEHouyxd8YyilkFy.zTlbKQJV387ljE/Pbb249rcUGSi90wG
+				[USR_FIRST_NAME]=>
+				[USR_EMAIL]=>me@mail.com
+				[ROL_ID]=>1
+				[USR_FAMILY_NAME]=>)
 */
 	public function read($userName, $userPassword) {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
