@@ -1,17 +1,16 @@
 //Live example from: https://gist.github.com/3589712
 //https://groups.google.com/forum/?fromgroups=#!searchin/d3-js/windhistory.com/d3-js/0fYBKF8mYvE/0VXPUCBBtXsJ
 //ksfo is taken from windhistory.com server
-var data = tributary.ksfo;
+//var data = tributary.ksfo;
+
 
 //scroll to bottom to see how we call the drawBigWindrose function with the data
-
 
 //we don't have a selectedMonthControl so we just turn on all the months
 var months = [];
 for(var i = 0; i < 12; i++) {
   months.push(true);
 }
-
 
 var svg = d3.select("svg");
 
@@ -99,7 +98,7 @@ function rollupForStep(d, step) {
     for (var key in d.data) {
         // console.log (d.data[key], d.data[key].Step*1);
         var step = d.data[key].Step*1;
-        if (step == 45) {
+        if (step == 49) {
             var direction = d.data[key].Direction;
             totals[direction] += d.data[key].NbSample *1;
             speeds[direction] += d.data[key].SpeedAvg * d.data[key].NbSample *1;
@@ -407,24 +406,24 @@ function plotSmallRose(parent, plotData) {
 
 
 
-drawBigWindrose(data, "#windrose", "caption")
-drawBigWindrose(data, "#avg", "caption")
-  
-  
-  
-//need to reformat the data to get smallPlot to work, not sure how yet
-//var rollup = rollupForStep(data, months);
-//var small = svg.append("g")
-//.attr("id", "small");
-//plotSmallRose(small, rollup)
-  
-  
+    // drawBigWindrose(data, "#windrose", "caption")
+    // drawBigWindrose(data, "#avg", "caption")
+      
+      
+      
+    // //need to reformat the data to get smallPlot to work, not sure how yet
+    // //var rollup = rollupForStep(data, months);
+    // //var small = svg.append("g")
+    // //.attr("id", "small");
+    // //plotSmallRose(small, rollup)
+      
+      
 
-//Style the plots, this doesn't capture everything from windhistory.com  
-svg.selectAll("text").style( { font: "14px sans-serif", "text-anchor": "middle" });
+    // //Style the plots, this doesn't capture everything from windhistory.com  
+    // svg.selectAll("text").style( { font: "14px sans-serif", "text-anchor": "middle" });
 
-svg.selectAll(".arcs").style( {  stroke: "#000", "stroke-width": "0.5px", "fill-opacity": 0.9 })
-svg.selectAll(".caption").style( { font: "18px sans-serif" });
-svg.selectAll(".axes").style( { stroke: "#aaa", "stroke-width": "0.5px", fill: "none" })
-svg.selectAll("text.labels").style( { "letter-spacing": "1px", fill: "#444", "font-size": "12px" })
-svg.selectAll("text.arctext").style( { "font-size": "9px" })
+    // svg.selectAll(".arcs").style( {  stroke: "#000", "stroke-width": "0.5px", "fill-opacity": 0.9 })
+    // svg.selectAll(".caption").style( { font: "18px sans-serif" });
+    // svg.selectAll(".axes").style( { stroke: "#aaa", "stroke-width": "0.5px", fill: "none" })
+    // svg.selectAll("text.labels").style( { "letter-spacing": "1px", fill: "#444", "font-size": "12px" })
+    // svg.selectAll("text.arctext").style( { "font-size": "9px" })

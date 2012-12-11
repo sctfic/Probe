@@ -21,6 +21,8 @@ en vu de les retourner au scripte ajax qui les dessinera
 		include_once(APPPATH.'models/dao/dao_data.php');
 		include_once(APPPATH.'models/dao/dao_data_summary.php');
 
+		$this->load->helper('download');
+
 		$this->station = new Station();
 
 		// print_r($this->input->get());
@@ -57,7 +59,13 @@ en vu de les retourner au scripte ajax qui les dessinera
 */
 	function index(){
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
-		print_r ($this->windRose());
+
+		// header("Content-Type: application/json");
+		// echo ($this->windRose());
+		$data = $this->windRose();
+		ob_clean();
+		header_remove();
+		force_download('data.json', '{"infos":[],"data":'.$data.'}');
 	}
 
 /**
@@ -95,7 +103,6 @@ http://probe.dev/draw?station=VP2_GTD&sensors=TA:Arch:Temp:Out:Average&Since=201
 */
 	function windRose(){
 		$data = $this->dataReader->windrose ($this->Since, $this->StepUnit, $this->StepNbr);
-//		print_r($data);
 		$json = json_encode($data);
 		return $json;
 	}
