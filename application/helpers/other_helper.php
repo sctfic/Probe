@@ -55,8 +55,7 @@ function where_I_Am($file, $class, $func, $line, $args=null)
     $argsList = (empty($args)?'':"\n".str_replace(array(" ", "\t", "\r", "\n", '['), array('', '', '', '', ' ['), print_r($args, true)));
     log_message(
         'current',
-        sprintf("%s [%s]:%s/%s(%s)"),
-        basename($file), $line, $class, $func, $argsList
+        sprintf("%s [%s]:%s/%s(%s)", basename($file), $line, $class, $func, $argsList)
     );
 }
 
@@ -79,6 +78,8 @@ const FORMAT_XML = 16;
  */
 function saveDataOnFile($file, $data, $format, $label=null)
 {
+    $result = false;
+
     if (basename($file)==$file)
         $file = FCPATH.'data/'.$file;
     if (empty($label))
@@ -94,33 +95,12 @@ function saveDataOnFile($file, $data, $format, $label=null)
         log_message('error', sprintf(i18n('error.file[%s].creation'), $targetDir));
         throw new Exception(sprintf(i18n('error.file[%s].creation'), $targetDir));
     } else {
-        if (($format & FORMAT_TXT) == FORMAT_TXT) {
-            $filename = $file.'.txt';
-            $data = print_r($data, true);
-        }
+        list($filename, $data) = prepareSerialization($file, $data, $format, $label);
 
-        if (($format & FORMAT_SERIALIZED) == FORMAT_SERIALIZED) {
-            $filename = $file.'.serialized';
-            $data = serialize($data);
-        }
-
-        if (($format & FORMAT_PHP) == FORMAT_PHP) {
-            $filename = $file.'.php';
-            $data = sprintf("<?php\n\$%s = %s;", $label, var_export($data, true));
-        }
-
-        if (($format & FORMAT_JSON) == FORMAT_JSON) {
-            $filename = $file.'.json';
-            $data = json_encode($data);
-        }
-
-        if ($format & FORMAT_XML == FORMAT_XML) {
-            $filename = $file.'.xml';
-            $data = highlight_string(print_r($data, true), true);
-        }
-
-        return file_put_contents($filename, $data);
+        $result = file_put_contents($filename, $data);
     }
+
+    return $result;
 }
 
 /**
@@ -153,5 +133,5 @@ function prepareSerialization($file, $data, $format, $label = null)
         $data = highlight_string(print_r($data, true), true);
     }
 
-    return file_put_contents($filename, $data);
+    return array($filename, $data);
 }
