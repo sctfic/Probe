@@ -67,7 +67,6 @@ class install extends CI_Controller
 
         // show form if config file missing
         if (!file_exists(APPPATH."config/db-default.php")) {
-            // $this->_requestDsnForConfigDb();
             redirect("install/dbms");
         } else { // file exists
             redirect("install/admin-user");
@@ -98,7 +97,7 @@ class install extends CI_Controller
      */
     private function _requestDsnForConfigDb()
     {
-            where_I_Am(__FILE__, __CLASS__, __FUNCTION__, __LINE__, func_get_args());
+        where_I_Am(__FILE__, __CLASS__, __FUNCTION__, __LINE__, func_get_args());
 
         $this->load->helper('pages');
         $this->load->helper(array('form'));
