@@ -64,7 +64,6 @@ en vu de les retourner au scripte ajax qui les dessinera
 * @param lenght is the number of day
 */
 	function windrose($since='2012-01-01', $step='MONTH', $lenght=12){
-		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		try {
 			$query = "SELECT ".$step."(  `VAR_DATE` ) as Step, IFNULL(  `VAR_WIND_SPEED_DOMINANT_DIR` * 22.5,  'null' ) AS Direction, COUNT( * ) AS NbSample, AVG(  `VAR_WIND_SPEED` ) AS SpeedAvg
 				FROM  `TA_VARIOUS` 
