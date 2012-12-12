@@ -22,7 +22,7 @@ var big = svg.append("g")
 
 
 var avg = svg.append("g")
-  .attr("id", "avg")
+  .attr("id", "windspeed")
   .attr("transform", "translate(" + [464, 100] + ")");
 
 
@@ -90,7 +90,7 @@ function totalsToFrequencies(totals, speeds) {
 }
 
 // Filter input data, giving back frequencies for the selected month 
-function rollupForStep(d, step) {
+function rollupForStep(d, needstep) {
     var totals = {"null":0,"0.0":0,"22.5":0,"45.0":0,"67.5":0,"90.0":0,"112.5":0,"135.0":0,"157.5":0,"180.0":0,"202.5":0,"225.0":0,"247.5":0,"270.0":0,"292.5":0,"315.0":0,"337.5":0};
     var speeds = {"null":0,"0.0":0,"22.5":0,"45.0":0,"67.5":0,"90.0":0,"112.5":0,"135.0":0,"157.5":0,"180.0":0,"202.5":0,"225.0":0,"247.5":0,"270.0":0,"292.5":0,"315.0":0,"337.5":0};
     //    console.log('==========================================================');
@@ -98,7 +98,7 @@ function rollupForStep(d, step) {
     for (var key in d.data) {
         // console.log (d.data[key], d.data[key].Step*1);
         var step = d.data[key].Step*1;
-        if (step == 49) {
+        if (step == 43) {
             var direction = d.data[key].Direction;
             totals[direction] += d.data[key].NbSample *1;
             speeds[direction] += d.data[key].SpeedAvg * d.data[key].NbSample *1;
@@ -214,9 +214,9 @@ function updatePageText(d) {
     d3.selectAll(".stationid").text(d.info.id);
     d3.selectAll(".stationname").text(d.info.name.toLowerCase());
 
-    var mapurl = 'map.html#10.00/' + d.info.lat + "/" + d.info.lon;  
-    d3.select("#maplink").html('<a href="' + mapurl + '">' + d.info.lat + ', ' + d.info.lon + '</a>');
-    d3.select("#whlink").attr("href", mapurl);
+    // var mapurl = 'map.html#10.00/' + d.info.lat + "/" + d.info.lon;  
+    // d3.select("#maplink").html('<a href="' + mapurl + '">' + d.info.lat + ', ' + d.info.lon + '</a>');
+    // d3.select("#whlink").attr("href", mapurl);
 
     var wsurl = 'http://weatherspark.com/#!dashboard;loc=' + d.info.lat + ',' + d.info.lon + ';t0=01/01;t1=12/31';
     d3.select("#wslink").attr("href", wsurl);
@@ -230,8 +230,8 @@ function updatePageText(d) {
     var rfurl = 'http://runwayfinder.com/?loc=' + d.info.id;
     d3.select("#rflink").attr("href", rfurl);
     
-    var nmurl = 'http://www.navmonster.com/apt/' + d.info.id;
-    d3.select("#nmlink").attr("href", nmurl);
+    // var nmurl = 'http://www.navmonster.com/apt/' + d.info.id;
+    // d3.select("#nmlink").attr("href", nmurl);
 }
 
 // Update all diagrams to the newly selected months
@@ -272,19 +272,27 @@ function updateComplexArcs(parent, plotData, colorFunc, arcTextFunc, complexArcO
 }
 
 // Top level function to draw all station diagrams
-function makeWindVis(station) {
-    var url = "data/" + station + ".json";
+function makeWindVis(station, since, steper, nbstep) {
+    var url = "http://probe.dev/draw/windRose?station=" + station + "&sensors=&Since=" + since + "&StepUnit=" + steper + "&StepNbr=" + nbstep;
+
     var stationData = null;
-    d3.json(url, function(d) {
+    $.getJSON(url, function(d) {
         stationData = d;
-        updatePageText(d);        
+        console.log(d);
+        updatePageText(d);
         drawBigWindrose(d, "#windrose", "Frequency by Direction");
         drawBigWindrose(d, "#windspeed", "Average Speed by Direction");
-        selectedMonthControl.setCallback(function() { updateWindVisDiagrams(d); });
+//        selectedMonthControl.setCallback(function() { updateWindVisDiagrams(d); });
+        //Style the plots, this doesn't capture everything from windhistory.com  
+        svg.selectAll("text").style( { font: "14px sans-serif", "text-anchor": "middle" });
+        svg.selectAll(".arcs").style( {  stroke: "#000", "stroke-width": "0.5px", "fill-opacity": 0.9 });
+        svg.selectAll(".caption").style( { font: "18px sans-serif" });
+        svg.selectAll(".axes").style( { stroke: "#aaa", "stroke-width": "0.5px", fill: "none" });
+        svg.selectAll("text.labels").style( { "letter-spacing": "1px", fill: "#444", "font-size": "12px" });
+        svg.selectAll("text.arctext").style( { "font-size": "9px" });
     });
-
-    selectedMonthControl = new monthControl(null);
-    selectedMonthControl.install("#monthControlDiv");
+    // selectedMonthControl = new monthControl(null);
+    // selectedMonthControl.install("#monthControlDiv");
 }
 
 // Draw a big wind rose, for the visualization
@@ -311,7 +319,7 @@ function drawBigWindrose(windroseData, container, captionText) {
         var ticks = d3.range(5, 20.1, 5);
         var tickmarks = d3.range(5, 15.1, 5);
         var radiusFunction = speedToRadiusScale;
-        var tickLabel = function(d) { return "" + d + "kts"; }
+        var tickLabel = function(d) { return "" + d + "km/h"; }
     }
 
     // Circles representing chart ticks
@@ -407,7 +415,7 @@ function plotSmallRose(parent, plotData) {
 
 
     // drawBigWindrose(data, "#windrose", "caption")
-    // drawBigWindrose(data, "#avg", "caption")
+    // drawBigWindrose(data, "#windspeed", "caption")
       
       
       

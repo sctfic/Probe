@@ -62,10 +62,10 @@ en vu de les retourner au scripte ajax qui les dessinera
 
 		// header("Content-Type: application/json");
 		// echo ($this->windRose());
-		$data = $this->windRose();
-		ob_clean();
-		header_remove();
-		force_download('data.json', '{"infos":[],"data":'.$data.'}');
+		// $data = $this->windRose();
+		// ob_clean();
+		// header_remove();
+		// force_download('data.json', '{"info":["lon":0,"lat":0,"name":"name","id":"id"],"data":'.$data.'}');
 	}
 
 /**
@@ -102,8 +102,13 @@ http://probe.dev/draw?station=VP2_GTD&sensors=TA:Arch:Temp:Out:Average&Since=201
 * @param lenght is the number of day
 */
 	function windRose(){
+		$info = array("info"=>array("lat"=>"0","lon"=>"0","name"=>"name","id"=>"id"));
 		$data = $this->dataReader->windrose ($this->Since, $this->StepUnit, $this->StepNbr);
-		$json = json_encode($data);
+		$json = json_encode(array_merge($info, array('data' => $data)));
+		ob_clean();
+		header_remove();
+		force_download('data.json', $json);
+
 		return $json;
 	}
 /**

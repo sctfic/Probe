@@ -13,11 +13,16 @@
 ?>
 
 <div id="filename" class="canvas">
-	<div id="display" style="width: 930.3px; height: 379px; ">
+	<div id="display" style="width: 930.3px; height: 600px; ">
 		<svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="tributary_svg">
-			<g id="windrose" transform="translate(35,100)"></g>
-			<g id="avg" transform="translate(464,100)"></g>
 		</svg>
+		<!--a id="maplink">maplink</a>
+		<a id="whlink">whlink</a-->
+		<a id="wslink">wslink</a>
+		<a id="wulink">wulink</a>
+		<a id="vmlink">vmlink</a>
+		<a id="rflink">rflink</a>
+		<!--a id="nmlink">nmlink</a-->
 	</div>
     <!-- d3 content should be -dynamically- placed here -->
     <noscript><?=i18n('warning.javascript.disable');?></noscript>

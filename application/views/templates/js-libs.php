@@ -35,37 +35,16 @@
 </script>
 
 <script>
- $.getJSON('http://probe.dev/draw?station=VP2_GTD&sensors=TA:Arch:Temp:Out:Average&Since=2012-11-26T00:00:00&StepUnit=WEEK&StepNbr=6',
- 	function(data)
-    // d3.json('http://probe.dev/draw?station=VP2_GTD&sensors=TA:Arch:Temp:Out:Average&Since=2012-11-26T00:00:00&StepUnit=WEEK&StepNbr=6',
-    // function(json)
-    {
-	// console.log(json);
 
-   // var data = json.entries();	//.forEach(
-								//    	function logArrayElements(element, index, array) {
-								//     	console.log("[" + index + "] = " + element);
-								// 	});//.entries();//valuecase;
-
-console.log(data);
-
-    drawBigWindrose(data, "#windrose", "caption");
-    drawBigWindrose(data, "#avg", "caption");
+    // makeWindVis('VP2_GTD');
+    // drawBigWindrose(data, "#windrose", "Frequency by Direction");
+    // drawBigWindrose(data, "#windspeed", "Average Speed by Direction");
 
     //need to reformat the data to get smallPlot to work, not sure how yet
-    //var rollup = rollupForStep(data, months);
-    //var small = svg.append("g")
-    //.attr("id", "small");
-    //plotSmallRose(small, rollup)
+    // var rollup = rollupForStep(data, months);
+    // var small = svg.append("g")
+    //     .attr("id", "small");
+    // plotSmallRose(small, rollup);
+    makeWindVis('VP2_GTD', '2012-10-19T00:00:00', 'WEEK', 8);
 
-    //Style the plots, this doesn't capture everything from windhistory.com  
-    svg.selectAll("text").style( { font: "14px sans-serif", "text-anchor": "middle" });
-    svg.selectAll(".arcs").style( {  stroke: "#000", "stroke-width": "0.5px", "fill-opacity": 0.9 });
-    svg.selectAll(".caption").style( { font: "18px sans-serif" });
-    svg.selectAll(".axes").style( { stroke: "#aaa", "stroke-width": "0.5px", fill: "none" });
-    svg.selectAll("text.labels").style( { "letter-spacing": "1px", fill: "#444", "font-size": "12px" });
-    svg.selectAll("text.arctext").style( { "font-size": "9px" });
-
-    }
-    	);
 </script>
