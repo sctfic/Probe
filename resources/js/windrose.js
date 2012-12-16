@@ -275,7 +275,7 @@ function makeWindVis(station, since, steper, nbstep) {
 
     var stationData = null;
     $.getJSON(url, function(d) {
-    d3.text(url, function(d) {
+    //d3.text(url, function(d) {
         stationData = d;
         console.log(d);
         updatePageText(d);
