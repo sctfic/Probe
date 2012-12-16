@@ -17,17 +17,13 @@ var svg = d3.select("svg");
 
 //setup some containers to put the plots inside
 var big = svg.append("g")
-  .attr("id", "windrose")
-  .attr("transform", "translate(" + [35, 100] + ")");
+    .attr("id", "windrose")
+    .attr("transform", "translate(" + [35, 100] + ")");
 
 
 var avg = svg.append("g")
-  .attr("id", "windspeed")
-  .attr("transform", "translate(" + [464, 100] + ")");
-
-
-
-
+    .attr("id", "windspeed")
+    .attr("transform", "translate(" + [464, 100] + ")");
 
 
 // This is the core Javascript code for http://windhistory.com/
@@ -119,7 +115,7 @@ function probArcTextT(d) {
 function speedArcTextT(d) {
     var tr = speedToRadius(d);
     return "translate(" + visWidth + "," + (visWidth-tr) + ")" +
-           "rotate(" + d.d + ",0," + tr + ")"; };   
+           "rotate(" + d.d + ",0," + tr + ")"; };
 
 // Return a string representing the wind speed for this datum
 function speedText(d) { return d.s < 10 ? "" : d.s.toFixed(0); };
@@ -167,11 +163,11 @@ function drawComplexArcs(parent, plotData, colorFunc, arcTextFunc, complexArcOpt
         .attr("class", "arcs")
         .selectAll("path")
         .data(plotData.dirs)
-      .enter().append("svg:path")
+    .enter().append("svg:path")
         .attr("d", arc(complexArcOptions))
         .style("fill", colorFunc)
         .attr("transform", "translate(" + visWidth + "," + visWidth + ")")
-      .append("svg:title")
+        .append("svg:title")
         .text(function(d) { return d.d + "\u00b0 " + (100*d.p).toFixed(1) + "% " + d.s.toFixed(0) + "kts" });
         
     // Annotate the arcs with speed in text
@@ -180,7 +176,7 @@ function drawComplexArcs(parent, plotData, colorFunc, arcTextFunc, complexArcOpt
             .attr("class", "arctext")
             .selectAll("text")
             .data(plotData.dirs)
-          .enter().append("svg:text")
+        .enter().append("svg:text")
             .text(arcTextFunc)
             .attr("dy", "-3px")
             .attr("transform", arcTextT);
@@ -273,10 +269,13 @@ function updateComplexArcs(parent, plotData, colorFunc, arcTextFunc, complexArcO
 
 // Top level function to draw all station diagrams
 function makeWindVis(station, since, steper, nbstep) {
+    console.log('makeWindVis');
     var url = "http://probe.dev/draw/windRose?station=" + station + "&sensors=&Since=" + since + "&StepUnit=" + steper + "&StepNbr=" + nbstep;
+    //var url ='http://probe.dev/DL.php';
 
     var stationData = null;
     $.getJSON(url, function(d) {
+    d3.text(url, function(d) {
         stationData = d;
         console.log(d);
         updatePageText(d);
@@ -284,8 +283,9 @@ function makeWindVis(station, since, steper, nbstep) {
         drawBigWindrose(d, "#windspeed", "Average Speed by Direction");
 //        selectedMonthControl.setCallback(function() { updateWindVisDiagrams(d); });
         //Style the plots, this doesn't capture everything from windhistory.com  
-        svg.selectAll("text").style( { font: "14px sans-serif", "text-anchor": "middle" });
-        svg.selectAll(".arcs").style( {  stroke: "#000", "stroke-width": "0.5px", "fill-opacity": 0.9 });
+        svg.selectAll("text").style( { font: "12px sans-serif", "text-anchor": "middle" });
+        svg.selectAll(".calmwind text").style( { font: "16px sans-serif", "text-anchor": "middle" });
+        svg.selectAll(".arcs").style( {  stroke: "#000", "stroke-width": "0.5px", "fill-opacity": 0.6 });
         svg.selectAll(".caption").style( { font: "18px sans-serif" });
         svg.selectAll(".axes").style( { stroke: "#aaa", "stroke-width": "0.5px", fill: "none" });
         svg.selectAll("text.labels").style( { "letter-spacing": "1px", fill: "#444", "font-size": "12px" });
@@ -325,16 +325,16 @@ function drawBigWindrose(windroseData, container, captionText) {
     // Circles representing chart ticks
     vis.append("svg:g")
         .attr("class", "axes")
-      .selectAll("circle")
+        .selectAll("circle")
         .data(ticks)
-      .enter().append("svg:circle")
+        .enter().append("svg:circle")
         .attr("cx", r).attr("cy", r)
         .attr("r", radiusFunction);
     // Text representing chart tickmarks
     vis.append("svg:g").attr("class", "tickmarks")
         .selectAll("text")
         .data(tickmarks)
-      .enter().append("svg:text")
+        .enter().append("svg:text")
         .text(tickLabel)
         .attr("dy", "-2px")
         .attr("transform", function(d) {
@@ -343,10 +343,10 @@ function drawBigWindrose(windroseData, container, captionText) {
             
     // Labels: degree markers
     vis.append("svg:g")
-      .attr("class", "labels")
-      .selectAll("text")
+        .attr("class", "labels")
+        .selectAll("text")
         .data(d3.range(30, 361, 30))
-      .enter().append("svg:text")
+        .enter().append("svg:text")
         .attr("dy", "-4px")
         .attr("transform", function(d) {     
             return "translate(" + r + "," + p + ") rotate(" + d + ",0," + (r-p) + ")"})        
@@ -369,69 +369,49 @@ function drawBigWindrose(windroseData, container, captionText) {
 
 /** Code for small wind roses **/
 
-// Plot a small wind rose with the specified percentage data
-//   parent: the SVG element to put the plot on
-//   plotData: a list of 12 months, each a list of 13 numbers. plotData[month][0] is winds calm percentage,
-//     plotData[month][1, 2, 3...] is percentage of winds at 30 degrees, 60, 90, ...
-var smallArcScale = d3.scale.linear().domain([0, 0.15]).range([5, 30]).clamp(true)
+// domain([0, 0.2]) = zoom rose between 0% - 20%
+// range([5, 50]) = limit of drawed value 5px to 50px
+var smallArcScale = d3.scale.linear().domain([0, 0.2]).range([5, 50]).clamp(true)
+// 
 var smallArcOptions = {
-    width: 15,
+    width: 11,
     from: 5,
     to: function(d) { return smallArcScale(d.p); }
 }
-    
-function plotSmallRose(parent, plotData) {
+var small = svg.append("g")
+    .attr("id", "smallrose")
+    .attr("transform", "translate(" + [60, 60] + ")");
+
+ var recapData = {"null":15,"0.0":2,"22.5":3,"45.0":5,"67.5":12,"90.0":14,"112.5":6,"135.0":7,"157.5":5,"180.0":5,"202.5":4,"225.0":2,"247.5":3,"270.0":4,"292.5":7,"315.0":9,"337.5":3};
+    plotSmallRose(recapData);
+
+/**
+    draw the small rose 50px
+    @param array of samples by direction and sample of null
+    ex : {"null":15,"0.0":2,"22.5":3,"45.0":5,"67.5":12,"90.0":14,"112.5":6,"135.0":7,"157.5":5,"180.0":5,"202.5":4,"225.0":2,"247.5":3,"270.0":4,"292.5":7,"315.0":9,"337.5":3};
+*/
+function plotSmallRose(plotData) {
+    console.log('plotSmallRose');
     var winds = [];
-    //var months = selectedMonthControl.selected();
-  
     // For every wind direction (note: skip plotData[0], winds calm)
-    for (var dir = 1; dir < 13; dir++) {
-        // Calculate average probability for all selected months
-        var n = 0; sum = 0;
-        for (var month = 0; month < 12; month++) {
-            if (months[month]) {
-                n += 1;
-                sum += plotData[month][dir];
-            }
-        }
-        var avg = sum/n;
-        winds.push({d: dir * 30, p: avg / 100});
+    var t = 0;
+    for (var key in plotData) {
+        t = t + plotData [key];
     }
-    parent.append("svg:g")
+    for (var key in plotData) {
+        if (key=='null') ;
+        else
+            winds.push({d: key*1, p: plotData [key] / t});
+    }
+
+    small.append("svg:g")
         .selectAll("path")
         .data(winds)
-      .enter().append("svg:path")
-        .attr("d", arc(smallArcOptions));
-    parent.append("svg:circle")
-        .attr("r", smallArcOptions.from);
+        .enter().append("svg:path")
+        .attr("d", arc(smallArcOptions))
+        .style({fill: '#58e', stroke: '#000', "stroke-width": '0.5px'});
+
+    small.append("svg:circle")
+        .attr("r", smallArcOptions.from)
+        .style({fill: '#fff', stroke: '#000', "stroke-width": '0.5px'});
 }
-
-
-
-
-
-
-
-
-
-    // drawBigWindrose(data, "#windrose", "caption")
-    // drawBigWindrose(data, "#windspeed", "caption")
-      
-      
-      
-    // //need to reformat the data to get smallPlot to work, not sure how yet
-    // //var rollup = rollupForStep(data, months);
-    // //var small = svg.append("g")
-    // //.attr("id", "small");
-    // //plotSmallRose(small, rollup)
-      
-      
-
-    // //Style the plots, this doesn't capture everything from windhistory.com  
-    // svg.selectAll("text").style( { font: "14px sans-serif", "text-anchor": "middle" });
-
-    // svg.selectAll(".arcs").style( {  stroke: "#000", "stroke-width": "0.5px", "fill-opacity": 0.9 })
-    // svg.selectAll(".caption").style( { font: "18px sans-serif" });
-    // svg.selectAll(".axes").style( { stroke: "#aaa", "stroke-width": "0.5px", fill: "none" })
-    // svg.selectAll("text.labels").style( { "letter-spacing": "1px", fill: "#444", "font-size": "12px" })
-    // svg.selectAll("text.arctext").style( { "font-size": "9px" })

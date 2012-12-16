@@ -466,7 +466,7 @@
     return d3.xhr(url, "application/json", callback).response(d3_json);
   };
   function d3_json(request) {
-   console.log(request.responseText);
+   console.log(request);
      return JSON.parse(request.responseText);
   }
   d3.html = function(url, callback) {

@@ -35,6 +35,7 @@ en vu de les retourner au scripte ajax qui les dessinera
 		$this->StepNbr = $this->input->get('StepNbr');
 
 		$this->Station = end($this->station->config($station));
+		$this->info = array("info"=>array("lat"=>"0","lon"=>"0","name"=>"name","id"=>"id"));
 
 		if ($this->Since or $this->StepUnit or $this->StepNbr) {
 			$this->dataReader = new dao_data($this->Station);
@@ -96,15 +97,29 @@ en vu de les retourner au scripte ajax qui les dessinera
 	}
 
 /**
-http://probe.dev/draw?station=VP2_GTD&sensors=TA:Arch:Temp:Out:Average&Since=2012-10-26T00:00:00&StepUnit=DAY&StepNbr=6
+http://probe.dev/draw/windrose?station=VP2_GTD&sensors=TA:Arch:Temp:Out:Average&Since=2012-10-26T00:00:00&StepUnit=DAY&StepNbr=6
 * @
 * @param since is the start date of result needed
 * @param lenght is the number of day
 */
 	function windRose(){
-		$info = array("info"=>array("lat"=>"0","lon"=>"0","name"=>"name","id"=>"id"));
 		$data = $this->dataReader->windrose ($this->Since, $this->StepUnit, $this->StepNbr);
-		$json = json_encode(array_merge($info, array('data' => $data)));
+		$json = json_encode(array_merge($this->info, array('data' => $data)));
+		ob_clean();
+		header_remove();
+		force_download('data.json', $json);
+
+		return $json;
+	}
+/**
+http://probe.dev/draw/smallrose?station=VP2_GTD&sensors=TA:Arch:Temp:Out:Average&Since=2012-10-26T00:00:00&StepUnit=DAY&StepNbr=6
+* @
+* @param since is the start date of result needed
+* @param lenght is the number of day
+*/
+	function smallRose(){
+		$data = $this->dataReader->smallrose ($this->Since, $this->StepUnit, $this->StepNbr);
+		$json = json_encode(array_merge($this->info, array('data' => $data)));
 		ob_clean();
 		header_remove();
 		force_download('data.json', $json);

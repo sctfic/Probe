@@ -34,17 +34,3 @@
     s.parentNode.insertBefore(g,s)}(document,'script'));
 </script>
 
-<script>
-
-    // makeWindVis('VP2_GTD');
-    // drawBigWindrose(data, "#windrose", "Frequency by Direction");
-    // drawBigWindrose(data, "#windspeed", "Average Speed by Direction");
-
-    //need to reformat the data to get smallPlot to work, not sure how yet
-    // var rollup = rollupForStep(data, months);
-    // var small = svg.append("g")
-    //     .attr("id", "small");
-    // plotSmallRose(small, rollup);
-    makeWindVis('VP2_GTD', '2012-10-19T00:00:00', 'WEEK', 8);
-
-</script>
