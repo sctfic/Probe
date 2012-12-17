@@ -34,15 +34,29 @@ class pages extends CI_Controller
     {
         where_I_Am(__FILE__, __CLASS__, __FUNCTION__, __LINE__);
 
-        if ( ! file_exists('application/views/'.$page.'.php')) {
+        $view = 'application/views/'.$page.'.php';
+        if ( ! file_exists($view)) {
             // Whoops, we don't have a page for that!
-            show_404();
+            show_error(
+                array(
+                    'error-title' => i18n('error.file.missing.title'),
+                    'error-description' => i18n('error.file.missing'),
+                    'error-solution' => sprintf(
+                            i18n('solution.file[%s].missing'),
+                            $page.'.php'
+                        ).':'.$view.var_dump($data)
+                    ),
+                404,
+                i18n('error.file.missing.header')
+            );
         }
+
         if (!isset($data['viewer'])) {
             $data['viewer'] = false;
         }
 
         $this->load->view('templates/header', $data);
+        $this->load->view('templates/breadcrumb', $data);
         $this->load->view($page, $data);
         $this->load->view('templates/footer', $data);
         $this->load->view('templates/js-libs', $data);
