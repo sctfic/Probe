@@ -19,8 +19,6 @@
 <script src="/resources/js/libs/bootstrap/bootstrap.js"></script>
 
 <?php if ($viewer === true) : ?>
-
-    <!--script src="/resources/js/libs/d3.v2.min.js"></script-->
     <script src="/resources/js/libs/d3.v3.js"></script>
     <script src="/resources/js/<?=$dataBinder;?>.js"></script>
 <?php endif; ?>
@@ -33,4 +31,3 @@
     g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
     s.parentNode.insertBefore(g,s)}(document,'script'));
 </script>
-

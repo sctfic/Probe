@@ -29,9 +29,6 @@
     <link rel="stylesheet/less" href="/resources/less/probe.less">
     <script src="/resources/js/libs/less-1.3.0.min.js"></script>
 
-    <?php
-        require_once 'js-libs.php';
-    ?>
     <!-- Use SimpLESS (Win/Linux/Mac) or LESS.app (Mac) to compile your .less files
     to style.css, and replace the 2 lines above by this one:
 
@@ -40,5 +37,4 @@
 
     <!-- modernizr/HTML5shiv must be in the head as the create HTML5 tag when non exixtent -->
 <!--     <script src="/resources/js/libs/modernizr-2.5.3-respond-1.1.0.min.js"></script> -->
-    <link type="text/css" href="/resources/css/smoothness/jquery-ui-1.8.20.custom.css" rel="Stylesheet" />
 </head>
