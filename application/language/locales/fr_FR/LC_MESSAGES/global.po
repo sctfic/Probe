@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: probe\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-12-09 06:03+0100\n"
-"PO-Revision-Date: 2012-12-09 06:05+0100\n"
+"POT-Creation-Date: 2012-12-16 18:06+0100\n"
+"PO-Revision-Date: 2012-12-16 18:07+0100\n"
 "Last-Translator: Édouard Lopez <dev+i18n@edouard-lopez.com>\n"
 "Language-Team: probe <dev+probe@edouard-lopez.com>\n"
 "Language: \n"
@@ -17,6 +17,13 @@ msgstr ""
 "X-Poedit-Country: FRANCE\n"
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-SearchPath-0: .\n"
+
+#: Probe/application/helpers/other_helper.php:93
+#: Probe/application/helpers/other_helper.php:95
+#: Probe/application/helpers/other_helper.php:96
+#, fuzzy, php-format
+msgid "error.file[%s].creation"
+msgstr "Erreur lors de la création de l'étiquette"
 
 #: Probe/application/helpers/pages_helper.php:12
 msgid ":title"
@@ -57,9 +64,9 @@ msgstr ""
 #: Probe/application/models/station.php:206
 #: Probe/application/models/station.php:239
 #: Probe/application/models/station.php:267
-#, php-format
+#, fuzzy, php-format
 msgid "Fermeture de %s impossible"
-msgstr ""
+msgstr "Unidades de fomento"
 
 #: Probe/application/models/station.php:186
 #, php-format
@@ -77,9 +84,9 @@ msgid "Lecture des config de %s impossible"
 msgstr ""
 
 #: Probe/application/models/vp2.php:91
-#, php-format
+#, fuzzy, php-format
 msgid "Fermeture de %s correcte."
-msgstr ""
+msgstr "Unidades de fomento"
 
 #: Probe/application/models/vp2.php:134
 #, php-format
@@ -92,22 +99,23 @@ msgid "Wrong CRC, on good data : crc=0x%X 0x%X , strlen=%d"
 msgstr ""
 
 #: Probe/application/models/vp2.php:159
-#, php-format
+#, fuzzy, php-format
 msgid "Command [%s] not understand"
-msgstr ""
+msgstr "Commande non trouvée"
 
 #: Probe/application/models/vp2.php:162
+#, fuzzy
 msgid "Unknow Error, Reconnection"
-msgstr ""
+msgstr "Le fichier de configuration contient des <strong>paramètres de connexion invalide</strong>. La base de données est inaccessible."
 
 #: Probe/application/models/vp2.php:352
 msgid "Please retry later to finish, Data sensors must be checked in few second."
 msgstr ""
 
 #: Probe/application/models/vp2.php:372
-#, php-format
+#, fuzzy, php-format
 msgid "Page #%d-%d of %s Ignored (Out of Range)."
-msgstr ""
+msgstr "Bloc défectueux %u hors limite ; ignoré.\n"
 
 #: Probe/application/models/vp2.php:394
 #, php-format
@@ -123,15 +131,15 @@ msgstr ""
 msgid "database.table.role:admin.label"
 msgstr "Administrateur"
 
-#: Probe/application/models/dao/dao_user.php:80
+#: Probe/application/models/dao/dao_user.php:87
 msgid "error.user-creation.invalid.email"
 msgstr ""
 
-#: Probe/application/models/service/service_user.php:22
+#: Probe/application/models/service/service_user.php:20
 msgid "login.fail.username.password.incorrect"
 msgstr "Le mot de passe ne correspond à celui associé à l'utilisateur."
 
-#: Probe/application/models/service/service_user.php:47
+#: Probe/application/models/service/service_user.php:41
 msgid "register.fail.username.password.incorrect"
 msgstr "Le mot de passe est invalide pour créer un compte"
 
@@ -154,7 +162,7 @@ msgstr "Authentification à l'application"
 #: Probe/application/views/login.php:26
 #, fuzzy
 msgid "login.description"
-msgstr "Utilisateur responsable de l'application. Il peut ajouter et supprimer des stations."
+msgstr "Connexion à l'interface d'administration"
 
 #: Probe/application/views/login.php:32
 msgid "login.username"
@@ -165,21 +173,15 @@ msgstr "Utilisateur"
 #: Probe/application/views/login.php:55
 #: Probe/application/views/login.php:58
 #: Probe/application/views/login.php:63
-#: Probe/application/views/configuration/add-station.php:37
-#: Probe/application/views/configuration/add-station.php:47
-#: Probe/application/views/configuration/add-station.php:56
-#: Probe/application/views/configuration/add-station.php:92
+#, fuzzy
 msgid "required"
-msgstr ""
+msgstr "nécessaire"
 
 #: Probe/application/views/login.php:32
 #: Probe/application/views/login.php:45
 #: Probe/application/views/login.php:55
 #: Probe/application/views/login.php:58
 #: Probe/application/views/login.php:63
-#: Probe/application/views/configuration/add-station.php:37
-#: Probe/application/views/configuration/add-station.php:57
-#: Probe/application/views/configuration/add-station.php:93
 msgid "&nbsp;:"
 msgstr ""
 
@@ -196,42 +198,51 @@ msgid "login.password.placeholder"
 msgstr "mot de passe du gestionnaire ou de l'exploitant"
 
 #: Probe/application/views/login.php:55
+#, fuzzy
 msgid "userName"
-msgstr ""
+msgstr "Nom d'utilisateur"
 
 #: Probe/application/views/login.php:56
+#, fuzzy
 msgid "fill in your userName"
-msgstr ""
+msgstr "Votre nom d'utilisateur last.fm"
 
 #: Probe/application/views/login.php:58
+#, fuzzy
 msgid "password"
-msgstr ""
+msgstr "Mot de passe"
 
 #: Probe/application/views/login.php:60
+#, fuzzy
 msgid "longer is better"
-msgstr ""
+msgstr "Le fichier %s n'est plus publié."
 
 #: Probe/application/views/login.php:63
+#, fuzzy
 msgid "password confirmation"
-msgstr ""
+msgstr "Confirmation du mot de passe"
 
 #: Probe/application/views/login.php:65
 msgid "so we can prevent mistakes"
 msgstr ""
 
 #: Probe/application/views/login.php:72
+#, fuzzy
 msgid "sunny weather"
-msgstr ""
+msgstr "Afficher la _météo"
 
 #: Probe/application/views/login.php:77
 msgid "login.authentificate"
 msgstr "S'authentifier →"
 
 #: Probe/application/views/logout.php:2
+#, fuzzy
 msgid "You're now logged out."
-msgstr ""
+msgstr "Vous allez être déconnecté automatiquement dans %d seconde."
 
-#: Probe/application/views/d3/probe_d3.php:14
+#: Probe/application/views/d3/probe_d3.php:17
+#: Probe/application/views/d3/graph.php:16
+#: Probe/application/views/d3/windrose.php:28
 msgid "warning.javascript.disable"
 msgstr "Pour consulter cette page au maximum de son potentiel veuillez activer Javascript sur votre navigateur."
 
@@ -244,6 +255,7 @@ msgid "configuration.station.settings.dbms.info"
 msgstr "Configuration de la base de données pour les relevés"
 
 #: Probe/application/views/configuration/add-station.php:37
+#: Probe/application/views/install/dbms.php:55
 msgid "install.dbms.engine"
 msgstr "Moteur de la Base"
 
@@ -282,7 +294,7 @@ msgstr "Configuration des stations"
 #: Probe/application/views/configuration/stations-form.php:12
 #, fuzzy
 msgid "configuration.station."
-msgstr "Nom d'hôte"
+msgstr "dynamic"
 
 #: Probe/application/views/configuration/stations-form.php:18
 msgid "configuration.station.host.placeholder"
@@ -420,18 +432,36 @@ msgid "install.dbms.configure"
 msgstr "Configurer →"
 
 #: Probe/application/views/admin/dashboard.php:38
-#, php-format
+#, fuzzy, php-format
 msgid "edit %s properties"
-msgstr ""
+msgstr "Modifier les propriétés de l'image"
 
 #: Probe/application/views/admin/dashboard.php:41
+#, fuzzy
 msgid "Model"
-msgstr ""
+msgstr "Modèle"
 
 #: Probe/application/views/admin/dashboard.php:65
 #: Probe/application/views/admin/dashboard.php:66
 msgid "logOut"
 msgstr ""
+
+#: Probe/application/controllers/pages.php:41
+msgid "error.file.missing.title"
+msgstr "Fichier manquant ou non valable"
+
+#: Probe/application/controllers/pages.php:42
+msgid "error.file.missing"
+msgstr "Erreur à l'ouverture du fichier"
+
+#: Probe/application/controllers/pages.php:43
+#, php-format
+msgid "solution.file[%s].missing"
+msgstr "Vérifier que le fichier <var>%s</var> existe bien et que vous avez les droits suffisants pour le lire"
+
+#: Probe/application/controllers/pages.php:46
+msgid "error.file.missing.header"
+msgstr "Fichier manquant ou non valable."
 
 #: Probe/application/controllers/install.php:46
 msgid "error.database.unreachable.title"
@@ -449,17 +479,17 @@ msgstr "Vérifier que la base est présente ou que les configurations sont corre
 msgid "error.database.unreachable.header"
 msgstr "Base de données est inaccessible"
 
-#: Probe/application/controllers/install.php:169
+#: Probe/application/controllers/install.php:168
 msgid "error.install.admin.exists"
 msgstr "Un utilisateur «&nbsp;admin&nbsp;» est déjà présent dans la base."
 
 #: Probe/application/controllers/admin/admin.php:81
 msgid "Username"
-msgstr ""
+msgstr "Nom d'utilisateur"
 
 #: Probe/application/controllers/admin/admin.php:82
 msgid "Password"
-msgstr ""
+msgstr "Mot de passe"
 
 #: Probe/application/controllers/admin/admin.php:83
 msgid "Password Confirmation"
@@ -568,16 +598,47 @@ msgstr "Probe Team"
 #: Probe/application/language/i18n-collected-keys.php:35
 #, fuzzy
 msgid "probe_d3:title"
-msgstr "Titre"
+msgstr "Configuration de la base de données des relevés"
 
 #: Probe/application/language/i18n-collected-keys.php:36
 #, fuzzy
 msgid "probe_d3:description"
-msgstr "Connexion à l'interface d'administration"
+msgstr "Utilisateur responsable de l'application. Il peut ajouter et supprimer des stations."
 
 #: Probe/application/language/i18n-collected-keys.php:37
+#, fuzzy
 msgid "probe_d3:author"
-msgstr ""
+msgstr "Probe Team"
+
+#: Probe/application/language/i18n-collected-keys.php:38
+#, fuzzy
+msgid "windrose:title"
+msgstr "Connexion"
+
+#: Probe/application/language/i18n-collected-keys.php:39
+#, fuzzy
+msgid "windrose:description"
+msgstr "Connexion à l'interface d'administration"
+
+#: Probe/application/language/i18n-collected-keys.php:40
+#, fuzzy
+msgid "windrose:author"
+msgstr "Probe Team"
+
+#: Probe/application/language/i18n-collected-keys.php:41
+#, fuzzy
+msgid "list-view:title"
+msgstr "<b>Réglages par défaut de la vue en liste</b>"
+
+#: Probe/application/language/i18n-collected-keys.php:42
+#, fuzzy
+msgid "list-view:description"
+msgstr "<b>Réglages par défaut de la vue en liste</b>"
+
+#: Probe/application/language/i18n-collected-keys.php:43
+#, fuzzy
+msgid "list-view:author"
+msgstr "<b>Réglages par défaut de la vue en liste</b>"
 
 #~ msgid "configuration.station.port"
 #~ msgstr "Port"
