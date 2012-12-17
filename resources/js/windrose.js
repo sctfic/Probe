@@ -275,7 +275,7 @@ function makeWindVis(station, since, steper, nbstep) {
 
     var stationData = null;
     $.getJSON(url, function(d) {
-    //d3.text(url, function(d) {
+    //d3.json(url, function(d) {
         stationData = d;
         console.log(d);
         updatePageText(d);
@@ -382,33 +382,30 @@ var small = svg.append("g")
     .attr("id", "smallrose")
     .attr("transform", "translate(" + [60, 60] + ")");
 
- var recapData = {"null":15,"0.0":2,"22.5":3,"45.0":5,"67.5":12,"90.0":14,"112.5":6,"135.0":7,"157.5":5,"180.0":5,"202.5":4,"225.0":2,"247.5":3,"270.0":4,"292.5":7,"315.0":9,"337.5":3};
-    plotSmallRose(recapData);
-
 /**
     draw the small rose 50px
     @param array of samples by direction and sample of null
-    ex : {"null":15,"0.0":2,"22.5":3,"45.0":5,"67.5":12,"90.0":14,"112.5":6,"135.0":7,"157.5":5,"180.0":5,"202.5":4,"225.0":2,"247.5":3,"270.0":4,"292.5":7,"315.0":9,"337.5":3};
-*/
+    ex : {    };
+    */
 function plotSmallRose(plotData) {
     console.log('plotSmallRose');
     var winds = [];
     // For every wind direction (note: skip plotData[0], winds calm)
     var t = 0;
-    for (var key in plotData) {
-        t = t + plotData [key];
+    for (var key in plotData.data) {
+        t = t + plotData.data [key]['NbSample']*1;
     }
-    for (var key in plotData) {
-        if (key=='null') ;
-        else
-            winds.push({d: key*1, p: plotData [key] / t});
-    }
+    for (var key in plotData.data) {
+        if (plotData.data[key]['Direction']!='null')
+            winds.push({d: plotData.data[key]['Direction']*1, p: plotData.data [key]['NbSample'] / t});
+   }
 
     small.append("svg:g")
         .selectAll("path")
         .data(winds)
         .enter().append("svg:path")
         .attr("d", arc(smallArcOptions))
+        // .attr('title',function(d){ return 'p=' + d.p + '  d=' + d.d })
         .style({fill: '#58e', stroke: '#000', "stroke-width": '0.5px'});
 
     small.append("svg:circle")

@@ -31,3 +31,26 @@
     g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
     s.parentNode.insertBefore(g,s)}(document,'script'));
 </script>
+<script>
+/**
+    HOUR()          Extract the hour
+    DAY()           Synonym for DAYOFMONTH()
+    DAYNAME()       Return the name of the weekday
+    DAYOFMONTH()    Return the day of the month (0-31)
+    DAYOFWEEK()     Return the weekday index of the argument
+    DAYOFYEAR()     Return the day of the year (1-366)
+    WEEK()          Return the week number
+    MONTH()         Return the month from the date passed
+    YEAR()          Return the year
+*/
+$(document).ready(function(){
+
+    makeWindVis('VP2_GTD', '2012-10-19T00:00:00', 'WEEK', 8);
+    var url = "http://probe.dev/draw/smallrose?station=VP2_GTD";
+
+    $.getJSON(url, function(d) {
+        console.log(d);
+        plotSmallRose(d);
+    });
+});
+</script>

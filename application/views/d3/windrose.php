@@ -29,8 +29,7 @@
     <noscript><?=i18n('warning.javascript.disable');?></noscript>
 </div>
 
-<script>
-
+<!--script>
 /**
     HOUR()          Extract the hour
     DAY()           Synonym for DAYOFMONTH()
@@ -42,10 +41,14 @@
     MONTH()         Return the month from the date passed
     YEAR()          Return the year
 */
+$(document).ready(function(){
+
     makeWindVis('VP2_GTD', '2012-10-19T00:00:00', 'WEEK', 8);
+    var url = "http://probe.dev/draw/smallrose?station=VP2_GTD&sensors=&Since=2012-10-19T00:00:00&StepUnit=DAY&StepNbr=12";
 
-
-    var recapData = {"null":15,"0.0":2,"22.5":3,"45.0":5,"67.5":12,"90.0":14,"112.5":6,"135.0":7,"157.5":5,"180.0":5,"202.5":4,"225.0":2,"247.5":3,"270.0":4,"292.5":7,"315.0":9,"337.5":3};
-    plotSmallRose(recapData);
-
-</script>
+    $.getJSON(url, function(d) {
+        console.log(d);
+        plotSmallRose(d);
+    });
+});
+</script-->

@@ -50,7 +50,13 @@ en vu de les retourner au scripte ajax qui les dessinera
 *			last period value]
 */
 	function bracketCurve($since, $lenght){
-		
+		// Stock Price
+// Date,Open,High,Low,Close,Volume
+// [["2012-03-01",15.21,15.43,15.15,15.25,11248600],
+//  ["2012-02-29",15.38,15.64,15.14,15.15,17229900],
+//  ["2012-02-28",15.47,15.65,15.17,15.33,17497100],
+//  ["2012-02-27",15.59,15.66,15.25,15.47,18631700],
+//  ["2012-02-24",15.96,15.98,15.72,15.79,9166700],
 		$args = func_get_args();
 	    foreach ($args as $value) {
 	     	
@@ -70,11 +76,26 @@ en vu de les retourner au scripte ajax qui les dessinera
 				WHERE `VAR_DATE` > '".$since."' and `VAR_DATE`< date_add('".$since."' ,  INTERVAL ".$lenght." ".$step.")
 				GROUP BY ".$step."(  `VAR_DATE` ) ,  `VAR_WIND_SPEED_DOMINANT_DIR` 
 				LIMIT 0 , 300";
-			// $query = "SELECT CONCAT_WS(  ':', ".$step."(  `VAR_DATE` ) , IFNULL(  `VAR_WIND_SPEED_DOMINANT_DIR` * 22.5,  'NULL' ) ) AS Direction, COUNT( * ) AS NbSample, AVG(  `VAR_WIND_SPEED` ) AS SpeedAvg
-			// 	FROM  `TA_VARIOUS` 
-			// 	WHERE `VAR_DATE` > '".$since."' and `VAR_DATE`< date_add('".$since."' ,  INTERVAL ".$lenght." ".$step.")
-			// 	GROUP BY ".$step."(  `VAR_DATE` ) ,  `VAR_WIND_SPEED_DOMINANT_DIR` 
-			// 	LIMIT 0 , 300";
+			$qurey_result = $this->dataDB->query($query);
+			return $qurey_result->result_array($qurey_result);
+		} catch (PDOException $e) {
+			throw new Exception( $e->getMessage() );
+		}
+
+	}/**
+
+* @
+* @param since is the start date of result needed
+* @param lenght is the number of day
+*/
+	function smallrose($since='2012-01-01', $step='DAY', $lenght=12){
+		try {
+			$query = "SELECT IFNULL(  `VAR_WIND_SPEED_DOMINANT_DIR` * 22.5,  'null' ) AS Direction, COUNT( * ) AS NbSample, AVG(  `VAR_WIND_SPEED` ) AS SpeedAvg
+				FROM  `TA_VARIOUS` 
+				WHERE  `VAR_DATE` >  '".$since."'
+				AND  `VAR_DATE` < DATE_ADD(  '".$since."', INTERVAL ".$lenght." ".$step.") 
+				GROUP BY `VAR_WIND_SPEED_DOMINANT_DIR` 
+				LIMIT 0 , 17";
 			$qurey_result = $this->dataDB->query($query);
 			return $qurey_result->result_array($qurey_result);
 		} catch (PDOException $e) {
