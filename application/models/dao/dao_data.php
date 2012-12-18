@@ -64,40 +64,44 @@ en vu de les retourner au scripte ajax qui les dessinera
 	}
 
 /**
-
+SELECT DATE(  `VAR_DATE` ) AS _date, IFNULL(  `VAR_WIND_SPEED_DOMINANT_DIR` * 22.5,  'null' ) AS _Dir, COUNT( * ) AS _Spl, ROUND( AVG(  `VAR_WIND_SPEED` ) , 3 ) AS _Spd, ROUND( MAX(  `VAR_WIND_SPEED` ) , 2 ) AS Max
+FROM  `TA_VARIOUS` 
+WHERE  `VAR_DATE` >  '2012-01-01T00:00:00'
+AND  `VAR_DATE` < DATE_ADD(  '2012-01-01T00:00:00', INTERVAL 365 
+DAY ) 
+GROUP BY DATE(  `VAR_DATE` ) ,  `VAR_WIND_SPEED_DOMINANT_DIR` 
+ORDER BY DATE(  `VAR_DATE` ) 
 * @
 * @param since is the start date of result needed
 * @param lenght is the number of day
 */
-	function windrose($since='2012-01-01', $step='MONTH', $lenght=12){
+	function wind($since='2012-01-01', $step='DAY', $lenght=365){
 		try {
-			$query = "SELECT ".$step."(  `VAR_DATE` ) as Step, IFNULL(  `VAR_WIND_SPEED_DOMINANT_DIR` * 22.5,  'null' ) AS Direction, COUNT( * ) AS NbSample, AVG(  `VAR_WIND_SPEED` ) AS SpeedAvg
+	$query =	"SELECT 
+					DATE( `VAR_DATE` ) AS _Date, 
+					IFNULL( `VAR_WIND_SPEED_DOMINANT_DIR` * 22.5, 'null' ) AS Dir, 
+					COUNT( * ) AS Spl,
+					ROUND( AVG( `VAR_WIND_SPEED` ) , 3 ) AS Spd,
+					ROUND( MAX(`VAR_WIND_SPEED`) , 2 ) AS Max
 				FROM  `TA_VARIOUS` 
-				WHERE `VAR_DATE` > '".$since."' and `VAR_DATE`< date_add('".$since."' ,  INTERVAL ".$lenght." ".$step.")
-				GROUP BY ".$step."(  `VAR_DATE` ) ,  `VAR_WIND_SPEED_DOMINANT_DIR` 
-				LIMIT 0 , 300";
+				WHERE  `VAR_DATE` > '$since'
+				AND  `VAR_DATE` < DATE_ADD( '$since', INTERVAL $lenght $step ) 
+				GROUP BY DATE( `VAR_DATE` ) , `VAR_WIND_SPEED_DOMINANT_DIR` 
+				ORDER BY DATE( `VAR_DATE` )
+				LIMIT 0 , 1000";
 			$qurey_result = $this->dataDB->query($query);
-			return $qurey_result->result_array($qurey_result);
-		} catch (PDOException $e) {
-			throw new Exception( $e->getMessage() );
-		}
-
-	}/**
-
-* @
-* @param since is the start date of result needed
-* @param lenght is the number of day
-*/
-	function smallrose($since='2012-01-01', $step='DAY', $lenght=12){
-		try {
-			$query = "SELECT IFNULL(  `VAR_WIND_SPEED_DOMINANT_DIR` * 22.5,  'null' ) AS Direction, COUNT( * ) AS NbSample, AVG(  `VAR_WIND_SPEED` ) AS SpeedAvg
-				FROM  `TA_VARIOUS` 
-				WHERE  `VAR_DATE` >  '".$since."'
-				AND  `VAR_DATE` < DATE_ADD(  '".$since."', INTERVAL ".$lenght." ".$step.") 
-				GROUP BY `VAR_WIND_SPEED_DOMINANT_DIR` 
-				LIMIT 0 , 17";
-			$qurey_result = $this->dataDB->query($query);
-			return $qurey_result->result_array($qurey_result);
+			$brut = $qurey_result->result_array($qurey_result);
+			$reformated = null;
+			foreach ($brut as $key => $value) {
+				if (isset($reformated[$value['_Date']]))
+					$reformated[$value['_Date']] = array_merge(
+						$reformated[$value['_Date']],
+						array(array('Dir'=>$value['Dir'], 'Spd'=>$value['Spd'], 'Spl'=>$value['Spl'], 'Max'=>$value['Max']))
+					);
+				else
+					$reformated[$value['_Date']] = array(array('Dir'=>$value['Dir'], 'Spd'=>$value['Spd'], 'Spl'=>$value['Spl'], 'Max'=>$value['Max']));
+			}
+			return $reformated;
 		} catch (PDOException $e) {
 			throw new Exception( $e->getMessage() );
 		}

@@ -44,13 +44,18 @@
     YEAR()          Return the year
 */
 $(document).ready(function(){
-
-    makeWindVis('VP2_GTD', '2012-10-19T00:00:00', 'WEEK', 8);
-    var url = "http://probe.dev/draw/smallrose?station=VP2_GTD";
+    var url = "http://probe.dev/draw/wind?station=VP2_GTD";
 
     $.getJSON(url, function(d) {
         console.log(d);
-        plotSmallRose(d);
-    });
+        for (var keydate in d.data) {
+            // console.log(d.data[keydate]);
+            // plotSmallRose(d.data[keydate]);
+        }
+
+        plotSmallRose(d.data[keydate]);
+
+        makeWindVis(d.data[keydate]); 
+   });
 });
 </script>

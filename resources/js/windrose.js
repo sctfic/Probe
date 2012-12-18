@@ -91,15 +91,12 @@ function rollupForStep(d, needstep) {
     var speeds = {"null":0,"0.0":0,"22.5":0,"45.0":0,"67.5":0,"90.0":0,"112.5":0,"135.0":0,"157.5":0,"180.0":0,"202.5":0,"225.0":0,"247.5":0,"270.0":0,"292.5":0,"315.0":0,"337.5":0};
     //    console.log('==========================================================');
     //return null;
-    for (var key in d.data) {
-        // console.log (d.data[key], d.data[key].Step*1);
-        var step = d.data[key].Step*1;
-        if (step == 43) {
-            var direction = d.data[key].Direction;
-            totals[direction] += d.data[key].NbSample *1;
-            speeds[direction] += d.data[key].SpeedAvg * d.data[key].NbSample *1;
-            // console.log (d.data[key].Direction, direction, totals[direction], speeds[direction]);
-        }
+    for (var key in d) {
+        // console.log (d[key],d[key].Dir);
+        var direction = d[key].Dir;
+        totals[direction] += d[key].Spl *1;
+        speeds[direction] += d[key].Spd * d[key].Spl *1;
+        // console.log (d.data[key].Direction, direction, totals[direction], speeds[direction]);
     }
     // console.log (totals, speeds);
     return totalsToFrequencies(totals, speeds);
@@ -168,7 +165,7 @@ function drawComplexArcs(parent, plotData, colorFunc, arcTextFunc, complexArcOpt
         .style("fill", colorFunc)
         .attr("transform", "translate(" + visWidth + "," + visWidth + ")")
         .append("svg:title")
-        .text(function(d) { return d.d + "\u00b0 " + (100*d.p).toFixed(1) + "% " + d.s.toFixed(0) + "kts" });
+        .text(function(d) { return d.d + "\u00b0 " + (100*d.p).toFixed(1) + "% " + d.s.toFixed(0) + "km/h" });
         
     // Annotate the arcs with speed in text
     if (false) {    // disabled: just looks like chart junk
@@ -259,7 +256,7 @@ function updateComplexArcs(parent, plotData, colorFunc, arcTextFunc, complexArcO
 
     // Update the arcs' title tooltip
     parent.select("g.arcs").selectAll("path").select("title")
-        .text(function(d) { return d.d + "\u00b0 " + (100*d.p).toFixed(1) + "% " + d.s.toFixed(0) + "kts" });
+        .text(function(d) { return d.d + "\u00b0 " + (100*d.p).toFixed(1) + "% " + d.s.toFixed(0) + "km/h" });
         
     // Update the calm wind probability in the center
     parent.select("g.calmwind").select("text")
@@ -268,16 +265,9 @@ function updateComplexArcs(parent, plotData, colorFunc, arcTextFunc, complexArcO
 }
 
 // Top level function to draw all station diagrams
-function makeWindVis(station, since, steper, nbstep) {
+function makeWindVis(d) {
     console.log('makeWindVis');
-    var url = "http://probe.dev/draw/windRose?station=" + station + "&sensors=&Since=" + since + "&StepUnit=" + steper + "&StepNbr=" + nbstep;
-    //var url ='http://probe.dev/DL.php';
-
-    var stationData = null;
-    $.getJSON(url, function(d) {
-    //d3.json(url, function(d) {
-        stationData = d;
-        console.log(d);
+    var stationData = d;
         updatePageText(d);
         drawBigWindrose(d, "#windrose", "Frequency by Direction");
         drawBigWindrose(d, "#windspeed", "Average Speed by Direction");
@@ -290,7 +280,6 @@ function makeWindVis(station, since, steper, nbstep) {
         svg.selectAll(".axes").style( { stroke: "#aaa", "stroke-width": "0.5px", fill: "none" });
         svg.selectAll("text.labels").style( { "letter-spacing": "1px", fill: "#444", "font-size": "12px" });
         svg.selectAll("text.arctext").style( { "font-size": "9px" });
-    });
     // selectedMonthControl = new monthControl(null);
     // selectedMonthControl.install("#monthControlDiv");
 }
@@ -387,17 +376,18 @@ var small = svg.append("g")
     @param array of samples by direction and sample of null
     ex : {    };
     */
-function plotSmallRose(plotData) {
+function plotSmallRose(Data) {
     console.log('plotSmallRose');
     var winds = [];
     // For every wind direction (note: skip plotData[0], winds calm)
     var t = 0;
-    for (var key in plotData.data) {
-        t = t + plotData.data [key]['NbSample']*1;
+    for (var key in Data) {
+        t = t + Data [key]['Spl']*1;
     }
-    for (var key in plotData.data) {
-        if (plotData.data[key]['Direction']!='null')
-            winds.push({d: plotData.data[key]['Direction']*1, p: plotData.data [key]['NbSample'] / t});
+
+    for (var key in Data) {
+        if (Data[key]['Dir']!='null')
+            winds.push({d: Data[key]['Dir']*1, p: Data [key]['Spl'] / t});
    }
 
     small.append("svg:g")
@@ -405,8 +395,10 @@ function plotSmallRose(plotData) {
         .data(winds)
         .enter().append("svg:path")
         .attr("d", arc(smallArcOptions))
+        .style({fill: '#58e', stroke: '#000', "stroke-width": '0.5px'})
+        .append("svg:title")
+        .text(function(d) { return d.d + "\u00b0 " + (100*d.p).toFixed(1) + "% " });
         // .attr('title',function(d){ return 'p=' + d.p + '  d=' + d.d })
-        .style({fill: '#58e', stroke: '#000', "stroke-width": '0.5px'});
 
     small.append("svg:circle")
         .attr("r", smallArcOptions.from)

@@ -35,9 +35,9 @@ en vu de les retourner au scripte ajax qui les dessinera
 		$this->StepNbr = $this->input->get('StepNbr');
 
 		if (empty($this->Since) || empty($this->StepUnit) || empty($this->StepNbr)) {
-			$this->Since = date('Y/m/d H:i:s', strtotime(date('Y/m/d H:i:s'))-24*3600);
+			$this->Since = date('Y/m/d H:i:s', strtotime(date('Y/m/d H:i:s'))-7*24*3600); // today - 365 days
 			$this->StepUnit = 'DAY';
-			$this->StepNbr = 1;
+			$this->StepNbr = 365;
 		}
 
 		$this->Station = end($this->station->config($station));
@@ -108,8 +108,8 @@ http://probe.dev/draw/windrose?station=VP2_GTD&sensors=TA:Arch:Temp:Out:Average&
 * @param since is the start date of result needed
 * @param lenght is the number of day
 */
-	function windRose(){
-		$data = $this->dataReader->windrose ($this->Since, $this->StepUnit, $this->StepNbr);
+	function wind(){
+		$data = $this->dataReader->wind ($this->Since, $this->StepUnit, $this->StepNbr);
 		
 		$json = json_encode(array_merge($this->info, array('data' => $data)));
 		// ob_clean();
@@ -117,30 +117,5 @@ http://probe.dev/draw/windrose?station=VP2_GTD&sensors=TA:Arch:Temp:Out:Average&
 		header_remove();
 		force_download('data.json', $json);
 		// return $json;
-	}
-/**
-http://probe.dev/draw/smallrose?station=VP2_GTD&sensors=TA:Arch:Temp:Out:Average&Since=2012-10-26T00:00:00&StepUnit=DAY&StepNbr=6
-* @
-* @param since is the start date of result needed
-* @param lenght is the number of day
-*/
-	function smallRose(){
-		$data = $this->dataReader->smallrose ($this->Since, $this->StepUnit, $this->StepNbr);
-
-		$json = json_encode(array_merge($this->info, array('data' => $data)));
-		// ob_clean();
-		@ob_end_clean();
-		header_remove();
-		force_download('data.json', $json);
-		// return $json;
-	}
-/**
-
-* @
-* @param since is the start date of result needed
-* @param lenght is the number of day
-*/
-	function windRose_allInOne($since, $lenght){
-
 	}
 }
