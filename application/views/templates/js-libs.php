@@ -56,6 +56,9 @@ $(document).ready(function(){
         plotSmallRose(d.data[keydate]);
 
         makeWindVis(d.data[keydate]); 
+
+        historybar(d.data);
+
    });
 });
 </script>

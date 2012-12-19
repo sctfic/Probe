@@ -360,15 +360,24 @@ function drawBigWindrose(windroseData, container, captionText) {
 
 // domain([0, 0.2]) = zoom rose between 0% - 20%
 // range([5, 50]) = limit of drawed value 5px to 50px
-var smallArcScale = d3.scale.linear().domain([0, 0.2]).range([5, 50]).clamp(true)
+var smallArcScale = d3.scale.linear().domain([0, 0.16]).range([5, 40]).clamp(true)
 // 
 var smallArcOptions = {
     width: 11,
     from: 5,
     to: function(d) { return smallArcScale(d.p); }
 }
+var barOblic = {
+    width: 1,
+    from: 1,
+    to: function(d) { return smallArcScale(d.dd); }
+}
 var small = svg.append("g")
     .attr("id", "smallrose")
+    .attr("transform", "translate(" + [60, 60] + ")");
+    
+var histobarre = svg.append("g")
+    .attr("id", "histobarre")
     .attr("transform", "translate(" + [60, 60] + ")");
 
 /**
@@ -403,4 +412,51 @@ function plotSmallRose(Data) {
     small.append("svg:circle")
         .attr("r", smallArcOptions.from)
         .style({fill: '#fff', stroke: '#000', "stroke-width": '0.5px'});
+}
+/**
+    draw the small rose 50px
+    @param array of samples by direction and sample of null
+    ex : {    };
+    */
+function historybar(Data) {
+    console.log('historybar');
+    var hist = [];
+    // For every wind direction (note: skip plotData[0], winds calm)
+    for (var keydate in Data) {
+        // console.log(Data[keydate]);
+        dominantWind = 0;
+        _d = 0;
+        _s = 0;
+        _m = 0;
+        _p = 0;
+        for (var key in Data[keydate]) {
+            //console.log(Data[keydate][key]);
+            _p += Data[keydate][key]['Spl']*1;
+            if (Data[keydate][key]['Spl']>_d && Data[keydate][key]['Dir']!='null') {
+                _d = Data[keydate][key]['Dir']*1;
+                _s = Data[keydate][key]['Spd']*1;
+                _m = Data[keydate][key]['Max']*1;
+            }
+        }
+        // console.log({t: keydate,dd: _d, dspd: _s, m: _m, p: _p});
+        hist.push({t: keydate,dd: _d, ds: _s, m: _m, p: _p});
+   }
+console.log(hist);
+
+    histobarre.append("svg:g")
+        .selectAll("path")
+        .data(hist)
+        .enter().append("svg:path")
+        // .bottom(0)
+        // .angle(0)
+        // .startAngle(d3.scale.linear().range(-Math.PI / 2 - 1, -Math.PI / 2 + 1))
+        .attr("d", arc(barOblic))
+        .style({fill: '#58e', stroke: '#000', "stroke-width": '0.5px'})
+        .append("svg:title")
+        .text(function(d) { return d.dd + "\u00b0 " + d.ds + "kms" });
+        // .attr('title',function(d){ return 'p=' + d.p + '  d=' + d.d })
+
+    // histobarre.append("svg:circle")
+    //     .attr("r", smallArcOptions.from)
+    //     .style({fill: '#fff', stroke: '#000', "stroke-width": '0.5px'});
 }

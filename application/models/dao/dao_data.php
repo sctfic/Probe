@@ -82,7 +82,7 @@ ORDER BY DATE(  `VAR_DATE` )
 					IFNULL( `VAR_WIND_SPEED_DOMINANT_DIR` * 22.5, 'null' ) AS Dir, 
 					COUNT( * ) AS Spl,
 					ROUND( AVG( `VAR_WIND_SPEED` ) , 3 ) AS Spd,
-					ROUND( MAX(`VAR_WIND_SPEED`) , 2 ) AS Max
+					ROUND( MAX( `VAR_WIND_SPEED_HIGHT` ) , 2 ) AS Max
 				FROM  `TA_VARIOUS` 
 				WHERE  `VAR_DATE` > '$since'
 				AND  `VAR_DATE` < DATE_ADD( '$since', INTERVAL $lenght $step ) 
