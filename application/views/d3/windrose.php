@@ -13,8 +13,8 @@
 ?>
 
 <div id="filename" class="canvas">
-    <div id="display0" style="width: 80px; height: 80px; "></div>
-    <div id="display1" style="right:100px;width: 500px; height: 500px; "></div>
+    <div id="display0" style="width: 800px; height: 80px; "></div>
+    <div id="display1" style="width: 260px; height: 260px; "></div>
     <!--a id="maplink">maplink</a>
     <a id="nmlink">nmlink</a>
     <a id="whlink">whlink</a-->

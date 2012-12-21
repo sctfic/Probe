@@ -51,17 +51,17 @@ $(document).ready(function(){
         var i=0;
         for (var keydate in d.data) {
             // console.log(d.data[keydate]);
-            //plotSmallRose(d.data[keydate], '#display0');
-            plotProbabilityRose(d.data[keydate], '#display1',160);
+            // plotSmallRose(d.data[keydate], '#display0');
+            //plotProbabilityRose(d.data[keydate], '#display1',120);
             i++;
         }
 
         // plotSmallRose(d.data[keydate], '#display1');
         // plotBigSpeedRose(d.data[keydate], '#display3');
 
-        // makeWindVis(d.data[keydate]); 
+        // makeWindVis(d.data[keydate], '#display0'); 
 
-        // historybar(d.data);
+        historybar(d.data, '#display0');
 
    });
 });
