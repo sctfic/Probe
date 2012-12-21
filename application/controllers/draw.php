@@ -111,7 +111,7 @@ http://probe.dev/draw/windrose?station=VP2_GTD&sensors=TA:Arch:Temp:Out:Average&
 	function wind(){
 		$data = $this->dataReader->wind ($this->Since, $this->StepUnit, $this->StepNbr);
 		
-		$json = json_encode(array_merge($this->info, array('data' => $data)));
+		$json = json_encode(array_merge($this->info, array('data' => $data)), JSON_NUMERIC_CHECK);
 		// ob_clean();
 		@ob_end_clean();
 		header_remove();

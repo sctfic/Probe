@@ -13,18 +13,15 @@
 ?>
 
 <div id="filename" class="canvas">
-	<div id="display" style="width: 930.3px; height: 600px; ">
-		<svg id="windroses" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="tributary_svg">
-		</svg>
-		<!--a id="maplink">maplink</a>
-		<a id="nmlink">nmlink</a>
-		<a id="whlink">whlink</a-->
-		<a id="wslink">wslink</a>
-		<a id="wulink">wulink</a>
-		<a id="vmlink">vmlink</a>
-		<a id="rflink">rflink</a>
-
-	</div>
+    <div id="display0" style="width: 80px; height: 80px; "></div>
+    <div id="display1" style="right:100px;width: 500px; height: 500px; "></div>
+    <!--a id="maplink">maplink</a>
+    <a id="nmlink">nmlink</a>
+    <a id="whlink">whlink</a-->
+    <a id="wslink">wslink</a>
+    <a id="wulink">wulink</a>
+    <a id="vmlink">vmlink</a>
+    <a id="rflink">rflink</a>
     <!-- d3 content should be -dynamically- placed here -->
     <noscript><?=i18n('warning.javascript.disable');?></noscript>
 </div>
@@ -52,3 +49,12 @@ $(document).ready(function(){
     });
 });
 </script-->
+
+
+
+
+
+
+
+
+

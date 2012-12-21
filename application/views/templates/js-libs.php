@@ -47,17 +47,21 @@ $(document).ready(function(){
     var url = "http://probe.dev/draw/wind?station=VP2_GTD";
 
     $.getJSON(url, function(d) {
-        console.log(d);
+        // console.log(d);
+        var i=0;
         for (var keydate in d.data) {
             // console.log(d.data[keydate]);
-            // plotSmallRose(d.data[keydate]);
+            //plotSmallRose(d.data[keydate], '#display0');
+            plotProbabilityRose(d.data[keydate], '#display1',160);
+            i++;
         }
 
-        plotSmallRose(d.data[keydate]);
+        // plotSmallRose(d.data[keydate], '#display1');
+        // plotBigSpeedRose(d.data[keydate], '#display3');
 
-        makeWindVis(d.data[keydate]); 
+        // makeWindVis(d.data[keydate]); 
 
-        historybar(d.data);
+        // historybar(d.data);
 
    });
 });
