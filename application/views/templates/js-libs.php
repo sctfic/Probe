@@ -51,8 +51,8 @@ $(document).ready(function(){
         var i=0;
         for (var keydate in d.data) {
             // console.log(d.data[keydate]);
-            // plotSmallRose(d.data[keydate], '#display0');
-            //plotProbabilityRose(d.data[keydate], '#display1',120);
+            plotSmallRose(d.data[keydate], '#display0');
+            plotProbabilityRose(d.data[keydate], '#display1',120);
             i++;
         }
 
@@ -61,7 +61,7 @@ $(document).ready(function(){
 
         // makeWindVis(d.data[keydate], '#display0'); 
 
-        historybar(d.data, '#display0');
+        // historybar(d.data, '#display0');
 
    });
 });
