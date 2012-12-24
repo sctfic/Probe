@@ -9,10 +9,7 @@
 * @link     http://probe.com/doc
  */
 ?>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="/resources/js/libs/jquery-1.7.1.min.js"><\/script>')</script>
 
-<script src="/resources/js/libs/jquery-1.7.2.min.js"></script>
 <script src="/resources/js/libs/jquery-ui-1.8.20.custom.min.js"></script>
 <script src="/resources/js/libs/jquery.bgpos.js"></script>
 
@@ -59,7 +56,7 @@ $(document).ready(function(){
         // plotSmallRose(d.data[keydate], '#display1');
         // plotBigSpeedRose(d.data[keydate], '#display3');
 
-        // makeWindVis(d.data[keydate], '#display0'); 
+        // makeWindVis(d.data[keydate], '#display0');
 
         // historybar(d.data, '#display0');
 
