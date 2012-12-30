@@ -28,38 +28,3 @@
     g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
     s.parentNode.insertBefore(g,s)}(document,'script'));
 </script>
-<script>
-/**
-    HOUR()          Extract the hour
-    DAY()           Synonym for DAYOFMONTH()
-    DAYNAME()       Return the name of the weekday
-    DAYOFMONTH()    Return the day of the month (0-31)
-    DAYOFWEEK()     Return the weekday index of the argument
-    DAYOFYEAR()     Return the day of the year (1-366)
-    WEEK()          Return the week number
-    MONTH()         Return the month from the date passed
-    YEAR()          Return the year
-*/
-$(document).ready(function(){
-    var url = "http://probe.dev/draw/wind?station=VP2_GTD";
-
-    $.getJSON(url, function(d) {
-        // console.log(d);
-        var i=0;
-        for (var keydate in d.data) {
-            // console.log(d.data[keydate]);
-            plotSmallRose(d.data[keydate], '#display0');
-            plotProbabilityRose(d.data[keydate], '#display1',120);
-            i++;
-        }
-
-        // plotSmallRose(d.data[keydate], '#display1');
-        // plotBigSpeedRose(d.data[keydate], '#display3');
-
-        // makeWindVis(d.data[keydate], '#display0');
-
-        // historybar(d.data, '#display0');
-
-   });
-});
-</script>

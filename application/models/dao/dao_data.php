@@ -78,43 +78,38 @@ ORDER BY DATE(  `VAR_DATE` )
 	function wind($since='2012-01-01', $step='DAY', $lenght=365){
 		try {
 	$query = 
-"SELECT _Date AS _Date, SUM( NbEchantillon ) AS Spl, AVG( vmoyenne ) AS Spd, MAX( vmax ) AS Max, IFNULL( `Dir` * 22.5, 'null' ) AS Dir,
-	FROM (
-		SELECT DATE( `VAR_DATE` ) AS _Date,
-		COUNT( * ) AS NbEchantillon, 
-		AVG( VAR_WIND_SPEED ) AS vmoyenne,
-		0 AS vmax, 
-		`VAR_WIND_SPEED_DOMINANT_DIR` AS Dir
-			FROM  `TA_VARIOUS` 
-			GROUP BY DATE( `VAR_DATE` ) , `VAR_WIND_SPEED_DOMINANT_DIR` 
-			LIMIT 0 , 2000
+"SELECT _Date AS _Date, SUM( NbEchantillon ) AS Spl, ROUND(AVG( vmoyenne ),3) AS Spd, MAX( vmax ) AS Max, IFNULL( Dir * 22.5,  'null' ) AS Dir
+FROM (
+	SELECT DATE(  `VAR_DATE` ) AS _Date, COUNT( * ) AS NbEchantillon, AVG( VAR_WIND_SPEED ) AS vmoyenne, 0 AS vmax,  `VAR_WIND_SPEED_DOMINANT_DIR` AS Dir
+	FROM  `TA_VARIOUS` 
+	WHERE  `VAR_DATE` > '$since' AND `VAR_DATE` < DATE_ADD( '$since', INTERVAL $lenght $step )
+	GROUP BY DATE(  `VAR_DATE` ) ,  `VAR_WIND_SPEED_DOMINANT_DIR` 
+	LIMIT 0 , 2000
+UNION ALL 
+	SELECT DATE(  `VAR_DATE` ) AS _Date, 0 AS NbEchantillon, 0 AS vmoyenne, MAX( VAR_WIND_SPEED_HIGHT ) AS vmax,  `VAR_WIND_SPEED_HIGHT_DIR` AS Dir
+	FROM  `TA_VARIOUS` 
+	WHERE  `VAR_DATE` > '$since' AND `VAR_DATE` < DATE_ADD( '$since', INTERVAL $lenght $step )
+	GROUP BY DATE(  `VAR_DATE` ) ,  `VAR_WIND_SPEED_DOMINANT_DIR` 
+	LIMIT 0 , 2000
+) AS _Union
+GROUP BY _Date, Dir
+ORDER BY _Date
+LIMIT 0 , 2000";
 
-		UNION ALL 
+// 	$query =
+// "SELECT 
+// 	DATE( `VAR_DATE` ) AS _Date, 
+// 	IFNULL( `VAR_WIND_SPEED_DOMINANT_DIR` * 22.5, 'null' ) AS Dir, 
+// 	COUNT( * ) AS Spl,
+// 	ROUND( AVG( `VAR_WIND_SPEED` ) , 3 ) AS Spd,
+// 	ROUND( MAX( `VAR_WIND_SPEED_HIGHT` ) , 2 ) AS Max
+// FROM  `TA_VARIOUS` 
+// WHERE  `VAR_DATE` > '$since'
+// AND  `VAR_DATE` < DATE_ADD( '$since', INTERVAL $lenght $step ) 
+// GROUP BY DATE( `VAR_DATE` ) , `VAR_WIND_SPEED_DOMINANT_DIR` 
+// ORDER BY DATE( `VAR_DATE` )
+// LIMIT 0 , 1000";
 
-		SELECT DATE( `VAR_DATE` ) AS _Date,
-		0 AS NbEchantillon, 0 AS vmoyenne,
-		MAX( VAR_WIND_SPEED_HIGHT ) AS vmax,
-		`VAR_WIND_SPEED_HIGHT_DIR` AS Dir
-			FROM  `TA_VARIOUS` 
-			GROUP BY DATE( `VAR_DATE` ) , `VAR_WIND_SPEED_DOMINANT_DIR` 
-			LIMIT 0 , 2000
-	) AS _Union
-	GROUP BY _Date , Dir
-	ORDER BY _Date
-	LIMIT 0 , 2000";
-
-	$query =	"SELECT 
-					DATE( `VAR_DATE` ) AS _Date, 
-					IFNULL( `VAR_WIND_SPEED_DOMINANT_DIR` * 22.5, 'null' ) AS Dir, 
-					COUNT( * ) AS Spl,
-					ROUND( AVG( `VAR_WIND_SPEED` ) , 3 ) AS Spd,
-					ROUND( MAX( `VAR_WIND_SPEED_HIGHT` ) , 2 ) AS Max
-				FROM  `TA_VARIOUS` 
-				WHERE  `VAR_DATE` > '$since'
-				AND  `VAR_DATE` < DATE_ADD( '$since', INTERVAL $lenght $step ) 
-				GROUP BY DATE( `VAR_DATE` ) , `VAR_WIND_SPEED_DOMINANT_DIR` 
-				ORDER BY DATE( `VAR_DATE` )
-				LIMIT 0 , 1000";
 			$qurey_result = $this->dataDB->query($query);
 			$brut = $qurey_result->result_array($qurey_result);
 			$reformated = null;

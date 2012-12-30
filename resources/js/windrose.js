@@ -162,12 +162,10 @@ var smallArcOptions = {
 */
 function plotSmallRose(Data, container) {
     // console.log('plotSmallRose',maxSpd(Data),maxSpl(Data),totalSpl(Data),(maxSpl(Data)/totalSpl(Data)+0.05).toFixed(2));
-    smallArcScale = d3.scale.linear().domain([0,  (maxSpl(Data)/totalSpl(Data)+0.05).toFixed(2)]).range([5, 40]).clamp(true);
-    var small = d3.select(container)
-        .append("svg")
-        .attr("id", "smallrose")
-        .append("g")
-        .attr("transform", "translate(" + [30, 30] + ")");
+    var visWidth = 30;
+    smallArcScale = d3.scale.linear().domain([0,  (maxSpl(Data)/totalSpl(Data)+0.05).toFixed(2)]).range([5, visWidth]).clamp(true);
+    var small = addSVG(container, 60,60,0);
+
     var winds = [];
     var t = totalSpl(Data);
 
@@ -191,29 +189,98 @@ function plotSmallRose(Data, container) {
         .style({fill: '#fff', stroke: '#000', "stroke-width": '0.5px'});
 }
 
+function addSVG(container, w,h,p) {
+    var svg = d3.select(container)
+        .append("svg")
+        // .attr("id", idName)
+        .style( { float: 'left' , position: 'relative', width: (w+p)+'px', height: (h+p)+'px'})
+        .append("g")
+        .attr("transform", "translate(" + [(w+p)/2, (h+p)/2] + ")")
+        .attr("width", (w+p) + "px")
+        .attr("height", (h+p) + "px");
+    return svg;
+}
+function drawGird(svg, ticks, probabilityToRadiusScale) {
+    // Circles representing chart ticks
+    var g = svg.append("g")
+        .attr("class", "axes")
+        .selectAll("circle")
+        .data(ticks)
+        .enter().append("circle")
+        .attr("r", probabilityToRadiusScale);
+    return g;
+}
+function drawGirdScale(svg, tickmarks, tickLabel, probabilityToRadiusScale) {
+    // Text representing chart tickmarks
+    var g = svg.append("g")
+        .attr("class", "tickmarks")
+        .selectAll("text")
+        .data(tickmarks)
+        .enter().append("text")
+        .text(tickLabel)
+        .attr("dy", "-3px")
+        .attr("transform",  function(d) { return "translate(0," + -(probabilityToRadiusScale(d)) + ") " } );
+    return g;
+}
+function drawCalm (svg, form, data) {
+    // Add the calm wind probability in the center
+    svg.append("circle")
+        .attr("r", form)
+        .style({fill: '#fff', stroke: '#000', "stroke-width": '0.5px'});
+    var cw = svg.append("svg:g").attr("class", "calmwind")
+        .selectAll("text")
+        .data(data)
+        .enter();
+        cw.append("svg:text")
+            .attr("transform", "translate(0,-2)")
+            .text(function(d) { return Math.round(d * 100) + "%" });
+        cw.append("svg:text")
+            .attr("transform", "translate(0,12)")
+            .text("calm");
+    return cw;
+}
+function drawLevelGird (svg, r) {
+    // Labels: degree markers
+    var label = svg.append("svg:g")
+        .attr("class", "labels")
+        .selectAll("text")
+        .data(d3.range(22.5, 361, 22.5))
+        .enter().append("svg:g")
+        .attr("dy", "-2px")
+        .attr("transform", function(d) {
+            return "translate(" + 0 + "," + -(r+2) + ") rotate(" + d + ",0," + (r+2) + ")"});
+        label
+            .append("title")
+            .data(d3.range(22.5, 361, 22.5))
+            .text(function(d) { return d + "\u00b0 "; });
+        label
+            .append("svg:text")
+            .data(['NNE','NE','ENE','E','ESE','SE','SSE','S','SSW','SW','WSW','W','WNW','NW','NNW','N'])
+            .text(function(d) { return d; });
+    return label;
+}
+
+function StyleIt (svg){
+    svg.selectAll("text").style( { font: "10px sans-serif", "text-anchor": "middle" });
+    svg.selectAll(".calmwind text").style( { font: "14px sans-serif", "text-anchor": "middle" });
+    svg.selectAll(".arcs").style( {  stroke: "#000", "stroke-width": "0.5px", "fill-opacity": 0.6 });
+    svg.selectAll(".caption").style( { font: "18px sans-serif" });
+    svg.selectAll(".axes").style( { stroke: "#aaa", "stroke-width": "0.5px", fill: "none" });
+    svg.selectAll("text.labels").style( { "letter-spacing": "1px", fill: "#444", "font-size": "12px" });
+    svg.selectAll("text.arctext").style( { "font-size": "9px" });
+}
 
 
 function plotProbabilityRose(Data, container, R) {
-    var winds = [],
-        zero = [],
-        t = totalSpl(Data),
-        SplScale = maxSpl(Data)/t,
-        visWidth = R;
+    var winds = [], zero = [], t = totalSpl(Data), SplScale = maxSpl(Data)/t, visWidth = R;
 
     var p = 22,                      // padding on outside of major elements
-        w = visWidth*2,
-        h = visWidth*2,
+        r = visWidth, w = h = visWidth*2,
         calm = 0,
-        r = Math.min(w, h) / 2,      // center; probably broken if not square
         ip = 28;                     // padding on inner circle
     windProbabilityArcOptions.from = ip-2;
 
-    var svg = d3.select(container)
-        .append("svg")
-        .attr("id", "ProbabilityWindRose")
-        .append("g")
-        .attr("transform", "translate(" + [visWidth+p/2, visWidth+p/2] + ")")
-        .attr("width", (w+p) + "px").attr("height", (h+p) + "px");
+    var svg = addSVG(container, w,h,p);
 
     for (var key in Data) {
         if (Data[key]['Dir']!='null') {
@@ -233,62 +300,15 @@ function plotProbabilityRose(Data, container, R) {
         var ticks = d3.range(0.05, 0.151, 0.05);
         var tickmarks = d3.range(0.05,0.101,0.05);
     }
-    var tickLabel = function(d) { return "" + (d*100).toFixed(0) + "%"; }
 
-    // Circles representing chart ticks
-    svg.append("g")
-        .attr("class", "axes")
-        .selectAll("circle")
-        .data(ticks)
-        .enter().append("circle")
-        .attr("r", probabilityToRadiusScale);
+    drawGird (svg, ticks, probabilityToRadiusScale);
+    drawGirdScale (svg, tickmarks, function(d) { return "" + (d*100).toFixed(0) + " %"; }, probabilityToRadiusScale);
+    drawCalm (svg, windProbabilityArcOptions.from, [calm/t]);
+    drawLevelGird (svg, r);
 
-    // Text representing chart tickmarks
-    svg.append("g")
-        .attr("class", "tickmarks")
-        .selectAll("text")
-        .data(tickmarks)
-        .enter().append("text")
-        .text(tickLabel)
-        .attr("dy", "-3px")
-        .attr("transform",  function(d) { return "translate(0," + -(probabilityToRadiusScale(d)) + ") " } );
-
-    // Add the calm wind probability in the center
-    svg.append("circle")
-        .attr("r", windProbabilityArcOptions.from)
-        .style({fill: '#fff', stroke: '#000', "stroke-width": '0.5px'});
-    var cw = svg.append("svg:g").attr("class", "calmwind")
-        .selectAll("text")
-        .data([calm/t])
-        .enter();
-        cw.append("svg:text")
-            .attr("transform", "translate(0,-2)")
-            .text(function(d) { return Math.round(d * 100) + "%" });
-        cw.append("svg:text")
-            .attr("transform", "translate(0,12)")
-            .text("calm");
-
-    // Labels: degree markers
-    var label = svg.append("svg:g")
-        .attr("class", "labels")
-        .selectAll("text")
-        .data(d3.range(22.5, 361, 22.5))
-        .enter().append("svg:g")
-        .attr("dy", "-2px")
-        .attr("transform", function(d) {
-            return "translate(" + 0 + "," + -(r+2) + ") rotate(" + d + ",0," + (r+2) + ")"});
-        label
-            .append("title")
-            .data(d3.range(22.5, 361, 22.5))
-            .text(function(d) { return d + "\u00b0 "; });
-        label
-            .append("svg:text")
-            .data(['NNE','NE','ENE','E','ESE','SE','SSE','S','SSW','SW','WSW','W','WNW','NW','NNW','N'])
-            .text(function(d) { return d; });
-
-    // draw each arc of Probability at 0%
+// draw each arc of Probability at 0%
     var ProbabilityArc = svg.append("g")
-        .attr("id", "ProbabilityArc");
+        .attr("class", "ProbabilityArc");
         ProbabilityArc.selectAll("path")
             .data(zero)
             .enter().append("path")
@@ -299,22 +319,69 @@ function plotProbabilityRose(Data, container, R) {
         ProbabilityArc.selectAll("path")
             .data(winds)
             .append("title")
-            .text(function(d) { return d.d + "\u00b0 \n" + (100*d.p).toFixed(1) + "% \n" + (d.s).toFixed(1) + "km/h" });
+            .text(function(d) { return d.d + "\u00b0 \n" + (100*d.p).toFixed(1) + " % \n" + (d.s).toFixed(1) + " km/h" });
         ProbabilityArc.selectAll("path")
             .data(winds)
             .transition().delay(function(d) { return d.d*5;}).duration(1000)
             .attr("d", arc(windProbabilityArcOptions))
             .style({fill: speedToColor, stroke: '#000', "stroke-width": '0.5px'});
-
-    svg.selectAll("text").style( { font: "10px sans-serif", "text-anchor": "middle" });
-    svg.selectAll(".calmwind text").style( { font: "14px sans-serif", "text-anchor": "middle" });
-    svg.selectAll(".arcs").style( {  stroke: "#000", "stroke-width": "0.5px", "fill-opacity": 0.6 });
-    svg.selectAll(".caption").style( { font: "18px sans-serif" });
-    svg.selectAll(".axes").style( { stroke: "#aaa", "stroke-width": "0.5px", fill: "none" });
-    svg.selectAll("text.labels").style( { "letter-spacing": "1px", fill: "#444", "font-size": "12px" });
-    svg.selectAll("text.arctext").style( { "font-size": "9px" });
+    StyleIt(svg);
 }
+function plotSpeedRose(Data, container, R) {
+    var winds = [], zero = [], t = totalSpl(Data), SpdScale = maxSpd(Data), visWidth = R;
 
+    var p = 22,                      // padding on outside of major elements
+        r = visWidth, w = h = visWidth*2,
+        calm = 0,
+        ip = 28;                     // padding on inner circle
+    windSpeedArcOptions.from = ip-2;
+
+    var svg = addSVG(container, w,h,p);
+
+    for (var key in Data) {
+        if (Data[key]['Dir']!='null') {
+            zero.push({d: Data[key]['Dir']*1, p: 0, s: 0});
+            winds.push({d: Data[key]['Dir']*1, p: Data [key]['Spl'] / t, s: Data [key]['Spd']});
+        }
+        else calm = Data [key]['Spl'];
+    }
+
+    if (SpdScale>6) {
+        speedToRadiusScale = d3.scale.linear().domain([0, (SpdScale).toFixed(4)]).range([ip, visWidth]).clamp(true);
+        var ticks = d3.range((SpdScale/4).toFixed(4), (SpdScale/4).toFixed(4)*4.001, (SpdScale/4).toFixed(4));
+        var tickmarks = d3.range((SpdScale/4).toFixed(4), (SpdScale/4).toFixed(4)*4.001*0.75, (SpdScale/4).toFixed(4));
+    }
+    else {
+        speedToRadiusScale = d3.scale.linear().domain([0, 6]).range([ip, visWidth]).clamp(true);
+        var ticks = d3.range(2, 6.01, 2);
+        var tickmarks = d3.range(2, 4.01, 2);
+    }
+
+    drawGird (svg, ticks, speedToRadiusScale);
+    drawGirdScale (svg, tickmarks, function(d) { return "" + (d).toFixed(1) + " km/h"; }, speedToRadiusScale);
+    drawCalm (svg, windSpeedArcOptions.from, [calm/t]);
+    drawLevelGird (svg, r);
+// draw each arc of Probability at 0%
+    var SpeedArc = svg.append("g")
+        .attr("class", "speedArc");
+        SpeedArc.selectAll("path")
+            .data(zero)
+            .enter().append("path")
+            .attr("d", arc(windSpeedArcOptions))
+            .attr("class", "arcs")
+            .style({fill: probabilityToColor, stroke: '#000', "stroke-width": '0.5px'});
+        // draw each arc of Probability animated
+        SpeedArc.selectAll("path")
+            .data(winds)
+            .append("title")
+            .text(function(d) { return d.d + "\u00b0 \n" + (100*d.p).toFixed(1) + " % \n" + (d.s).toFixed(1) + " km/h" });
+        SpeedArc.selectAll("path")
+            .data(winds)
+            .transition().delay(function(d) { return d.d*5;}).duration(1000)
+            .attr("d", arc(windSpeedArcOptions))
+            .style({fill: probabilityToColor, stroke: '#000', "stroke-width": '0.5px'});
+    StyleIt(svg);
+}
 
 
 /**

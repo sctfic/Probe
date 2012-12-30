@@ -35,9 +35,9 @@ en vu de les retourner au scripte ajax qui les dessinera
 		$this->StepNbr = $this->input->get('StepNbr');
 
 		if (empty($this->Since) || empty($this->StepUnit) || empty($this->StepNbr)) {
-			$this->Since = date('Y/m/d H:i:s', strtotime(date('Y/m/d H:i:s'))-7*24*3600); // today - 365 days
+			$this->Since = date('Y/m/d H:i:s', strtotime(date('Y/m/d 00:00:00')) - 5*24*60*60); // today - 365 days
 			$this->StepUnit = 'DAY';
-			$this->StepNbr = 365;
+			$this->StepNbr = 5; // 365
 		}
 
 		$this->Station = end($this->station->config($station));
@@ -83,7 +83,8 @@ en vu de les retourner au scripte ajax qui les dessinera
 * @param is the sensor name (one or more)
 */
 	function curves(){
-		
+		$data = $this->dataReader->curves ($this->Since, $this->StepUnit, $this->StepNbr);
+		$this->dl_json ($data);
 	}
 /**
 
@@ -99,7 +100,8 @@ en vu de les retourner au scripte ajax qui les dessinera
 *			last period value]
 */
 	function bracketCurve(){
-		
+		$data = $this->dataReader->bracketCurve ($this->Since, $this->StepUnit, $this->StepNbr);
+		$this->dl_json ($data);
 	}
 
 /**
@@ -110,12 +112,15 @@ http://probe.dev/draw/windrose?station=VP2_GTD&sensors=TA:Arch:Temp:Out:Average&
 */
 	function wind(){
 		$data = $this->dataReader->wind ($this->Since, $this->StepUnit, $this->StepNbr);
-		
+		$this->dl_json ($data);
+	}
+
+	private function dl_json ($data) {
 		$json = json_encode(array_merge($this->info, array('data' => $data)), JSON_NUMERIC_CHECK);
 		// ob_clean();
 		@ob_end_clean();
 		header_remove();
 		force_download('data.json', $json);
-		// return $json;
 	}
+
 }

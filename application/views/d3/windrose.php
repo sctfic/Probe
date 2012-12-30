@@ -12,9 +12,10 @@
 // http://probe.dev/draw?station=VP2_GTD&sensors=TA:Arch:Temp:Out:Average&Since=2012-10-26T00:00:00&StepUnit=WEEK&StepNbr=6
 ?>
 
-<div id="filename" class="canvas">
-    <div id="display0" style="width: 800px; height: 80px; "></div>
-    <div id="display1" style="width: 260px; height: 260px; "></div>
+<div id="filename" class="canvas" style="clear:both;">
+    <div id="display0" style="clear:both; width: 1320px;"></div>
+    <div id="display1" style="clear:both; width: 1320px;"></div>
+    <div id="display2" style="clear:both; width: 1320px;"></div>
     <!--a id="maplink">maplink</a>
     <a id="nmlink">nmlink</a>
     <a id="whlink">whlink</a-->
@@ -26,7 +27,7 @@
     <noscript><?=i18n('warning.javascript.disable');?></noscript>
 </div>
 
-<!--script>
+<script>
 /**
     HOUR()          Extract the hour
     DAY()           Synonym for DAYOFMONTH()
@@ -39,22 +40,26 @@
     YEAR()          Return the year
 */
 $(document).ready(function(){
-
-    makeWindVis('VP2_GTD', '2012-10-19T00:00:00', 'WEEK', 8);
-    var url = "http://probe.dev/draw/smallrose?station=VP2_GTD&sensors=&Since=2012-10-19T00:00:00&StepUnit=DAY&StepNbr=12";
+    var url = "http://probe.dev/draw/wind?station=VP2_GTD";
 
     $.getJSON(url, function(d) {
-        console.log(d);
-        plotSmallRose(d);
-    });
+        // console.log(d);
+        var i=0;
+        for (var keydate in d.data) {
+            // console.log(d.data[keydate]);
+            plotSmallRose(d.data[keydate], '#display0');
+            plotProbabilityRose(d.data[keydate], '#display1',120);
+            plotSpeedRose(d.data[keydate], '#display2',120);
+            i++;
+        }
+
+        // plotSmallRose(d.data[keydate], '#display1');
+        // plotBigSpeedRose(d.data[keydate], '#display3');
+
+        // makeWindVis(d.data[keydate], '#display0');
+
+        // historybar(d.data, '#display0');
+
+   });
 });
-</script-->
-
-
-
-
-
-
-
-
-
+</script>
