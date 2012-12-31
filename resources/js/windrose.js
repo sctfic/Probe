@@ -82,11 +82,12 @@ function probabilityToColor(d) { return probabilityToColorScale(d.p); }
 var visWidth = 240;
 
 // Map a wind probability to an outer radius for the chart
-var probabilityToRadiusScale = d3.scale.linear().domain([0, 0.15]).range([34, visWidth]).clamp(true);
+var probabilityToRadiusScale = d3.scale.linear().domain([0, 0.15]).range([28, visWidth]).clamp(true);
 function probabilityToRadius(d) { return probabilityToRadiusScale(d.p); }
 // Map a wind speed to an outer radius for the chart
-var speedToRadiusScale = d3.scale.linear().domain([0,  20]).range([34, visWidth-20]).clamp(true);
+var speedToRadiusScale = d3.scale.linear().domain([0,  20]).range([28, visWidth]).clamp(true);
 function speedToRadius(d) { return speedToRadiusScale(d.s); }
+function maxToRadius(d) { return speedToRadiusScale(d.m); }
 
 // Options for drawing the complex arc chart
 var windProbabilityArcOptions = {
@@ -98,6 +99,11 @@ var windSpeedArcOptions = {
     width: 10,
     from: 32,
     to: speedToRadius
+}
+var windMaxArcOptions = {
+    width: 8,
+    from: maxToRadius,
+    to: maxToRadius
 }
 
 /**
@@ -142,7 +148,7 @@ var maxSpl =  function(d) { return d3.max(d, function(d) { return d['Spl']; }); 
 
 var totalSpl = function(d) { return d3.sum(d, function(d) { return d['Spl']; }); };
 
-var maxSpd = function(d) { return d3.max(d, function(d) { return d['Spd']; }); };
+var maxSpd = function(d) { return d3.max(d, function(d) { return d['Max']; }); };
 
 // domain([0, 0.2]) = zoom rose between 0% - 20%
 // range([5, 50]) = limit of drawed value 5px to 50px
@@ -264,6 +270,7 @@ function StyleIt (svg){
     svg.selectAll("text").style( { font: "10px sans-serif", "text-anchor": "middle" });
     svg.selectAll(".calmwind text").style( { font: "14px sans-serif", "text-anchor": "middle" });
     svg.selectAll(".arcs").style( {  stroke: "#000", "stroke-width": "0.5px", "fill-opacity": 0.6 });
+    svg.selectAll(".arcs_max").style( {  stroke: "#000", "stroke-width": "0.5px", "fill-opacity": 0.1 });
     svg.selectAll(".caption").style( { font: "18px sans-serif" });
     svg.selectAll(".axes").style( { stroke: "#aaa", "stroke-width": "0.5px", fill: "none" });
     svg.selectAll("text.labels").style( { "letter-spacing": "1px", fill: "#444", "font-size": "12px" });
@@ -284,8 +291,8 @@ function plotProbabilityRose(Data, container, R) {
 
     for (var key in Data) {
         if (Data[key]['Dir']!='null') {
-            zero.push({d: Data[key]['Dir']*1, p: 0, s: 0});
-            winds.push({d: Data[key]['Dir']*1, p: Data [key]['Spl'] / t, s: Data [key]['Spd']});
+            zero.push({d: Data[key]['Dir']*1, p: 0, s: 0, m: 0});
+            winds.push({d: Data[key]['Dir']*1, p: Data [key]['Spl'] / t, s: Data [key]['Spd'], m: Data [key]['Max']});
         }
         else calm = Data [key]['Spl'];
     }
@@ -306,7 +313,7 @@ function plotProbabilityRose(Data, container, R) {
     drawCalm (svg, windProbabilityArcOptions.from, [calm/t]);
     drawLevelGird (svg, r);
 
-// draw each arc of Probability at 0%
+    // draw each arc of Probability at 0%
     var ProbabilityArc = svg.append("g")
         .attr("class", "ProbabilityArc");
         ProbabilityArc.selectAll("path")
@@ -327,6 +334,8 @@ function plotProbabilityRose(Data, container, R) {
             .style({fill: speedToColor, stroke: '#000', "stroke-width": '0.5px'});
     StyleIt(svg);
 }
+
+
 function plotSpeedRose(Data, container, R) {
     var winds = [], zero = [], t = totalSpl(Data), SpdScale = maxSpd(Data), visWidth = R;
 
@@ -334,14 +343,15 @@ function plotSpeedRose(Data, container, R) {
         r = visWidth, w = h = visWidth*2,
         calm = 0,
         ip = 28;                     // padding on inner circle
-    windSpeedArcOptions.from = ip-2;
+    windSpeedArcOptions.from = ip-2;//,
+//    windMaxArcOptions.from = ip-2;
 
     var svg = addSVG(container, w,h,p);
 
     for (var key in Data) {
         if (Data[key]['Dir']!='null') {
-            zero.push({d: Data[key]['Dir']*1, p: 0, s: 0});
-            winds.push({d: Data[key]['Dir']*1, p: Data [key]['Spl'] / t, s: Data [key]['Spd']});
+            zero.push({d: Data[key]['Dir']*1, p: 0, s: 0, m: 0});
+            winds.push({d: Data[key]['Dir']*1, p: Data [key]['Spl'] / t, s: Data [key]['Spd'], m: Data [key]['Max']});
         }
         else calm = Data [key]['Spl'];
     }
@@ -361,6 +371,28 @@ function plotSpeedRose(Data, container, R) {
     drawGirdScale (svg, tickmarks, function(d) { return "" + (d).toFixed(1) + " km/h"; }, speedToRadiusScale);
     drawCalm (svg, windSpeedArcOptions.from, [calm/t]);
     drawLevelGird (svg, r);
+
+// draw each arc of Probability at 0%
+    var SpeedArc = svg.append("g")
+        .attr("class", "speedArc");
+        SpeedArc.selectAll("path")
+            .data(zero)
+            .enter().append("path")
+            .attr("d", arc(windMaxArcOptions))
+            .attr("class", "arcs_max")
+            .style({fill:'#fff', stroke: '#222', "stroke-width": '0.5px'});
+        // draw each arc of Probability animated
+        SpeedArc.selectAll("path")
+            .data(winds)
+            .append("title")
+            .text(function(d) { return 'Maxi : ' + (d.m).toFixed(1) + " km/h" });
+        // draw each arc of Probability animated
+        SpeedArc.selectAll("path")
+            .data(winds)
+            .transition().delay(function(d) { return d.d*5;}).duration(1000)
+            .attr("d", arc(windMaxArcOptions))
+            .style({fill:'#fff', stroke: '#222', "stroke-width": '1.5px'});
+
 // draw each arc of Probability at 0%
     var SpeedArc = svg.append("g")
         .attr("class", "speedArc");
@@ -380,8 +412,17 @@ function plotSpeedRose(Data, container, R) {
             .transition().delay(function(d) { return d.d*5;}).duration(1000)
             .attr("d", arc(windSpeedArcOptions))
             .style({fill: probabilityToColor, stroke: '#000', "stroke-width": '0.5px'});
+
     StyleIt(svg);
 }
+
+
+
+
+
+
+
+
 
 
 /**
