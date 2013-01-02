@@ -208,9 +208,9 @@ class install extends CI_Controller
     public function setupAdministrator()
     {
         where_I_Am(__FILE__, __CLASS__, __FUNCTION__, __LINE__, func_get_args());
-        $adminUsername = $this->input->post('admin-username');
-        $adminPassword = $this->input->post('admin-password');
-        $adminConfirm  = $this->input->post('admin-password-confirmation');
+        $adminUsername = $this->input->post('administrator-username');
+        $adminPassword = $this->input->post('administrator-password');
+        $adminConfirm  = $this->input->post('administrator-password-confirmation');
 
         if ($adminPassword == $adminConfirm) {
             $this->load->model('service/Service_User');
