@@ -177,7 +177,7 @@ class cmd extends CI_Controller {
 //			$workingDb = ??? ; // this should be dynamic
 			$dbb = new db_builder(
 				$workingDb['dbdriver']='mysql',
-				$workingDb['password']='*****',
+				$workingDb['password']='nbv4023',
 				$workingDb['username']='root',
 				$workingDb['hostname']='localhost',
 				$workingDb['port']=3306,

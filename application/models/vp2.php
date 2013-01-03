@@ -469,33 +469,39 @@ class vp2 extends CI_Model {
 	}
 	protected function save_Archive($data){
 		$this->current_data = $data;
-		$this->insert_VARIOUS(array(
-			$data['TA:Arch:Various:Time:UTC'], 
-			$data['TA:Arch:Rain:RainFall:Sample'], 
-			$data['TA:Arch:Rain:RainRate:HighSample'], 
-			$data['TA:Arch:Various:Bar:Current'], 
-			$data['TA:Arch:Various:Solar:Radiation'], 
+		// $this->insert_VARIOUS(array(
+		// 	$data['TA:Arch:Various:Time:UTC'], 
+		// 	$data['TA:Arch:Rain:RainFall:Sample'], 
+		// 	$data['TA:Arch:Rain:RainRate:HighSample'], 
+		// 	$data['TA:Arch:Various:Bar:Current'], 
+		// 	$data['TA:Arch:Various:Solar:Radiation'], 
 			
-			$data['TA:Arch:Various:Solar:HighRadiation'], 
-			$data['TA:Arch:Various:Wind:SpeedAvg'], 
-			$data['TA:Arch:Various:Wind:HighSpeed'], 
-			$data['TA:Arch:Various:Wind:HighSpeedDirection'], 
-			$data['TA:Arch:Various:Wind:DominantDirection'], 
+		// 	$data['TA:Arch:Various:Solar:HighRadiation'], 
+		// 	$data['TA:Arch:Various:Wind:SpeedAvg'], 
+		// 	$data['TA:Arch:Various:Wind:HighSpeed'], 
+		// 	$data['TA:Arch:Various:Wind:HighSpeedDirection'], 
+		// 	$data['TA:Arch:Various:Wind:DominantDirection'], 
 			
-			$data['TA:Arch:Various:UV:IndexAvg'], 
-			$data['TA:Arch:Various:UV:HighIndex'], 
-			$data['TA:Arch:Various::ForecastRule'],
-			$data['TA:Arch:Various:ET:Hour']
-			));
-		$id_arch = $this->dataDB->insert_id(); // query('SELECT LAST_INSERT_ID();');
+		// 	$data['TA:Arch:Various:UV:IndexAvg'], 
+		// 	$data['TA:Arch:Various:UV:HighIndex'], 
+		// 	$data['TA:Arch:Various::ForecastRule'],
+		// 	$data['TA:Arch:Various:ET:Hour']
+		// 	));
+		// $id_arch = $this->dataDB->insert_id(); // query('SELECT LAST_INSERT_ID();');
 
 		foreach ($data as $name => $val) {
 			if ($val !== NULL && $val !== FALSE) {
+			// si le capteur est branché ou si la valeur de retour n'est pas fausse 
 				$table = $this->get_TABLE_Dest($name);
 				$Sensor = $this->get_SEN_ID($name,$table);
-				if ($table != 'TA_VARIOUS') {
+				if ($table) {
 					$eav = 'prep_EAV_'.$table[3];
-					$this->$eav->execute(array_combine($this->key_EAV, array($id_arch, $val, $Sensor['SENSOR_ID'])));
+					$this->$eav->execute(
+						array_combine(
+							$this->key_EAV,
+							array($data['TA:Arch:Various:Time:UTC'], $val, $Sensor['SENSOR_ID'])
+						)
+					);
 				}
 			}
 		}
@@ -505,10 +511,10 @@ class vp2 extends CI_Model {
 // 		log_message('save', 'real_SENSOR');
 		$this->prep_SENSOR->execute($real_SENSOR);
 	}
-	protected function insert_VARIOUS($value_VARIOUS) {
-		$real_VARIOUS = array_combine($this->key_VARIOUS, $value_VARIOUS);
-		$this->prep_VARIOUS->execute($real_VARIOUS);
-	}
+	// protected function insert_VARIOUS($value_VARIOUS) {
+	// 	$real_VARIOUS = array_combine($this->key_VARIOUS, $value_VARIOUS);
+	// 	$this->prep_VARIOUS->execute($real_VARIOUS);
+	// }
 	/**
 	identifie la table qui correspond a notre type de donnée, parmis les tables EAV
 	*/
@@ -521,8 +527,9 @@ class vp2 extends CI_Model {
 			return 'TA_WETNESSES';
 		elseif (strpos($name, ':SoilMoisture:') !== false)
 			return 'TA_MOISTURE';
-		else
+		elseif (strpos($name, ':Various:') !== false)
 			return 'TA_VARIOUS';
+		return false;
 	}
 	/**
 	determine la date de la derniere archive recupérée
