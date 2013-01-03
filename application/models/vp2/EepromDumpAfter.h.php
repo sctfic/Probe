@@ -40,7 +40,7 @@ Convention de nomage :
 **/
 
 	$this->DumpAfter = array (
-	'TA:Arch:Various:Time:UTC'		=>	array( 'pos' => 0,	'len' => 4,	'fn'=>'DMPAFT_GetVP2Date',	'SI'=>NULL,	'min'=>NULL,	'max'=>NULL,	'err'=>0xFFFF,	'unit'=> 'Date'	),
+	'TA:Arch:none:Time:UTC'		=>	array( 'pos' => 0,	'len' => 4,	'fn'=>'DMPAFT_GetVP2Date',	'SI'=>NULL,	'min'=>NULL,	'max'=>NULL,	'err'=>0xFFFF,	'unit'=> 'Date'	),
 //	'TA:Arch:none:Time'			=>	array( 'pos' => 2,	'len' => 2,	'fn'=>'Raw2Time',		'SI'=>'UTC',	'min'=>NULL,	'max'=>NULL,	'err'=>0xFFFF,	'unit'=> 'Time'	),
 
 	'TA:Arch:Temp:Out:Average'		=>	array( 'pos' => 4,	'len' => 2,	'fn'=>'sSht_01',	'SI'=>'F2kelvin',	'min'=>-80,	'max'=>80,	'err'=>32767,	'unit'=> '°F'	),

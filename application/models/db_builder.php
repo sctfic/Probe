@@ -197,230 +197,24 @@ class db_builder extends CI_Model {
 */
 	protected function createAppTables() {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
-		$sqlCreateSchema = sprintf(
-			"SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
-			SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
-			SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL';
-			CREATE SCHEMA IF NOT EXISTS `%s` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
-			USE `%s`;", 
-			APP_DB,
-			APP_DB
-		);
-		$sqlCreateRolesTable = sprintf(
-      "CREATE  TABLE IF NOT EXISTS `%s`.`TR_ROLE` (
-        `ROL_ID` TINYINT(4) NOT NULL AUTO_INCREMENT ,
-        `ROL_CODE` VARCHAR(32) NOT NULL ,
-        `ROL_LABEL` VARCHAR(64) NOT NULL ,
-        PRIMARY KEY (`ROL_ID`) )
-        ENGINE = InnoDB
-        DEFAULT CHARACTER SET = utf8
-        COLLATE = utf8_general_ci
-        COMMENT = 'Available roles for the users';",
-      APP_DB
-    );
-		$sqlAddRoleAdmin = sprintf(
-			"INSERT INTO `%s`.`TR_ROLE` (
-				`ROL_ID` ,
-				`ROL_CODE` ,
-				`ROL_LABEL`
-				)
-				VALUES (
-				NULL , 'app-admin', '%s'
-				);
-			",
+
+		$sqlCreateTable = sprintf(
+			file_get_contents(APPPATH.'models/probe.ddl'),
 			APP_DB,
 			i18n('database.table.role:admin.label')
 		);
-		$sqlCreateUsersTable = sprintf(
-		"CREATE  TABLE IF NOT EXISTS `%s`.`TA_USER` (
-        `USR_ID` TINYINT(4) NOT NULL AUTO_INCREMENT ,
-        `USR_USERNAME` VARCHAR(32) NOT NULL ,
-        `USR_PWD` VARCHAR(64) NOT NULL ,
-        `USR_FIRST_NAME` VARCHAR(45) NULL DEFAULT NULL ,
-        `USR_EMAIL` VARCHAR(45) NULL DEFAULT NULL ,
-        `ROL_ID` TINYINT(4) NOT NULL ,
-        `USR_FAMILY_NAME` VARCHAR(45) NULL DEFAULT NULL ,
-        PRIMARY KEY (`USR_ID`) ,
-        INDEX `IDX_FK_USR_ROL` (`ROL_ID` ASC) ,
-        CONSTRAINT `FK_USR_ROL`
-        FOREIGN KEY (`ROL_ID` )
-        REFERENCES `%s`.`TR_ROLE` (`ROL_ID` )
-        ON DELETE NO ACTION
-        ON UPDATE NO ACTION)
-        ENGINE = InnoDB
-        DEFAULT CHARACTER SET = utf8
-        COLLATE = utf8_general_ci
-        COMMENT = 'User list for this application';",
-      APP_DB,
-      APP_DB
-    );
-		$sqlCreateConfigsTable = sprintf(
-		"CREATE  TABLE IF NOT EXISTS `%s`.`TR_CONFIG` (
-        `CFG_STATION_ID` TINYINT(4) NOT NULL ,
-        `CFG_LABEL` VARCHAR(32) NOT NULL ,
-        `CFG_VALUE` TINYTEXT NOT NULL ,
-        `CFG_LAST_WRITE` DATETIME NULL DEFAULT NULL ,
-        `CFG_HTML` VARCHAR(45) NULL DEFAULT NULL ,
-        `CFG_JS` VARCHAR(45) NULL DEFAULT NULL ,
-        `CFG_PHP` VARCHAR(45) NULL DEFAULT NULL ,
-        PRIMARY KEY (`CFG_STATION_ID`, `CFG_LABEL`) ,
-        UNIQUE INDEX `CFG_KEY` (`CFG_STATION_ID` ASC, `CFG_LABEL` ASC) )
-        ENGINE = InnoDB
-        DEFAULT CHARACTER SET = utf8
-        COLLATE = utf8_general_ci
-        COMMENT = 'Stock each station\'s properties/value and access datetime';",
-      APP_DB
-    );
-
-		$this->pdoConnection->query($sqlCreateSchema);
-		$this->pdoConnection->query($sqlCreateRolesTable);
-		$this->pdoConnection->query($sqlAddRoleAdmin);
-		$this->pdoConnection->query($sqlCreateUsersTable);
-		$this->pdoConnection->query($sqlCreateConfigsTable);
+		$this->pdoConnection->query($sqlCreateTable);
 	}
-
-
 
 	
 	protected function createStationTables() {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
-		$sqlCreateSchema = sprintf(
-			// "SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
-			// SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
-			// SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL';
-			"CREATE SCHEMA IF NOT EXISTS `%s` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
-			USE `%s`;", 
-			$this->dbName,
+		
+		$sqlCreateTable = sprintf(
+			file_get_contents(APPPATH.'models/Probe_Weather.ddl'),
 			$this->dbName
 		);
-		$sqlCreateSensorsTable = sprintf(
-      "CREATE  TABLE IF NOT EXISTS `%s`.`TR_SENSOR` (
-        `SEN_ID` SMALLINT(6) NOT NULL AUTO_INCREMENT COMMENT 'Technical sensor s key' ,
-        `SEN_NAME` VARCHAR(64) NOT NULL COMMENT 'Name of the sensor' ,
-        `SEN_HUMAN_NAME` VARCHAR(64) NULL DEFAULT NULL ,
-        `SEN_DESCRIPTIF` MEDIUMTEXT NULL DEFAULT NULL ,
-        `SEN_MIN_REALISTIC` FLOAT(11) NULL DEFAULT NULL COMMENT 'Minimum value realiste in real context' ,
-        `SEN_MAX_REALISTIC` FLOAT(11) NULL DEFAULT NULL COMMENT 'Maximum value realiste in real context' ,
-        `SEN_UNITE_SIGN` VARCHAR(16) NULL DEFAULT NULL ,
-        `SEN_DEF_PLOT` VARCHAR(64) NULL DEFAULT NULL ,
-        `SEN_MAX_ALARM` FLOAT(11) NULL DEFAULT NULL ,
-        `SEN_MIN_ALARM` FLOAT(11) NULL DEFAULT NULL ,
-        `SEN_LAST_CALIBRATE` DATE NULL DEFAULT NULL ,
-        `SEN_CALIBRATE_PERIOD` VARCHAR(32) NULL DEFAULT NULL ,
-        PRIMARY KEY (`SEN_ID`) ,
-        UNIQUE INDEX `SEN_NAME_UNIQUE` (`SEN_NAME` ASC) ,
-        UNIQUE INDEX `SEN_ID_UNIQUE` (`SEN_ID` ASC) )
-        ENGINE = InnoDB
-        AUTO_INCREMENT = 20
-        DEFAULT CHARACTER SET = utf8
-        COLLATE = utf8_general_ci
-        COMMENT = 'Table descriptive des capteurs present sur la station';",
-        $this->dbName
-    );
-		$sqlCreateVariousTable = sprintf(
-      "CREATE  TABLE IF NOT EXISTS `%s`.`TA_VARIOUS` (
-        `UTC` TIMESTAMP NOT NULL ,
-        `SEN_ID` SMALLINT(6) NOT NULL ,
-        `VALUE` FLOAT(11) NULL DEFAULT NULL ,
-        PRIMARY KEY (`UTC`, `SEN_ID`) ,
-        INDEX `VARIOUS` (`SEN_ID` ASC) ,
-        CONSTRAINT `SENSOR000`
-        FOREIGN KEY (`SEN_ID` )
-        REFERENCES `%s`.`TR_SENSOR` (`SEN_ID` )
-        ON DELETE NO ACTION
-        ON UPDATE NO ACTION)
-        ENGINE = InnoDB
-        DEFAULT CHARACTER SET = utf8
-        COLLATE = utf8_general_ci
-        COMMENT = 'Regroupe les releves de tous les autres type de capteurs';",
-        $this->dbName,
-        $this->dbName
-    );
-
-		$sqlCreateTemperatureTable = sprintf(
-      "CREATE  TABLE IF NOT EXISTS `%s`.`TA_TEMPERATURE` (
-        `UTC` TIMESTAMP NOT NULL ,
-        `SEN_ID` SMALLINT(6) NOT NULL ,
-        `VALUE` FLOAT(11) NULL DEFAULT NULL ,
-        INDEX `TEMP` (`SEN_ID` ASC) ,
-        PRIMARY KEY (`UTC`, `SEN_ID`) ,
-        CONSTRAINT `SENSOR`
-        FOREIGN KEY (`SEN_ID` )
-        REFERENCES `%s`.`TR_SENSOR` (`SEN_ID` )
-        ON DELETE NO ACTION
-        ON UPDATE NO ACTION)
-        ENGINE = InnoDB
-        DEFAULT CHARACTER SET = utf8
-        COLLATE = utf8_general_ci
-        COMMENT = 'Regroupe les relevÃ©s de tous les capteurs de temperature (e' /* comment truncated */;",
-        $this->dbName,
-        $this->dbName
-    );
-		$sqlCreateWetnessesTable = sprintf(
-      "CREATE  TABLE IF NOT EXISTS `%s`.`TA_WETNESSES` (
-        `UTC` TIMESTAMP NOT NULL ,
-        `SEN_ID` SMALLINT(6) NOT NULL ,
-        `VALUE` TINYINT(4) NULL DEFAULT NULL ,
-        INDEX `WETNESSES` (`SEN_ID` ASC) ,
-        PRIMARY KEY (`UTC`, `SEN_ID`) ,
-        CONSTRAINT `SENSOR0`
-        FOREIGN KEY (`SEN_ID` )
-        REFERENCES `%s`.`TR_SENSOR` (`SEN_ID` )
-        ON DELETE NO ACTION
-        ON UPDATE NO ACTION)
-        ENGINE = InnoDB
-        DEFAULT CHARACTER SET = utf8
-        COLLATE = utf8_general_ci
-        COMMENT = 'Regroupe les relevÃ©s de tous les capteurs de humiditÃ© du f' /* comment truncated */;",
-        $this->dbName,
-        $this->dbName
-    );
-		$sqlCreateMoistureTable = sprintf(
-      "CREATE  TABLE IF NOT EXISTS `%s`.`TA_MOISTURE` (
-        `UTC` TIMESTAMP NOT NULL ,
-        `SEN_ID` SMALLINT(6) NOT NULL ,
-        `VALUE` TINYINT(4) NULL DEFAULT NULL ,
-        INDEX `MOISTURE` (`SEN_ID` ASC) ,
-        PRIMARY KEY (`SEN_ID`, `UTC`) ,
-        CONSTRAINT `SENSOR00`
-        FOREIGN KEY (`SEN_ID` )
-        REFERENCES `%s`.`TR_SENSOR` (`SEN_ID` )
-        ON DELETE NO ACTION
-        ON UPDATE NO ACTION)
-        ENGINE = InnoDB
-        DEFAULT CHARACTER SET = utf8
-        COLLATE = utf8_general_ci
-        COMMENT = 'Regroupe les relevÃ©s de tous les capteurs de humiditÃ© du s' /* comment truncated */;",
-        $this->dbName,
-        $this->dbName
-    );
-		$sqlCreateHumidityTable = sprintf(
-      "CREATE  TABLE IF NOT EXISTS `%s`.`TA_HUMIDITY` (
-        `UTC` TIMESTAMP NOT NULL ,
-        `SEN_ID` SMALLINT(6) NOT NULL ,
-        `VALUE` TINYINT(4) NULL DEFAULT NULL ,
-        INDEX `HUM` (`SEN_ID` ASC) ,
-        PRIMARY KEY (`SEN_ID`, `UTC`) ,
-        CONSTRAINT `SENSOR1`
-        FOREIGN KEY (`SEN_ID` )
-        REFERENCES `%s`.`TR_SENSOR` (`SEN_ID` )
-        ON DELETE NO ACTION
-        ON UPDATE NO ACTION)
-        ENGINE = InnoDB
-        DEFAULT CHARACTER SET = utf8
-        COLLATE = utf8_general_ci
-        COMMENT = 'Regroupe les relevÃ©s de tous les capteurs d humiditÃ©';",
-        $this->dbName,
-        $this->dbName
-    );
-
-		$this->pdoConnection->query($sqlCreateSchema);
-		$this->pdoConnection->query($sqlCreateSensorsTable);
-		$this->pdoConnection->query($sqlCreateVariousTable);
-		$this->pdoConnection->query($sqlCreateTemperatureTable);
-		$this->pdoConnection->query($sqlCreateWetnessesTable);
-		$this->pdoConnection->query($sqlCreateMoistureTable);
-		$this->pdoConnection->query($sqlCreateHumidityTable);
+		$this->pdoConnection->query($sqlCreateTable);
 	}
 
 }

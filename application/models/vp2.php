@@ -499,7 +499,7 @@ class vp2 extends CI_Model {
 					$this->$eav->execute(
 						array_combine(
 							$this->key_EAV,
-							array($data['TA:Arch:Various:Time:UTC'], $val, $Sensor['SENSOR_ID'])
+							array($data['TA:Arch:none:Time:UTC'], $val, $Sensor['SENSOR_ID'])
 						)
 					);
 				}
@@ -536,12 +536,12 @@ class vp2 extends CI_Model {
 	*/
 	function get_Last_Date() {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
-		$date = $this->dataDB->query('SELECT MAX(VAR_DATE) as LAST_ARCH_DATETIME FROM `TA_VARIOUS`;');
+		$date = $this->dataDB->query('SELECT MAX(TME_STAMP) as LAST_ARCH_DATETIME FROM `TA_VARIOUS`;');
 		if (count($date->result_array())==1) {
 			return $date->result_array[0]['LAST_ARCH_DATETIME'];
 		}
 		log_message('warning', 'Resultat inutilisable : '.print_r($date));
-		return '2012/01/01 00:00:00';
+		return '2012/01/01T00:00:00';
 	}
 	
 	protected function get_SEN_ID($name, $table, $recursive = true) {
