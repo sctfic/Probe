@@ -34,20 +34,20 @@
           <div class="controls">
             <input id="login-username"
               type="text" required
-              name="login-username" value="<?=$username?>" 
+              name="login-username" value="<?=$username?>"
               class="input-large" placeholder="<?=i18n('login.username.placeholder')?>">
           </div>
         </div>
 
         <!-- Administrator's password -->
-        <div class="control-group">   
+        <div class="control-group">
           <label class="control-label" for="login-password">
             <?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('login.password'), i18n('required'), i18n('&nbsp;:'))?>
           </label>
           <div class="controls">
             <input id="login-password"
               type="password" required
-              name="login-password" value="<?=@$loginPassword?>" 
+              name="login-password" value="<?=@$userPassword?>"
               class="input-large" placeholder="<?=i18n('login.password.placeholder')?>">
           </div>
         </div>
@@ -77,4 +77,4 @@
       <?=form_submit('authentificate', i18n('login.authentificate'), 'class="btn btn-primary pull-right"')?>
     </div>
   <?=form_close()?>
-</div>  
+</div>
