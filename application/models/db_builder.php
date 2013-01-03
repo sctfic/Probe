@@ -197,7 +197,6 @@ class db_builder extends CI_Model {
 */
 	protected function createAppTables() {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
-
 		$sqlCreateTable = sprintf(
 			file_get_contents(APPPATH.'models/probe.ddl'),
 			APP_DB,
@@ -209,7 +208,6 @@ class db_builder extends CI_Model {
 	
 	protected function createStationTables() {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
-		
 		$sqlCreateTable = sprintf(
 			file_get_contents(APPPATH.'models/Probe_Weather.ddl'),
 			$this->dbName
