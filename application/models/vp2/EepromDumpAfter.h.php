@@ -40,15 +40,15 @@ Convention de nomage :
 **/
 
 	$this->DumpAfter = array (
-	'TA:Arch:Various:Time:UTC'		=>	array( 'pos' => 0,	'len' => 4,	'fn'=>'DMPAFT_GetVP2Date',	'SI'=>NULL,	'min'=>NULL,	'max'=>NULL,	'err'=>0xFFFF,	'unit'=> 'Date'	),
+	'TA:Arch:none:Time:UTC'		=>	array( 'pos' => 0,	'len' => 4,	'fn'=>'DMPAFT_GetVP2Date',	'SI'=>NULL,	'min'=>NULL,	'max'=>NULL,	'err'=>0xFFFF,	'unit'=> 'Date'	),
 //	'TA:Arch:none:Time'			=>	array( 'pos' => 2,	'len' => 2,	'fn'=>'Raw2Time',		'SI'=>'UTC',	'min'=>NULL,	'max'=>NULL,	'err'=>0xFFFF,	'unit'=> 'Time'	),
 
 	'TA:Arch:Temp:Out:Average'		=>	array( 'pos' => 4,	'len' => 2,	'fn'=>'sSht_01',	'SI'=>'F2kelvin',	'min'=>-80,	'max'=>80,	'err'=>32767,	'unit'=> '°F'	),
 	'TA:Arch:Temp:Out:High'			=>	array( 'pos' => 6,	'len' => 2,	'fn'=>'sSht_01',	'SI'=>'F2kelvin',	'min'=>-80,	'max'=>80,	'err'=>-32768,	'unit'=> '°F'	),
 	'TA:Arch:Temp:Out:Low'			=>	array( 'pos' => 8,	'len' => 2,	'fn'=>'sSht_01',	'SI'=>'F2kelvin',	'min'=>-80,	'max'=>80,	'err'=>32767,	'unit'=> '°F'	),
 
-	'TA:Arch:Rain:RainFall:Sample'		=>	array( 'pos' => 10,	'len' => 2,	'fn'=>'s2uSht',		'SI'=>'RainSample2mm',	'min'=>0,	'max'=>600,	'err'=>0,	'unit'=> 'clic'	),
-	'TA:Arch:Rain:RainRate:HighSample'	=>	array( 'pos' => 12,	'len' => 2,	'fn'=>'s2uSht',		'SI'=>'RainSample2mm',	'min'=>0,	'max'=>900,	'err'=>0,	'unit'=> 'clic/h'),
+	'TA:Arch:Various:RainFall:Sample'		=>	array( 'pos' => 10,	'len' => 2,	'fn'=>'s2uSht',		'SI'=>'RainSample2mm',	'min'=>0,	'max'=>600,	'err'=>0,	'unit'=> 'clic'	),
+	'TA:Arch:Various:RainRate:HighSample'	=>	array( 'pos' => 12,	'len' => 2,	'fn'=>'s2uSht',		'SI'=>'RainSample2mm',	'min'=>0,	'max'=>900,	'err'=>0,	'unit'=> 'clic/h'),
 	'TA:Arch:Various:Bar:Current'		=>	array( 'pos' => 14,	'len' => 2,	'fn'=>'_0001',		'SI'=>'inHg2hPa',	'min'=>25,	'max'=>33,	'err'=>0,	'unit'=> 'in.Hg'),
 	'TA:Arch:Various:Solar:Radiation'	=>	array( 'pos' => 16,	'len' => 2,	'fn'=>'s2sSht',		'SI'=>NULL,		'min'=>0,	'max'=>1409,	'err'=>32767,	'unit'=> 'W/m²'	),
 //	'TA:Arch:Various:Wind:Sample'		=>	array( 'pos' => 18,	'len' => 2,	'fn'=>'s2uSht',		'SI'=>NULL,		'min'=>0,	'max'=>0xFFFF,	'err'=>0,	'unit'=> '-'	),

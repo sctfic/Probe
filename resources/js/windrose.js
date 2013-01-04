@@ -265,7 +265,6 @@ function drawLevelGird (svg, r) {
             .text(function(d) { return d; });
     return label;
 }
-
 function StyleIt (svg){
     svg.selectAll("text").style( { font: "10px sans-serif", "text-anchor": "middle" });
     svg.selectAll(".calmwind text").style( { font: "14px sans-serif", "text-anchor": "middle" });
@@ -286,6 +285,8 @@ function plotProbabilityRose(Data, container, R) {
         calm = 0,
         ip = 28;                     // padding on inner circle
     windProbabilityArcOptions.from = ip-2;
+
+    $(container).empty();
 
     var svg = addSVG(container, w,h,p);
 
@@ -326,7 +327,7 @@ function plotProbabilityRose(Data, container, R) {
         ProbabilityArc.selectAll("path")
             .data(winds)
             .append("title")
-            .text(function(d) { return d.d + "\u00b0 \n" + (100*d.p).toFixed(1) + " % \n" + (d.s).toFixed(1) + " km/h" });
+            .text(function(d) { return d.d + "\u00b0 \n" + (100*d.p).toFixed(1) + " % \n" + (d.s).toFixed(1) + " km/h\n Maxi : " + (d.m).toFixed(1) + " km/h" });
         ProbabilityArc.selectAll("path")
             .data(winds)
             .transition().delay(function(d) { return d.d*5;}).duration(1000)
@@ -343,8 +344,9 @@ function plotSpeedRose(Data, container, R) {
         r = visWidth, w = h = visWidth*2,
         calm = 0,
         ip = 28;                     // padding on inner circle
-    windSpeedArcOptions.from = ip-2;//,
-//    windMaxArcOptions.from = ip-2;
+        windSpeedArcOptions.from = ip-2;//,
+
+    $(container).empty();
 
     var svg = addSVG(container, w,h,p);
 
@@ -372,7 +374,7 @@ function plotSpeedRose(Data, container, R) {
     drawCalm (svg, windSpeedArcOptions.from, [calm/t]);
     drawLevelGird (svg, r);
 
-// draw each arc of Probability at 0%
+// draw each max of Probability at 0%
     var SpeedArc = svg.append("g")
         .attr("class", "speedArc");
         SpeedArc.selectAll("path")
@@ -406,7 +408,7 @@ function plotSpeedRose(Data, container, R) {
         SpeedArc.selectAll("path")
             .data(winds)
             .append("title")
-            .text(function(d) { return d.d + "\u00b0 \n" + (100*d.p).toFixed(1) + " % \n" + (d.s).toFixed(1) + " km/h" });
+            .text(function(d) { return d.d + "\u00b0 \n" + (100*d.p).toFixed(1) + " % \n" + (d.s).toFixed(1) + " km/h\n Maxi : " + (d.m).toFixed(1) + " km/h" });
         SpeedArc.selectAll("path")
             .data(winds)
             .transition().delay(function(d) { return d.d*5;}).duration(1000)

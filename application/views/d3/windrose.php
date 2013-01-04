@@ -42,23 +42,26 @@
 $(document).ready(function(){
     var url = "http://probe.dev/draw/wind?station=VP2_GTD";
 
-    $.getJSON(url, function(d) {
-        // console.log(d);
+    // $.getJSON(url, function(json) {
+    d3.json(url, function(error, json) {
+        if (error) return console.warn(error);
+        // console.log(json);
         var i=0;
-        for (var keydate in d.data) {
-            // console.log(d.data[keydate]);
-            plotSmallRose(d.data[keydate], '#display0');
-            plotProbabilityRose(d.data[keydate], '#display1',120);
-            plotSpeedRose(d.data[keydate], '#display2',120);
+        for (var keydate in json.data) {
+            // console.log(json.data[keydate]);
+            plotSmallRose(json.data[keydate], '#display0');
             i++;
         }
 
-        // plotSmallRose(d.data[keydate], '#display1');
-        // plotBigSpeedRose(d.data[keydate], '#display3');
+        plotProbabilityRose(json.data[keydate], '#display1',120);
+        plotSpeedRose(json.data[keydate], '#display2',120);
 
-        // makeWindVis(d.data[keydate], '#display0');
+        // plotSmallRose(json.data[keydate], '#display1');
+        // plotBigSpeedRose(json.data[keydate], '#display3');
 
-        // historybar(d.data, '#display0');
+        // makeWindVis(json.data[keydate], '#display0');
+
+        // historybar(json.data, '#display0');
 
    });
 });
