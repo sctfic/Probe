@@ -1,7 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 // require_once APPPATH."/controllers/checkSetup.php";
-require_once APPPATH."/controllers/pages.php";
+require_once APPPATH."/controllers/page.php";
 
 class Configuration extends CI_Controller {
 
@@ -24,36 +24,36 @@ class Configuration extends CI_Controller {
 	}
 
 	public function listStations() {
-		// $this->load->helper('pages');
+        // $this->load->helper('pages');
+        $page = new page();
 
-		// build view data
-		$data = pageFetchConfig('configure-station-list'); // fetch information to build the HTML header
-		foreach ($this->station->stationsList as $id => $station) {
-			$data['stationsConf'][$station] = current($this->station->config($id));
-			// unset($data['stationsConf'][$station]['_name']);
-			// unset($data['stationsConf'][$station]['password']);
-		}
-		// display the view
-		$pages = new Pages();
-		$pages->view('configuration/list-stations', $data);
+        // build view data
+        $data = $page->fetchConfig('configure-station-list'); // fetch information to build the HTML header
+        foreach ($this->station->stationsList as $id => $station) {
+            $data['stationsConf'][$station] = current($this->station->config($id));
+            // unset($data['stationsConf'][$station]['_name']);
+            // unset($data['stationsConf'][$station]['password']);
+        }
+        // display the view
+		$page->view('configuration/list-stations', $data);
 	}
 
 
 	public function addStation() {
-		$this->load->library('form_validation');
+        $this->load->library('form_validation');
 
-		$data = pageFetchConfig('configure-add-station'); // fetch information to build the HTML header
-		$data['form'] = $this->config->item('add-station-form');
+        $page = new page();
+        $data = $page->fetchConfig('configure-add-station'); // fetch information to build the HTML header
+        $data['form'] = $this->config->item('add-station-form');
 
-		$data['dbmsUsername'] = null;
-		$data['dbmsPassword'] = null;
-		$data['dbmsHost'] = null;
-		$data['dbmsPort'] = 3306;
-		$data['dbmsDatabaseName'] = null;
+        $data['dbmsUsername'] = null;
+        $data['dbmsPassword'] = null;
+        $data['dbmsHost'] = null;
+        $data['dbmsPort'] = 3306;
+        $data['dbmsDatabaseName'] = null;
 
-		// display the view
-		$pages = new Pages();
-		$pages->view('configuration/add-station', $data);
+        // display the view
+		$page->view('configuration/add-station', $data);
 	}
 	public function removeStation() {
 

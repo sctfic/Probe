@@ -34,20 +34,20 @@
           <div class="controls">
             <input id="login-username"
               type="text" required
-              name="login-username" value="<?=$username?>" 
+              name="login-username" value="<?=$username?>"
               class="input-large" placeholder="<?=i18n('login.username.placeholder')?>">
           </div>
         </div>
 
         <!-- Administrator's password -->
-        <div class="control-group">   
+        <div class="control-group">
           <label class="control-label" for="login-password">
             <?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('login.password'), i18n('required'), i18n('&nbsp;:'))?>
           </label>
           <div class="controls">
             <input id="login-password"
               type="password" required
-              name="login-password" value="<?=@$loginPassword?>" 
+              name="login-password" value="<?=@$userPassword?>"
               class="input-large" placeholder="<?=i18n('login.password.placeholder')?>">
           </div>
         </div>
@@ -61,7 +61,7 @@
 
         <!-- <?php if ( _empty($this->config->item('probe:userName') ) ) {?> -->
         <!-- <?=form_label( sprintf('%s <span class="hidden">(%s)</span>%s', i18n('password confirmation'), i18n('required'),i18n('&nbsp;:')), 'confirm')?> -->
-        <!-- <?= sprintf('');//form_password( 'confirm', '', sprintf('placeholder="%s" %s',i18n('so we can prevent mistakes'), getStatus('confirm') ) )?> -->
+        <!-- <?= sprintf('');//form_p assword( 'confirm', '', sprintf('placeholder="%s" %s',i18n('so we can prevent mistakes'), getStatus('confirm') ) )?> -->
         <!-- <?=form_password( 'confirm', '', sprintf('placeholder="%s"',i18n('so we can prevent mistakes') ) )?> -->
         <!-- <?php } ?> -->
 
@@ -77,4 +77,4 @@
       <?=form_submit('authentificate', i18n('login.authentificate'), 'class="btn btn-primary pull-right"')?>
     </div>
   <?=form_close()?>
-</div>  
+</div>

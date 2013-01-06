@@ -13,7 +13,7 @@
 if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 // require_once APPPATH."/controllers/checkSetup.php";
-require_once APPPATH."/controllers/pages.php";
+require_once APPPATH."/controllers/page.php";
 
 /**
 * Manage the installation and configuration of the application
@@ -66,8 +66,9 @@ class viewer extends CI_Controller
     public function binderView($dataBinder)
     {
         where_I_Am(__FILE__, __CLASS__, __FUNCTION__, __LINE__, func_get_args());
+        $page = new page();
 
-        $data = pageFetchConfig($dataBinder);
+        $data = $page->fetchConfig($dataBinder);
         $data['viewer'] = true;
         // remove the controller name
         $data['dataBinder'] = $dataBinder;
@@ -82,8 +83,7 @@ class viewer extends CI_Controller
         );
 
         // display the view
-        $pages = new Pages();
-        $pages->view(BINDER_DIR.$dataBinder, $data);
+        $page->view(BINDER_DIR.$dataBinder, $data);
     }
 
     /**
@@ -94,10 +94,11 @@ class viewer extends CI_Controller
     public function listView()
     {
         where_I_Am(__FILE__, __CLASS__, __FUNCTION__, __LINE__, func_get_args());
+        $page = new page();
 
         $this->load->helper('pages');
 
-        $data = pageFetchConfig('list-view');
+        $data = $page->fetchConfig('list-view');
         // remove the controller name
         $scannedDir = array_diff(scandir(BINDER_PATH), array('..', '.'));
         $data['list'] = array_map(array($this, 'prepareViewList'), $scannedDir);
@@ -110,8 +111,7 @@ class viewer extends CI_Controller
             )
         );
         // display the view
-        $pages = new Pages();
-        $pages->view('templates/viewer-list', $data);
+        $page->view('templates/viewer-list', $data);
     }
 
     /**
@@ -120,7 +120,7 @@ class viewer extends CI_Controller
      * @param string  $file file or directory name
      * @param integer $key  index
      *
-     * @return [type] [description]
+     * @return string [description]
      */
     public function prepareViewList($file, $key = null)
     {

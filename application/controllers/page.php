@@ -20,7 +20,7 @@
 * @license  http://creativecommons.org/licenses/by-nc-sa/3.0/legalcode CC-by-nc-sa-3.0
 * @link     http://probe.com/doc
  */
-class pages extends CI_Controller
+class page extends CI_Controller
 {
     /**
      * Passes data to the view and wrap it in header/footer and necessary HTML code
@@ -60,5 +60,22 @@ class pages extends CI_Controller
         $this->load->view($page, $data);
         $this->load->view('templates/footer', $data);
         $this->load->view('templates/js-libs', $data);
+    }
+
+    /**
+     * Fetch common page data (title, description, author, etc.)
+     *  this allow to use i18n string for the page date.
+     * @param $page
+     * @return array
+     */
+    public function fetchConfig($page)
+    { //
+        $data = array();
+        $data['page'] = $page;
+        $data['title'] = i18n($page . ':title', true);
+        $data['description'] = i18n($page . ':description', true);
+        $data['author'] = i18n($page . ':author', true);
+
+        return $data;
     }
 }

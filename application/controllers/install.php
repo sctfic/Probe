@@ -13,7 +13,7 @@
 if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 // require_once APPPATH."/controllers/checkSetup.php";
-require_once APPPATH."/controllers/pages.php";
+require_once APPPATH."/controllers/page.php";
 
 /**
 * Manage the installation and configuration of the application
@@ -102,9 +102,10 @@ class install extends CI_Controller
         $this->load->helper('pages');
         $this->load->helper(array('form'));
         $this->load->library('form_validation');
+        $page = new page();
 
         // build view data
-        $data = pageFetchConfig('setup-dbms'); // fetch information to build the HTML header
+        $data = $page->fetchConfig('setup-dbms'); // fetch information to build the HTML header
         $data['dbmsUsername'] = null;
         $data['dbmsPassword'] = null;
         $data['dbmsHost'] = null;
@@ -112,8 +113,7 @@ class install extends CI_Controller
         $data['dbmsDatabaseName'] = $this->config->item('mainDb');
 
         // display the view
-        $pages = new Pages();
-        $pages->view('install/dbms', $data);
+        $page->view('install/dbms', $data);
     }
 
     /**
@@ -188,16 +188,16 @@ class install extends CI_Controller
         $this->load->helper('pages');
         $this->load->helper(array('form'));
         $this->load->library('form_validation');
+        $page = new page();
 
         // build view data
-        $data = pageFetchConfig('setup-admin-user'); // fetch information to build the HTML header
+        $data = $page->fetchConfig('setup-admin-user'); // fetch information to build the HTML header
         $data['adminUsername'] = null;
         $data['adminPassword'] = null;
         $data['adminConfirm'] = null;
 
         // display the view
-        $pages = new Pages();
-        $pages->view('install/admin-user', $data);
+        $page->view('install/admin-user', $data);
     }
 
     /**
@@ -208,9 +208,9 @@ class install extends CI_Controller
     public function setupAdministrator()
     {
         where_I_Am(__FILE__, __CLASS__, __FUNCTION__, __LINE__, func_get_args());
-        $adminUsername = $this->input->post('administrator-username');
-        $adminPassword = $this->input->post('administrator-password');
-        $adminConfirm  = $this->input->post('administrator-password-confirmation');
+        $adminUsername = $this->input->post('admin-username');
+        $adminPassword = $this->input->post('admin-password');
+        $adminConfirm  = $this->input->post('admin-password-confirmation');
 
         if ($adminPassword == $adminConfirm) {
             $this->load->model('service/Service_User');

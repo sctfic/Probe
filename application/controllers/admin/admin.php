@@ -13,7 +13,7 @@
 if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 require_once APPPATH."/controllers/authentification.php";
-require_once APPPATH."/controllers/pages.php";
+require_once APPPATH."/controllers/page.php";
 
 class admin extends Authentification
 {
@@ -66,12 +66,13 @@ class admin extends Authentification
     {
         where_I_Am(__FILE__, __CLASS__, __FUNCTION__, __LINE__, func_get_args());
         // requirements
-        $this->load->helper('pages');
         $this->load->helper(array('form', 'url'));
         $this->load->library('form_validation');
+        $this->load->helper('pages');
+        $page = new page();
 
         // build view data
-        $data = pageFetchConfig('login'); // fetch information to build the HTML header
+        $data = fetchConfig('login'); // fetch information to build the HTML header
         $data['msg'] = $this->session->userdata("msg"); // message to display in the page
         $data['userName'] = null;
 
@@ -83,8 +84,7 @@ class admin extends Authentification
         $this->form_validation->set_rules('confirm', i18n('Password Confirmation'), 'required');
 
         // display the view
-        $pages = new Pages();
-        $pages->view('login', $data);
+        $page->view('login', $data);
     }
 
     /**
@@ -98,6 +98,8 @@ class admin extends Authentification
         where_I_Am(__FILE__, __CLASS__, __FUNCTION__, __LINE__, func_get_args());
         $userName =	$this->input->post('login-username');
         $userPassword	=	$this->input->post('login-password');
+
+        log_message('info', 'userName: '.$userName.' userPassword: '.$userPassword);
         try {
             //Chercher l'user correspondant au couple login/pwd
             $user = $this->Service_User->authentify($userName, $userPassword);

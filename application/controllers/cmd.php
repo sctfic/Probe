@@ -1,4 +1,4 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+ <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 // clear;php5 -f /var/www/Probe/cli.php 'cmd'
 class cmd extends CI_Controller {
 
@@ -145,8 +145,13 @@ class cmd extends CI_Controller {
 	}
 
 
-	// clear;php5 -f /var/www/Probe/cli.php 'cmd/makeNewStation'
-	function makeNewStation() {
+    /**
+     * Create a new station
+     * clear;php5 -f ~/Probe/cli.php 'cmd/makeNewStation'
+     * @return bool
+     */
+    function makeNewStation()
+    {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 
 		$this->load->helper(array('form', 'url'));
@@ -175,15 +180,15 @@ class cmd extends CI_Controller {
 
 //			$dbb = new db_builder('mysql','nbv4023','root','localhost',3306,'');
 //			$workingDb = ??? ; // this should be dynamic
-			$dbb = new db_builder(
-				$workingDb['dbdriver']='mysql',
-				$workingDb['password']='nbv4023',
-				$workingDb['username']='root',
-				$workingDb['hostname']='localhost',
-				$workingDb['port']=3306,
-				$workingDb['database']=NULL);
-			$dbb->createAppDb($newID);
-			$dsn = $dbb->getDsn();
+            $dbb = new db_builder(
+                $workingDb['dbdriver'] = 'mysql',
+                $workingDb['password'] = '*****',
+                $workingDb['username'] = 'root',
+                $workingDb['hostname'] = 'localhost',
+                $workingDb['port'] = 3306,
+                $workingDb['database'] = NULL);
+            $dbb->createAppDb($newID);
+            $dsn = $dbb->getDsn();
 
 			$this->station->arrays2dbconfs(
 				$newID, 

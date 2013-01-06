@@ -18,6 +18,14 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
+    <?
+    /**
+     * @see Pages::fetchConfig()
+     * @var $title string
+     * @var $description string
+     * @var $author string
+     */
+    ?>
     <title><?=$title?> - Probe</title>
     <meta name="description" content="<?=$description?>">
     <meta name="author" content="<?=$author?>">
