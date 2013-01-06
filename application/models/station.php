@@ -14,7 +14,7 @@ class Station extends CI_Model {
 	{
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		parent::__construct();
-		$this->load->database(); // charge la base par defaut
+		$this->load->database(); // charge la base par defaut : probe
 		$this->listStations();
 	}
 	
@@ -156,6 +156,7 @@ class Station extends CI_Model {
 	
 				// on lit et sauve les configs
 				$readconf = end ($Current_WS->GetConfig ( ));
+
 				foreach ($readconf as $key => $val) {
 					if (strpos($key, 'TR:Config:')!==FALSE) {
 						$ToStoreConfig[str_replace('TR:Config:', '', $key)] = $val;

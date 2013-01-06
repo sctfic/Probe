@@ -124,11 +124,20 @@ class db_builder extends CI_Model {
 	 */
 	function dbExists($dbName) {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
-		$result = $this->pdoConnection->query("SELECT COUNT(*) AS NBR FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '$dbName'")->fetch();
-
-		if ($result['NBR']!='0')
-			return true;
-		log_message('db',$dbName.' > N EXISTE PAS !!!');
+		switch ($this->engine) {
+			case 'mysql':
+				$result = $this->pdoConnection->query("SELECT COUNT(*) AS NBR FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '$dbName'")->fetch();
+				if ($result['NBR']!='0')
+					return true;
+				log_message('db',$dbName.' > N EXISTE PAS !!!');
+				break;
+			
+			case 'sqlite':
+				return is_file($dbName) ;
+				break;
+			// default:
+			// 	return false;
+		}
 		return false;
 	}
 

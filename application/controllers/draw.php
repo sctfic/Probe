@@ -24,10 +24,10 @@ en vu de les retourner au scripte ajax qui les dessinera
 		$this->load->helper('download');
 
 		$this->station = new Station();
-
 		// print_r($this->input->get());
 		// encoded with javascript encodeURIComponent()
 		$station = rawurldecode($this->input->get('station'));
+
 		$this->setSensors($this->input->get('sensors'));
 		// $this->Size = $this->input->get('Size');
 		$this->Since = rawurldecode($this->input->get('Since'));
@@ -41,7 +41,12 @@ en vu de les retourner au scripte ajax qui les dessinera
 		}
 
 		$this->Station = end($this->station->config($station));
-		$this->info = array("info"=>array("lat"=>"0","lon"=>"0","name"=>"name","id"=>"id"));
+		$this->info = array("info"=>array(
+			"lat"=>$this->Station['Geo:Latitude:NordValue'],
+			"lon"=>$this->Station['Geo:Longitude:EstValue'],
+			"alt"=>$this->Station['Geo:Elevation:Ocean'],
+			"name"=>$this->Station['_name'],
+			"id"=>$this->Station['_name']));
 
 		if ($this->Since or $this->StepUnit or $this->StepNbr) {
 			$this->dataReader = new dao_data($this->Station);

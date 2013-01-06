@@ -6,13 +6,12 @@ class vp2 extends CI_Model {
 	protected $conf = null;
 	
 	protected $prep_EAV = NULL;
-	protected $key_EAV = array(':id', ':val', ':sensorID');
+	protected $key_EAV = array(':utc', ':val', ':sensorID');
 
 	protected $prep_SENSOR = NULL;
 	protected $key_SENSOR = array(':NAME', ':HUMAN_NAME', ':DESCRIPT', ':MIN_REAL', ':MAX_REAL', ':UNITE_SIGN', ':DEF_PLOT', ':MAX_ALARM', ':MIN_ALARM', ':LAST_CALIBRATE', ':CALIBRATE_PERIOD');
 
 	protected $prep_VARIOUS = NULL;
-	protected $key_VARIOUS = array(':UTC_date', ':rainfall', ':max_rainfall', ':P0', ':srad', ':max_srad', ':wspeed', ':max_wspeed', ':dir_higtspeed', ':dir_dominant', ':uv', ':max_uv', ':forecast', ':et');
 	
 	protected $dataDB = NULL;
 	protected $current_data = NULL;
@@ -23,7 +22,7 @@ class vp2 extends CI_Model {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__);
 		parent::__construct();
 		$this->conf = $conf;
-		$this->OffsetTime = $this->OffsetTime();
+		// $this->OffsetTime = $this->OffsetTime();
 
 		require (APPPATH.'models/vp2/EepromDumpAfter.h.php');
 		require (APPPATH.'models/vp2/EepromLoop.h.php');
@@ -35,33 +34,29 @@ class vp2 extends CI_Model {
 
 		$this->prep_EAV_T = $this->dataDB->conn_id->prepare(
 			'REPLACE 
-				INTO TA_TEMPERATURE (ID, VALUE, SEN_ID) 
-				VALUES (:id, :val, :sensorID);');
+				INTO TA_TEMPERATURE (UTC, VALUE, SEN_ID) 
+				VALUES (:utc, :val, :sensorID);');
 		$this->prep_EAV_H = $this->dataDB->conn_id->prepare(
 			'REPLACE 
-				INTO TA_HUMIDITY (ID, VALUE, SEN_ID) 
-				VALUES (:id, :val, :sensorID);');
+				INTO TA_HUMIDITY (UTC, VALUE, SEN_ID) 
+				VALUES (:utc, :val, :sensorID);');
 		$this->prep_EAV_W = $this->dataDB->conn_id->prepare(
 			'REPLACE 
-				INTO TA_WETNESSES (ID, VALUE, SEN_ID) 
-				VALUES (:id, :val, :sensorID);');
+				INTO TA_WETNESSES (UTC, VALUE, SEN_ID) 
+				VALUES (:utc, :val, :sensorID);');
 		$this->prep_EAV_M = $this->dataDB->conn_id->prepare(
 			'REPLACE 
-				INTO TA_MOISTURE (ID, VALUE, SEN_ID) 
-				VALUES (:id, :val, :sensorID);');
+				INTO TA_MOISTURE (UTC, VALUE, SEN_ID) 
+				VALUES (:utc, :val, :sensorID);');
+		$this->prep_EAV_V = $this->dataDB->conn_id->prepare(
+			'REPLACE 
+				INTO TA_VARIOUS (UTC, VALUE, SEN_ID) 
+				VALUES (:utc, :val, :sensorID);');
 		$this->prep_SENSOR = $this->dataDB->conn_id->prepare(
 			'REPLACE 
 				INTO `TR_SENSOR` 
 					(SEN_NAME, SEN_HUMAN_NAME, SEN_DESCRIPTIF, SEN_MIN_REALISTIC, SEN_MAX_REALISTIC, SEN_UNITE_SIGN, SEN_DEF_PLOT, SEN_MAX_ALARM, SEN_MIN_ALARM, SEN_LAST_CALIBRATE, SEN_CALIBRATE_PERIOD) 
 				VALUES ('.implode(', ', $this->key_SENSOR).');');
-		$this->prep_VARIOUS = $this->dataDB->conn_id->prepare(
-			'REPLACE 
-				INTO `TA_VARIOUS` 
-					(`VAR_DATE`, `VAR_SAMPLE_RAINFALL`, `VAR_SAMPLE_RAINFALL_HIGHT`, `VAR_PRESSURE_ALT0`, `VAR_SOLAR_RADIATION`, `VAR_SOLAR_RADIATION_HIGHT`, `VAR_WIND_SPEED`, `VAR_WIND_SPEED_HIGHT`, `VAR_WIND_SPEED_HIGHT_DIR`, `VAR_WIND_SPEED_DOMINANT_DIR`, `VAR_UV_INDEX`, `VAR_UV_INDEX_HIGHT`, `VAR_FORECAST_RULE`, `VAR_ET`)
-				VALUES ('.implode(', ', $this->key_VARIOUS).');');
-// 		$this->T_12H = 'SELECT (AVG(  `VALUE` ) -32) *5 /9 AS AVG_TEMP_IN_CELSIUS FROM `TA_TEMPERATURE` 
-// 				INNER JOIN `TA_VARIOUS` ON `ID` = `VAR_ID` 
-// 				WHERE `VAR_DATE` >= :SINCE AND `SEN_ID` =:SENSOR_ID ;';
 	}
 	function initConnection()	{
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
@@ -226,7 +221,7 @@ class vp2 extends CI_Model {
 			$this->RequestCmd("EEBRD 000 B1\n");
 			$data = fread($this->fp, 177+2);
 			$this->VerifAnswersAndCRC($data, 177+2);
-			
+
 // 			$P=str_pad(strtoupper(dechex(4092)),3,'0',STR_PAD_LEFT);
 // 			$L=str_pad(strtoupper(dechex(1)),2,'0',STR_PAD_LEFT);
 			$this->RequestCmd("EEBRD FFC 01\n");
@@ -243,6 +238,7 @@ class vp2 extends CI_Model {
 			log_message('warning',  $e->getMessage());
 			return array();
 		}
+
 		return $CONFS;
 	}
 	function GetHiLows() {
@@ -329,6 +325,7 @@ class vp2 extends CI_Model {
 		 //
 		$DATAS=false;
 		try {
+			if (!$this->OffsetTime) $this->OffsetTime = $this->OffsetTime();
 			$firstDate2Get=is_date($last);
 			$this->RequestCmd("DMPAFT\n");
 			$RawDate = DMPAFT_SetVP2Date($firstDate2Get);
@@ -412,6 +409,8 @@ class vp2 extends CI_Model {
 	protected function fetchStationTime() {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		// 0x35 16 00 1d 0c 6f  0x7c 44  ==  2011/12/29 00:22:53
+		if (!$this->OffsetTime) $this->OffsetTime = $this->OffsetTime();
+
 		$TIME = False;
 		try {
 			$this->RequestCmd("GETTIME\n");
@@ -536,7 +535,7 @@ class vp2 extends CI_Model {
 	*/
 	function get_Last_Date() {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
-		$date = $this->dataDB->query('SELECT MAX(TME_STAMP) as LAST_ARCH_DATETIME FROM `TA_VARIOUS`;');
+		$date = $this->dataDB->query('SELECT MAX(UTC) as LAST_ARCH_DATETIME FROM `TA_VARIOUS`;');
 		if (count($date->result_array())==1) {
 			return $date->result_array[0]['LAST_ARCH_DATETIME'];
 		}
