@@ -1,4 +1,4 @@
- <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 // clear;php5 -f /var/www/Probe/cli.php 'cmd'
 class cmd extends CI_Controller {
 
@@ -9,7 +9,7 @@ class cmd extends CI_Controller {
 		// }
 
 	parent::__construct();
-	where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 
 		include_once(BASEPATH.'core/Model.php'); // need for load models manualy
 		include_once(APPPATH.'models/station.php');

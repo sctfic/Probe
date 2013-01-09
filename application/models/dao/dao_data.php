@@ -5,11 +5,12 @@ Cette classe appelle les differentes requetes
 en vu de les retourner au scripte ajax qui les dessinera
 */
     protected $dataDB = NULL;
-
+    public $SEN_LST = array();
     function __construct($station) {
         parent::__construct();
         where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
         $this->dataDB = $this->load->database($station, TRUE);
+        $this->SEN_LST = $this->sensor_list();
     }
 
 /**
@@ -21,7 +22,22 @@ en vu de les retourner au scripte ajax qui les dessinera
     function index(){
 
     }
+/**
 
+* @
+* @param 
+* @param 
+*/
+    function sensor_list(){
+        $query = "SELECT `SEN_ID` AS  `value`, `SEN_NAME` AS `key` FROM `TR_SENSOR` LIMIT 0 , 100";
+        $qurey_result = $this->dataDB->query($query);
+        $brut = $qurey_result->result_array($qurey_result);
+        $reformated = null;
+        foreach ($brut as $Sensor) {
+            $reformated [$Sensor['key']] = $Sensor['value'];
+        }
+        return $reformated;
+    }
 /**
 
 * @
@@ -64,63 +80,73 @@ en vu de les retourner au scripte ajax qui les dessinera
     }
 
 /**
-SELECT DATE(  `VAR_DATE` ) AS _date, IFNULL(  `VAR_WIND_SPEED_DOMINANT_DIR` * 22.5,  'null' ) AS _Dir, COUNT( * ) AS _Spl, ROUND( AVG(  `VAR_WIND_SPEED` ) , 3 ) AS _Spd, ROUND( MAX(  `VAR_WIND_SPEED` ) , 2 ) AS Max
-FROM  `TA_VARIOUS` 
-WHERE  `VAR_DATE` >  '2012-01-01T00:00:00'
-AND  `VAR_DATE` < DATE_ADD(  '2012-01-01T00:00:00', INTERVAL 365 
-DAY ) 
-GROUP BY DATE(  `VAR_DATE` ) ,  `VAR_WIND_SPEED_DOMINANT_DIR` 
-ORDER BY DATE(  `VAR_DATE` ) 
+"SELECT _Date AS _Date, SUM( NbEchantillon ) AS Spl, ROUND(AVG( vmoyenne ),3) AS Spd, MAX( vmax ) AS Max, IFNULL( Dir * 22.5,  'null' ) AS Dir
+    FROM (
+        SELECT DATE(  `VAR_DATE` ) AS _Date, COUNT( * ) AS NbEchantillon, AVG( VAR_WIND_SPEED ) AS vmoyenne, 0 AS vmax,  `VAR_WIND_SPEED_DOMINANT_DIR` AS Dir
+        FROM  `TA_VARIOUS` 
+        WHERE  `VAR_DATE` > '$since' AND `VAR_DATE` < DATE_ADD( '$since', INTERVAL $lenght $step )
+        GROUP BY DATE(  `VAR_DATE` ) ,  `VAR_WIND_SPEED_DOMINANT_DIR` 
+        LIMIT 0 , 2000
+    UNION ALL 
+        SELECT DATE(  `VAR_DATE` ) AS _Date, 0 AS NbEchantillon, 0 AS vmoyenne, MAX( VAR_WIND_SPEED_HIGHT ) AS vmax,  `VAR_WIND_SPEED_HIGHT_DIR` AS Dir
+        FROM  `TA_VARIOUS` 
+        WHERE  `VAR_DATE` > '$since' AND `VAR_DATE` < DATE_ADD( '$since', INTERVAL $lenght $step )
+        GROUP BY DATE(  `VAR_DATE` ) ,  `VAR_WIND_SPEED_DOMINANT_DIR` 
+        LIMIT 0 , 2000
+    ) AS _Union
+    GROUP BY _Date, Dir
+    ORDER BY _Date
+    LIMIT 0 , 2000";
 * @
 * @param since is the start date of result needed
 * @param lenght is the number of day
 */
     function wind($since='2012-01-01', $step='DAY', $lenght=365){
+        $STEP = array('HOUR'=>'HOUR', 'DAY'=>'DAY', 'WEEK'=>'WEEK', 'MONTH'=>'MONTH');
+        where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
         try {
-    $query = "";
-    // "SELECT _Date AS _Date, SUM( NbEchantillon ) AS Spl, ROUND(AVG( vmoyenne ),3) AS Spd, MAX( vmax ) AS Max, IFNULL( Dir * 22.5,  'null' ) AS Dir
-    // FROM (
-    //     SELECT DATE(  `VAR_DATE` ) AS _Date, COUNT( * ) AS NbEchantillon, AVG( VAR_WIND_SPEED ) AS vmoyenne, 0 AS vmax,  `VAR_WIND_SPEED_DOMINANT_DIR` AS Dir
-    //     FROM  `TA_VARIOUS` 
-    //     WHERE  `VAR_DATE` > '$since' AND `VAR_DATE` < DATE_ADD( '$since', INTERVAL $lenght $step )
-    //     GROUP BY DATE(  `VAR_DATE` ) ,  `VAR_WIND_SPEED_DOMINANT_DIR` 
-    //     LIMIT 0 , 2000
-    // UNION ALL 
-    //     SELECT DATE(  `VAR_DATE` ) AS _Date, 0 AS NbEchantillon, 0 AS vmoyenne, MAX( VAR_WIND_SPEED_HIGHT ) AS vmax,  `VAR_WIND_SPEED_HIGHT_DIR` AS Dir
-    //     FROM  `TA_VARIOUS` 
-    //     WHERE  `VAR_DATE` > '$since' AND `VAR_DATE` < DATE_ADD( '$since', INTERVAL $lenght $step )
-    //     GROUP BY DATE(  `VAR_DATE` ) ,  `VAR_WIND_SPEED_DOMINANT_DIR` 
-    //     LIMIT 0 , 2000
-    // ) AS _Union
-    // GROUP BY _Date, Dir
-    // ORDER BY _Date
-    // LIMIT 0 , 2000";
-
-//  $query =
-// "SELECT 
-//  DATE( `VAR_DATE` ) AS _Date, 
-//  IFNULL( `VAR_WIND_SPEED_DOMINANT_DIR` * 22.5, 'null' ) AS Dir, 
-//  COUNT( * ) AS Spl,
-//  ROUND( AVG( `VAR_WIND_SPEED` ) , 3 ) AS Spd,
-//  ROUND( MAX( `VAR_WIND_SPEED_HIGHT` ) , 2 ) AS Max
-// FROM  `TA_VARIOUS` 
-// WHERE  `VAR_DATE` > '$since'
-// AND  `VAR_DATE` < DATE_ADD( '$since', INTERVAL $lenght $step ) 
-// GROUP BY DATE( `VAR_DATE` ) , `VAR_WIND_SPEED_DOMINANT_DIR` 
-// ORDER BY DATE( `VAR_DATE` )
-// LIMIT 0 , 1000";
-
-            $qurey_result = $this->dataDB->query($query);
+        $queryString = "SELECT
+                DATE(d.utc) AS _Day,
+                IFNULL( dd.value * 22.5,  'null' ) AS DominantDirection,
+                COUNT(d.utc) AS SampleCount,
+                round(AVG(sa.value), 3) AS SpeedAverage,
+                MAX(ms.value) AS DayMaxSpeedInThisDirection
+            FROM (
+                SELECT DISTINCT utc FROM TA_VARIOUS
+                WHERE utc >= ".$this->dataDB->escape($since)." AND utc < DATE_ADD( ".$this->dataDB->escape($since).", INTERVAL ".$this->dataDB->escape($lenght)." ".$STEP[$step]." )
+            ) AS d -- date
+            LEFT JOIN TA_VARIOUS AS dd -- Dominant Direction
+            ON (d.utc = dd.utc AND dd.sen_id = ".$this->SEN_LST['TA:Arch:Various:Wind:DominantDirection'].")
+            LEFT JOIN TA_VARIOUS AS sa -- Speed Average
+            ON (d.utc = sa.utc AND sa.sen_id = ".$this->SEN_LST['TA:Arch:Various:Wind:SpeedAvg'].")
+            LEFT JOIN TA_VARIOUS AS md -- Max Speed Direction
+            ON (d.utc = md.utc AND md.sen_id = ".$this->SEN_LST['TA:Arch:Various:Wind:HighSpeedDirection']." AND md.value = dd.value)
+            LEFT JOIN TA_VARIOUS AS ms -- Max Speed
+            ON (md.utc = ms.utc AND ms.sen_id = ".$this->SEN_LST['TA:Arch:Various:Wind:HighSpeed'].")
+            GROUP BY _Day, DominantDirection
+            ORDER BY _Day, DominantDirection";
+// print_r($queryString);
+            $qurey_result = $this->dataDB->query($queryString);// ,
+            //     array(
+            //         ':since' => $since,
+            //         ':lenght' => $lenght,
+            //         ':step' => $step,
+            //         ':AvgS' => $this->SEN_LST['TA:Arch:Various:Wind:SpeedAvg'],
+            //         ':MaxS' => $this->SEN_LST['TA:Arch:Various:Wind:HighSpeed'],
+            //         ':AvgD' => $this->SEN_LST['TA:Arch:Various:Wind:DominantDirection'],
+            //         ':MaxD' => $this->SEN_LST['TA:Arch:Various:Wind:HighSpeedDirection']
+            //     ));
+            // print_r($qurey_result);
             $brut = $qurey_result->result_array($qurey_result);
             $reformated = null;
             foreach ($brut as $key => $value) {
-                if (isset($reformated[$value['_Date']]))
-                    $reformated[$value['_Date']] = array_merge(
-                        $reformated[$value['_Date']],
-                        array(array('Dir'=>$value['Dir'], 'Spd'=>$value['Spd'], 'Spl'=>$value['Spl'], 'Max'=>$value['Max']))
+                if (isset($reformated[$value['_Day']]))
+                    $reformated[$value['_Day']] = array_merge(
+                        $reformated[$value['_Day']],
+                        array(array('Dir'=>$value['DominantDirection'], 'Spd'=>$value['SpeedAverage'], 'Spl'=>$value['SampleCount'], 'Max'=>$value['DayMaxSpeedInThisDirection']))
                     );
                 else
-                    $reformated[$value['_Date']] = array(array('Dir'=>$value['Dir'], 'Spd'=>$value['Spd'], 'Spl'=>$value['Spl'], 'Max'=>$value['Max']));
+                    $reformated[$value['_Day']] = array(array('Dir'=>$value['DominantDirection'], 'Spd'=>$value['SpeedAverage'], 'Spl'=>$value['SampleCount'], 'Max'=>$value['DayMaxSpeedInThisDirection']));
             }
             return $reformated;
         } catch (PDOException $e) {

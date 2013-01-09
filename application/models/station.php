@@ -92,7 +92,7 @@ class Station extends CI_Model {
 			$confs[$item]['_id'] = $id;
 			foreach($CurentStation->result() as $val)
 			{ // on integre chacune des configs dans un tableau a 2 dimensions qui sera utilisé par la suite
-				$confs[$item][strtolower($val->CFG_LABEL)] = $val->CFG_VALUE;
+				$confs[$item][$val->CFG_LABEL] = $val->CFG_VALUE;
 			}
 			if (empty($confs[$item]['username']) || empty($confs[$item]['password']) || empty($confs[$item]['dbdriver']) || empty($confs[$item]['_ip']) || empty($confs[$item]['_port']) || empty($confs[$item]['_type'])) {
 				log_message('warning', 'Missing confs for '.$item.' > Skipped!');

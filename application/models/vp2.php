@@ -434,11 +434,11 @@ class vp2 extends CI_Model {
 	}
 
 	function OffsetTime() {
-		if ($this->conf['time:gmt:enable']==1) {
-			return $this->conf['time:gmt:offset'];
+		if ($this->conf['Time:Gmt:Enable']==1) {
+			return $this->conf['Time:Gmt:Offset'];
 		}
-		elseif ($this->conf['time:gmt:enable']==0) {
-			return GetZoneOffset($this->conf['geo:time:zone']);
+		elseif ($this->conf['Time:Gmt:Enable']==0) {
+			return GetZoneOffset($this->conf['Geo:Time:zone']);
 		}
 		return '+00:00';
 	}
@@ -468,26 +468,6 @@ class vp2 extends CI_Model {
 	}
 	protected function save_Archive($data){
 		$this->current_data = $data;
-		// $this->insert_VARIOUS(array(
-		// 	$data['TA:Arch:Various:Time:UTC'], 
-		// 	$data['TA:Arch:Rain:RainFall:Sample'], 
-		// 	$data['TA:Arch:Rain:RainRate:HighSample'], 
-		// 	$data['TA:Arch:Various:Bar:Current'], 
-		// 	$data['TA:Arch:Various:Solar:Radiation'], 
-			
-		// 	$data['TA:Arch:Various:Solar:HighRadiation'], 
-		// 	$data['TA:Arch:Various:Wind:SpeedAvg'], 
-		// 	$data['TA:Arch:Various:Wind:HighSpeed'], 
-		// 	$data['TA:Arch:Various:Wind:HighSpeedDirection'], 
-		// 	$data['TA:Arch:Various:Wind:DominantDirection'], 
-			
-		// 	$data['TA:Arch:Various:UV:IndexAvg'], 
-		// 	$data['TA:Arch:Various:UV:HighIndex'], 
-		// 	$data['TA:Arch:Various::ForecastRule'],
-		// 	$data['TA:Arch:Various:ET:Hour']
-		// 	));
-		// $id_arch = $this->dataDB->insert_id(); // query('SELECT LAST_INSERT_ID();');
-
 		foreach ($data as $name => $val) {
 			if ($val !== NULL && $val !== FALSE) {
 			// si le capteur est branché ou si la valeur de retour n'est pas fausse 
@@ -505,15 +485,6 @@ class vp2 extends CI_Model {
 			}
 		}
 	}
-	protected function insert_SENSOR($value_SENSOR) {
-		$real_SENSOR = array_combine($this->key_SENSOR, $value_SENSOR);
-// 		log_message('save', 'real_SENSOR');
-		$this->prep_SENSOR->execute($real_SENSOR);
-	}
-	// protected function insert_VARIOUS($value_VARIOUS) {
-	// 	$real_VARIOUS = array_combine($this->key_VARIOUS, $value_VARIOUS);
-	// 	$this->prep_VARIOUS->execute($real_VARIOUS);
-	// }
 	/**
 	identifie la table qui correspond a notre type de donnée, parmis les tables EAV
 	*/
@@ -561,4 +532,12 @@ class vp2 extends CI_Model {
 		}
 		log_message('warning', 'Resultat inutilisable ('.$name.')');
 	}
+
+
+	protected function insert_SENSOR($value_SENSOR) {
+		$real_SENSOR = array_combine($this->key_SENSOR, $value_SENSOR);
+// 		log_message('save', 'real_SENSOR');
+		$this->prep_SENSOR->execute($real_SENSOR);
+	}
+
 }
