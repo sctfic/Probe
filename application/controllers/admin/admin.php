@@ -68,11 +68,10 @@ class admin extends Authentification
         // requirements
         $this->load->helper(array('form', 'url'));
         $this->load->library('form_validation');
-        $this->load->helper('pages');
         $page = new page();
 
         // build view data
-        $data = fetchConfig('login'); // fetch information to build the HTML header
+        $data = $page->fetchConfig('login'); // fetch information to build the HTML header
         $data['msg'] = $this->session->userdata("msg"); // message to display in the page
         $data['userName'] = null;
 

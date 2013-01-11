@@ -8,7 +8,6 @@ class Configuration extends CI_Controller {
 	public function __construct() {
 		parent::__construct();
 		$this->load->helper('url');
-		$this->load->helper('pages');
 
 		$this->i18n->setLocaleEnv($this->config->item('probe:locale'), 'global');
 	}
@@ -24,7 +23,6 @@ class Configuration extends CI_Controller {
 	}
 
 	public function listStations() {
-        // $this->load->helper('pages');
         $page = new page();
 
         // build view data
