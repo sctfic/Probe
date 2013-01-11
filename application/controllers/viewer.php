@@ -47,8 +47,6 @@ class viewer extends CI_Controller
      */
     public function index($dataBinder = null)
     {
-        $this->load->helper('pages');
-
         if (empty($dataBinder) || !isset($dataBinder)) {
             $this->listView();
         } else {
@@ -95,8 +93,6 @@ class viewer extends CI_Controller
     {
         where_I_Am(__FILE__, __CLASS__, __FUNCTION__, __LINE__, func_get_args());
         $page = new page();
-
-        $this->load->helper('pages');
 
         $data = $page->fetchConfig('list-view');
         // remove the controller name

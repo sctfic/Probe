@@ -24,6 +24,9 @@ require_once APPPATH."/controllers/page.php";
 * @license  http://creativecommons.org/licenses/by-nc-sa/3.0/legalcode CC-by-nc-sa-3.0
 * @link     http://probe.com/doc
  */
+
+require_once APPPATH."/controllers/page.php";
+
 class install extends CI_Controller
 {
     /**
@@ -99,7 +102,6 @@ class install extends CI_Controller
     {
         where_I_Am(__FILE__, __CLASS__, __FUNCTION__, __LINE__, func_get_args());
 
-        $this->load->helper('pages');
         $this->load->helper(array('form'));
         $this->load->library('form_validation');
         $page = new page();
@@ -185,7 +187,7 @@ class install extends CI_Controller
             ;
         }
 
-        $this->load->helper('pages');
+        require_once APPPATH."/controllers/page.php";
         $this->load->helper(array('form'));
         $this->load->library('form_validation');
         $page = new page();
