@@ -207,7 +207,7 @@ class db_builder extends CI_Model {
 	protected function createAppTables() {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		$sqlCreateTable = sprintf(
-			file_get_contents(APPPATH.'models/probe.ddl'),
+			file_get_contents(APPPATH.'models/sql/probe.ddl'),
 			APP_DB,
 			i18n('database.table.role:admin.label')
 		);
@@ -218,7 +218,7 @@ class db_builder extends CI_Model {
 	protected function createStationTables() {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		$sqlCreateTable = sprintf(
-			file_get_contents(APPPATH.'models/Probe_Weather.ddl'),
+			file_get_contents(APPPATH.'models/sql/Probe_Weather.ddl'),
 			$this->dbName
 		);
 		$this->pdoConnection->query($sqlCreateTable);
