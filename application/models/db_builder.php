@@ -173,7 +173,7 @@ class db_builder extends CI_Model {
 	function createAppDb($dbID=APP_DB) {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		try {
-			$this->setDbName(is_numeric($dbID) ? 'Probe_Weather'.$dbID : APP_DB);
+			$this->setDbName(is_numeric($dbID) ? 'station'.$dbID : APP_DB);
 			// dans le cas ou la base est fournie avec l'user adequat pas besoin de le refaire
 			if (!$this->dbExists($this->dbName)) {
 				//Creation of database
