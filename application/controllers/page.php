@@ -74,7 +74,7 @@ class page extends CI_Controller
         $data['page'] = $page;
         $data['title'] = i18n($page . ':title', true);
         $data['description'] = i18n($page . ':description', true);
-        $data['author'] = i18n($page . ':author', true);
+        $data['author'] = i18n('probe:authors', true);
 
         return $data;
     }
