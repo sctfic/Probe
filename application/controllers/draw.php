@@ -143,15 +143,15 @@ http://probe.dev/draw/windrose?station=VP2_GTD&sensors=TA:Arch:Temp:Out:Average&
 		force_download('data.json', $json);
 	}
 
-	private function dl_cst ($data) {
+	private function dl_tsv ($data) {
 	    $j = count($data);
 	    if ($j<=366*288)
 		    for ($i=0;$i<=$j;$i++) {
-				$csv .= substr($data[$i]['utc'],0,-3)."\t".$data[$i]['value']."\n";
+				$tsv .= substr($data[$i]['utc'],0,-3)."\t".$data[$i]['value']."\n";
 			}
 		// ob_clean();
 		@ob_end_clean();
 		header_remove();
-		force_download('data.cst', $cst);
+		force_download('data.tsv', $tsv);
 	}
 }
