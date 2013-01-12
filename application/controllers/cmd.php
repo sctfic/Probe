@@ -178,16 +178,18 @@ class cmd extends CI_Controller {
 			include_once(APPPATH.'models/db_builder.php');
 			$newID = current ($this->station->availableID()); // prend le 1er ID vide parmis ceux disponible
 
-//			$dbb = new db_builder('mysql','nbv4023','root','localhost',3306,'');
-//			$workingDb = ??? ; // this should be dynamic
+            /**
+             * TODO: this should be dynamic, based on information provided during installation
+            */
             $dbb = new db_builder(
                 $workingDb['dbdriver'] = 'mysql',
-                $workingDb['password'] = '*****',
-                $workingDb['username'] = 'root',
+                $workingDb['password'] = 'st4t10n0',
+                $workingDb['username'] = 'station0',
                 $workingDb['hostname'] = 'localhost',
                 $workingDb['port'] = 3306,
-                $workingDb['database'] = NULL);
-            $dbb->createAppDb($newID);
+                $workingDb['database'] = 'station0');
+
+            $dbb->createAppDb($workingDb['database']);
             $dsn = $dbb->getDsn();
 
 			$this->station->arrays2dbconfs(
