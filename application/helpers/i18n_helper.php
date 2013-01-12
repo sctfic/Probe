@@ -23,7 +23,7 @@ function i18n($key, $dynamic = false) { //
 	if ($dynamic == true && strpos(file_get_contents($i18nCollector), $key) === FALSE) { 
 		// log_message('i18n', sprintf('%s', $key ) ); 
 
-		file_put_contents($i18nCollector, sprintf("i18n('%s')\n", $key ), FILE_APPEND );
+		file_put_contents($i18nCollector, sprintf("i18n('%s');\n", $key ), FILE_APPEND );
 	}
 	return _($key);
 }
