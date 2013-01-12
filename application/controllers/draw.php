@@ -6,7 +6,7 @@ en vu de les retourner au scripte ajax qui les dessinera
 */
 
 	protected $Station=NULL; // name or ID nbr of station
-	protected $sensors=NULL; // name or ID nbr of station
+	protected $sensor=NULL; // name or ID nbr of station
 	protected $Since=NULL; // start date of data
 	protected $StepUnit='HOUR'; // HOUR, DAY, WEEK, MONTH, (YEAR)
 	protected $StepNbr=12; // number of step 1-48
@@ -28,7 +28,7 @@ en vu de les retourner au scripte ajax qui les dessinera
 		// encoded with javascript encodeURIComponent()
 		$station = rawurldecode($this->input->get('station'));
 
-		$this->setSensors($this->input->get('sensors'));
+		$this->setSensor($this->input->get('sensor'));
 		// $this->Size = $this->input->get('Size');
 		$this->Since = rawurldecode($this->input->get('Since'));
 		$this->StepUnit = $this->input->get('StepUnit');
@@ -59,10 +59,10 @@ en vu de les retourner au scripte ajax qui les dessinera
 		}
 
 	}
-	function setSensors($str) {
-		$this->sensors = explode(',', rawurldecode($str), 16+1);
-		if (isset($this->sensors[16])) unset($this->sensors[16]);
-		return $this->sensors;
+	function setSensor($str) {
+		$this->sensor =  rawurldecode($str);
+		// if (isset($this->sensors[16])) unset($this->sensors[16]);
+		return $this->sensor;
 	}
 /**
 
@@ -89,14 +89,15 @@ en vu de les retourner au scripte ajax qui les dessinera
 * @param is the sensor name (one or more)
 */
 	function curve(){
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__);
 		$data = $this->dataReader->curve (
-			$this->station->get_TABLE_Dest($this->sensors),
-			$this->sensors,
+			tableOfSensor($this->sensor),
+			$this->sensor,
 			$this->Since,
 			$this->StepUnit,
 			$this->StepNbr
 		);
-		$this->dl_csv ($data);
+		$this->dl_tsv ($data);
 	}
 /**
 
@@ -112,13 +113,15 @@ en vu de les retourner au scripte ajax qui les dessinera
 *			last period value]
 */
 	function bracketCurve(){
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__);
 		$data = $this->dataReader->curve (
-			$this->station->get_TABLE_Dest($this->sensors),
+			tableOfSensor($this->sensor),
+			$this->sensor,
 			$this->Since,
 			$this->StepUnit,
 			$this->StepNbr
 		);
-		$this->dl_json ($data);
+		$this->dl_tsv ($data);
 	}
 /**
 http://probe.dev/draw/windrose?station=VP2_GTD&sensors=TA:Arch:Temp:Out:Average&Since=2012-10-26T00:00:00&StepUnit=DAY&StepNbr=6
@@ -127,6 +130,7 @@ http://probe.dev/draw/windrose?station=VP2_GTD&sensors=TA:Arch:Temp:Out:Average&
 * @param lenght is the number of day
 */
 	function wind(){
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		$data = $this->dataReader->wind ($this->Since, $this->StepUnit, $this->StepNbr);
 		$this->dl_json ($data);
 	}
@@ -138,11 +142,16 @@ http://probe.dev/draw/windrose?station=VP2_GTD&sensors=TA:Arch:Temp:Out:Average&
 		header_remove();
 		force_download('data.json', $json);
 	}
-	private function dl_csv ($data) {
-		$csv = str_putcsv(array_merge($this->info, array('data' => $data)), JSON_NUMERIC_CHECK);
+
+	private function dl_cst ($data) {
+	    $j = count($data);
+	    if ($j<=366*288)
+		    for ($i=0;$i<=$j;$i++) {
+				$csv .= substr($data[$i]['utc'],0,-3)."\t".$data[$i]['value']."\n";
+			}
 		// ob_clean();
 		@ob_end_clean();
 		header_remove();
-		force_download('data.csv', $csv);
+		force_download('data.cst', $cst);
 	}
 }

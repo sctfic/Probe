@@ -135,19 +135,19 @@ function prepareSerialization($file, $data, $format, $label = null)
 
     return array($filename, $data);
 }
-
-function str_putcsv($input, $delimiter = ',', $enclosure = '"')
-{
-    // Open a memory "file" for read/write...
-    $fp = fopen('php://temp', 'r+');
-    // ... write the $input array to the "file" using fputcsv()...
-    fputcsv($fp, $input, $delimiter, $enclosure);
-    // ... rewind the "file" so we can read what we just wrote...
-    rewind($fp);
-    // ... read the entire line into a variable...
-    $data = fread($fp, 1048576); // MAX 1Mo
-    // ... close the "file"...
-    fclose($fp);
-    // ... and return the $data to the caller, with the trailing newline from fgets() removed.
-    return rtrim($data, "\n");
-}
+    /**
+        identifie la table qui correspond a notre type de donnée, parmis les tables EAV
+    */
+    function tableOfSensor($name) {
+        if (strpos($name, ':Temp:') !== false)
+            return 'TA_TEMPERATURE';
+        elseif (strpos($name, ':Hum:') !== false)
+            return 'TA_HUMIDITY';
+        elseif (strpos($name, ':LeafWetnesses:') !== false)
+            return 'TA_WETNESSES';
+        elseif (strpos($name, ':SoilMoisture:') !== false)
+            return 'TA_MOISTURE';
+        elseif (strpos($name, ':Various:') !== false)
+            return 'TA_VARIOUS';
+        return false;
+    }

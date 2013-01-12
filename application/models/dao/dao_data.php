@@ -9,7 +9,7 @@ en vu de les retourner au scripte ajax qui les dessinera
     protected $STEP = array('HOUR'=>'HOUR', 'DAY'=>'DAY', 'WEEK'=>'WEEK', 'MONTH'=>'MONTH');
     function __construct($station) {
         parent::__construct();
-        where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
+        where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__);
         $this->dataDB = $this->load->database($station, TRUE);
         $this->SEN_LST = $this->sensor_list();
     }
@@ -30,6 +30,7 @@ en vu de les retourner au scripte ajax qui les dessinera
 * @param 
 */
     function sensor_list(){
+        where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
         $query = "SELECT `SEN_ID` AS  `value`, `SEN_NAME` AS `key` FROM `TR_SENSOR` LIMIT 0 , 100";
         $qurey_result = $this->dataDB->query($query);
         $brut = $qurey_result->result_array($qurey_result);
@@ -47,15 +48,23 @@ en vu de les retourner au scripte ajax qui les dessinera
 * @param is the sensor name (one or more)
 */
     function curve($table, $sensor, $since='2013-01-01', $step='DAY', $length=365) {
+        where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
         $since = $this->dataDB->escape($since);
         $SEN_ID = $this->SEN_LST[$sensor];
         $step = $this->STEP[$step];
         $length = is_integer($length) ? $length : 365;
 
-        $query = "SELECT utc, value 
-        FROM  `$table` 
-        WHERE SEN_ID = $SEN_ID AND utc >=$since  AND utc < DATE_ADD($since, INTERVAL $length $step)
+        $queryString = 
+        "SELECT utc, value 
+            FROM  `$table` 
+            WHERE SEN_ID = $SEN_ID 
+                AND utc >=$since 
+                AND utc < DATE_ADD($since, INTERVAL $length $step)
         LIMIT 0 , 10000";
+        $qurey_result = $this->dataDB->query($queryString);// ,
+
+        $brut = $qurey_result->result_array($qurey_result);
+        return $brut;
     }
 /**
 
@@ -71,6 +80,7 @@ en vu de les retourner au scripte ajax qui les dessinera
 *           last period value]
 */
     function bracketCurve($since, $lenght) {
+        where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
         // Stock Price
         // Date,Open,High,Low,Close,Volume
         // [["2012-03-01",15.21,15.43,15.15,15.25,11248600],
@@ -125,7 +135,6 @@ en vu de les retourner au scripte ajax qui les dessinera
         } catch (PDOException $e) {
             throw new Exception( $e->getMessage() );
         }
-
     }
 /**
 
@@ -134,6 +143,7 @@ en vu de les retourner au scripte ajax qui les dessinera
 * @param lenght is the number of day
 */
     function windrose_allInOne($since, $lenght){
+        where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 
     }
 }
