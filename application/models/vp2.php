@@ -471,8 +471,8 @@ class vp2 extends CI_Model {
 		foreach ($data as $name => $val) {
 			if ($val !== NULL && $val !== FALSE) {
 			// si le capteur est branché ou si la valeur de retour n'est pas fausse 
-				$table = $this->get_TABLE_Dest($name);
-				$Sensor = $this->get_SEN_ID($name,$table);
+				$table = parent::get_TABLE_Dest($name);// $this->station->get_TABLE_Dest($name);
+				$Sensor = $this->get_SEN_ID($name, $table);
 				if ($table) {
 					$eav = 'prep_EAV_'.$table[3];
 					$this->$eav->execute(
@@ -485,22 +485,7 @@ class vp2 extends CI_Model {
 			}
 		}
 	}
-	/**
-	identifie la table qui correspond a notre type de donnée, parmis les tables EAV
-	*/
-	protected function get_TABLE_Dest($name) {
-		if (strpos($name, ':Temp:') !== false)
-			return 'TA_TEMPERATURE';
-		elseif (strpos($name, ':Hum:') !== false)
-			return 'TA_HUMIDITY';
-		elseif (strpos($name, ':LeafWetnesses:') !== false)
-			return 'TA_WETNESSES';
-		elseif (strpos($name, ':SoilMoisture:') !== false)
-			return 'TA_MOISTURE';
-		elseif (strpos($name, ':Various:') !== false)
-			return 'TA_VARIOUS';
-		return false;
-	}
+
 	/**
 	determine la date de la derniere archive recupérée
 	*/
