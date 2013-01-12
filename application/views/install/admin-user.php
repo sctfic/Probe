@@ -42,39 +42,39 @@
 
             <!-- Admin Username -->
             <div class="control-group">
-                <label class="control-label" for="administrator-username">
+                <label class="control-label" for="admin-username">
                     <?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('install.administrator.username'), i18n('required'), i18n('&nbsp;:')) ?>
                 </label>
                 <div class="controls">
-                    <input id="administrator-username"
+                    <input id="admin-username"
                         type="text" required
-                        name="administrator-username" value="<?=$adminUsername?>"
+                        name="admin-username" value="<?=$adminUsername?>"
                         class="input-large" placeholder="<?=i18n('install.administrator.username.placeholder')?>">
                 </div>
             </div>
 
             <!-- Administrator's password -->
             <div class="control-group">
-                <label class="control-label" for="administrator-password">
+                <label class="control-label" for="admin-password">
                     <?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('install.administrator.password'), i18n('required'), i18n('&nbsp;:'))?>
                 </label>
                 <div class="controls">
-                    <input id="administrator-password"
+                    <input id="admin-password"
                         type="password" required
-                        name="administrator-password" value="<?=$adminPassword?>"
+                        name="admin-password" value="<?=$adminPassword?>"
                         class="input-large" placeholder="<?=i18n('install.administrator.password.placeholder')?>">
                 </div>
             </div>
 
             <!-- Administrator's password confirmation -->
             <div class="control-group">
-                <label class="control-label" for="administrator-password-confirmation">
+                <label class="control-label" for="admin-password-confirmation">
                     <?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('install.administrator.password-confirmation'), i18n('required'), i18n('&nbsp;:'))?>
                 </label>
                 <div class="controls">
-                    <input id="administrator-password-confirmation"
+                    <input id="admin-password-confirmation"
                     type="password" required
-                    name="administrator-password-confirmation" value="<?=$adminConfirm?>"
+                    name="admin-password-confirmation" value="<?=$adminConfirm?>"
                     class="input-large" placeholder="<?=i18n('install.administrator.password-confirmation.placeholder')?>">
                 </div>
             </div>
