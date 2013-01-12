@@ -35,9 +35,9 @@ en vu de les retourner au scripte ajax qui les dessinera
 		$this->StepNbr = $this->input->get('StepNbr');
 
 		if (empty($this->Since) || empty($this->StepUnit) || empty($this->StepNbr)) {
-			$this->Since = date('Y/m/d H:i:s', strtotime(date('Y/m/d 00:00:00')) - 13*24*60*60); // today - 365 days
+			$this->Since = date('Y/m/d H:i:s', strtotime(date('Y/m/d 00:00:00')) - 365*24*60*60); // today - 365 days
 			$this->StepUnit = 'DAY';
-			$this->StepNbr = 5; // 365
+			$this->StepNbr = 365; // 365
 		}
 
 		$this->Station = end($this->station->config($station));
@@ -88,9 +88,15 @@ en vu de les retourner au scripte ajax qui les dessinera
 * @param lenght is the number of day
 * @param is the sensor name (one or more)
 */
-	function curves(){
-		$data = $this->dataReader->curves ($this->Since, $this->StepUnit, $this->StepNbr);
-		$this->dl_json ($data);
+	function curve(){
+		$data = $this->dataReader->curve (
+			$this->station->get_TABLE_Dest($this->sensors),
+			$this->sensors,
+			$this->Since,
+			$this->StepUnit,
+			$this->StepNbr
+		);
+		$this->dl_csv ($data);
 	}
 /**
 
@@ -106,10 +112,14 @@ en vu de les retourner au scripte ajax qui les dessinera
 *			last period value]
 */
 	function bracketCurve(){
-		$data = $this->dataReader->bracketCurve ($this->Since, $this->StepUnit, $this->StepNbr);
+		$data = $this->dataReader->curve (
+			$this->station->get_TABLE_Dest($this->sensors),
+			$this->Since,
+			$this->StepUnit,
+			$this->StepNbr
+		);
 		$this->dl_json ($data);
 	}
-
 /**
 http://probe.dev/draw/windrose?station=VP2_GTD&sensors=TA:Arch:Temp:Out:Average&Since=2012-10-26T00:00:00&StepUnit=DAY&StepNbr=6
 * @
@@ -128,5 +138,11 @@ http://probe.dev/draw/windrose?station=VP2_GTD&sensors=TA:Arch:Temp:Out:Average&
 		header_remove();
 		force_download('data.json', $json);
 	}
-
+	private function dl_csv ($data) {
+		$csv = str_putcsv(array_merge($this->info, array('data' => $data)), JSON_NUMERIC_CHECK);
+		// ob_clean();
+		@ob_end_clean();
+		header_remove();
+		force_download('data.csv', $csv);
+	}
 }

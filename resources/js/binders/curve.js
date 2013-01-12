@@ -36,7 +36,7 @@ $(document).ready(function(){
     // $.getJSON(url, function(json) {
     d3.json(url, function(error, json) {
         if (error) return console.warn(error);
-        plotCurve(json.data, '#display0',500,120);
+        plotCurve(json.data, '#display0',1000,120);
 
    });
 });
