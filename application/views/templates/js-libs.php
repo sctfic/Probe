@@ -17,11 +17,11 @@
 
 <?php if ($viewer === true) : ?>
     <script src="/resources/js/libs/d3.v3.js"></script>
-    <script src="/resources/js/<?=$dataBinder;?>.js"></script>
+    <script src="/resources/js/binders/<?=$dataBinder;?>.js"></script>
 <?php endif; ?>
 
 <!-- Custom javascript -->
-<script src="/resources/js/probe.js"></script>
+<script src="/resources/js/pages/probe.js"></script>
 <script>
     var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
     (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
