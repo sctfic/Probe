@@ -469,32 +469,32 @@ msgstr "Base de données est inaccessible"
 msgid "error.install.admin.exists"
 msgstr "Un utilisateur «&nbsp;admin&nbsp;» est déjà présent dans la base."
 
-#: Probe/application/controllers/page.php:42
+#: Probe/application/controllers/pageManager.php:42
 msgid "error.file.missing.title"
 msgstr "Fichier manquant ou non valable"
 
-#: Probe/application/controllers/page.php:43
+#: Probe/application/controllers/pageManager.php:43
 msgid "error.file.missing"
 msgstr "Erreur à l'ouverture du fichier"
 
-#: Probe/application/controllers/page.php:45
+#: Probe/application/controllers/pageManager.php:45
 #, php-format
 msgid "solution.file[%s].missing"
 msgstr "Vérifier que le fichier <var>%s</var> existe bien et que vous avez les droits suffisants pour le lire"
 
-#: Probe/application/controllers/page.php:50
+#: Probe/application/controllers/pageManager.php:50
 msgid "error.file.missing.header"
 msgstr "Fichier manquant ou non valable."
 
-#: Probe/application/controllers/page.php:75
+#: Probe/application/controllers/pageManager.php:75
 msgid ":title"
 msgstr "Titre"
 
-#: Probe/application/controllers/page.php:76
+#: Probe/application/controllers/pageManager.php:76
 msgid ":description"
 msgstr "Probe est une application web moderne pour gérer les stations météo de la marque Davis Instrument™ et archiver les relevés"
 
-#: Probe/application/controllers/page.php:77
+#: Probe/application/controllers/pageManager.php:77
 msgid "probe:authors"
 msgstr "Probe Team"
 
