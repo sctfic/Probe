@@ -24,7 +24,7 @@
         <!-- Engine: MySQL vs. SQLite  -->
         <div id="dbms-engine" class="control-group">
             <label class="control-label">
-                <?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('install.dbms.engine'), i18n('required'), i18n('&nbsp;:')) ?>
+                <?=sprintf('%s%s', i18n('install.dbms.engine'), i18n('&nbsp;:')) ?>
             </label>
             <div class="controls">
                 <label class="control-label inline" for="dbms-engine-mysql">
@@ -32,15 +32,26 @@
                            type="radio" checked
                            name="dbms-engine" value="mysql"
                     >
-                    <?=sprintf('%s <span class="hidden">(%s)</span>', i18n('install.dbms.engine-mysql'), i18n('required')) ?>
+                    <?=sprintf('%s', i18n('install.dbms.engine-mysql')) ?>
                 </label>
                 <label class="control-label inline" for="dbms-engine-sqlite">
                     <input id="dbms-engine-sqlite"
                            type="radio"
                            name="dbms-engine" value="sqlite"
                     >
-                    <?=sprintf('%s <span class="hidden">(%s)</span>', i18n('install.dbms.engine-sqlite'), i18n('required')) ?>
+                    <?=sprintf('%s', i18n('install.dbms.engine-sqlite')) ?>
                 </label>
+                <?
+                /*
+                <label class="control-label inline" for="dbms-engine-postgresql">
+                    <input id="dbms-engine-postgresql"
+                           type="radio"
+                           name="dbms-engine" value="postgresql"
+                            >
+                    <?=sprintf('%s', i18n('install.dbms.engine-postgresql')) ?>
+                </label>
+                */
+                ?>
             </div>
         </div>
 
@@ -72,23 +83,6 @@
 				>
 			</div>
 		</div>
-
-		<!-- Existing database vs. new one -->
-	<!-- 	<div class="control-group">
-			<label class="control-label">
-				<?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('install.dbms.database.selection'), i18n('required'), i18n('&nbsp;:')) ?>
-			</label>
-			<div class="controls">
-				<label class="control-label inline" for="dbms-database-reuse">
-					<input type="radio" name="dbms-database-selection" id="dbms-database-reuse" value="<?=$dbmsPort?>" checked class="input-mini" >
-					<?=sprintf('%s <span class="hidden">(%s)</span>', i18n('install.dbms.database-reuse'), i18n('required')) ?>
-				</label>
-				<label class="control-label inline" for="dbms-database-create">
-					<input type="radio" name="dbms-database-selection" id="dbms-database-create" value="<?=$dbmsPort?>" class="input-mini" >
-					<?=sprintf('%s <span class="hidden">(%s)</span>', i18n('install.dbms.database-create'), i18n('required')) ?>
-				</label>
-			</div>
-		</div> -->
 
 		<div class="control-group mysql">
 		<!-- Server database name -->
@@ -146,7 +140,7 @@
             <div class="controls">
                 <input name="dbms-path"
                        value="./<?=SQLITE_PATH?>"
-                       type="text" required disabled
+                       type="text" disabled
                        class="input-xlarge" placeholder="<?=i18n('install.dbms.path.placeholder')?>"
                 >
             </div>
