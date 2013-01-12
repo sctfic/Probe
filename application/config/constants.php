@@ -147,5 +147,14 @@ const DBL_NULL	=	"\x00\x00";	// valeur de confirmation d'un CRC
 define('BINDER_DIR', 'd3/');
 define('BINDER_PATH', FCPATH.APPPATH.'views/'.BINDER_DIR);
 
+/**
+ * Directory holding DDL files, SQL queries and SQLite DB.
+ */
+define('SQL_DIR', APPPATH.'models/sql/');
+/**
+ * If user choose to use SQLite database here is the path to the file
+ */
+define('SQLITE_PATH', SQL_DIR.'db-default.sqlite');
+
 /* End of file constants.php */
 /* Location: ./application/config/constants.php */
