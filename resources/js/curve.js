@@ -13,17 +13,9 @@
 ?>
 
 <div id="filename" class="canvas" style="clear:both;">
-    <div id="display0" style="clear:both; width: 1320px;"></div>
-    <div id="display1" style="clear:both; width: 1320px;"></div>
-    <div id="display2" style="clear:both; width: 1320px;"></div>
-    <!--a id="maplink">maplink</a>
-    <a id="nmlink">nmlink</a>
-    <a id="whlink">whlink</a-->
-    <a id="wslink">wslink</a>
-    <a id="wulink">wulink</a>
-    <a id="vmlink">vmlink</a>
-    <a id="rflink">rflink</a>
-    <!-- d3 content should be -dynamically- placed here -->
+    <div id="display0" style="clear:both; width: 1320px;">
+        <!-- d3 content should be -dynamically- placed here -->
+    </div>
     <noscript><?=i18n('warning.javascript.disable');?></noscript>
 </div>
 
@@ -40,18 +32,11 @@
     YEAR()          Return the year
 */
 $(document).ready(function(){
-    var url = "http://probe.dev/draw/wind?station=VP2_GTD&StepUnit=WEEK&StepNbr=2&Since=2012-12-29";
+    var url = "http://probe.dev/draw/curve?station=VP2_GTD&StepUnit=WEEK&StepNbr=2&Since=2012-12-29";
     // $.getJSON(url, function(json) {
     d3.json(url, function(error, json) {
         if (error) return console.warn(error);
-        var i=0;
-        for (var keydate in json.data) {
-            plotSmallRose(json.data[keydate], '#display0');
-            i++;
-        }
-
-        plotProbabilityRose(json.data[keydate], '#display1',120);
-        plotSpeedRose(json.data[keydate], '#display2',120);
+        plotCurve(json.data, '#display0',500,120);
 
    });
 });

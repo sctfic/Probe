@@ -101,22 +101,24 @@ en vu de les retourner au scripte ajax qui les dessinera
 * @param since is the start date of result needed
 * @param lenght is the number of day
 */
-    function wind($since='2012-01-01', $step='DAY', $lenght=365){
+    function wind($since='2012-01-01', $step='DAY', $length=365){
         $STEP = array('HOUR'=>'HOUR', 'DAY'=>'DAY', 'WEEK'=>'WEEK', 'MONTH'=>'MONTH');
+        $since = $this->dataDB->escape($since);
+        // $length = $this->dataDB->escape($length);
         where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
         try {
         $queryString = sprintf(file_get_contents(APPPATH.'models/sql/wind.sql'),
             $this->SEN_LST['TA:Arch:Various:Wind:DominantDirection'],
             $this->SEN_LST['TA:Arch:Various:Wind:HighSpeed'],
             $this->SEN_LST['TA:Arch:Various:Wind:HighSpeedDirection'],
-            $this->dataDB->escape($since),
-            $this->dataDB->escape($since),
-            $this->dataDB->escape($lenth),
+            $since,
+            $since,
+            $length,
             $STEP[$step],
             $this->SEN_LST['TA:Arch:Various:Wind:SpeedAvg'],
-            $this->dataDB->escape($since),
-            $this->dataDB->escape($since),
-            $this->dataDB->escape($lenth),
+            $since,
+            $since,
+            $length,
             $STEP[$step]
         );
 /**
@@ -126,16 +128,7 @@ en vu de les retourner au scripte ajax qui les dessinera
     -- 11 HighSpeedDirection  =   direction de la rafalle, n'est pas la direction dominante
 */
             $qurey_result = $this->dataDB->query($queryString);// ,
-            //     array(
-            //         ':since' => $this->dataDB->escape($since),
-            //         ':lenght' => $this->dataDB->escape($lenth),
-            //         ':step' => $STEP[$step],
-            //         ':AvgS' => $this->SEN_LST['TA:Arch:Various:Wind:SpeedAvg'],
-            //         ':MaxS' => $this->SEN_LST['TA:Arch:Various:Wind:HighSpeed'],
-            //         ':AvgD' => $this->SEN_LST['TA:Arch:Various:Wind:DominantDirection'],
-            //         ':MaxD' => $this->SEN_LST['TA:Arch:Various:Wind:HighSpeedDirection']
-            //     ));
-            // print_r($qurey_result);
+
             $brut = $qurey_result->result_array($qurey_result);
             $reformated = null;
             foreach ($brut as $key => $value) {

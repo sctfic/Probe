@@ -293,7 +293,13 @@ function plotProbabilityRose(Data, container, R) {
     for (var key in Data) {
         if (Data[key]['Dir']!='null') {
             zero.push({d: Data[key]['Dir']*1, p: 0, s: 0, m: 0});
-            winds.push({d: Data[key]['Dir']*1, p: Data [key]['Spl'] / t, s: Data [key]['Spd'], m: Data [key]['Max']});
+            winds.push(
+            {
+                d: Data[key]['Dir']*1,
+                p: Data [key]['Spl'] / t,
+                s: Data [key]['Spd']*1,
+                m: Data [key]['Max']*1
+            });
         }
         else calm = Data [key]['Spl'];
     }
@@ -327,7 +333,7 @@ function plotProbabilityRose(Data, container, R) {
         ProbabilityArc.selectAll("path")
             .data(winds)
             .append("title")
-            .text(function(d) { return d.d + "\u00b0 \n" + (100*d.p).toFixed(1) + " % \n" + (d.s).toFixed(1) + " km/h\n Maxi : " + (d.m).toFixed(1) + " km/h" });
+            .text(function(d) {return d.d + "\u00b0 \n" + (100*d.p).toFixed(1) + " % \n" + (d.s).toFixed(1) + " km/h\n Maxi : " + (d.m).toFixed(1) + " km/h" });
         ProbabilityArc.selectAll("path")
             .data(winds)
             .transition().delay(function(d) { return d.d*5;}).duration(1000)
@@ -353,7 +359,13 @@ function plotSpeedRose(Data, container, R) {
     for (var key in Data) {
         if (Data[key]['Dir']!='null') {
             zero.push({d: Data[key]['Dir']*1, p: 0, s: 0, m: 0});
-            winds.push({d: Data[key]['Dir']*1, p: Data [key]['Spl'] / t, s: Data [key]['Spd'], m: Data [key]['Max']});
+            winds.push(
+            {
+                d: Data[key]['Dir']*1,
+                p: Data [key]['Spl'] / t,
+                s: Data [key]['Spd']*1,
+                m: Data [key]['Max']*1
+            });
         }
         else calm = Data [key]['Spl'];
     }
