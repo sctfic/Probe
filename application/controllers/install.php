@@ -13,7 +13,7 @@
 if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 // require_once APPPATH."/controllers/checkSetup.php";
-require_once APPPATH."/controllers/page.php";
+require_once APPPATH."/controllers/pageManager.php";
 
 /**
 * Manage the installation and configuration of the application
@@ -25,7 +25,7 @@ require_once APPPATH."/controllers/page.php";
 * @link     http://probe.com/doc
  */
 
-require_once APPPATH."/controllers/page.php";
+require_once APPPATH."/controllers/pageManager.php";
 
 class install extends CI_Controller
 {
@@ -104,7 +104,7 @@ class install extends CI_Controller
 
         $this->load->helper(array('form'));
         $this->load->library('form_validation');
-        $page = new page();
+        $page = new PageManager();
 
         // build view data
         $data = $page->fetchConfig('setup-dbms'); // fetch information to build the HTML header
@@ -187,10 +187,10 @@ class install extends CI_Controller
             ;
         }
 
-        require_once APPPATH."/controllers/page.php";
+        require_once APPPATH."/controllers/pageManager.php";
         $this->load->helper(array('form'));
         $this->load->library('form_validation');
-        $page = new page();
+        $page = new PageManager();
 
         // build view data
         $data = $page->fetchConfig('setup-admin-user'); // fetch information to build the HTML header

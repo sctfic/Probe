@@ -1,7 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 // require_once APPPATH."/controllers/checkSetup.php";
-require_once APPPATH."/controllers/page.php";
+require_once APPPATH."/controllers/pageManager.php";
 
 class Configuration extends CI_Controller {
 
@@ -23,7 +23,7 @@ class Configuration extends CI_Controller {
 	}
 
 	public function listStations() {
-        $page = new page();
+        $page = new PageManager();
 
         // build view data
         $data = $page->fetchConfig('configure-station-list'); // fetch information to build the HTML header
@@ -40,7 +40,7 @@ class Configuration extends CI_Controller {
 	public function addStation() {
         $this->load->library('form_validation');
 
-        $page = new page();
+        $page = new PageManager();
         $data = $page->fetchConfig('configure-add-station'); // fetch information to build the HTML header
         $data['form'] = $this->config->item('add-station-form');
 

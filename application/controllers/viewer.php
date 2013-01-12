@@ -13,7 +13,7 @@
 if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 // require_once APPPATH."/controllers/checkSetup.php";
-require_once APPPATH."/controllers/page.php";
+require_once APPPATH."/controllers/pageManager.php";
 
 /**
 * Manage the installation and configuration of the application
@@ -64,7 +64,7 @@ class viewer extends CI_Controller
     public function binderView($dataBinder)
     {
         where_I_Am(__FILE__, __CLASS__, __FUNCTION__, __LINE__, func_get_args());
-        $page = new page();
+        $page = new PageManager();
 
         $data = $page->fetchConfig($dataBinder);
         $data['viewer'] = true;
@@ -92,7 +92,7 @@ class viewer extends CI_Controller
     public function listView()
     {
         where_I_Am(__FILE__, __CLASS__, __FUNCTION__, __LINE__, func_get_args());
-        $page = new page();
+        $page = new PageManager();
 
         $data = $page->fetchConfig('list-view');
         // remove the controller name

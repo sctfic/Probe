@@ -20,7 +20,7 @@
 * @license  http://creativecommons.org/licenses/by-nc-sa/3.0/legalcode CC-by-nc-sa-3.0
 * @link     http://probe.com/doc
  */
-class page extends CI_Controller
+class PageManager extends CI_Controller
 {
     /**
      * Passes data to the view and wrap it in header/footer and necessary HTML code

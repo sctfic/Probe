@@ -13,7 +13,7 @@
 if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 require_once APPPATH."/controllers/authentification.php";
-require_once APPPATH."/controllers/page.php";
+require_once APPPATH."/controllers/pageManager.php";
 
 class admin extends Authentification
 {
@@ -68,7 +68,7 @@ class admin extends Authentification
         // requirements
         $this->load->helper(array('form', 'url'));
         $this->load->library('form_validation');
-        $page = new page();
+        $page = new PageManager();
 
         // build view data
         $data = $page->fetchConfig('login'); // fetch information to build the HTML header
