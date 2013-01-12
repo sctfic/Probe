@@ -20,8 +20,11 @@
     <script src="/resources/js/binders/<?=$dataBinder;?>.js"></script>
 <?php endif; ?>
 
-<!-- Custom javascript -->
-<script src="/resources/js/pages/probe.js"></script>
+<?php if (file_exists(FCPATH.'resources/js/pages/'.$page.'.js')) : ?>
+    <!--Page specific JavaScript-->
+    <script src="/resources/js/pages/<?=$page;?>.js"></script>
+<?php endif; ?>
+
 <script>
     var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
     (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
