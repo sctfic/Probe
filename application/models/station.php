@@ -131,22 +131,6 @@ class Station extends CI_Model {
 		}
 		return true;
 	}
-	/**
-		identifie la table qui correspond a notre type de donnée, parmis les tables EAV
-	*/
-	function get_TABLE_Dest($name) {
-		if (strpos($name, ':Temp:') !== false)
-			return 'TA_TEMPERATURE';
-		elseif (strpos($name, ':Hum:') !== false)
-			return 'TA_HUMIDITY';
-		elseif (strpos($name, ':LeafWetnesses:') !== false)
-			return 'TA_WETNESSES';
-		elseif (strpos($name, ':SoilMoisture:') !== false)
-			return 'TA_MOISTURE';
-		elseif (strpos($name, ':Various:') !== false)
-			return 'TA_VARIOUS';
-		return false;
-	}
 
 	/**
 	 * teste depuis combien de temps on ne s'est pas connecter a la station

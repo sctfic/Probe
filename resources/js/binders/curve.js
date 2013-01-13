@@ -34,9 +34,9 @@
 $(document).ready(function(){
     var url = "http://probe.dev/draw/curve?station=VP2_GTD&StepUnit=WEEK&StepNbr=2&Since=2012-12-29";
     // $.getJSON(url, function(json) {
-    d3.json(url, function(error, json) {
+    d3.tsv(url, function(error, tsv) {
         if (error) return console.warn(error);
-        plotCurve(json.data, '#display0',1000,120);
+        plotCurve(tsv.data, '#display0',1000,120);
 
    });
 });
