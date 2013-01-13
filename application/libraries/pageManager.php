@@ -26,7 +26,7 @@ class PageManager {
      */
     private $_CI;
 
-    public function __contruct() {
+    public function __construct() {
         $this->_CI =& get_instance();
     }
 
