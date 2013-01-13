@@ -170,6 +170,15 @@ class Install extends CI_Controller {
             redirect("install/admin-user");
         } catch (Exception $e) {
             log_message('db',  $e->getMessage());
+            show_error(
+                array(
+                    'error-title' => i18n('error.database.access-denied.title'),
+                    'error-description' => i18n('error.database.access-denied'),
+                    'error-solution' => i18n('solution.database.access-denied')
+                ),
+                500,
+                i18n('error.database.access-denied.header')
+            );
         }
     }
 

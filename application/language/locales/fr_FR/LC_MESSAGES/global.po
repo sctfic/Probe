@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: probe\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-13 10:44+0100\n"
-"PO-Revision-Date: 2013-01-13 10:46+0100\n"
+"POT-Creation-Date: 2013-01-13 12:05+0100\n"
+"PO-Revision-Date: 2013-01-13 12:29+0100\n"
 "Last-Translator: Édouard Lopez <dev+i18n@edouard-lopez.com>\n"
 "Language-Team: probe <dev+probe@edouard-lopez.com>\n"
 "Language: \n"
@@ -425,32 +425,32 @@ msgstr "Modèle"
 msgid "logOut"
 msgstr ""
 
-#: Probe/application/libraries/pageManager.php:50
+#: Probe/application/libraries/Page_manager.php:51
 msgid "error.file.missing.title"
 msgstr "Fichier manquant ou non valable"
 
-#: Probe/application/libraries/pageManager.php:51
+#: Probe/application/libraries/Page_manager.php:52
 msgid "error.file.missing"
 msgstr "Erreur à l'ouverture du fichier"
 
-#: Probe/application/libraries/pageManager.php:53
+#: Probe/application/libraries/Page_manager.php:54
 #, php-format
 msgid "solution.file[%s].missing"
 msgstr "Vérifier que le fichier <var>%s</var> existe bien et que vous avez les droits suffisants pour le lire"
 
-#: Probe/application/libraries/pageManager.php:58
+#: Probe/application/libraries/Page_manager.php:59
 msgid "error.file.missing.header"
 msgstr "Fichier manquant ou non valable."
 
-#: Probe/application/libraries/pageManager.php:83
+#: Probe/application/libraries/Page_manager.php:85
 msgid ":title"
 msgstr "Titre"
 
-#: Probe/application/libraries/pageManager.php:84
+#: Probe/application/libraries/Page_manager.php:86
 msgid ":description"
 msgstr "Probe est une application web moderne pour gérer les stations météo de la marque Davis Instrument™ et archiver les relevés"
 
-#: Probe/application/libraries/pageManager.php:85
+#: Probe/application/libraries/Page_manager.php:87
 msgid "probe:authors"
 msgstr "Probe Team"
 
@@ -470,7 +470,23 @@ msgstr "Vérifier que la base est présente ou que les configurations sont corre
 msgid "error.database.unreachable.header"
 msgstr "Base de données est inaccessible"
 
-#: Probe/application/controllers/install.php:195
+#: Probe/application/controllers/install.php:175
+msgid "error.database.access-denied.title"
+msgstr "Erreur : Accès à la base refusé"
+
+#: Probe/application/controllers/install.php:176
+msgid "error.database.access-denied"
+msgstr "L'<strong>utilisateur et l'hôte</strong> ne permette pas de se connecter à la base de donnée."
+
+#: Probe/application/controllers/install.php:177
+msgid "solution.database.access-denied"
+msgstr "Vérifiez que le couple formé par l'hôte d'origine et l'utilisateur est bien le plus spécifique (cf. <a href=\"http://stackoverflow.com/questions/10299148/mysql-error-1045-28000-access-denied-for-user-billlocalhost-using-passw/11216911#11216911\">MySQL ERROR 1045 (28000): Access denied for user 'bill'@'localhost' (using password: YES)</a>)."
+
+#: Probe/application/controllers/install.php:180
+msgid "error.database.access-denied.header"
+msgstr "Accès à la base refusé"
+
+#: Probe/application/controllers/install.php:204
 msgid "error.install.admin.exists"
 msgstr "Un utilisateur «&nbsp;admin&nbsp;» est déjà présent dans la base."
 
@@ -601,101 +617,3 @@ msgstr "Connexion"
 msgid "viewer:description"
 msgstr "Connexion à l'interface d'administration"
 
-#, fuzzy
-#~ msgid "fill in your userName"
-#~ msgstr "Votre nom d'utilisateur last.fm"
-
-#, fuzzy
-#~ msgid "longer is better"
-#~ msgstr "Le fichier %s n'est plus publié."
-
-#, fuzzy
-#~ msgid "graph:title"
-#~ msgstr "Connexion"
-
-#, fuzzy
-#~ msgid "graph:description"
-#~ msgstr "Connexion à l'interface d'administration"
-
-#~ msgid "install.dbms.database.selection"
-#~ msgstr "Choix de la base"
-
-#~ msgid "install.dbms.database-reuse"
-#~ msgstr "base existante"
-
-#~ msgid "install.dbms.database-create"
-#~ msgstr "nouvelle base"
-
-#~ msgid ":author"
-#~ msgstr "Probe Team"
-
-#~ msgid "configure-add-station:author"
-#~ msgstr "Nom d'hôte"
-
-#~ msgid "configure-station-list:author"
-#~ msgstr "Nom d'hôte"
-
-#~ msgid "login:author"
-#~ msgstr "Probe Team"
-
-#~ msgid "setup-dbms:author"
-#~ msgstr "Probe Team"
-
-#~ msgid "setup-admin-user:author"
-#~ msgstr "Probe Team"
-
-#~ msgid "windrose:author"
-#~ msgstr "Probe Team"
-
-#~ msgid "list-view:author"
-#~ msgstr "Probe Team"
-
-#, fuzzy
-#~ msgid "viewer:author"
-#~ msgstr "Probe Team"
-
-#, fuzzy
-#~ msgid "graph:author"
-#~ msgstr "Probe Team"
-
-#, fuzzy
-#~ msgid "windrose7:title"
-#~ msgstr "Connexion"
-
-#, fuzzy
-#~ msgid "windrose7:description"
-#~ msgstr "Connexion à l'interface d'administration"
-
-#, fuzzy
-#~ msgid "windrose7:author"
-#~ msgstr "Probe Team"
-
-#~ msgid "configuration.station.port"
-#~ msgstr "Port"
-
-#~ msgid "configuration.station.port.placeholder"
-#~ msgstr "défault: 3306"
-
-#, fuzzy
-#~ msgid "error.database.unreachable===="
-#~ msgstr ""
-#~ "La base de données décrite dans le fichier de configuration est "
-#~ "inaccessible."
-
-#~ msgid "install.administrator.password-confirm.placeholder"
-#~ msgstr "pour éviter les erreurs de saisi"
-
-#~ msgid "install.dbms.ip.placeholder"
-#~ msgstr "adresse IP ou nom de domaine"
-
-#~ msgid "install.dbms.database-name.placeholder"
-#~ msgstr "base existante"
-
-#~ msgid "install.dbms.engine-mysql.placeholder"
-#~ msgstr "MySQL 5+"
-
-#~ msgid "install.dbms.engine-sqlite.placeholder"
-#~ msgstr "SQLite 3+"
-
-#~ msgid "install.dbms.do-it"
-#~ msgstr "Configurer la base"
