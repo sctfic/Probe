@@ -10,7 +10,7 @@
  */
 ?>
 
-<script src="/resources/js/libs/jquery-ui-1.8.20.custom.min.js"></script>
+<script src="/resources/js/libs/jquery-ui-1.9.2.custom.min.js"></script>
 <script src="/resources/js/libs/jquery.bgpos.js"></script>
 
 <script src="/resources/js/libs/bootstrap/bootstrap.js"></script>
