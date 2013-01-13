@@ -53,16 +53,16 @@
         </div>
 
         <!-- <?=form_label( sprintf('%s <span class="hidden">(%s)</span>%s', i18n('userName'), i18n('required'), i18n('&nbsp;:')), 'userName')?> -->
-        <!-- <?=form_input( 'userName', $username, sprintf('placeholder="%s"',i18n('fill in your userName') ) )?> -->
+        <!-- <?=form_input( 'userName', $username, sprintf('placeholder="%s"',i18n('login.username.placeholder') ) )?> -->
 
         <!-- <?=form_label( sprintf('%s <span class="hidden">(%s)</span>%s', i18n('password'), i18n('required'),i18n('&nbsp;:')), 'password')?> -->
         <!-- <?= sprintf('');//form_password( 'password', $username, sprintf('placeholder="%s" %s',i18n('longer is better'), getStatus('password') ) )?> -->
-        <!-- <?=form_password( 'password', $username, sprintf('placeholder="%s"',i18n('longer is better') ) )?> -->
+        <!-- <?=form_password( 'password', $username, sprintf('placeholder="%s"',i18n('login.password.placeholder') ) )?> -->
 
         <!-- <?php if ( _empty($this->config->item('probe:userName') ) ) {?> -->
-        <!-- <?=form_label( sprintf('%s <span class="hidden">(%s)</span>%s', i18n('password confirmation'), i18n('required'),i18n('&nbsp;:')), 'confirm')?> -->
+        <!-- <?=form_label( sprintf('%s <span class="hidden">(%s)</span>%s', i18n('login.password-confirmation'), i18n('required'),i18n('&nbsp;:')), 'confirm')?> -->
         <!-- <?= sprintf('');//form_p assword( 'confirm', '', sprintf('placeholder="%s" %s',i18n('so we can prevent mistakes'), getStatus('confirm') ) )?> -->
-        <!-- <?=form_password( 'confirm', '', sprintf('placeholder="%s"',i18n('so we can prevent mistakes') ) )?> -->
+        <!-- <?=form_password( 'confirm', '', sprintf('placeholder="%s"',i18n('login.password-confirmation.placeholder') ) )?> -->
         <!-- <?php } ?> -->
 
     </fieldset>
