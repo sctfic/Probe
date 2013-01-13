@@ -471,7 +471,7 @@ class vp2 extends CI_Model {
 		foreach ($data as $name => $val) {
 			if ($val !== NULL && $val !== FALSE) {
 			// si le capteur est branché ou si la valeur de retour n'est pas fausse 
-				$table = parent::get_TABLE_Dest($name);// $this->station->get_TABLE_Dest($name);
+				$table = tableOfSensor($name);
 				$Sensor = $this->get_SEN_ID($name, $table);
 				if ($table) {
 					$eav = 'prep_EAV_'.$table[3];
