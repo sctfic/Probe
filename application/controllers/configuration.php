@@ -1,13 +1,13 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 // require_once APPPATH."/controllers/checkSetup.php";
-require_once APPPATH."/controllers/pageManager.php";
 
 class Configuration extends CI_Controller {
 
 	public function __construct() {
 		parent::__construct();
 		$this->load->helper('url');
+        $this->load->library('pageManager');
 
 		$this->i18n->setLocaleEnv($this->config->item('probe:locale'), 'global');
 	}

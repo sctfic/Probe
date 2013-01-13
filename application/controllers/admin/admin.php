@@ -13,7 +13,6 @@
 if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 require_once APPPATH."/controllers/authentification.php";
-require_once APPPATH."/controllers/pageManager.php";
 
 class admin extends Authentification
 {
@@ -32,11 +31,11 @@ class admin extends Authentification
         parent::__construct();
         where_I_Am(__FILE__, __CLASS__, __FUNCTION__, __LINE__, func_get_args());
 
-        $this->i18n->setLocaleEnv($this->config->item('probe:locale'), 'global'); // set language
-        // $this->encrypt->set_cipher(MCRYPT_BLOWFISH);
-
         // Modèles
         $this->load->model('service/Service_User');
+        $this->load->library('pageManager');
+
+        $this->i18n->setLocaleEnv($this->config->item('probe:locale'), 'global'); // set language
 
         // set URL to login page, i.e. not yet authentified (cf. config/probe.php)
         $this->urlConnexion = $this->config->item('page-login');

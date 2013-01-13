@@ -13,7 +13,6 @@
 if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 // require_once APPPATH."/controllers/checkSetup.php";
-require_once APPPATH."/controllers/pageManager.php";
 
 /**
 * Manage the installation and configuration of the application
@@ -62,6 +61,7 @@ class Install extends CI_Controller {
         where_I_Am(__FILE__, __CLASS__, __FUNCTION__, __LINE__, func_get_args());
 
         $this->load->helper('url');
+        $this->load->library('pageManager');
         $this->i18n->setLocaleEnv($this->config->item('probe:locale'), 'global');
 
         if (file_exists(APPPATH."config/db-default.php")) {
@@ -212,7 +212,6 @@ class Install extends CI_Controller {
             ;
         }
 
-        require_once APPPATH."/controllers/pageManager.php";
         $this->load->helper(array('form'));
         $this->load->library('form_validation');
         $page = new PageManager();

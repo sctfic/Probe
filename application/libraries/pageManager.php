@@ -20,8 +20,12 @@
 * @license  http://creativecommons.org/licenses/by-nc-sa/3.0/legalcode CC-by-nc-sa-3.0
 * @link     http://probe.com/doc
  */
-class PageManager extends CI_Controller
-{
+class PageManager {
+
+    public funtion __contruct() {
+        $CI =& get_instance(); // @see http://ellislab.com/codeigniter/user-guide/general/creating_libraries.html
+    }
+
     /**
      * Passes data to the view and wrap it in header/footer and necessary HTML code
      *
@@ -55,11 +59,11 @@ class PageManager extends CI_Controller
             $data['viewer'] = false;
         }
 
-        $this->load->view('templates/header', $data);
-        $this->load->view('templates/breadcrumb', $data);
-        $this->load->view($page, $data);
-        $this->load->view('templates/footer', $data);
-        $this->load->view('templates/js-libs', $data);
+        $CI->load->view('templates/header', $data);
+        $CI->load->view('templates/breadcrumb', $data);
+        $CI->load->view($page, $data);
+        $CI->load->view('templates/footer', $data);
+        $CI->load->view('templates/js-libs', $data);
     }
 
     /**
