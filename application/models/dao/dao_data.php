@@ -104,7 +104,7 @@ en vu de les retourner au scripte ajax qui les dessinera
         $length = is_integer($length)?$length:365;
         where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
         try {
-        $queryString = sprintf(file_get_contents(APPPATH.'models/sql/wind.sql'),
+        $queryString = sprintf(file_get_contents(SQL_DIR.'wind.sql'),
             $this->SEN_LST['TA:Arch:Various:Wind:DominantDirection'],
             $this->SEN_LST['TA:Arch:Various:Wind:HighSpeed'],
             $this->SEN_LST['TA:Arch:Various:Wind:HighSpeedDirection'],
@@ -118,6 +118,7 @@ en vu de les retourner au scripte ajax qui les dessinera
             $length,
             $this->STEP[$step]
         );
+        var_dump($queryString);
             $qurey_result = $this->dataDB->query($queryString);// ,
 
             $brut = $qurey_result->result_array($qurey_result);

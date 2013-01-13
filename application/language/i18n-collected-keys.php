@@ -36,3 +36,5 @@ i18n('list-view:description');
 i18n('viewer:title');
 i18n('viewer:description');
 i18n('probe:authors');
+i18n('curve:title');
+i18n('curve:description');
