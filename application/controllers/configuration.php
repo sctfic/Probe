@@ -7,7 +7,7 @@ class Configuration extends CI_Controller {
 	public function __construct() {
 		parent::__construct();
 		$this->load->helper('url');
-        $this->load->library('pageManager');
+        $this->load->library('page_manager');
 
 		$this->i18n->setLocaleEnv($this->config->item('probe:locale'), 'global');
 	}
@@ -23,7 +23,7 @@ class Configuration extends CI_Controller {
 	}
 
 	public function listStations() {
-        $page = new PageManager();
+        $page = new Page_manager();
 
         // build view data
         $data = $page->fetchConfig('configure-station-list'); // fetch information to build the HTML header
@@ -40,7 +40,7 @@ class Configuration extends CI_Controller {
 	public function addStation() {
         $this->load->library('form_validation');
 
-        $page = new PageManager();
+        $page = new Page_manager();
         $data = $page->fetchConfig('configure-add-station'); // fetch information to build the HTML header
         $data['form'] = $this->config->item('add-station-form');
 

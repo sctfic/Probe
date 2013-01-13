@@ -32,7 +32,7 @@ class viewer extends CI_Controller
     {
         parent::__construct();
         where_I_Am(__FILE__, __CLASS__, __FUNCTION__, __LINE__, func_get_args());
-        $this->load->library('pageManager');
+        $this->load->library('page_manager');
 
         $this->i18n->setLocaleEnv($this->config->item('probe:locale'), 'global');
     }
@@ -63,7 +63,7 @@ class viewer extends CI_Controller
     public function binderView($dataBinder)
     {
         where_I_Am(__FILE__, __CLASS__, __FUNCTION__, __LINE__, func_get_args());
-        $page = new PageManager();
+        $page = new Page_manager();
 
         $data = $page->fetchConfig($dataBinder);
         $data['viewer'] = true;
@@ -91,7 +91,7 @@ class viewer extends CI_Controller
     public function listView()
     {
         where_I_Am(__FILE__, __CLASS__, __FUNCTION__, __LINE__, func_get_args());
-        $page = new PageManager();
+        $page = new Page_manager();
 
         $data = $page->fetchConfig('list-view');
         // remove the controller name

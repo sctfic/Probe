@@ -1,4 +1,4 @@
-<?php
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /**
 * Page builder
 *
@@ -20,13 +20,14 @@
 * @license  http://creativecommons.org/licenses/by-nc-sa/3.0/legalcode CC-by-nc-sa-3.0
 * @link     http://probe.com/doc
  */
-class PageManager {
+class Page_manager {
     /**
      * @var _CI object CodeIgniter global object (@see http://ellislab.com/codeigniter/user-guide/general/creating_libraries.html)
      */
     private $_CI;
 
-    public function __contruct() {
+    public function __construct() {
+        where_I_Am(__FILE__, __CLASS__, __FUNCTION__, __LINE__, func_get_args());
         $this->_CI =& get_instance();
     }
 
@@ -78,6 +79,7 @@ class PageManager {
      */
     public function fetchConfig($page)
     { //
+        where_I_Am(__FILE__, __CLASS__, __FUNCTION__, __LINE__, func_get_args());
         $data = array();
         $data['page'] = $page;
         $data['title'] = i18n($page . ':title', true);

@@ -33,7 +33,7 @@ class admin extends Authentification
 
         // Modèles
         $this->load->model('service/Service_User');
-        $this->load->library('pageManager');
+        $this->load->library('page_manager');
 
         $this->i18n->setLocaleEnv($this->config->item('probe:locale'), 'global'); // set language
 
@@ -67,7 +67,7 @@ class admin extends Authentification
         // requirements
         $this->load->helper(array('form', 'url'));
         $this->load->library('form_validation');
-        $page = new PageManager();
+        $page = new Page_manager();
 
         // build view data
         $data = $page->fetchConfig('login'); // fetch information to build the HTML header

@@ -61,7 +61,7 @@ class Install extends CI_Controller {
         where_I_Am(__FILE__, __CLASS__, __FUNCTION__, __LINE__, func_get_args());
 
         $this->load->helper('url');
-        $this->load->library('pageManager');
+        $this->load->library('page_manager');
         $this->i18n->setLocaleEnv($this->config->item('probe:locale'), 'global');
 
         if (file_exists(APPPATH."config/db-default.php")) {
@@ -128,7 +128,7 @@ class Install extends CI_Controller {
 
         $this->load->helper(array('form'));
         $this->load->library('form_validation');
-        $page = new PageManager();
+        $page = new Page_manager();
 
         // build view data
         $data = $page->fetchConfig('setup-dbms'); // fetch information to build the HTML header
@@ -214,7 +214,7 @@ class Install extends CI_Controller {
 
         $this->load->helper(array('form'));
         $this->load->library('form_validation');
-        $page = new PageManager();
+        $page = new Page_manager();
 
         // build view data
         $data = $page->fetchConfig('setup-admin-user'); // fetch information to build the HTML header
