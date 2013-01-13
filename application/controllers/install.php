@@ -25,10 +25,34 @@ require_once APPPATH."/controllers/pageManager.php";
 * @link     http://probe.com/doc
  */
 
-require_once APPPATH."/controllers/pageManager.php";
+class Install extends CI_Controller {
+    /*
+     * data for the breadcrumbs related to installation
+     */
+    protected  $_breadcrumb = array(
+        'dbms' =>  array(
+            array(
+                'status' => 'active', 
+                'url' => '/install/dbms',
+                'i18n' => 'install.breadcrumb.dbms'
+            ),
+            'i18n' => 'install.breadcrumb.administrator',
+            'i18n' => 'install.breadcrumb.dashboard'
+        ),
+        'admin-user' => array(
+            array(
+                'url' => '/install/dbms',
+                'i18n' => 'install.breadcrumb.dbms',
+            ),
+            array(
+                'status' => 'active',
+                'url' => '/install/admin-user',
+                'i18n' => 'install.breadcrumb.administrator',
+            ),
+            'i18n' => 'install.breadcrumb.dashboard',
+        )
+    );
 
-class install extends CI_Controller
-{
     /**
      * entry point
      */
@@ -108,6 +132,7 @@ class install extends CI_Controller
 
         // build view data
         $data = $page->fetchConfig('setup-dbms'); // fetch information to build the HTML header
+        $data['breadcrumb'] = $this->_breadcrumb['dbms'];
         $data['dbmsUsername'] = null;
         $data['dbmsPassword'] = null;
         $data['dbmsHost'] = null;
@@ -194,6 +219,8 @@ class install extends CI_Controller
 
         // build view data
         $data = $page->fetchConfig('setup-admin-user'); // fetch information to build the HTML header
+        $data['breadcrumb'] = $this->_breadcrumb['admin-user'];
+
         $data['adminUsername'] = null;
         $data['adminPassword'] = null;
         $data['adminConfirm'] = null;

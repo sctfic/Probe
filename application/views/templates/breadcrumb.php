@@ -21,19 +21,17 @@
 <div class="navbar navbar-inverse navbar-fixed-top">
     <?php if (isset($breadcrumb)): ?>
     <ul class="breadcrumb">
-        <?php foreach ($breadcrumb as $key => $step): ?>
+    <?php foreach ($breadcrumb as $key => $step): ?>
         <?php if (is_array($step)): ?>
-            <li class="<?=isset($step['status']) ? $step['status'] : 'disabled';?>">
-                <a href="$step['url']">
-                    <?=i18n($step['i18n'])?>
-                </a>
+        <li class="<?=isset($step['status']) ? $step['status'] : 'disabled';?>">
+            <a href="<?=$step['url']?>"><?=i18n($step['i18n'])?></a>
             <?php else: ?>
-            <li>
-                <?= i18n($step); ?>
-            <?php endif ?>
+        <li>
+            <?= i18n($step); ?>
+        <?php endif // non-dependent tag : ?>
         <span class="divider">/</span>
-            </li>
-            <?php endforeach ?>
+        </li>
+    <?php endforeach ?>
     </ul>
     <?php endif ?>
 </div>

@@ -1,10 +1,14 @@
-<div class="navbar navbar-inverse navbar-fixed-top">
-	<ul class="breadcrumb">
-	    <li class="active"><a href="/install/dbms"><?=i18n("install.breadcrumb.dbms")?></a> <span class="divider">/</span></li>
-	    <li class="disabled"><?=i18n("install.breadcrumb.administrator")?> <span class="divider">/</span></li>
-	    <li class="disabled"><?=i18n("install.breadcrumb.dashboard")?> <span class="divider">/</span></li>
-	</ul>
-</div>
+<?php
+/**
+ * Form to setup application's database holding configuration
+ *
+ * @category Install
+ * @package  Probe
+ * @author   Édouard Lopez <dev+probe@edouard-lopez.com>
+ * @license  http://creativecommons.org/licenses/by-nc-sa/3.0/legalcode CC-by-nc-sa-3.0
+ * @link     http://probe.dev/install/admin-user.php
+ */
+?>
 
 <?=form_open('install/setupDbms', array(
 		'id' => 'dbms',
