@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: probe\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-13 01:43+0100\n"
-"PO-Revision-Date: 2013-01-13 02:18+0100\n"
+"POT-Creation-Date: 2013-01-13 10:44+0100\n"
+"PO-Revision-Date: 2013-01-13 10:46+0100\n"
 "Last-Translator: Édouard Lopez <dev+i18n@edouard-lopez.com>\n"
 "Language-Team: probe <dev+probe@edouard-lopez.com>\n"
 "Language: \n"
@@ -27,10 +27,10 @@ msgstr "Erreur lors de la création du fichier : %s."
 
 #: Probe/application/models/station.php:84
 #: Probe/application/models/station.php:118
-#: Probe/application/models/station.php:160
-#: Probe/application/models/station.php:213
-#: Probe/application/models/station.php:241
-#: Probe/application/models/station.php:269
+#: Probe/application/models/station.php:144
+#: Probe/application/models/station.php:197
+#: Probe/application/models/station.php:225
+#: Probe/application/models/station.php:253
 msgid "Prarametre invalide !"
 msgstr ""
 
@@ -39,34 +39,34 @@ msgid "Aucune configuration valide n'est disponible"
 msgstr ""
 
 #: Probe/application/models/station.php:124
-#: Probe/application/models/station.php:170
-#: Probe/application/models/station.php:219
-#: Probe/application/models/station.php:251
-#: Probe/application/models/station.php:275
+#: Probe/application/models/station.php:154
+#: Probe/application/models/station.php:203
+#: Probe/application/models/station.php:235
+#: Probe/application/models/station.php:259
 #, php-format
 msgid "Impossible de se connecter à %s par %s:%s"
 msgstr ""
 
 #: Probe/application/models/station.php:127
-#: Probe/application/models/station.php:196
-#: Probe/application/models/station.php:222
-#: Probe/application/models/station.php:255
-#: Probe/application/models/station.php:283
+#: Probe/application/models/station.php:180
+#: Probe/application/models/station.php:206
+#: Probe/application/models/station.php:239
+#: Probe/application/models/station.php:267
 #, fuzzy, php-format
 msgid "Fermeture de %s impossible"
 msgstr "Unidades de fomento"
 
-#: Probe/application/models/station.php:202
+#: Probe/application/models/station.php:186
 #, php-format
 msgid "Les archives de \"%s\" sont a jour (en date du : %s)"
 msgstr ""
 
-#: Probe/application/models/station.php:262
+#: Probe/application/models/station.php:246
 #, php-format
 msgid "The latest collection of archives is only on %s"
 msgstr ""
 
-#: Probe/application/models/station.php:278
+#: Probe/application/models/station.php:262
 #, php-format
 msgid "Lecture des config de %s impossible"
 msgstr ""
@@ -181,6 +181,7 @@ msgid "&nbsp;:"
 msgstr ""
 
 #: Probe/application/views/login.php:38
+#: Probe/application/views/login.php:56
 msgid "login.username.placeholder"
 msgstr "gestionnaire ou exploitant"
 
@@ -189,6 +190,7 @@ msgid "login.password"
 msgstr "Mot de passe"
 
 #: Probe/application/views/login.php:51
+#: Probe/application/views/login.php:60
 msgid "login.password.placeholder"
 msgstr "mot de passe du gestionnaire ou de l'exploitant"
 
@@ -197,29 +199,18 @@ msgstr "mot de passe du gestionnaire ou de l'exploitant"
 msgid "userName"
 msgstr "Nom d'utilisateur"
 
-#: Probe/application/views/login.php:56
-#, fuzzy
-msgid "fill in your userName"
-msgstr "Votre nom d'utilisateur last.fm"
-
 #: Probe/application/views/login.php:58
 #, fuzzy
 msgid "password"
 msgstr "Mot de passe"
 
-#: Probe/application/views/login.php:60
-#, fuzzy
-msgid "longer is better"
-msgstr "Le fichier %s n'est plus publié."
-
 #: Probe/application/views/login.php:63
-#, fuzzy
-msgid "password confirmation"
-msgstr "Confirmation du mot de passe"
+msgid "login.password-confirmation"
+msgstr "Confirmer"
 
 #: Probe/application/views/login.php:65
-msgid "so we can prevent mistakes"
-msgstr ""
+msgid "login.password-confirmation.placeholder"
+msgstr "pour éviter les erreurs de saisie"
 
 #: Probe/application/views/login.php:72
 #, fuzzy
@@ -434,6 +425,35 @@ msgstr "Modèle"
 msgid "logOut"
 msgstr ""
 
+#: Probe/application/libraries/pageManager.php:50
+msgid "error.file.missing.title"
+msgstr "Fichier manquant ou non valable"
+
+#: Probe/application/libraries/pageManager.php:51
+msgid "error.file.missing"
+msgstr "Erreur à l'ouverture du fichier"
+
+#: Probe/application/libraries/pageManager.php:53
+#, php-format
+msgid "solution.file[%s].missing"
+msgstr "Vérifier que le fichier <var>%s</var> existe bien et que vous avez les droits suffisants pour le lire"
+
+#: Probe/application/libraries/pageManager.php:58
+msgid "error.file.missing.header"
+msgstr "Fichier manquant ou non valable."
+
+#: Probe/application/libraries/pageManager.php:83
+msgid ":title"
+msgstr "Titre"
+
+#: Probe/application/libraries/pageManager.php:84
+msgid ":description"
+msgstr "Probe est une application web moderne pour gérer les stations météo de la marque Davis Instrument™ et archiver les relevés"
+
+#: Probe/application/libraries/pageManager.php:85
+msgid "probe:authors"
+msgstr "Probe Team"
+
 #: Probe/application/controllers/install.php:73
 msgid "error.database.unreachable.title"
 msgstr "Erreur : base de données inaccessible"
@@ -454,45 +474,15 @@ msgstr "Base de données est inaccessible"
 msgid "error.install.admin.exists"
 msgstr "Un utilisateur «&nbsp;admin&nbsp;» est déjà présent dans la base."
 
-#: Probe/application/controllers/pageManager.php:42
-msgid "error.file.missing.title"
-msgstr "Fichier manquant ou non valable"
-
-#: Probe/application/controllers/pageManager.php:43
-msgid "error.file.missing"
-msgstr "Erreur à l'ouverture du fichier"
-
-#: Probe/application/controllers/pageManager.php:45
-#, php-format
-msgid "solution.file[%s].missing"
-msgstr "Vérifier que le fichier <var>%s</var> existe bien et que vous avez les droits suffisants pour le lire"
-
-#: Probe/application/controllers/pageManager.php:50
-msgid "error.file.missing.header"
-msgstr "Fichier manquant ou non valable."
-
-#: Probe/application/controllers/pageManager.php:75
-msgid ":title"
-msgstr "Titre"
-
-#: Probe/application/controllers/pageManager.php:76
-msgid ":description"
-msgstr "Probe est une application web moderne pour gérer les stations météo de la marque Davis Instrument™ et archiver les relevés"
-
-#: Probe/application/controllers/pageManager.php:77
-#: Probe/application/language/i18n-collected-keys.php:38
-msgid "probe:authors"
-msgstr "Probe Team"
-
-#: Probe/application/controllers/admin/admin.php:81
+#: Probe/application/controllers/admin/admin.php:80
 msgid "Username"
 msgstr "Nom d'utilisateur"
 
-#: Probe/application/controllers/admin/admin.php:82
+#: Probe/application/controllers/admin/admin.php:81
 msgid "Password"
 msgstr "Mot de passe"
 
-#: Probe/application/controllers/admin/admin.php:83
+#: Probe/application/controllers/admin/admin.php:82
 msgid "Password Confirmation"
 msgstr "Confirmation du mot de passe"
 
@@ -583,7 +573,7 @@ msgstr "Configuration de la base de données des relevés."
 #: Probe/application/language/i18n-collected-keys.php:31
 #, fuzzy
 msgid "probe_d3:description"
-msgstr "Utilisateur responsable de l'application. Il peut ajouter et supprimer des stations."
+msgstr "Configuration de la base de données des relevés."
 
 #: Probe/application/language/i18n-collected-keys.php:32
 msgid "windrose:title"
@@ -610,6 +600,14 @@ msgstr "Connexion"
 #, fuzzy
 msgid "viewer:description"
 msgstr "Connexion à l'interface d'administration"
+
+#, fuzzy
+#~ msgid "fill in your userName"
+#~ msgstr "Votre nom d'utilisateur last.fm"
+
+#, fuzzy
+#~ msgid "longer is better"
+#~ msgstr "Le fichier %s n'est plus publié."
 
 #, fuzzy
 #~ msgid "graph:title"
