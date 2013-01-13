@@ -21,9 +21,13 @@
 * @link     http://probe.com/doc
  */
 class PageManager {
+    /**
+     * @var _CI object CodeIgniter global object (@see http://ellislab.com/codeigniter/user-guide/general/creating_libraries.html)
+     */
+    private $_CI;
 
-    public funtion __contruct() {
-        $CI =& get_instance(); // @see http://ellislab.com/codeigniter/user-guide/general/creating_libraries.html
+    public function __contruct() {
+        $this->_CI =& get_instance();
     }
 
     /**
@@ -59,11 +63,11 @@ class PageManager {
             $data['viewer'] = false;
         }
 
-        $CI->load->view('templates/header', $data);
-        $CI->load->view('templates/breadcrumb', $data);
-        $CI->load->view($page, $data);
-        $CI->load->view('templates/footer', $data);
-        $CI->load->view('templates/js-libs', $data);
+        $this->_CI->load->view('templates/header', $data);
+        $this->_CI->load->view('templates/breadcrumb', $data);
+        $this->_CI->load->view($page, $data);
+        $this->_CI->load->view('templates/footer', $data);
+        $this->_CI->load->view('templates/js-libs', $data);
     }
 
     /**
