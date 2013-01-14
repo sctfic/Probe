@@ -189,7 +189,7 @@ class db_builder extends CI_Model {
 			if (is_numeric($dbID))
 				$this->createStationTables();
 			else
-				$this->createAppTables();
+				$this->createSystemTables();
 			return true;
 		} catch (PDOException $e) {
 			throw new Exception( $e->getMessage() );
@@ -204,10 +204,10 @@ class db_builder extends CI_Model {
 	- TR_CONFIG: station's configurations
 	- TA_LOG: access log
 */
-	protected function createAppTables() {
+	protected function createSystemTables() {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		$sqlCreateTable = sprintf(
-			file_get_contents(APPPATH.'models/sql/probe.ddl'),
+			file_get_contents(APPPATH.'models/sql/system.sql'),
 			APP_DB,
 			i18n('database.table.role:admin.label')
 		);
@@ -218,7 +218,7 @@ class db_builder extends CI_Model {
 	protected function createStationTables() {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		$sqlCreateTable = sprintf(
-			file_get_contents(APPPATH.'models/sql/Probe_Weather.ddl'),
+			file_get_contents(APPPATH.'models/sql/station.sql'),
 			$this->dbName
 		);
 		$this->pdoConnection->query($sqlCreateTable);
