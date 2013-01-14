@@ -11,14 +11,39 @@
 // data getter
 // http://probe.dev/draw?station=VP2_GTD&sensors=TA:Arch:Temp:Out:Average&Since=2012-10-26T00:00:00&StepUnit=WEEK&StepNbr=6
 ?>
+<style>
 
+svg {
+  font: 10px sans-serif;
+}
+
+path {
+  /*fill: steelblue;*/
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+}
+
+.brush .extent {
+  stroke: #fff;
+  fill-opacity: .125;
+}
+.line {
+  fill: none;
+  stroke-width: 1.2px;
+}
+
+</style>
 <div id="filename" class="canvas" style="clear:both;">
     <div id="display0" style="clear:both; width: 1320px;">
         <!-- d3 content should be -dynamically- placed here -->
     </div>
     <noscript><?=i18n('warning.javascript.disable');?></noscript>
 </div>
-
+<script src="http://d3js.org/d3.v3.js"></script>
 <script>
 /**
     HOUR()          Extract the hour
@@ -32,11 +57,11 @@
     YEAR()          Return the year
 */
 $(document).ready(function(){
-    var url = "http://probe.dev/draw/curve?station=VP2_GTD&StepUnit=WEEK&StepNbr=2&Since=2012-12-29";
+    var url = "http://probe.dev/draw/curve?station=VP2_GTD&sensor=TA:Arch:Temp:Out:Average&Since=2013-01-01&StepUnit=DAY&StepNbr=1";
     // $.getJSON(url, function(json) {
     d3.tsv(url, function(error, tsv) {
         if (error) return console.warn(error);
-        plotCurve(tsv.data, '#display0',1000,120);
+        // plotCurve(tsv.data, '#display0',1000,120);
 
    });
 });

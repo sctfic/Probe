@@ -97,7 +97,9 @@ en vu de les retourner au scripte ajax qui les dessinera
 			$this->StepUnit,
 			$this->StepNbr
 		);
-		$this->dl_tsv ($data);
+		//print_r(array_merge(array('date', 'price'),$data));
+        $this->dl_tsv ($data);
+
 	}
 /**
 
@@ -145,13 +147,14 @@ http://probe.dev/draw/windrose?station=VP2_GTD&sensors=TA:Arch:Temp:Out:Average&
 
 	private function dl_tsv ($data) {
 	    $j = count($data);
-	    if ($j<=366*288)
-		    for ($i=0;$i<=$j;$i++) {
+	    if ($j<=366*288) {
+		    for ($i=0;$i<$j;$i++) {
 				$tsv .= substr($data[$i]['utc'],0,-3)."\t".$data[$i]['value']."\n";
 			}
-		// ob_clean();
-		@ob_end_clean();
-		header_remove();
-		force_download('data.tsv', $tsv);
+    		// ob_clean();
+    		@ob_end_clean();
+    		header_remove();
+    		force_download('data.tsv', "date\tval\n".trim($tsv,"\n"));
+        }
 	}
 }
