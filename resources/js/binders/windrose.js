@@ -141,6 +141,7 @@ function updatePageText(d) {
     // d3.select("#nmlink").attr("href", nmurl);
 }
 
+var SpeedFactor = 3.6; // m/sec to km/h
 
 /** Code for small wind roses **/
 //
@@ -148,7 +149,7 @@ var maxSpl =  function(d) { return d3.max(d, function(d) { return d['Spl']; }); 
 
 var totalSpl = function(d) { return d3.sum(d, function(d) { return d['Spl']; }); };
 
-var maxSpd = function(d) { return d3.max(d, function(d) { return d['Max']; }); };
+var maxSpd = function(d) { return d3.max(d, function(d) { return d['Max']; })*3.6; };
 
 // domain([0, 0.2]) = zoom rose between 0% - 20%
 // range([5, 50]) = limit of drawed value 5px to 50px
@@ -159,43 +160,90 @@ var smallArcOptions = {
     from: 5,
     to: function(d) { return smallArcScale(d.p); }
 }
-    
 
 /**
     draw the small rose 50px
     @param array of samples by direction and sample of null
     ex : {    };
 */
-function plotSmallRose(Data, container) {
+function histograph (DATA, container)
+{
+    var Histofrieze = MakeWindContainer(container, 1200, 80, 0);
+    var parseDate = d3.time.format("%Y-%m-%d").parse;
+    var x = d3.time.scale().range([0, width]);
+    var xAxis = d3.svg.axis().scale(x);//.orient("top");
+    x.domain(d3.extent(data.map(function(d) { return d.date; }))).range([0, w]).clamp(true);
+
+    var i=0;
+    var list=[];
+    for (var keydate in DATA) {
+        list.push(keydate);
+        i++;
+    }
+    Histofrieze.selectAll("circle")
+       .data(list)
+       .enter()
+       .append("circle")
+       .attr("cx", function(d) {
+            return d;
+       })
+       .attr("cy", 0)
+       .attr("r", 5);
+
+}
+function plotSmallRose(step, Data, container) {
     // console.log('plotSmallRose',maxSpd(Data),maxSpl(Data),totalSpl(Data),(maxSpl(Data)/totalSpl(Data)+0.05).toFixed(2));
     var visWidth = 30;
     smallArcScale = d3.scale.linear().domain([0,  (maxSpl(Data)/totalSpl(Data)+0.05).toFixed(2)]).range([5, visWidth]).clamp(true);
-    var small = addSVG(container, 60,60,0);
+    var small = d3.select(container)
+        .append("svg")
+        .style( { float: 'left' , position: 'relative', width: (60)+'px', height: (60)+'px', margin: '-15px', border: 'gray 1px'})
+            .style( { "z-index":100})
+        .append("g")
+            .style( { "z-index":101})
+        .attr("transform", "translate(" + [(60)/2, (60)/2] + ")");
 
     var winds = [];
     var t = totalSpl(Data);
 
     for (var key in Data) {
         if (Data[key]['Dir']!='null')
-            winds.push({d: Data[key]['Dir']*1, p: Data [key]['Spl'] / t, s: Data [key]['Spd']});
+            winds.push(
+                {
+                    d: Data[key]['Dir']*1,
+                    p: Data [key]['Spl'] / t,
+                    s: Data [key]['Spd']*SpeedFactor,
+                    m: Data [key]['Max']*SpeedFactor
+                });
     }
 
     small.append("svg:g")
+        .attr("id", "petals_"+step)
+        .style({display: 'none',})
+            .style( { "z-index":102})
         .selectAll("path")
         .data(winds)
         .enter().append("svg:path")
         .attr("d", arc(smallArcOptions))
         .style({fill: '#58e', stroke: '#000', "stroke-width": '0.5px'})
         .append("svg:title")
-        .text(function(d) { return d.d + "\u00b0 " + (100*d.p).toFixed(1) + "% " + (d.s).toFixed(1) + "km/h" });
+        .text(function(d) { return d.d + "\u00b0 " + (100*d.p).toFixed(1) + "% " + (d.s).toFixed(1) + " km/h\n Maxi : " + (d.m).toFixed(1) + " km/h"; });
         // .attr('title',function(d){ return 'p=' + d.p + '  d=' + d.d })
 
     small.append("svg:circle")
         .attr("r", smallArcOptions.from)
-        .style({fill: '#fff', stroke: '#000', "stroke-width": '0.5px'});
+        .style({fill: '#fff', stroke: '#000', "stroke-width": '0.5px'})
+            .style( { "z-index":103})
+        .on("mouseover",function (){console.log('display'); $("#petals_"+step).show();})
+        .on("mouseout",function (){$("#petals_"+step).hide();})
+        .on("click",function (){
+                plotProbabilityRose(Data, '#display1', 120);
+                plotSpeedRose(Data, '#display2',120);})
+        .append("svg:title")
+        .text(function(d) { return step });
 }
 
-function addSVG(container, w,h,p) {
+function MakeWindContainer(container, w,h,p) {
     var svg = d3.select(container)
         .append("svg")
         // .attr("id", idName)
@@ -277,7 +325,7 @@ function StyleIt (svg){
 }
 
 
-function plotProbabilityRose(Data, container, R) {
+function plotProbabilityRose(Data, container, R, clear) {
     var winds = [], zero = [], t = totalSpl(Data), SplScale = maxSpl(Data)/t, visWidth = R;
 
     var p = 22,                      // padding on outside of major elements
@@ -288,7 +336,7 @@ function plotProbabilityRose(Data, container, R) {
 
     $(container).empty();
 
-    var svg = addSVG(container, w,h,p);
+    var svg = MakeWindContainer(container, w,h,p);
 
     for (var key in Data) {
         if (Data[key]['Dir']!='null') {
@@ -297,8 +345,8 @@ function plotProbabilityRose(Data, container, R) {
             {
                 d: Data[key]['Dir']*1,
                 p: Data [key]['Spl'] / t,
-                s: Data [key]['Spd']*1,
-                m: Data [key]['Max']*1
+                s: Data [key]['Spd']*SpeedFactor,
+                m: Data [key]['Max']*SpeedFactor
             });
         }
         else calm = Data [key]['Spl'];
@@ -333,10 +381,10 @@ function plotProbabilityRose(Data, container, R) {
         ProbabilityArc.selectAll("path")
             .data(winds)
             .append("title")
-            .text(function(d) {return d.d + "\u00b0 \n" + (100*d.p).toFixed(1) + " % \n" + (d.s).toFixed(1) + " km/h\n Maxi : " + (d.m).toFixed(1) + " km/h" });
+            .text(function(d) {return d.d + "\u00b0 \n" + (100*d.p).toFixed(1) + " % \n" + (d.s).toFixed(1) + " km/h\n Maxi : " + (d.m).toFixed(1) + " km/h"; });
         ProbabilityArc.selectAll("path")
             .data(winds)
-            .transition().delay(function(d) { return d.d*5;}).duration(1000)
+            .transition().delay(function(d) { return d.d*0;}).duration(500)
             .attr("d", arc(windProbabilityArcOptions))
             .style({fill: speedToColor, stroke: '#000', "stroke-width": '0.5px'});
     StyleIt(svg);
@@ -354,7 +402,7 @@ function plotSpeedRose(Data, container, R) {
 
     $(container).empty();
 
-    var svg = addSVG(container, w,h,p);
+    var svg = MakeWindContainer(container, w,h,p);
 
     for (var key in Data) {
         if (Data[key]['Dir']!='null') {
@@ -363,8 +411,8 @@ function plotSpeedRose(Data, container, R) {
             {
                 d: Data[key]['Dir']*1,
                 p: Data [key]['Spl'] / t,
-                s: Data [key]['Spd']*1,
-                m: Data [key]['Max']*1
+                s: Data [key]['Spd']*SpeedFactor,
+                m: Data [key]['Max']*SpeedFactor
             });
         }
         else calm = Data [key]['Spl'];
@@ -386,7 +434,7 @@ function plotSpeedRose(Data, container, R) {
     drawCalm (svg, windSpeedArcOptions.from, [calm/t]);
     drawLevelGird (svg, r);
 
-// draw each max of Probability at 0%
+    // draw each max of Probability at 0%
     var SpeedArc = svg.append("g")
         .attr("class", "speedArc");
         SpeedArc.selectAll("path")
@@ -403,11 +451,11 @@ function plotSpeedRose(Data, container, R) {
         // draw each arc of Probability animated
         SpeedArc.selectAll("path")
             .data(winds)
-            .transition().delay(function(d) { return d.d*5;}).duration(1000)
+            .transition().delay(function(d) { return d.d*0;}).duration(500)
             .attr("d", arc(windMaxArcOptions))
             .style({fill:'#fff', stroke: '#222', "stroke-width": '1.5px'});
 
-// draw each arc of Probability at 0%
+    // draw each arc of Probability at 0%
     var SpeedArc = svg.append("g")
         .attr("class", "speedArc");
         SpeedArc.selectAll("path")
@@ -423,18 +471,12 @@ function plotSpeedRose(Data, container, R) {
             .text(function(d) { return d.d + "\u00b0 \n" + (100*d.p).toFixed(1) + " % \n" + (d.s).toFixed(1) + " km/h\n Maxi : " + (d.m).toFixed(1) + " km/h" });
         SpeedArc.selectAll("path")
             .data(winds)
-            .transition().delay(function(d) { return d.d*5;}).duration(1000)
+            .transition().delay(function(d) { return d.d*0;}).duration(500)
             .attr("d", arc(windSpeedArcOptions))
             .style({fill: probabilityToColor, stroke: '#000', "stroke-width": '0.5px'});
 
     StyleIt(svg);
 }
-
-
-
-
-
-
 
 
 
@@ -478,23 +520,8 @@ function historybar(Data, container) {
         keys.push(keydate);
 
    }
-    console.log(keys);
-    console.log(hist);
 
     X = d3.scale.linear().domain([0,100]).range([0, 800]); // d3.time.scale()
-
-
-//     var rules = histobarre
-//     .selectAll("g")
-//     .data(X.ticks(1))
-//     .enter().append("svg:g")
-//     .attr("class", "rule");
-
-//     rules.append("svg:line")
-//     .attr("x1", X)
-//     .attr("x2", X)
-//     .attr("y1", 0)
-//     .attr("y2", 100);
 
     var spdLine = d3.svg.line.radial()
         .interpolate("basis")
@@ -510,11 +537,4 @@ function historybar(Data, container) {
             .style({fill: '#58e', stroke: '#000', "stroke-width": '2px'})
             .attr("d", spdLine);
 
-        // .append("svg:title")
-        // .text(function(d) { return d.t + " \n" + Math.round(d.s*10)/10 + "km/h" });
-        // .attr('title', function(d){ return 'infos'});
-
-    // histobarre.append("svg:circle")
-    //     .attr("r", smallArcOptions.from)
-    //     .style({fill: '#fff', stroke: '#000', "stroke-width": '0.5px'});
 }

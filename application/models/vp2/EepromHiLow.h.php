@@ -16,10 +16,10 @@
 	'No:Current:Various:Bar:TimeDailyLow'           =>	array( 'pos' => 12,     'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,    'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
 	'No:Current:Various:Bar:TimeDailyHigh'          =>	array( 'pos' => 14,     'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,    'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
 
-    'No:Current:Various:Wind:DailyHighSpeed'        =>	array( 'pos' => 16,     'len' => 1,	'fn'=>'hexToDec',   'SI'=>'mph2mBySec',       'min'=>0,       'max'=>160,	'err'=>0,       'unit'=> 'mph'),
+    'No:Current:Various:Wind:DailyHighSpeed'        =>	array( 'pos' => 16,     'len' => 1,	'fn'=>'hexToDec',   'SI'=>'MPH2SI',       'min'=>0,       'max'=>160,	'err'=>0,       'unit'=> 'mph'),
 	'No:Current:Various:Wind:TimeDailyHighSpeed'    =>	array( 'pos' => 17,     'len' => 2,	'fn'=>'Raw2Date',   'SI'=>NULL,               'min'=>NULL,    'max'=>NULL,'err'=>0xFFFF,	'unit'=> 'Date'),
-	'No:Current:Various:Wind:MonthHighSpeed'        =>	array( 'pos' => 19,     'len' => 1,	'fn'=>'hexToDec',   'SI'=>'mph2mBySec',       'min'=>0,       'max'=>160,	'err'=>0,       'unit'=> 'mph'),
-	'No:Current:Various:Wind:YearHighSpeed'         =>	array( 'pos' => 20,     'len' => 1,	'fn'=>'hexToDec',   'SI'=>'mph2mBySec',       'min'=>0,       'max'=>160,	'err'=>0,       'unit'=> 'mph'),
+	'No:Current:Various:Wind:MonthHighSpeed'        =>	array( 'pos' => 19,     'len' => 1,	'fn'=>'hexToDec',   'SI'=>'MPH2SI',       'min'=>0,       'max'=>160,	'err'=>0,       'unit'=> 'mph'),
+	'No:Current:Various:Wind:YearHighSpeed'         =>	array( 'pos' => 20,     'len' => 1,	'fn'=>'hexToDec',   'SI'=>'MPH2SI',       'min'=>0,       'max'=>160,	'err'=>0,       'unit'=> 'mph'),
 
     'No:Current:Temp:In:DailyHigh'                  =>	array( 'pos' => 21,     'len' => 2,	'fn'=>'sSht_01',    'SI'=>'F2kelvin',         'min'=>30,      'max'=>150,	'err'=>255,     'unit'=> '°F'),
     'No:Current:Temp:In:DailyLow'                   =>	array( 'pos' => 23,     'len' => 2,	'fn'=>'sSht_01',    'SI'=>'F2kelvin',         'min'=>30,      'max'=>150,	'err'=>255,     'unit'=> '°F'),

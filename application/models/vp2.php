@@ -157,6 +157,7 @@ class vp2 extends CI_Model {
 			throw new Exception(_('Unknow Error, Reconnection'));
 		}
 	}
+
 	/**
 	@description: protected functionDescription
 	@return: protected functionReturn
@@ -192,7 +193,7 @@ class vp2 extends CI_Model {
 	// Retourne la valeur numerique coverti en unité SI
 	// Retourne FALSE si la valeur est incohérante.
 		if (is_callable($limits['SI']) and !is_string($Value)) {
-			if ($Value >= $limits['max'] or $Value <= $limits['min'])
+			if ($Value < $limits['min'] or $Value > $limits['max'])
 				return FALSE;
 			return $limits['SI']($Value);
 		}
@@ -468,8 +469,9 @@ class vp2 extends CI_Model {
 	}
 	protected function save_Archive($data){
 		$this->current_data = $data;
+		// var_dump($data);
 		foreach ($data as $name => $val) {
-			if ($val !== NULL && $val !== FALSE) {
+			if ($val !== NULL and $val !== FALSE  ) {
 			// si le capteur est branché ou si la valeur de retour n'est pas fausse 
 				$table = tableOfSensor($name);
 				$Sensor = $this->get_SEN_ID($name, $table);
@@ -481,7 +483,9 @@ class vp2 extends CI_Model {
 							array($data['TA:Arch:none:Time:UTC'], $val, $Sensor['SENSOR_ID'])
 						)
 					);
+					// echo 'Save in '. $table .'=>'. $name .'='. $Sensor['SENSOR_ID'] ." \n";
 				}
+
 			}
 		}
 	}
@@ -495,7 +499,7 @@ class vp2 extends CI_Model {
 		if (count($date->result_array())==1) {
 			return $date->result_array[0]['LAST_ARCH_DATETIME'];
 		}
-		log_message('warning', 'Resultat inutilisable : '.print_r($date));
+		log_message('warning', 'Resultat inutilisable : '.print_r($date, true));
 		return '2012/01/01T00:00:00';
 	}
 	

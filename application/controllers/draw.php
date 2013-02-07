@@ -147,6 +147,7 @@ http://probe.dev/draw/windrose?station=VP2_GTD&sensors=TA:Arch:Temp:Out:Average&
 
 	private function dl_tsv ($data) {
 	    $j = count($data);
+	    $tsv = '';
 	    if ($j<=366*288) {
 		    for ($i=0;$i<$j;$i++) {
 				$tsv .= substr($data[$i]['utc'],0,-3)."\t".$data[$i]['value']."\n";

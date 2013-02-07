@@ -53,8 +53,8 @@ Convention de nomage :
 	'NO:Current:Temp:Inside'		=>	array( 'pos' => 9,	'len' => 2,	'fn'=>'',		'SI'=>'tempSI',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
 	'NO:Current:Hum:Inside'		=>	array( 'pos' => 11,	'len' => 1,	'fn'=>'',		'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
 	'NO:Current:Temp:Outside'		=>	array( 'pos' => 12,	'len' => 2,	'fn'=>'',		'SI'=>'tempSI',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
-	'NO:Current:Various:Wind_Speed'	=>	array( 'pos' => 14,	'len' => 1,	'fn'=>'',		'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
-	'NO:Current:Various:Wind_Speed_10MinAvg'=>	array( 'pos' => 15,	'len' => 1,	'fn'=>'',		'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'NO:Current:Various:Wind_Speed'	=>	array( 'pos' => 14,	'len' => 1,	'fn'=>'',		'SI'=>'MPH2SI',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'NO:Current:Various:Wind_Speed_10MinAvg'=>	array( 'pos' => 15,	'len' => 1,	'fn'=>'',		'SI'=>'MPH2SI',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
 	'NO:Current:Various:Wind_Direction'	=>	array( 'pos' => 16,	'len' => 2,	'fn'=>'',	'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
 
 	'NO:Current:Temp:#2'		=>	array( 'pos' => 18,	'len' => 1,	'fn'=>'',	'SI'=>'tempSI',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),

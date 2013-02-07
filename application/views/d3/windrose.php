@@ -46,12 +46,12 @@ $(document).ready(function(){
         if (error) return console.warn(error);
         var i=0;
         for (var keydate in json.data) {
-            plotSmallRose(json.data[keydate], '#display0');
+            plotSmallRose(keydate, json.data[keydate], '#display0');
             i++;
         }
-
-        plotProbabilityRose(json.data[keydate], '#display1',120);
-        plotSpeedRose(json.data[keydate], '#display2',120);
+        // histograph (json.data, '#display0');
+        // plotProbabilityRose(json.data[keydate], '#display1',120);
+        // plotSpeedRose(json.data[keydate], '#display2',120);
 
    });
 });

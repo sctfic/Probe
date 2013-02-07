@@ -25,6 +25,7 @@ path {
 .axis line {
   fill: none;
   stroke: #000;
+  stroke-width: 1px;
 }
 
 .brush .extent {
@@ -61,7 +62,7 @@ $(document).ready(function(){
     // $.getJSON(url, function(json) {
     d3.tsv(url, function(error, tsv) {
         if (error) return console.warn(error);
-        // plotCurve(tsv.data, '#display0',1000,120);
+        else drawGraph (tsv.data, '#display0',1000,120);
 
    });
 });

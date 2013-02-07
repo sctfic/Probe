@@ -1,5 +1,6 @@
 <?php
 // http://www.davisnet.com/support/weather/downloads/software_direct.asp?SoftCat=4&SoftwareID=172
+// http://www.periodni.com/fr/systeme_international_d_unites.html
 /**
 		#################################################################################
 		################	Function for RAW data convertion	#################
@@ -11,12 +12,19 @@
 	function F2kelvin($val){ // convert °F to Kelvin
 		return round(($val+459.67)*5/9, 2);
 	}
+
+
+	function MPH2SI($val) {
+		return mph2mBySec($val);
+	}
 	function mph2mBySec($val){ // convert milles per hour speed 
 		return round($val/2.23693629, 3); // (3600/((5280*12)*0.0254));
 	}
 	function mph2KmByh($val){ // convert milles per hour speed 
-		return round($val*1,609.345, 2); // (3600/((5280*12)*0.0254));
+		return round($val*1.609344, 2); // (3600/((5280*12)*0.0254));
 	}
+
+
 	function inHg2hPa ($val){
 		//		http://www.sensorsone.co.uk/pressure-measurement-glossary/inhg-inch-of-mercury-0-deg-c-pressure-unit.html#factors
 		return round(33.8639*$val, 2)	;
