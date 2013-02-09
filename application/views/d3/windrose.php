@@ -13,9 +13,11 @@
 ?>
 
 <div id="filename" class="canvas" style="clear:both;">
-    <div id="display0" style="clear:both; width: 1320px;"></div>
-    <div id="display1" style="clear:both; width: 1320px;"></div>
-    <div id="display2" style="clear:both; width: 1320px;"></div>
+    <svg id="histobarre" style="height:60px"></svg>
+    <svg id="Details">
+        <g id="windrose" transform="translate(0,0)"></g>
+        <g id="windspeed" transform="translate(400,0)"></g>
+    </svg>
     <!--a id="maplink">maplink</a>
     <a id="nmlink">nmlink</a>
     <a id="whlink">whlink</a-->
@@ -44,12 +46,12 @@ $(document).ready(function(){
     // $.getJSON(url, function(json) {
     d3.json(url, function(error, json) {
         if (error) return console.warn(error);
-        var i=0;
-        for (var keydate in json.data) {
-            plotSmallRose(keydate, json.data[keydate], '#display0');
-            i++;
-        }
-        // histograph (json.data, '#display0');
+        // var i=0;
+        // for (var keydate in json.data) {
+        //     plotSmallRose(keydate, json.data[keydate], '#histobarre');
+        //     i++;
+        // }
+        histograph (json.data, '#histobarre');
         // plotProbabilityRose(json.data[keydate], '#display1',120);
         // plotSpeedRose(json.data[keydate], '#display2',120);
 

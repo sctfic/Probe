@@ -12,7 +12,7 @@ for(var i = 0; i < 12; i++) {
   months.push(true);
 }
 
-var svg = d3.select("svg");
+var svg = d3.select("#Details");
 
 
 //setup some containers to put the plots inside
@@ -166,42 +166,59 @@ var smallArcOptions = {
     @param array of samples by direction and sample of null
     ex : {    };
 */
-function histograph (DATA, container)
+function histograph (data, container)
 {
-    var Histofrieze = MakeWindContainer(container, 1200, 80, 0);
     var parseDate = d3.time.format("%Y-%m-%d").parse;
-    var x = d3.time.scale().range([0, width]);
-    var xAxis = d3.svg.axis().scale(x);//.orient("top");
-    x.domain(d3.extent(data.map(function(d) { return d.date; }))).range([0, w]).clamp(true);
 
     var i=0;
     var list=[];
-    for (var keydate in DATA) {
-        list.push(keydate);
-        i++;
+    for (var keydate in data) {
+        // data [keydate].date= keydate;
+        // data [keydate].step= ++i;
+        // data [keydate].day= parseDate(keydate);
+        list.push({
+            datestr: keydate,
+            step: ++i,
+            date: parseDate(keydate),
+            subdata: data [keydate]
+        });
     }
-    Histofrieze.selectAll("circle")
-       .data(list)
-       .enter()
-       .append("circle")
-       .attr("cx", function(d) {
-            return d;
-       })
-       .attr("cy", 0)
-       .attr("r", 5);
 
+    var svg = d3.select(container)
+        .attr("width", (i*10+50) + "px")
+        .append("g")
+        .attr("id", "cercles")
+        .selectAll("circle")
+        .data(list)
+        .enter()
+        .append("circle")
+            .attr("id", function(d) { return "cercle-"+d.datestr; })
+            .attr("cx", function(d) { return 20+10*d.step; })
+            .attr("cy", 30)
+            .attr("r", 5)
+            .style({ fill: '#fff', stroke: '#000', "stroke-width": '0.5px'})
+            .on("mouseover",function (d){
+                $('#petals')
+                    .empty()
+                d3.select('#petals')
+                    .attr("transform", "translate(" + [20+10*d.step, 30] + ")");
+                plotSmallRose(d.step, d.subdata, '#petals');
+            })
+            .on("click",function (d){
+                plotProbabilityRose(d.subdata, '#windrose', 120);
+                plotSpeedRose(d.subdata, '#windspeed',120);})
+            .append("svg:title")
+            .text(function(d) { return d.datestr });
+
+    d3.select(container)
+        .append("g")
+        .attr("id", "petals");
 }
 function plotSmallRose(step, Data, container) {
     // console.log('plotSmallRose',maxSpd(Data),maxSpl(Data),totalSpl(Data),(maxSpl(Data)/totalSpl(Data)+0.05).toFixed(2));
     var visWidth = 30;
     smallArcScale = d3.scale.linear().domain([0,  (maxSpl(Data)/totalSpl(Data)+0.05).toFixed(2)]).range([5, visWidth]).clamp(true);
     var small = d3.select(container)
-        .append("svg")
-        .style( { float: 'left' , position: 'relative', width: (60)+'px', height: (60)+'px', margin: '-15px', border: 'gray 1px'})
-            .style( { "z-index":100})
-        .append("g")
-            .style( { "z-index":101})
-        .attr("transform", "translate(" + [(60)/2, (60)/2] + ")");
 
     var winds = [];
     var t = totalSpl(Data);
@@ -219,28 +236,15 @@ function plotSmallRose(step, Data, container) {
 
     small.append("svg:g")
         .attr("id", "petals_"+step)
-        .style({display: 'none',})
-            .style( { "z-index":102})
         .selectAll("path")
         .data(winds)
-        .enter().append("svg:path")
+        .enter()
+        .append("svg:path")
         .attr("d", arc(smallArcOptions))
         .style({fill: '#58e', stroke: '#000', "stroke-width": '0.5px'})
-        .append("svg:title")
-        .text(function(d) { return d.d + "\u00b0 " + (100*d.p).toFixed(1) + "% " + (d.s).toFixed(1) + " km/h\n Maxi : " + (d.m).toFixed(1) + " km/h"; });
+        // .append("svg:title")
+        // .text(function(d) { return d.d + "\u00b0 " + (100*d.p).toFixed(1) + "% " + (d.s).toFixed(1) + " km/h\n Maxi : " + (d.m).toFixed(1) + " km/h"; });
         // .attr('title',function(d){ return 'p=' + d.p + '  d=' + d.d })
-
-    small.append("svg:circle")
-        .attr("r", smallArcOptions.from)
-        .style({fill: '#fff', stroke: '#000', "stroke-width": '0.5px'})
-            .style( { "z-index":103})
-        .on("mouseover",function (){console.log('display'); $("#petals_"+step).show();})
-        .on("mouseout",function (){$("#petals_"+step).hide();})
-        .on("click",function (){
-                plotProbabilityRose(Data, '#display1', 120);
-                plotSpeedRose(Data, '#display2',120);})
-        .append("svg:title")
-        .text(function(d) { return step });
 }
 
 function MakeWindContainer(container, w,h,p) {
