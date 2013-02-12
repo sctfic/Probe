@@ -14,10 +14,10 @@
 
 <div id="filename" class="canvas" style="clear:both;">
     <svg id="histobarre" style="height:60px"></svg>
-    <svg id="Details">
-        <g id="windrose" transform="translate(0,0)"></g>
-        <g id="windspeed" transform="translate(400,0)"></g>
-    </svg>
+    <div id="Details">
+        <div id="windrose"></div>
+        <div id="windspeed"></div>
+    </div>
     <!--a id="maplink">maplink</a>
     <a id="nmlink">nmlink</a>
     <a id="whlink">whlink</a-->
@@ -42,18 +42,13 @@
     YEAR()          Return the year
 */
 $(document).ready(function(){
-    var url = "http://probe.dev/draw/wind?station=VP2_GTD&StepUnit=WEEK&StepNbr=2&Since=2012-12-29";
+    var url = "http://probe.dev/data/wind?station=VP2_GTD&StepUnit=WEEK&StepNbr=6&Since=2013-02-01";
     // $.getJSON(url, function(json) {
     d3.json(url, function(error, json) {
         if (error) return console.warn(error);
-        // var i=0;
-        // for (var keydate in json.data) {
-        //     plotSmallRose(keydate, json.data[keydate], '#histobarre');
-        //     i++;
-        // }
         histograph (json.data, '#histobarre');
-        // plotProbabilityRose(json.data[keydate], '#display1',120);
-        // plotSpeedRose(json.data[keydate], '#display2',120);
+        // plotProbabilityRose(json.data['2012-01-29'], '#display1',120);
+        // plotSpeedRose(json.data['2012-01-29'], '#display2',120);
 
    });
 });

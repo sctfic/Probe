@@ -179,12 +179,13 @@ function histograph (data, container)
         list.push({
             datestr: keydate,
             step: ++i,
-            date: parseDate(keydate),
+            // date: parseDate(keydate),
             subdata: data [keydate]
         });
     }
 
-    var svg = d3.select(container)
+// add visible circle in background
+    d3.select(container)
         .attr("width", (i*10+50) + "px")
         .append("g")
         .attr("id", "cercles")
@@ -192,27 +193,47 @@ function histograph (data, container)
         .data(list)
         .enter()
         .append("circle")
-            .attr("id", function(d) { return "cercle-"+d.datestr; })
+            // .attr("id", function(d) { return "cercle-"+d.datestr; })
             .attr("cx", function(d) { return 20+10*d.step; })
             .attr("cy", 30)
             .attr("r", 5)
-            .style({ fill: '#fff', stroke: '#000', "stroke-width": '0.5px'})
+            .style({ fill: '#fff', stroke: '#000', "stroke-width": '0.5px'});
+
+// add petals layer in middelground
+    d3.select(container)
+        .append("g")
+        .attr("id", "petals");
+
+
+// add events circle on forground with opacity 0%
+    d3.select(container)
+        .attr("width", (i*10+50) + "px")
+        .append("g")
+        .attr("id", "cercles")
+        .selectAll("circle")
+        .data(list)
+        .enter()
+        .append("circle")
+            // .attr("id", function(d) { return "cercle-"+d.datestr; })
+            .attr("cx", function(d) { return 20+10*d.step; })
+            .attr("cy", 30)
+            .attr("r", 5)
+            .style({"fill-opacity": 0 })
             .on("mouseover",function (d){
                 $('#petals')
                     .empty()
                 d3.select('#petals')
                     .attr("transform", "translate(" + [20+10*d.step, 30] + ")");
                 plotSmallRose(d.step, d.subdata, '#petals');
+                // plotProbabilityRose(d.subdata, '#windrose', 120);
+                // plotSpeedRose(d.subdata, '#windspeed',120);
             })
             .on("click",function (d){
                 plotProbabilityRose(d.subdata, '#windrose', 120);
-                plotSpeedRose(d.subdata, '#windspeed',120);})
+                plotSpeedRose(d.subdata, '#windspeed',120);
+            })
             .append("svg:title")
             .text(function(d) { return d.datestr });
-
-    d3.select(container)
-        .append("g")
-        .attr("id", "petals");
 }
 function plotSmallRose(step, Data, container) {
     // console.log('plotSmallRose',maxSpd(Data),maxSpl(Data),totalSpl(Data),(maxSpl(Data)/totalSpl(Data)+0.05).toFixed(2));

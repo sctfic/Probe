@@ -101,7 +101,7 @@ en vu de les retourner au scripte ajax qui les dessinera
 */
     function wind($since='2013-01-01', $step='DAY', $length=365){
         $since = $this->dataDB->escape($since);
-        $length = is_integer($length)?$length:365;
+        $length = is_integer($length*1)?$length:365;
         where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
         try {
         $queryString = sprintf(file_get_contents(SQL_DIR.'wind.sql'),
@@ -118,7 +118,7 @@ en vu de les retourner au scripte ajax qui les dessinera
             $length,
             $this->STEP[$step]
         );
-        var_dump($queryString);
+
             $qurey_result = $this->dataDB->query($queryString);// ,
 
             $brut = $qurey_result->result_array($qurey_result);
