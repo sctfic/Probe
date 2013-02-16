@@ -40,3 +40,5 @@ i18n('curve:title');
 i18n('curve:description');
 i18n('curents:title');
 i18n('curents:description');
+i18n('currents:title');
+i18n('currents:description');

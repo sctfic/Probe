@@ -43,12 +43,12 @@ Convention de nomage :
 **/
 
 	$this->Loop = array (
-// 	'L'				=>	array( 'pos' => 0,	'len' => 1,	'fn'=>'',		'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>0,	'unit'=> ''	),
-// 	'O'				=>	array( 'pos' => 1,	'len' => 1,	'fn'=>'',		'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>0,	'unit'=> ''	),
-// 	'O'				=>	array( 'pos' => 2,	'len' => 1,	'fn'=>'',		'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>0,	'unit'=> ''	),
+// 	'NO:Data::L'				=>	array( 'pos' => 0,	'len' => 1,	'fn'=>'',		'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>0,	'unit'=> ''	),
+// 	'NO:Data::O'				=>	array( 'pos' => 1,	'len' => 1,	'fn'=>'',		'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>0,	'unit'=> ''	),
+// 	'NO:Data::O'				=>	array( 'pos' => 2,	'len' => 1,	'fn'=>'',		'SI'=>NULL,	'min'=>0,	'max'=>0,	'err'=>0,	'unit'=> ''	),
 	'NO:Current:Various:Pressure_3hTrend'	=>	array( 'pos' => 3,	'len' => 1,	'fn'=>'BTrend',		'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
-	'NO:::PacketType'			=>	array( 'pos' => 4,	'len' => 1,	'fn'=>'s2uc',		'SI'=>NULL,	'min'=>0,	'max'=>8,	'err'=>255,	'unit'=> ''	),
-// 	'NO:::Nextrecord'			=>	array( 'pos' => 5,	'len' => 2,	'fn'=>'Temp',		'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'NO:Data::PacketType'			=>	array( 'pos' => 4,	'len' => 1,	'fn'=>'s2uc',		'SI'=>NULL,	'min'=>0,	'max'=>8,	'err'=>255,	'unit'=> ''	),
+// 	'NO:Data::Nextrecord'			=>	array( 'pos' => 5,	'len' => 2,	'fn'=>'Temp',		'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
 	'NO:Current:Various:Pressure_Current'	=>	array( 'pos' => 7,	'len' => 2,	'fn'=>'Pressure',	'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
 	'NO:Current:Temp:Inside'		=>	array( 'pos' => 9,	'len' => 2,	'fn'=>'Temp',		'SI'=>'tempSI',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
 	'NO:Current:Hum:Inside'		=>	array( 'pos' => 11,	'len' => 1,	'fn'=>'Rate',		'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),

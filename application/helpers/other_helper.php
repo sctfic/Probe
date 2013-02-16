@@ -91,13 +91,12 @@ function saveDataOnFile($file, $data, $format, $label=null)
     if (!is_dir($targetDir))
         if (!mkdir($targetDir, 0775, true))
             throw new Exception(sprintf(i18n('error.file[%s].creation'), $targetDir));
+
     if (!is_writable($targetDir)) {
         log_message('error', sprintf(i18n('error.file[%s].creation'), $targetDir));
         throw new Exception(sprintf(i18n('error.file[%s].creation'), $targetDir));
     } else {
-        list($filename, $data) = prepareSerialization($file, $data, $format, $label);
-
-        $result = file_put_contents($filename, $data);
+        Serialization($file, $data, $format, $label);
     }
 
     return $result;
@@ -114,26 +113,28 @@ function saveDataOnFile($file, $data, $format, $label=null)
  * @return integer returns the number of bytes that were written to the file,
  *                         or FALSE on failure (@see http://fr2.php.net/manual/en/function.file-put-contents.php).
  */
-function prepareSerialization($file, $data, $format, $label = null)
+function Serialization($file, $data, $format, $label = null)
 {
     if (($format & FORMAT_TXT) == FORMAT_TXT) {
         $filename = $file.'.txt';
-        $data = print_r($data, true);
-    } elseif (($format & FORMAT_SERIALIZED) == FORMAT_SERIALIZED) {
-        $filename = $file.'.serialized';
-        $data = serialize($data);
-    } elseif (($format & FORMAT_PHP) == FORMAT_PHP) {
-        $filename = $file.'.php';
-        $data = sprintf("<?php\n\$%s = %s;", $label, var_export($data, true));
-    } elseif (($format & FORMAT_JSON) == FORMAT_JSON) {
-        $filename = $file.'.json';
-        $data = json_encode($data);
-    } elseif ($format & FORMAT_XML == FORMAT_XML) {
-        $filename = $file.'.xml';
-        $data = highlight_string(print_r($data, true), true);
+        file_put_contents($filename, print_r($data, true));
     }
-
-    return array($filename, $data);
+    if (($format & FORMAT_SERIALIZED) == FORMAT_SERIALIZED) {
+        $filename = $file.'.serialized';
+        file_put_contents($filename, serialize($data));
+     }
+    if (($format & FORMAT_PHP) == FORMAT_PHP) {
+        $filename = $file.'.php';
+        file_put_contents($filename, sprintf("<?php\n\$%s = %s;", $label, var_export($data, true)));
+    }
+    if (($format & FORMAT_JSON) == FORMAT_JSON) {
+        $filename = $file.'.json';
+        file_put_contents($filename, json_encode($data));
+    }
+    if ($format & FORMAT_XML == FORMAT_XML) {
+        $filename = $file.'.xml';
+        file_put_contents($filename, highlight_string(print_r($data, true), true));
+    }
 }
     /**
         identifie la table qui correspond a notre type de donnée, parmis les tables EAV

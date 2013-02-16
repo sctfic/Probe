@@ -4,6 +4,7 @@ class vp2 extends CI_Model {
 	protected $backLightScreen=FALSE; // actual state of backlight screen
 	public $_version = 0.31;
 	protected $conf = null;
+	protected $lockFile;
 	
 	protected $prep_EAV = NULL;
 	protected $key_EAV = array(':utc', ':val', ':sensorID');
@@ -58,23 +59,38 @@ class vp2 extends CI_Model {
 					(SEN_NAME, SEN_HUMAN_NAME, SEN_DESCRIPTIF, SEN_MIN_REALISTIC, SEN_MAX_REALISTIC, SEN_UNITE_SIGN, SEN_DEF_PLOT, SEN_MAX_ALARM, SEN_MIN_ALARM, SEN_LAST_CALIBRATE, SEN_CALIBRATE_PERIOD) 
 				VALUES ('.implode(', ', $this->key_SENSOR).');');
 	}
+	function chekpolitness () {
+		$this->lockFile = dirname(__FILE__).'/'.$this->conf['_name'].'.lock';
+		$end = @file_get_contents($this->lockFile);
+
+		if ($end===FALSE // impossible de lire le contenu
+			|| strtotime(date ("Y/m/d H:i:s")) > strtotime($end) + 60 * 5) // lock agé de plus de 5min
+		{
+			file_put_contents($this->lockFile, date ("Y/m/d H:i:s"));
+			return true;
+		}
+		log_message('probe', _( sprintf('Connexion à %s deja en cour sous un autre process.', $this->conf['_name']) ) );
+		return FALSE;
+	}
 	function initConnection()	{
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
-		$errno = 0;
-		$this->fp = @fsockopen (
-			$this->conf['_ip'],
-			$this->conf['_port']
-		);
-		if ($this->fp && $errno==0) {
-			stream_set_timeout ($this->fp, 0, 2500000);
-			if ($this->wakeUp()) {
-				// if ($this->config->item('verbose_threshold') > 2)
-				// 	$this->toggleBacklight (1);
-				log_message('probe', _( sprintf('Ouverture de la connexion à %s', $this->conf['_name']) ) );
-				return TRUE;
-			}
-			else {
-				fclose($this->fp);
+		if ($this->chekpolitness()) {
+			$errno = 0;
+			$this->fp = @fsockopen (
+				$this->conf['_ip'],
+				$this->conf['_port']
+			);
+			if ($this->fp && $errno==0) {
+				stream_set_timeout ($this->fp, 0, 2500000);
+				if ($this->wakeUp()) {
+					// if ($this->config->item('verbose_threshold') > 2)
+					// 	$this->toggleBacklight (1);
+					log_message('probe', _( sprintf('Ouverture de la connexion à %s', $this->conf['_name']) ) );
+					return TRUE;
+				}
+				else {
+					fclose($this->fp);
+				}
 			}
 		}
 		return FALSE;
@@ -82,6 +98,8 @@ class vp2 extends CI_Model {
 	function CloseConnection()	{
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		// $this->toggleBacklight(0);
+		if (!unlink($this->lockFile))
+			rename($this->lockFile, ".trash");
 		if (fclose($this->fp)) {
 			log_message('probe', sprintf( _('Fermeture de %s correcte.'), $this->conf['_name'] ) );
 			return TRUE;
@@ -250,12 +268,12 @@ class vp2 extends CI_Model {
 			
 			$this->RequestCmd("HILOWS\n");
 			$data = fread($this->fp, 436+2);
-			log_message('probe', '[LPS] : Download the current Values');
+			log_message('probe', '[HILOWS] : Download the current Values');
 			$this->VerifAnswersAndCRC($data, 436+2);
 			saveDataOnFile(
 				'data/'.$this->conf['_name'].'/HILOWS'/*.'-'.date('Y/m/d H:i:s')*/,
 				array_merge( array('UTC_date'=>date('Y/m/d H:i:s')), $HILOWS = $this->RawConverter($this->HiLows, $data)),
-				FORMAT_PHP + FORMAT_TXT + FORMAT_JSON + FORMAT_SERIALIZED + FORMAT_XML);		}
+				FORMAT_JSON);		}
 		catch (Exception $e) {
 			log_message('warning',  $e->getMessage());
 			return false;
@@ -264,39 +282,40 @@ class vp2 extends CI_Model {
 		return $HILOWS;
 	}
 	/**
-	@description: Lis les valeur courante de tous les capteur disponible sur la station
+	@description: Lis les valeurs courantes de tous les capteurs disponible sur la station
 	@return: retourne un tableau de tableau de la forme :
 		array (
 			'Date Heure_0' => array ( Data1, Data2, ... ),
 			'Date Heure_0 + 2.5sec ' => array ( Data1, Data2, ... ),
 			... );
 	@param: Nombre de cycle CURRENT a relever (Par defaut 1 seul).
+	@param: Nombre de cycle CURRENT a relever (Par defaut 1 seul).
 	*/
-	function GetLPS ($type=3, $nbr=1) {
+	function GetLPS ($type=0x03, $nbr=2) {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
-		$_NBR = $nbr;
 		$LPS = false;
 		try {
 			$this->RequestCmd("LPS $type $nbr\n");
-			while ($nbr-- > 0) {
+			while ($nbr > 0) {
 				$data = fread($this->fp, 97+2);
 				$this->VerifAnswersAndCRC($data, 97+2);
 				log_message('probe', '[LPS] : Download the current Values');
-// 				$packet_type = $this->convertUnit( $this->convertRaw( $this->subRaw( $data, $this->Loop['NO:::PacketType']), $this->Loop['NO:::PacketType']), $this->Loop['NO:::PacketType']);
-				$packet_type = $this->RawConverter(array('NO:::PacketType'=>$this->Loop['NO:::PacketType']), $data);
-				// log_message('type', 'Type'.$packet_type."\n".__FUNCTION__.'('.__CLASS__.' ('.$this->conf['_name'].':'.($this->conf['database']).') '.")\n".__FILE__.' ['.__LINE__.']');
-				switch($packet_type['NO:::PacketType']) {
+// 				$packet_type = $this->convertUnit( $this->convertRaw( $this->subRaw( $data, $this->Loop['NO:Data::PacketType']), $this->Loop['NO:Data::PacketType']), $this->Loop['NO:Data::PacketType']);
+				$packet_type = $this->RawConverter(array('NO:Data::PacketType'=>$this->Loop['NO:Data::PacketType']), $data);
+				$packet_type = $packet_type['NO:Data::PacketType'];
+				log_message('type', '$nbr:'.$nbr.' / Type = '.$packet_type); //.__FUNCTION__.'('.__CLASS__.' ('.$this->conf['_name'].':'.($this->conf['database']).') '.")\n".__FILE__.' ['.__LINE__.']');
+				switch($packet_type) {
 					case 0:
 					saveDataOnFile(
 						'data/'.$this->conf['_name'].'/LOOP'/*.'-'.date('Y/m/d H:i:s')*/,
 						array_merge( array('UTC_date'=>date('Y/m/d H:i:s')), $LPS = $this->RawConverter($this->Loop, $data)),
-						FORMAT_PHP + FORMAT_TXT + FORMAT_JSON + FORMAT_SERIALIZED + FORMAT_XML);
+						FORMAT_JSON );
 						break;
 					case 1:
 					saveDataOnFile(
 						'data/'.$this->conf['_name'].'/LOOP2'/*.'-'.date('Y/m/d H:i:s')*/,
 						array_merge( array('UTC_date'=>date('Y/m/d H:i:s')), $LPS = $this->RawConverter($this->Loop2, $data)),
-						FORMAT_PHP + FORMAT_TXT + FORMAT_JSON + FORMAT_SERIALIZED + FORMAT_XML);
+						FORMAT_JSON );
 					break;
 					case 2:
 						break;
@@ -304,7 +323,10 @@ class vp2 extends CI_Model {
 						break;
 				}
 				
-				if ($nbr>0) sleep(2);
+				if ($nbr>0) {
+					sleep(2);
+				}
+				$nbr--;
 			}
 		}
 		catch (Exception $e) {
