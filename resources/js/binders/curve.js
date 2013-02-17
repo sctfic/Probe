@@ -1,173 +1,115 @@
-var margin = {top: 10, right: 10, bottom: 100, left: 40},
-    margin2 = {top: 430, right: 10, bottom: 20, left: 40};
-var width, height, height2;
-var focus, context;
-var parseDate = d3.time.format("%Y-%m-%d %H:%M").parse;
-var color = d3.scale.category10();
+var parse = d3.time.format("%Y-%m-%d %H:%M").parse,
+    format = d3.time.format("%Y");
 
-var x = x2 = d3.time.scale().range([0, width]),
-    // x2 = d3.time.scale().range([0, width]),
-    y = d3.scale.linear().range([height, 0]),
-    y2 = d3.scale.linear().range([height2, 0]);
+var svg, area, line, gradient, xAxis, yAxis;
 
-var xAxis = d3.svg.axis().scale(x).orient("top"),
-    xAxis2 = d3.svg.axis().scale(x2).orient("top");
-    yAxis = d3.svg.axis().scale(y).orient("left");
+function drawGraph (data, container, w, h) {
+    var m = [1, 40, 30, 1],
+    w = w - m[1] - m[3],
+    h = h - m[0] - m[2];
 
-var brush = d3.svg.brush()
-    .x(x2)
-    .on("brush", brush);
+    var x = d3.time.scale().range([0, w]),
+        y = d3.scale.linear().range([h, 0]);
 
-var line = d3.svg.line()
-    // https://github.com/mbostock/d3/wiki/SVG-Shapes#wiki-line_interpolate
-	// linear  step-before  step-after  basis  cardinal
-    .interpolate("basis")
-    .x(function(d) { return x(d.date); })
-    .y(function(d) { return y(d.val); });
-
-var line2 = d3.svg.line()
-    .interpolate("basis")
-    .x(function(d) { return x2(d.date); })
-    .y(function(d) { return y2(d.val); });
+    xAxis = d3.svg.axis().scale(x).orient("bottom").tickSize(-h, 0).tickPadding(6),
+    yAxis = d3.svg.axis().scale(y).orient("right").tickSize(-w).tickPadding(6);
 
 
-var curveCount = 0;
+    svg = d3.select(container).append("svg:svg")
+        .attr("width", w + m[1] + m[3])
+        .attr("height", h + m[0] + m[2])
+        .append("svg:g")
+        .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
 
+    gradient = svg.append("svg:defs").append("svg:linearGradient")
+        .attr("id", "gradient")
+        .attr("x2", "0%")
+        .attr("y2", "100%");
 
+    gradient.append("svg:stop")
+        .attr("offset", "0%")
+        .attr("stop-color", "#fff")
+        .attr("stop-opacity", .5);
 
+    gradient.append("svg:stop")
+        .attr("offset", "100%")
+        .attr("stop-color", "#999")
+        .attr("stop-opacity", 1);
 
-function plotCurve(data, container, w, h) {
-    if (!curveCount)
-        MakeCurveContainer(container, w, h);
+    svg.append("svg:clipPath")
+        .attr("id", "clip")
+      .append("svg:rect")
+        .attr("x", x(0))
+        .attr("y", y(1))
+        .attr("width", x(1) - x(0))
+        .attr("height", y(0) - y(1));
 
-    data.forEach( function(d) {
-            d.date = parseDate(d.date);
-            d.val = +d.val; // caste au format numerique
-        });
+    svg.append("svg:g")
+        .attr("class", "y axis")
+        .attr("transform", "translate(" + w + ",0)");
 
-    x.domain(d3.extent(data.map(function(d) { return d.date; }))).range([0, w]).clamp(true);
-    console.log ( d3.extent(data.map(function(d) { return d.date; })) , 1);
+    svg.append("svg:path")
+        .attr("class", "area")
+        .attr("clip-path", "url(#clip)")
+        .style("fill", "url(#gradient)");
 
-    focus.append("g")
+    svg.append("svg:g")
         .attr("class", "x axis")
-        .attr("transform", "translate(0," + height + ")")
-        .call(xAxis);
-    // console.log ( data , 2);
+        .attr("transform", "translate(0," + h + ")");
 
-    x2.domain(x.domain());
-    context.append("g")
-        .attr("class", "x axis")
-        .attr("transform", "translate(0," + height2 + ")")
-        .call(xAxis2);
+    svg.append("svg:path")
+        .attr("class", "line")
+        .attr("clip-path", "url(#clip)");
 
-    addCurve(data);
-}
+    var rect = svg.append("svg:rect")
+        .attr("class", "pane")
+        .attr("width", w)
+        .attr("height", h);
+
+    // An area generator.
+    area = d3.svg.area()
+        .interpolate("step-after")
+        .x(function(d) { return x(d.date); })
+        .y0(y(0))
+        .y1(function(d) { return y(d.val); });
+
+    // A line generator.
+    line = d3.svg.line()
+        .interpolate("step-after")
+        .x(function(d) { return x(d.date); })
+        .y(function(d) { return y(d.val); });
 
 
 
 
-function addCurve(data) {
-    // console.log ( data , 3);
+    // Parse dates and numbers.
+    data.forEach(function(d) {
+        d.date = parse(d.date);
+        d.val = +d.val;
+    });
+
+    x.domain(d3.extent(data.map(function(d) { return d.date; })));
     ymin = d3.min(data.map(function(d) { return d.val; }));
     ymax = d3.max(data.map(function(d) { return d.val; }));
-    ymargin = (ymax - ymin)/20
+    ymargin = (ymax - ymin)/50
+    y.domain([ymin-ymargin, ymax+ymargin]);
 
     // y.domain(d3.extent(data.map(function(d) { return d.val; })));
-    y.domain([ymin-ymargin, ymax+ymargin]).range([0, height]).clamp(true);
-    // y.domain([
-    //         d3.min( data.map(function(d) { return d.val; }) ) - ( d3.max(data.map(function(d) { return d.val; }))-d3.min(data.map(function(d) { return d.val; }))/20 ),
-    //         d3.max( data.map(function(d) { return d.val; }) ) + ( d3.max(data.map(function(d) { return d.val; }))-d3.min(data.map(function(d) { return d.val; }))/20 )
-    //     ]);
-    focus.append("g")
-        .attr("class", "y axis")
-        .call(yAxis);
-            // console.log ( [ymin-ymargin, ymax+ymargin] , 10);
 
-            console.log ( height , height2 , 10);
-    y2.domain([ymin-ymargin, ymax+ymargin]).range([0, height2]).clamp(true);
-    context.append("g")
-        .attr("class", "x axis")
-        .attr("transform", "translate(0," + height2 + ")")
-        .call(xAxis2);
-
-/**
-    Tracage de la courbe principale
-*/
-    focus.append("path")
-        .attr("class", "line")
-        .datum(data)
-        .attr("clip-path", "url(#clip)")
-        .style("stroke", function(d) { return color('courbe1'); })
-        .attr("d", line);
-
-           focus.append("g")
-                .attr("class", "x axis")
-                .attr("transform", "translate(0," + height + ")")
-                .call(xAxis);
-            focus.append("g")
-                .attr("class", "y axis")
-                .call(yAxis);
-
-            console.log ( data , 5);
-
-/**
-    Tracage de la courbe miniature du bas
-*/
-    context.append("path")
-        .attr("class", "line")
-        .datum(data)
-        .attr("clip-path", "url(#clip)")
-        .style("stroke", function(d) {return color('courbe1'); })
-        .attr("d", line2);
-
-            context.append("g")
-                .attr("class", "x axis")
-                .attr("transform", "translate(0," + height2 + ")")
-                .call(xAxis2);
-            console.log ( data , 6);
-
-/**
-    Brush
-*/
-    context.append("g")
-        .attr("class", "x brush")
-        .call(brush)
-        .selectAll("rect")
-        .attr("y", -6)
-        .attr("height", height2 + 7);
-
-    curveCount++;
+    // Bind the data to our path elements.
+    svg.select("path.area").data([data]);
+    svg.select("path.line").data([data]);
+    rect.call(d3.behavior.zoom().x(x).scaleExtent([1,Infinity]).on("zoom", draw));
+    d3.behavior.zoom().scale(4);
+    console.log(d3.behavior.zoom().scale());
+    draw();
 }
 
-function MakeCurveContainer(container, w, h) {
-    width = w - margin.left - margin.right,
-    height = h - margin.top - margin.bottom,
-    height2 = h - margin2.top - margin2.bottom;
-
-            console.log ( height , height2 , 11);
-
-    var svg = d3.select(container)
-        .append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom);
-
-    // svg.append("defs").append("clipPath")
-    //     .attr("id", "clip")
-    //     .append("rect")
-    //     .attr("width", width)
-    //     .attr("height", height);
-
-    focus = svg.append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-    context = svg.append("g")
-        .attr("transform", "translate(" + margin2.left + "," + margin2.top + ")");
-
-    return svg;
-}
-
-function brush() {
-  x.domain(brush.empty() ? x2.domain() : brush.extent());
-  focus.select("path").attr("d", line);
-  focus.select(".x.axis").call(xAxis);
+function draw() {
+    var ptg = d3.event.translate[0]; // coordonnee X du point gauche en pixel
+    svg.select("g.x.axis").call(xAxis);
+    svg.select("g.y.axis").call(yAxis);
+    svg.select("path.area").attr("d", area);
+    svg.select("path.line").attr("d", line);
+    // console.log(d3.event.scale, d3.event.translate[1], d3.event.translate[0]);
 }

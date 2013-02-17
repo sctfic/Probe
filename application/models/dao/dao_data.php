@@ -60,7 +60,7 @@ en vu de les retourner au scripte ajax qui les dessinera
             WHERE SEN_ID = $SEN_ID 
                 AND utc >=$since 
                 AND utc < DATE_ADD($since, INTERVAL $length $step)
-        LIMIT 0 , 10000";
+        LIMIT 0 , 106000"; // 10000 = 5 semaines
         $qurey_result = $this->dataDB->query($queryString);// ,
 
         $brut = $qurey_result->result_array($qurey_result);

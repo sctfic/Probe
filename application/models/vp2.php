@@ -235,14 +235,10 @@ class vp2 extends CI_Model {
 		 try {
 			log_message('probe', '[EEBRD] : Download the current Config');
 			
-// 			$P=str_pad(strtoupper(dechex(0)),3,'0',STR_PAD_LEFT);
-// 			$L=str_pad(strtoupper(dechex(177)),2,'0',STR_PAD_LEFT);
 			$this->RequestCmd("EEBRD 000 B1\n");
 			$data = fread($this->fp, 177+2);
 			$this->VerifAnswersAndCRC($data, 177+2);
 
-// 			$P=str_pad(strtoupper(dechex(4092)),3,'0',STR_PAD_LEFT);
-// 			$L=str_pad(strtoupper(dechex(1)),2,'0',STR_PAD_LEFT);
 			$this->RequestCmd("EEBRD FFC 01\n");
 			$data2 = fread($this->fp, 1+2);
 			$this->VerifAnswersAndCRC($data2, 1+2);
@@ -273,7 +269,7 @@ class vp2 extends CI_Model {
 			saveDataOnFile(
 				'data/'.$this->conf['_name'].'/HILOWS'/*.'-'.date('Y/m/d H:i:s')*/,
 				array_merge( array('UTC_date'=>date('Y/m/d H:i:s')), $HILOWS = $this->RawConverter($this->HiLows, $data)),
-				FORMAT_JSON);		}
+				FORMAT_JSON + FORMAT_PHP);		}
 		catch (Exception $e) {
 			log_message('warning',  $e->getMessage());
 			return false;
@@ -288,10 +284,10 @@ class vp2 extends CI_Model {
 			'Date Heure_0' => array ( Data1, Data2, ... ),
 			'Date Heure_0 + 2.5sec ' => array ( Data1, Data2, ... ),
 			... );
-	@param: Nombre de cycle CURRENT a relever (Par defaut 1 seul).
+	@param: Type de donnee attendu voir Doc LOOP et LOOP2.
 	@param: Nombre de cycle CURRENT a relever (Par defaut 1 seul).
 	*/
-	function GetLPS ($type=0x03, $nbr=2) {
+	function GetLPS ($type=0x03, $nbr=2, $save=true) {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		$LPS = false;
 		try {
@@ -299,23 +295,30 @@ class vp2 extends CI_Model {
 			while ($nbr > 0) {
 				$data = fread($this->fp, 97+2);
 				$this->VerifAnswersAndCRC($data, 97+2);
-				log_message('probe', '[LPS] : Download the current Values');
-// 				$packet_type = $this->convertUnit( $this->convertRaw( $this->subRaw( $data, $this->Loop['NO:Data::PacketType']), $this->Loop['NO:Data::PacketType']), $this->Loop['NO:Data::PacketType']);
-				$packet_type = $this->RawConverter(array('NO:Data::PacketType'=>$this->Loop['NO:Data::PacketType']), $data);
-				$packet_type = $packet_type['NO:Data::PacketType'];
-				log_message('type', '$nbr:'.$nbr.' / Type = '.$packet_type); //.__FUNCTION__.'('.__CLASS__.' ('.$this->conf['_name'].':'.($this->conf['database']).') '.")\n".__FILE__.' ['.__LINE__.']');
+				$packet_type = current($this->RawConverter(array('NO:Data::PacketType'=>$this->Loop['NO:Data::PacketType']), $data));
+				log_message('infos', '[LPS] : Download the current Values');
 				switch($packet_type) {
 					case 0:
-					saveDataOnFile(
-						'data/'.$this->conf['_name'].'/LOOP'/*.'-'.date('Y/m/d H:i:s')*/,
-						array_merge( array('UTC_date'=>date('Y/m/d H:i:s')), $LPS = $this->RawConverter($this->Loop, $data)),
-						FORMAT_JSON );
+						if ($save) {
+							saveDataOnFile(
+								'data/'.$this->conf['_name'].'/LOOP'/*.'-'.date('Y/m/d H:i:s')*/,
+								array_merge( array('UTC_date'=>date('Y/m/d H:i:s')), $LPS = $this->RawConverter($this->Loop, $data)),
+								FORMAT_JSON + FORMAT_PHP);
+						}
+						else {
+							$LPS['LOOP'] = $this->RawConverter($this->Loop, $data)
+						}
 						break;
 					case 1:
-					saveDataOnFile(
-						'data/'.$this->conf['_name'].'/LOOP2'/*.'-'.date('Y/m/d H:i:s')*/,
-						array_merge( array('UTC_date'=>date('Y/m/d H:i:s')), $LPS = $this->RawConverter($this->Loop2, $data)),
-						FORMAT_JSON );
+						if ($save) {
+							saveDataOnFile(
+								'data/'.$this->conf['_name'].'/LOOP2'/*.'-'.date('Y/m/d H:i:s')*/,
+								array_merge( array('UTC_date'=>date('Y/m/d H:i:s')), $LPS = $this->RawConverter($this->Loop2, $data)),
+								FORMAT_JSON + FORMAT_PHP);
+						}
+						else {
+							$LPS['LOOP2'] = $this->RawConverter($this->Loop2, $data)
+						}
 					break;
 					case 2:
 						break;
@@ -345,7 +348,6 @@ class vp2 extends CI_Model {
 	*/
 	function GetDmpAft($last, $save=true) {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
-		 //
 		$DATAS=false;
 		try {
 			if (!$this->OffsetTime) $this->OffsetTime = $this->OffsetTime();
@@ -358,9 +360,7 @@ class vp2 extends CI_Model {
 			$this->RequestCmd($crc);					// Send the CRC (parametre #2)
 			$data = fread($this->fp, 6);				// we read the properties : item count and first item position
 			$this->VerifAnswersAndCRC($data, 6);
-// 			$nbrArch=0;
 			$LastArchDate = 0;
-// 			$retry = $this->retry-1;
 			$nbrPages = hexToDec (strrev(substr($data,0,2)));	// Split Bytes in revers order : Nbr of page
 			$firstArch = hexToDec (strrev(substr($data,2,2)));	// Split Bytes in revers order : # of first archived
 				log_message('infos', 'There are '.$nbrPages.'p. in queue, from archive '.$firstArch.' on first page since '.$last.'.');
