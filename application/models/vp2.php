@@ -69,7 +69,7 @@ class vp2 extends CI_Model {
 			file_put_contents($this->lockFile, date ("Y/m/d H:i:s"));
 			return true;
 		}
-		log_message('probe', _( sprintf('Connexion à %s deja en cour sous un autre process.', $this->conf['_name']) ) );
+		log_message('infos', _( sprintf('Connexion à %s deja en cour sous un autre process.', $this->conf['_name']) ) );
 		return FALSE;
 	}
 	function initConnection()	{
@@ -85,7 +85,7 @@ class vp2 extends CI_Model {
 				if ($this->wakeUp()) {
 					// if ($this->config->item('verbose_threshold') > 2)
 					// 	$this->toggleBacklight (1);
-					log_message('probe', _( sprintf('Ouverture de la connexion à %s', $this->conf['_name']) ) );
+					log_message('infos', _( sprintf('Ouverture de la connexion à %s', $this->conf['_name']) ) );
 					return TRUE;
 				}
 				else {
@@ -101,7 +101,7 @@ class vp2 extends CI_Model {
 		if (!unlink($this->lockFile))
 			rename($this->lockFile, ".trash");
 		if (fclose($this->fp)) {
-			log_message('probe', sprintf( _('Fermeture de %s correcte.'), $this->conf['_name'] ) );
+			log_message('infos', sprintf( _('Fermeture de %s correcte.'), $this->conf['_name'] ) );
 			return TRUE;
 		}
 		return FALSE;
@@ -233,7 +233,7 @@ class vp2 extends CI_Model {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		$CONFS = false;
 		 try {
-			log_message('probe', '[EEBRD] : Download the current Config');
+			log_message('infos', '[EEBRD] : Download the current Config');
 			
 			$this->RequestCmd("EEBRD 000 B1\n");
 			$data = fread($this->fp, 177+2);
@@ -260,11 +260,11 @@ class vp2 extends CI_Model {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		$HILOW = false;
 		try {
-			log_message('probe', '[EEBRD] : Download the current Config');
+			log_message('infos', '[EEBRD] : Download the current Config');
 			
 			$this->RequestCmd("HILOWS\n");
 			$data = fread($this->fp, 436+2);
-			log_message('probe', '[HILOWS] : Download the current Values');
+			log_message('infos', '[HILOWS] : Download the current Values');
 			$this->VerifAnswersAndCRC($data, 436+2);
 			saveDataOnFile(
 				'data/'.$this->conf['_name'].'/HILOWS'/*.'-'.date('Y/m/d H:i:s')*/,
@@ -305,9 +305,7 @@ class vp2 extends CI_Model {
 								array_merge( array('UTC_date'=>date('Y/m/d H:i:s')), $LPS = $this->RawConverter($this->Loop, $data)),
 								FORMAT_JSON + FORMAT_PHP);
 						}
-						else {
-							$LPS['LOOP'] = $this->RawConverter($this->Loop, $data)
-						}
+						else $LPS['LOOP'] = $this->RawConverter($this->Loop, $data);
 						break;
 					case 1:
 						if ($save) {
@@ -316,9 +314,7 @@ class vp2 extends CI_Model {
 								array_merge( array('UTC_date'=>date('Y/m/d H:i:s')), $LPS = $this->RawConverter($this->Loop2, $data)),
 								FORMAT_JSON + FORMAT_PHP);
 						}
-						else {
-							$LPS['LOOP2'] = $this->RawConverter($this->Loop2, $data)
-						}
+						else $LPS['LOOP2'] = $this->RawConverter($this->Loop2, $data);
 					break;
 					case 2:
 						break;
@@ -414,7 +410,7 @@ class vp2 extends CI_Model {
 			log_message('warning', sprintf( _('Default Clock synchronize : %ssec'), $realLag) );
 			if ($realLag < 3600+$maxLag || $realLag > 3600*12 || $force) {
 				// if ($TIME = $this->updateStationTime()) {
-				// 	log_message('probe', _('Clock synchronizing.'));
+				// 	log_message('infos', _('Clock synchronizing.'));
 				// }
 				// else log_message('warning', _( 'Clock synch.'));
 			}
@@ -447,7 +443,7 @@ class vp2 extends CI_Model {
 				.':'.str_pad(ord($TIME[0]),2,'0',STR_PAD_LEFT);
 			$TIME = $TIME.$this->OffsetTime;
 
-			log_message('probe',  'Real : '.date('c').' vs VP2 : '.$TIME);
+			log_message('infos',  'Real : '.date('c').' vs VP2 : '.$TIME);
 			return $TIME;
 		}
 		catch (Exception $e) {
@@ -481,7 +477,7 @@ class vp2 extends CI_Model {
 			list($h,$i,$s) = explode(':', $_clock);
 			$TIME = chr($s).chr($i).chr($h).chr($d).chr($m).chr($y-1900);
 			$this->RequestCmd ($TIME . CalculateCRC($TIME));
-			log_message('probe', '[SETTIME] : '.$_date.' '.$_clock);
+			log_message('infos', '[SETTIME] : '.$_date.' '.$_clock);
 			return $_date.' '.$_clock;
 		}
 		catch (Exception $e) {
