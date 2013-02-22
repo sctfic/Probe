@@ -42,3 +42,7 @@ i18n('curents:title');
 i18n('curents:description');
 i18n('currents:title');
 i18n('currents:description');
+i18n('graph:title');
+i18n('graph:description');
+i18n('curves:title');
+i18n('curves:description');

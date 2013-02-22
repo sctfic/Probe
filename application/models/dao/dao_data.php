@@ -7,11 +7,13 @@ en vu de les retourner au scripte ajax qui les dessinera
     protected $dataDB = NULL;
     public $SEN_LST = array();
     protected $STEP = array('HOUR'=>'HOUR', 'DAY'=>'DAY', 'WEEK'=>'WEEK', 'MONTH'=>'MONTH');
-    function __construct($station) {
+    function __construct($station, $sensor) {
         parent::__construct();
         where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__);
         $this->dataDB = $this->load->database($station, TRUE);
         $this->SEN_LST = $this->sensor_list();
+        $this->SEN_ID = $this->SEN_LST[$sensor];
+        $this->SEN_TABLE = tableOfSensor($sensor);
     }
 
 /**
@@ -40,6 +42,19 @@ en vu de les retourner au scripte ajax qui les dessinera
         }
         return $reformated;
     }
+
+    function estimate($since='2013-01-01T00:00', $to='2099-12-31T23:59') {
+        where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
+        $queryString = 
+        "SELECT MIN(  `UTC` ) AS first, MAX(  `UTC` ) AS last, COUNT(  `UTC` ) AS count
+            FROM  `".$this->SEN_TABLE."` 
+            WHERE SEN_ID = ".$this->SEN_ID."
+                AND utc >= '$since'
+                AND utc < '$to'";
+        $qurey_result = $this->dataDB->query($queryString);
+        $brut = $qurey_result->result_array($qurey_result);
+        return end($brut);
+    }
 /**
 
 * @
@@ -47,20 +62,19 @@ en vu de les retourner au scripte ajax qui les dessinera
 * @param lenght is the number of day
 * @param is the sensor name (one or more)
 */
-    function curve($table, $sensor, $since='2013-01-01', $step='DAY', $length=365) {
+    function curve($since='2013-01-01T00:00', $to='2099-12-31T23:59', $Granularity=180) {
         where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
-        $since = $this->dataDB->escape($since);
-        $SEN_ID = $this->SEN_LST[$sensor];
-        $step = $this->STEP[$step];
-        $length = is_integer($length) ? $length : 365;
 
         $queryString = 
-        "SELECT utc, value 
-            FROM  `$table` 
-            WHERE SEN_ID = $SEN_ID 
-                AND utc >=$since 
-                AND utc < DATE_ADD($since, INTERVAL $length $step)
-        LIMIT 0 , 106000"; // 10000 = 5 semaines
+        "SELECT FROM_UNIXTIME( round( UNIX_TIMESTAMP(`UTC`) / ".($Granularity*60).", 0)*".($Granularity*60)." ) as UTC_Round , round(avg(value), 2) as `value`
+            FROM  `".$this->SEN_TABLE."` 
+            WHERE SEN_ID = ".$this->SEN_ID."
+                AND utc >= '$since'
+                AND utc < '$to'
+        GROUP BY UTC_Round
+        ORDER BY UTC_Round asc
+        LIMIT 0 , 5000";
+
         $qurey_result = $this->dataDB->query($queryString);// ,
 
         $brut = $qurey_result->result_array($qurey_result);
@@ -79,7 +93,7 @@ en vu de les retourner au scripte ajax qui les dessinera
 *           max period value,
 *           last period value]
 */
-    function bracketCurve($since, $lenght) {
+    function bracketCurve($since='2013-01-01T00:00', $to='2099-12-31T23:59', $Granularity=180) {
         where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
         // Stock Price
         // Date,Open,High,Low,Close,Volume
@@ -88,10 +102,25 @@ en vu de les retourner au scripte ajax qui les dessinera
         //  ["2012-02-28",15.47,15.65,15.17,15.33,17497100],
         //  ["2012-02-27",15.59,15.66,15.25,15.47,18631700],
         //  ["2012-02-24",15.96,15.98,15.72,15.79,9166700],
-        $args = func_get_args();
-        foreach ($args as $value) {
-            
-        }
+
+        $queryString = 
+        "SELECT FROM_UNIXTIME( round( UNIX_TIMESTAMP(`UTC`) / ".($Granularity*60).", 0)*".($Granularity*60)." ) as UTC_Round ,
+                round(min(`value`), 2) as first,
+                round(min(`value`), 2) as min,
+                round(avg(`value`), 2) as val,
+                round(max(`value`), 2) as max,
+                round(max(`value`), 2) as last
+            FROM  `".$this->SEN_TABLE."` 
+            WHERE SEN_ID = ".$this->SEN_ID."
+                AND utc >= '$since'
+                AND utc < '$to'
+        GROUP BY UTC_Round
+        ORDER BY UTC_Round asc
+        LIMIT 0 , 5000";
+
+        $qurey_result = $this->dataDB->query($queryString);// ,
+        $brut = $qurey_result->result_array($qurey_result);
+        return $brut;
     }
 
 /**
@@ -99,9 +128,8 @@ en vu de les retourner au scripte ajax qui les dessinera
 * @param since is the start date of result needed
 * @param lenght is the number of day
 */
-    function wind($since='2013-01-01', $step='DAY', $length=365){
-        $since = $this->dataDB->escape($since);
-        $length = is_integer($length*1)?$length:365;
+    function wind($since='2013-01-01', $to='2099-12-31T23:59', $Granularity=180){
+
         where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
         try {
         $queryString = sprintf(file_get_contents(SQL_DIR.'wind.sql'),

@@ -48,13 +48,12 @@ function drawGraph (data, container, w, h) {
         .style("stroke", function(d) { return color('courbe1'); })
         .attr("clip-path", "url(#clip)");
 
-    hoverLine = svg.append("svg:line")
-        .attr("class", "hover-line")
-        .style("stroke", function(d) { return color('curssor'); })
-        // .style('stroke-width', 1)
-        .attr("x1", 0).attr("x2", 0) // vertical line so same value on each
-        .attr("y1", 0).attr("y2", h); // top to bottom  
-            
+    // hoverLine = svg.append("svg:line")
+    //     .attr("class", "hover-line")
+    //     .style("stroke", function(d) { return color('curssor'); })
+    //     // .style('stroke-width', 1)
+    //     .attr("x1", 0).attr("x2", 0) // vertical line so same value on each
+    //     .attr("y1", 0).attr("y2", h); // top to bottom      
     // hide it by default
     // hoverLine.classed("hide", true);
 
@@ -124,8 +123,8 @@ function drawGraph (data, container, w, h) {
             i++;
         }
 
-        hoverLine.attr("x1", pos.x)
-            .attr("x2", pos.x);
+        // hoverLine.attr("x1", pos.x)
+        //     .attr("x2", pos.x);
 
         circle.attr("opacity", 1)
             .attr("cx", pos.x)
@@ -137,7 +136,7 @@ function drawGraph (data, container, w, h) {
         });
 
 
-    rect.call(d3.behavior.zoom().x(x).scaleExtent([1,1000]).on("zoom", draw));
+    rect.call(d3.behavior.zoom().x(x).scaleExtent([1,10]).on("zoom", draw));
     // d3.behavior.zoom().scale(4);
     draw();
 }

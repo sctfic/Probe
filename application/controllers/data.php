@@ -24,21 +24,19 @@ en vu de les retourner au scripte ajax qui les dessinera
 		$this->load->helper('download');
 
 		$this->station = new Station();
-		// print_r($this->input->get());
 		// encoded with javascript encodeURIComponent()
 		$station = rawurldecode($this->input->get('station'));
 
 		$this->setSensor($this->input->get('sensor'));
-		// $this->Size = $this->input->get('Size');
-		$this->Since = rawurldecode($this->input->get('Since'));
-		$this->StepUnit = $this->input->get('StepUnit');
-		$this->StepNbr = $this->input->get('StepNbr');
 
-		if (empty($this->Since) || empty($this->StepUnit) || empty($this->StepNbr)) {
-			$this->Since = date('Y/m/d H:i:s', strtotime(date('Y/m/d 00:00:00')) - 365*24*60*60); // today - 365 days
-			$this->StepUnit = 'DAY';
-			$this->StepNbr = 365; // 365
-		}
+		$this->Since = rawurldecode($this->input->get('Since'));
+	        $this->Since = empty($this->To) ? '2013-01-01T00:00':date('Y/m/dTH:i', strtotime($this->Since));
+
+		$this->To = $this->input->get('To');
+	        $this->To = empty($this->To) ? '2099-12-31T23:59':date('Y/m/dTH:i', strtotime($this->To));
+
+		$this->Granularity = $this->input->get('Granularity');
+	        $this->Granularity = is_integer($this->Granularity+1) ? $this->Granularity : 180; // in minutes
 
 		$this->Station = end($this->station->config($station));
 		// print_r($this->Station);
@@ -49,36 +47,34 @@ en vu de les retourner au scripte ajax qui les dessinera
 			"name"=>$this->Station['_name'],
 			"id"=>$this->Station['_name']));
 
-		if ($this->Since or $this->StepUnit or $this->StepNbr) {
-			$this->dataReader = new dao_data($this->Station);
+		if ($this->Since or $this->To or $this->Granularity) {
+			$this->dataReader = new dao_data($this->Station, $this->sensor);
 			// $this->load->model('dao/dao_data', 'dataReader'); // return $this->dataReader object
 		}
 		else {
 			$this->dataReader = new dao_data_summary($this->Station);
 			// $this->load->model('dao/dao_data_summary', 'dataReader'); // return $this->dataReader object
 		}
-
 	}
+
+
+
 	function setSensor($str) {
 		$this->sensor =  rawurldecode($str);
 		// if (isset($this->sensors[16])) unset($this->sensors[16]);
 		return $this->sensor;
 	}
+
+
 /**
 
 * @
 * @param 
 * @param 
 */
-	function index(){
+	function index() {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 
-		// header("Content-Type: application/json");
-		// echo ($this->windRose());
-		// $data = $this->windRose();
-		// ob_clean();
-		// header_remove();
-		// force_download('data.json', '{"info":["lon":0,"lat":0,"name":"name","id":"id"],"data":'.$data.'}');
 	}
 
 /**
@@ -88,14 +84,23 @@ en vu de les retourner au scripte ajax qui les dessinera
 * @param lenght is the number of day
 * @param is the sensor name (one or more)
 */
-	function curve(){
+	function curve($force=false){
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__);
+
+		if (!$force) {
+			list($first,$last,$count) = $this->dataReader->estimate (
+				$this->Since,
+				$this->To
+			);
+			if ((strtotime($last)-strtotime($first)) > $this->Granularity*2000) {
+							;
+				}
+		}
+
 		$data = $this->dataReader->curve (
-			tableOfSensor($this->sensor),
-			$this->sensor,
 			$this->Since,
-			$this->StepUnit,
-			$this->StepNbr
+			$this->To,
+			$this->Granularity
 		);
 		//print_r(array_merge(array('date', 'price'),$data));
         $this->dl_tsv ($data);
@@ -114,16 +119,27 @@ en vu de les retourner au scripte ajax qui les dessinera
 *			max period value,
 *			last period value]
 */
-	function bracketCurve(){
+	function bracketCurve($force=false){
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__);
-		$data = $this->dataReader->curve (
-			tableOfSensor($this->sensor),
-			$this->sensor,
+
+		$data = $this->dataReader->bracketCurve (
 			$this->Since,
-			$this->StepUnit,
-			$this->StepNbr
+			$this->To,
+			$this->Granularity
 		);
-		$this->dl_tsv ($data);
+
+		$j = count($data);
+	    $tsv = '';
+	    for ($i=0;$i<$j;$i++) {
+			$tsv .= substr(	$data[$i]['UTC_Round'],0,-3)."\t".
+							$data[$i]['first']."\t".
+							$data[$i]['min']."\t".
+							$data[$i]['val']."\t".
+							$data[$i]['max']."\t".
+							$data[$i]['last']."\n";
+		}
+
+		$this->dl_tsv ("date\tfirst\tmin\tavg\tmax\tlast\n".trim($tsv,"\n"));
 	}
 /**
 http://probe.dev/draw/windrose?station=VP2_GTD&sensors=TA:Arch:Temp:Out:Average&Since=2012-10-26T00:00:00&StepUnit=DAY&StepNbr=6
@@ -133,9 +149,20 @@ http://probe.dev/draw/windrose?station=VP2_GTD&sensors=TA:Arch:Temp:Out:Average&
 */
 	function wind(){
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
-		$data = $this->dataReader->wind ($this->Since, $this->StepUnit, $this->StepNbr);
+		$data = $this->dataReader->wind (
+			$this->Since,
+			$this->To,
+			$this->Granularity
+		);
 		$this->dl_json ($data);
 	}
+
+
+
+
+
+
+
 
 	private function dl_json ($data) {
 		$json = json_encode(array_merge($this->info, array('data' => $data)), JSON_NUMERIC_CHECK);
@@ -146,16 +173,9 @@ http://probe.dev/draw/windrose?station=VP2_GTD&sensors=TA:Arch:Temp:Out:Average&
 	}
 
 	private function dl_tsv ($data) {
-	    $j = count($data);
-	    $tsv = '';
-	    if ($j<=366*288) {
-		    for ($i=0;$i<$j;$i++) {
-				$tsv .= substr($data[$i]['utc'],0,-3)."\t".$data[$i]['value']."\n";
-			}
-    		// ob_clean();
-    		@ob_end_clean();
-    		header_remove();
-    		force_download('data.tsv', "date\tval\n".trim($tsv,"\n"));
-        }
+		// ob_clean();
+		@ob_end_clean();
+		header_remove();
+		force_download('data.tsv', $data);
 	}
 }
