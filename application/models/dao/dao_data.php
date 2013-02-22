@@ -105,11 +105,11 @@ en vu de les retourner au scripte ajax qui les dessinera
 
         $queryString = 
         "SELECT FROM_UNIXTIME( round( UNIX_TIMESTAMP(`UTC`) / ".($Granularity*60).", 0)*".($Granularity*60)." ) as UTC_Round ,
-                round(min(`value`), 2) as first,
+                SUBSTRING_INDEX(GROUP_CONCAT(CAST(`value` AS CHAR) ORDER BY utc),',',1) as first,
                 round(min(`value`), 2) as min,
                 round(avg(`value`), 2) as val,
                 round(max(`value`), 2) as max,
-                round(max(`value`), 2) as last
+                SUBSTRING_INDEX(GROUP_CONCAT(CAST(`value` AS CHAR) ORDER BY utc),',',-1) as last
             FROM  `".$this->SEN_TABLE."` 
             WHERE SEN_ID = ".$this->SEN_ID."
                 AND utc >= '$since'
@@ -117,7 +117,7 @@ en vu de les retourner au scripte ajax qui les dessinera
         GROUP BY UTC_Round
         ORDER BY UTC_Round asc
         LIMIT 0 , 5000";
-
+print_r($queryString);
         $qurey_result = $this->dataDB->query($queryString);// ,
         $brut = $qurey_result->result_array($qurey_result);
         return $brut;
