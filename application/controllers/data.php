@@ -8,9 +8,10 @@ en vu de les retourner au scripte ajax qui les dessinera
 	protected $Station=NULL; // name or ID nbr of station
 	protected $sensor=NULL; // name or ID nbr of station
 	protected $Since=NULL; // start date of data
-	protected $StepUnit='HOUR'; // HOUR, DAY, WEEK, MONTH, (YEAR)
-	protected $StepNbr=12; // number of step 1-48
+	protected $To=NULL;
+	protected $Granularity=NULL;
 	public $dataReader=NULL;
+	protected $Force=NULL;
 
 	function __construct() {
 		parent::__construct();
@@ -34,6 +35,9 @@ en vu de les retourner au scripte ajax qui les dessinera
 
 		$this->To = $this->input->get('To');
 	        $this->To = empty($this->To) ? '2099-12-31T23:59':date('Y-m-dTH:i', strtotime($this->To));
+
+		$this->Force = $this->input->get('Force');
+	        $this->Force = empty($this->Force) ? false : true;
 
 		$this->Granularity = $this->input->get('Granularity'); // Granularity in minutes
 	        $this->Granularity = is_integer($this->Granularity) ? $this->Granularity : 180; // in minutes
@@ -74,7 +78,11 @@ en vu de les retourner au scripte ajax qui les dessinera
 */
 	function index() {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
-
+		$recomandGranularity = $this->dataReader->estimate (
+                $this->Since,
+                $this->To
+            );
+		print_r($recomandGranularity);
 	}
 
 /**
@@ -84,19 +92,16 @@ en vu de les retourner au scripte ajax qui les dessinera
 * @param lenght is the number of day
 * @param is the sensor name (one or more)
 */
-	function curve($force=false){
+	function curve(){
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__);
 
 		if (!$force) {
-			// list($first,$last,$count);
-			list($first,$last,$count) = array_values($this->dataReader->estimate (
-				$this->Since,
-				$this->To
-			));
-
-			if ((strtotime($last)-strtotime($first)) > $this->Granularity*2000) {
-					;
-				}
+			$recomandGranularity = $this->dataReader->estimate (
+                $this->Since,
+                $this->To
+            );
+			if ($this->Granularity >= $recomandGranularity*4 || $this->Granularity <= $recomandGranularity/2 )
+				$this->Granularity = $recomandGranularity;
 		}
 
 		$data = $this->dataReader->curve (
@@ -128,8 +133,18 @@ en vu de les retourner au scripte ajax qui les dessinera
 *			max period value,
 *			last period value]
 */
-	function bracketCurve($force=false){
+	function bracketCurve(){
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__);
+
+		if (!$force) {
+			$recomandGranularity = $this->dataReader->estimate (
+                $this->Since,
+                $this->To
+            );
+			if ($this->Granularity >= $recomandGranularity*10 || $this->Granularity <= $recomandGranularity )
+				$this->Granularity = $recomandGranularity/3;
+		}
+
 
 		$data = $this->dataReader->bracketCurve (
 			$this->Since,

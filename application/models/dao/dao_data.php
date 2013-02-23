@@ -2,7 +2,7 @@
 class dao_data extends CI_Model {
 /**
 Cette classe appelle les differentes requetes
-en vu de les retourner au scripte ajax qui les dessinera
+en vu de les retourner au script ajax qui les dessinera
 */
     protected $dataDB = NULL;
     public $SEN_LST = array();
@@ -43,6 +43,13 @@ en vu de les retourner au scripte ajax qui les dessinera
         return $reformated;
     }
 
+
+/**
+
+* @ this functione estimate the recommanded granularity between 2 date for retunr 1000 value
+* @param $since is the start date of result needed
+* @param $to is the end date of result needed
+*/
     function estimate($since='2013-01-01T00:00', $to='2099-12-31T23:59') {
         where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
         $queryString = 
@@ -53,16 +60,18 @@ en vu de les retourner au scripte ajax qui les dessinera
                 AND utc < '$to'";
 
         $qurey_result = $this->dataDB->query($queryString);
-        $brut = $qurey_result->result_array($qurey_result);
+        list($first,$last,$count) = array_values( end($qurey_result->result_array($qurey_result)) );
 
-        return end($brut);
+        $GranularityFor1000Value = round((strtotime($last)-strtotime($first)) / $count * ($count/1000) / 60 , 1);
+        
+        return $GranularityFor1000Value<5 ? 5 : $GranularityFor1000Value;
     }
 /**
 
 * @
-* @param since is the start date of result needed
-* @param lenght is the number of day
-* @param is the sensor name (one or more)
+* @param $since is the start date of result needed
+* @param $to is the end date of result needed
+* @param $Granularity
 */
     function curve($since='2013-01-01T00:00', $to='2099-12-31T23:59', $Granularity=180) {
         where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
@@ -85,10 +94,12 @@ en vu de les retourner au scripte ajax qui les dessinera
 /**
 
 * @
-* @param since is the start date of result needed
-* @param lenght is the number of day
+* @param $since is the start date of result needed
+* @param $to is the end date of result needed
+* @param $Granularity
 * @param is the sensor name (one or more)
-*        for each we return by period :
+*
+* @return for each we return by period :
 *           [first period value,
 *           min period value,
 *           avg period value,
@@ -97,13 +108,6 @@ en vu de les retourner au scripte ajax qui les dessinera
 */
     function bracketCurve($since='2013-01-01T00:00', $to='2099-12-31T23:59', $Granularity=180) {
         where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
-        // Stock Price
-        // Date,Open,High,Low,Close,Volume
-        // [["2012-03-01",15.21,15.43,15.15,15.25,11248600],
-        //  ["2012-02-29",15.38,15.64,15.14,15.15,17229900],
-        //  ["2012-02-28",15.47,15.65,15.17,15.33,17497100],
-        //  ["2012-02-27",15.59,15.66,15.25,15.47,18631700],
-        //  ["2012-02-24",15.96,15.98,15.72,15.79,9166700],
 
         $queryString = 
         "SELECT FROM_UNIXTIME( TRUNCATE( UNIX_TIMESTAMP(`UTC`) / ".($Granularity*60).", 0)*".($Granularity*60)." ) as UTC_grp ,
@@ -126,9 +130,14 @@ en vu de les retourner au scripte ajax qui les dessinera
     }
 
 /**
+
 * @
-* @param since is the start date of result needed
-* @param lenght is the number of day
+* @param $since is the start date of result needed
+* @param $to is the end date of result needed
+* @param $Granularity
+*
+* @return 
+* 
 */
     function wind($since='2013-01-01', $to='2099-12-31T23:59', $Granularity=180){
 
@@ -166,13 +175,18 @@ en vu de les retourner au scripte ajax qui les dessinera
             throw new Exception( $e->getMessage() );
         }
     }
+
 /**
 
 * @
-* @param since is the start date of result needed
-* @param lenght is the number of day
+* @param $since is the start date of result needed
+* @param $to is the end date of result needed
+* @param $Granularity
+*
+* @return 
+* 
 */
-    function windrose_allInOne($since, $lenght){
+    function windrose_allInOne($since='2013-01-01', $to='2099-12-31T23:59', $Granularity=180){
         where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 
     }

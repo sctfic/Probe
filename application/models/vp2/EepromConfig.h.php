@@ -3,6 +3,7 @@
 /// XII. EEPROM configuration settings (See Docs on pages 35, 36, 37, 38)
 // ##############################################################################################
 /**
+* @param keyName
 Convention de nomage :
 > Debut de chaine '/^'
 > Type de Donnes en base :
@@ -23,6 +24,8 @@ Convention de nomage :
 > Type de donnée :
 			Hum = Humidité  
 			Temp = Temperature (<!> il en existe 3 format)
+			Rain = Pluviometrie
+			ET = evapotranspiration
 			SoilMoisture = Soil Moisture - l’humidité superficielle du sol
 			LeafWetness = Leaf wetness - l’humidité residuelle sur le feuillage
 			Various = pour les autres données, vent pression, UV, ...
@@ -33,6 +36,15 @@ Convention de nomage :
 > Descriptif valeur :
 			infos sur la valeur relevée ex : Wind:Dir, Wind:Speed, Wind:10mSpeedAvg
 >Fin de chaine '$/'
+*
+* @param pos => possition of the raw data for this sensor  in the VP2 returned RAW string
+* @param len => lenth of the raw string result for this sensor
+* @param fn => how to convert raw data to number value
+* @param SI => how to convert native UNIT to SI unit (NULL if is already in SI unit)
+* @param min => min value on the earth *in the native unit
+* @param max => max value on the earth *in the native unit
+* @param err => returned value if error on this sensor
+* @param unit => native unit
 **/
 
 	$this->EEPROM = array (

@@ -201,8 +201,10 @@ class vp2 extends CI_Model {
 				$val = DMPAFT_GetVP2Date ($StrValue, $this->OffsetTime);
 			else
 				$val = $limits['fn']($StrValue);
-			if ($val == $limits['err'])
-				return NULL;
+			if ($val == $limits['err']) {
+// where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,array($val, $limits['err']));
+							return NULL;
+			}
 			return $val;
 		}
 		return '<!> Missing function : ['.$limits['fn'].'] to convert RAW data.<!>';
@@ -211,8 +213,10 @@ class vp2 extends CI_Model {
 	// Retourne la valeur numerique coverti en unité SI
 	// Retourne FALSE si la valeur est incohérante.
 		if (is_callable($limits['SI']) and !is_string($Value)) {
-			if ($Value < $limits['min'] or $Value > $limits['max'])
-				return FALSE;
+			if ($Value < $limits['min'] or $Value > $limits['max']) {
+// where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,array($Value , $limits['min'] , $limits['max']));
+							return FALSE;
+			}
 			return $limits['SI']($Value);
 		}
 		return $Value;
@@ -220,7 +224,10 @@ class vp2 extends CI_Model {
 	protected function RawConverter($DataModele, $RawStr) {
 		$data = array();
 		foreach($DataModele as $key=>$limits)
+// where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,array($key));
 			$data[$key] = $this->convertUnit( $this->convertRaw( $this->subRaw( $RawStr, $limits), $limits), $limits);
+
+// where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,$data);
 		return $data;
 	}
 	/**
