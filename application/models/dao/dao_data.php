@@ -51,8 +51,10 @@ en vu de les retourner au scripte ajax qui les dessinera
             WHERE SEN_ID = ".$this->SEN_ID."
                 AND utc >= '$since'
                 AND utc < '$to'";
+
         $qurey_result = $this->dataDB->query($queryString);
         $brut = $qurey_result->result_array($qurey_result);
+
         return end($brut);
     }
 /**
@@ -145,7 +147,6 @@ en vu de les retourner au scripte ajax qui les dessinera
             $since,
             $to
         );
-        print_r($queryString);
 
             $qurey_result = $this->dataDB->query($queryString);// ,
 

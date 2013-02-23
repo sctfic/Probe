@@ -35,8 +35,8 @@ en vu de les retourner au scripte ajax qui les dessinera
 		$this->To = $this->input->get('To');
 	        $this->To = empty($this->To) ? '2099-12-31T23:59':date('Y-m-dTH:i', strtotime($this->To));
 
-		$this->Granularity = $this->input->get('Granularity');
-	        $this->Granularity = is_integer($this->Granularity+1) ? $this->Granularity : 180; // in minutes
+		$this->Granularity = $this->input->get('Granularity'); // Granularity in minutes
+	        $this->Granularity = is_integer($this->Granularity) ? $this->Granularity : 180; // in minutes
 
 		$this->Station = end($this->station->config($station));
 		// print_r($this->Station);
@@ -88,12 +88,14 @@ en vu de les retourner au scripte ajax qui les dessinera
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__);
 
 		if (!$force) {
-			list($first,$last,$count) = $this->dataReader->estimate (
+			// list($first,$last,$count);
+			list($first,$last,$count) = array_values($this->dataReader->estimate (
 				$this->Since,
 				$this->To
-			);
+			));
+
 			if ((strtotime($last)-strtotime($first)) > $this->Granularity*2000) {
-							;
+					;
 				}
 		}
 
@@ -105,7 +107,7 @@ en vu de les retourner au scripte ajax qui les dessinera
 		$j = count($data);
 	    $tsv = '';
 	    for ($i=0;$i<$j;$i++) {
-			$tsv .= substr(	$data[$i]['UTC_Round'],0,-3)."\t".
+			$tsv .= substr(	$data[$i]['UTC_grp'],0,-3)."\t".
 							$data[$i]['value']."\n";
 		}
 
@@ -138,7 +140,7 @@ en vu de les retourner au scripte ajax qui les dessinera
 		$j = count($data);
 	    $tsv = '';
 	    for ($i=0;$i<$j;$i++) {
-			$tsv .= substr(	$data[$i]['UTC_Round'],0,-3)."\t".
+			$tsv .= substr(	$data[$i]['UTC_grp'],0,-3)."\t".
 							$data[$i]['first']."\t".
 							$data[$i]['min']."\t".
 							$data[$i]['val']."\t".
