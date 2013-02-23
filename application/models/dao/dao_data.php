@@ -12,8 +12,10 @@ en vu de les retourner au script ajax qui les dessinera
         where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__);
         $this->dataDB = $this->load->database($station, TRUE);
         $this->SEN_LST = $this->sensor_list();
-        $this->SEN_ID = $this->SEN_LST[$sensor];
-        $this->SEN_TABLE = tableOfSensor($sensor);
+        if (!empty($sensor)) {
+            $this->SEN_ID = $this->SEN_LST[$sensor];
+            $this->SEN_TABLE = tableOfSensor($sensor);
+        }
     }
 
 /**
@@ -63,7 +65,7 @@ en vu de les retourner au script ajax qui les dessinera
         list($first,$last,$count) = array_values( end($qurey_result->result_array($qurey_result)) );
 
         $GranularityFor1000Value = round((strtotime($last)-strtotime($first)) / $count * ($count/1000) / 60 , 1);
-        
+
         return $GranularityFor1000Value<5 ? 5 : $GranularityFor1000Value;
     }
 /**
@@ -139,7 +141,7 @@ en vu de les retourner au script ajax qui les dessinera
 * @return 
 * 
 */
-    function wind($since='2013-01-01', $to='2099-12-31T23:59', $Granularity=180){
+    function wind($since='2013-01-01', $to='2099-12-31T23:59', $Granularity=360){
 
         where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
         try {

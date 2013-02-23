@@ -11,7 +11,7 @@ en vu de les retourner au scripte ajax qui les dessinera
 	protected $To=NULL;
 	protected $Granularity=NULL;
 	public $dataReader=NULL;
-	protected $Force=NULL;
+	protected $force=NULL;
 
 	function __construct() {
 		parent::__construct();
@@ -36,11 +36,11 @@ en vu de les retourner au scripte ajax qui les dessinera
 		$this->To = $this->input->get('To');
 	        $this->To = empty($this->To) ? '2099-12-31T23:59':date('Y-m-dTH:i', strtotime($this->To));
 
-		$this->Force = $this->input->get('Force');
-	        $this->Force = empty($this->Force) ? false : true;
+		$this->force = $this->input->get('Force');
+	        $this->force = empty($this->force) ? false : true;
 
 		$this->Granularity = $this->input->get('Granularity'); // Granularity in minutes
-	        $this->Granularity = is_integer($this->Granularity) ? $this->Granularity : 180; // in minutes
+			$this->Granularity = is_integer($this->Granularity*1) ? $this->Granularity : 0; // in minutes
 
 		$this->Station = end($this->station->config($station));
 		// print_r($this->Station);
@@ -93,9 +93,9 @@ en vu de les retourner au scripte ajax qui les dessinera
 * @param is the sensor name (one or more)
 */
 	function curve(){
-		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__);
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,array($this->Station['_name'], $this->Since,	$this->To,	$this->Granularity));
 
-		if (!$force) {
+		if (!$this->force) {
 			$recomandGranularity = $this->dataReader->estimate (
                 $this->Since,
                 $this->To
@@ -134,9 +134,9 @@ en vu de les retourner au scripte ajax qui les dessinera
 *			last period value]
 */
 	function bracketCurve(){
-		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__);
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,array($this->Station['_name'], $this->Since,	$this->To,	$this->Granularity));
 
-		if (!$force) {
+		if (!$this->force) {
 			$recomandGranularity = $this->dataReader->estimate (
                 $this->Since,
                 $this->To
@@ -166,13 +166,17 @@ en vu de les retourner au scripte ajax qui les dessinera
 		$this->dl_tsv ("date\tfirst\tmin\tavg\tmax\tlast\n".trim($tsv,"\n"));
 	}
 /**
-http://probe.dev/draw/windrose?station=VP2_GTD&sensors=TA:Arch:Temp:Out:Average&Since=2012-10-26T00:00:00&StepUnit=DAY&StepNbr=6
+
 * @
 * @param since is the start date of result needed
 * @param lenght is the number of day
 */
 	function wind(){
-		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,array($this->Station['_name'], $this->Since,	$this->To,	$this->Granularity));
+
+		$this->Granularity = empty($this->Granularity) ? 360 : $this->Granularity ; // in minutes
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,array($this->Station['_name'], $this->Since,	$this->To,	$this->Granularity));
+
 		$data = $this->dataReader->wind (
 			$this->Since,
 			$this->To,
@@ -187,7 +191,12 @@ http://probe.dev/draw/windrose?station=VP2_GTD&sensors=TA:Arch:Temp:Out:Average&
 
 
 
+/**
 
+* @
+* @param since is the start date of result needed
+* @param lenght is the number of day
+*/
 	private function dl_json ($data) {
 		$json = json_encode(array_merge($this->info, array('data' => $data)), JSON_NUMERIC_CHECK);
 		// ob_clean();
