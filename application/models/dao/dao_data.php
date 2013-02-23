@@ -66,13 +66,13 @@ en vu de les retourner au scripte ajax qui les dessinera
         where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 
         $queryString = 
-        "SELECT FROM_UNIXTIME( round( UNIX_TIMESTAMP(`UTC`) / ".($Granularity*60).", 0)*".($Granularity*60)." ) as UTC_Round , round(avg(value), 2) as `value`
+        "SELECT FROM_UNIXTIME( TRUNCATE( UNIX_TIMESTAMP(`UTC`) / ".($Granularity*60).", 0)*".($Granularity*60)." ) as UTC_grp , round(avg(value), 2) as `value`
             FROM  `".$this->SEN_TABLE."` 
             WHERE SEN_ID = ".$this->SEN_ID."
                 AND utc >= '$since'
                 AND utc < '$to'
-        GROUP BY UTC_Round
-        ORDER BY UTC_Round asc
+        GROUP BY UTC_grp
+        ORDER BY UTC_grp asc
         LIMIT 0 , 5000";
 
         $qurey_result = $this->dataDB->query($queryString);// ,
@@ -104,7 +104,7 @@ en vu de les retourner au scripte ajax qui les dessinera
         //  ["2012-02-24",15.96,15.98,15.72,15.79,9166700],
 
         $queryString = 
-        "SELECT FROM_UNIXTIME( round( UNIX_TIMESTAMP(`UTC`) / ".($Granularity*60).", 0)*".($Granularity*60)." ) as UTC_Round ,
+        "SELECT FROM_UNIXTIME( TRUNCATE( UNIX_TIMESTAMP(`UTC`) / ".($Granularity*60).", 0)*".($Granularity*60)." ) as UTC_grp ,
                 SUBSTRING_INDEX(GROUP_CONCAT(CAST(`value` AS CHAR) ORDER BY utc),',',1) as first,
                 round(min(`value`), 2) as min,
                 round(avg(`value`), 2) as val,
@@ -114,10 +114,10 @@ en vu de les retourner au scripte ajax qui les dessinera
             WHERE SEN_ID = ".$this->SEN_ID."
                 AND utc >= '$since'
                 AND utc < '$to'
-        GROUP BY UTC_Round
-        ORDER BY UTC_Round asc
-        LIMIT 0 , 5000";
-print_r($queryString);
+        GROUP BY UTC_grp
+        ORDER BY UTC_grp asc
+        LIMIT 0 , 1000";
+
         $qurey_result = $this->dataDB->query($queryString);// ,
         $brut = $qurey_result->result_array($qurey_result);
         return $brut;
@@ -133,32 +133,32 @@ print_r($queryString);
         where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
         try {
         $queryString = sprintf(file_get_contents(SQL_DIR.'wind.sql'),
+            $Granularity*60,
+            $Granularity*60,
             $this->SEN_LST['TA:Arch:Various:Wind:DominantDirection'],
+
             $this->SEN_LST['TA:Arch:Various:Wind:HighSpeed'],
             $this->SEN_LST['TA:Arch:Various:Wind:HighSpeedDirection'],
             $since,
-            $since,
-            $length,
-            $this->STEP[$step],
+            $to,
             $this->SEN_LST['TA:Arch:Various:Wind:SpeedAvg'],
             $since,
-            $since,
-            $length,
-            $this->STEP[$step]
+            $to
         );
+        print_r($queryString);
 
             $qurey_result = $this->dataDB->query($queryString);// ,
 
             $brut = $qurey_result->result_array($qurey_result);
             $reformated = null;
             foreach ($brut as $key => $value) {
-                if (isset($reformated[$value['_Day']]))
-                    $reformated[$value['_Day']] = array_merge(
-                        $reformated[$value['_Day']],
-                        array(array('Dir'=>$value['DominantDirection'], 'Spd'=>$value['SpeedAverage'], 'Spl'=>$value['SampleCount'], 'Max'=>$value['DayMaxSpeedInThisDirection']))
+                if (isset($reformated[$value['UTC_grp']]))
+                    $reformated[$value['UTC_grp']] = array_merge(
+                        $reformated[$value['UTC_grp']],
+                        array(array('Dir'=>$value['DominantDirection'], 'Spd'=>$value['SpeedAverage'], 'Spl'=>$value['SampleCount'], 'Max'=>$value['UTC_grpMaxSpeedInThisDirection']))
                     );
                 else
-                    $reformated[$value['_Day']] = array(array('Dir'=>$value['DominantDirection'], 'Spd'=>$value['SpeedAverage'], 'Spl'=>$value['SampleCount'], 'Max'=>$value['DayMaxSpeedInThisDirection']));
+                    $reformated[$value['UTC_grp']] = array(array('Dir'=>$value['DominantDirection'], 'Spd'=>$value['SpeedAverage'], 'Spl'=>$value['SampleCount'], 'Max'=>$value['UTC_grpMaxSpeedInThisDirection']));
             }
             return $reformated;
         } catch (PDOException $e) {

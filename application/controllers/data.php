@@ -30,10 +30,10 @@ en vu de les retourner au scripte ajax qui les dessinera
 		$this->setSensor($this->input->get('sensor'));
 
 		$this->Since = rawurldecode($this->input->get('Since'));
-	        $this->Since = empty($this->To) ? '2013-01-01T00:00':date('Y/m/dTH:i', strtotime($this->Since));
+	        $this->Since = empty($this->Since) ? '2013-01-01T00:00':date('Y-m-dTH:i', strtotime($this->Since));
 
 		$this->To = $this->input->get('To');
-	        $this->To = empty($this->To) ? '2099-12-31T23:59':date('Y/m/dTH:i', strtotime($this->To));
+	        $this->To = empty($this->To) ? '2099-12-31T23:59':date('Y-m-dTH:i', strtotime($this->To));
 
 		$this->Granularity = $this->input->get('Granularity');
 	        $this->Granularity = is_integer($this->Granularity+1) ? $this->Granularity : 180; // in minutes
@@ -102,7 +102,14 @@ en vu de les retourner au scripte ajax qui les dessinera
 			$this->To,
 			$this->Granularity
 		);
-		//print_r(array_merge(array('date', 'price'),$data));
+		$j = count($data);
+	    $tsv = '';
+	    for ($i=0;$i<$j;$i++) {
+			$tsv .= substr(	$data[$i]['UTC_Round'],0,-3)."\t".
+							$data[$i]['value']."\n";
+		}
+
+		$this->dl_tsv ("date\tval\n".trim($tsv,"\n"));
         $this->dl_tsv ($data);
 
 	}
