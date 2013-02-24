@@ -1,9 +1,9 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 class dao_data extends CI_Model {
 /**
-Cette classe appelle les differentes requetes
-en vu de les retourner au script ajax qui les dessinera
-*/
+    Cette classe appelle les differentes requetes
+    en vu de les retourner au script ajax qui les dessinera
+    */
     protected $dataDB = NULL;
     public $SEN_LST = array();
     protected $STEP = array('HOUR'=>'HOUR', 'DAY'=>'DAY', 'WEEK'=>'WEEK', 'MONTH'=>'MONTH');
@@ -20,19 +20,19 @@ en vu de les retourner au script ajax qui les dessinera
 
 /**
 
-* @
-* @param 
-* @param 
-*/
+    * @
+    * @param 
+    * @param 
+    */
     function index(){
 
     }
 /**
 
-* @
-* @param 
-* @param 
-*/
+    * @
+    * @param 
+    * @param 
+    */
     function sensor_list(){
         where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
         $query = "SELECT `SEN_ID` AS  `value`, `SEN_NAME` AS `key` FROM `TR_SENSOR` LIMIT 0 , 100";
@@ -48,10 +48,10 @@ en vu de les retourner au script ajax qui les dessinera
 
 /**
 
-* @ this functione estimate the recommanded granularity between 2 date for retunr 1000 value
-* @param $since is the start date of result needed
-* @param $to is the end date of result needed
-*/
+    * @ this functione estimate the recommanded granularity between 2 date for retunr 1000 value
+    * @param $since is the start date of result needed
+    * @param $to is the end date of result needed
+    */
     function estimate($since='2013-01-01T00:00', $to='2099-12-31T23:59') {
         where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
         $queryString = 
@@ -68,13 +68,15 @@ en vu de les retourner au script ajax qui les dessinera
 
         return $GranularityFor1000Value<5 ? 5 : $GranularityFor1000Value;
     }
+
+
 /**
 
-* @
-* @param $since is the start date of result needed
-* @param $to is the end date of result needed
-* @param $Granularity
-*/
+    * @
+    * @param $since is the start date of result needed
+    * @param $to is the end date of result needed
+    * @param $Granularity
+    */
     function curve($since='2013-01-01T00:00', $to='2099-12-31T23:59', $Granularity=180) {
         where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 
@@ -93,21 +95,23 @@ en vu de les retourner au script ajax qui les dessinera
         $brut = $qurey_result->result_array($qurey_result);
         return $brut;
     }
+
+
 /**
 
-* @
-* @param $since is the start date of result needed
-* @param $to is the end date of result needed
-* @param $Granularity
-* @param is the sensor name (one or more)
-*
-* @return for each we return by period :
-*           [first period value,
-*           min period value,
-*           avg period value,
-*           max period value,
-*           last period value]
-*/
+    * @
+    * @param $since is the start date of result needed
+    * @param $to is the end date of result needed
+    * @param $Granularity
+    * @param is the sensor name (one or more)
+    *
+    * @return for each we return by period :
+    *           [first period value,
+    *           min period value,
+    *           avg period value,
+    *           max period value,
+    *           last period value]
+    */
     function bracketCurve($since='2013-01-01T00:00', $to='2099-12-31T23:59', $Granularity=180) {
         where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 
@@ -133,14 +137,14 @@ en vu de les retourner au script ajax qui les dessinera
 
 /**
 
-* @
-* @param $since is the start date of result needed
-* @param $to is the end date of result needed
-* @param $Granularity
-*
-* @return 
-* 
-*/
+    * @
+    * @param $since is the start date of result needed
+    * @param $to is the end date of result needed
+    * @param $Granularity
+    *
+    * @return 
+    * 
+    */
     function wind($since='2013-01-01', $to='2099-12-31T23:59', $Granularity=360){
 
         where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
@@ -180,14 +184,14 @@ en vu de les retourner au script ajax qui les dessinera
 
 /**
 
-* @
-* @param $since is the start date of result needed
-* @param $to is the end date of result needed
-* @param $Granularity
-*
-* @return 
-* 
-*/
+    * @
+    * @param $since is the start date of result needed
+    * @param $to is the end date of result needed
+    * @param $Granularity
+    *
+    * @return 
+    * 
+    */
     function windrose_allInOne($since='2013-01-01', $to='2099-12-31T23:59', $Granularity=180){
         where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 

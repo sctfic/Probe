@@ -1,9 +1,9 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 class Data extends CI_Controller {
 /**
-Cette classe appelle les differentes requetes
-en vu de les retourner au scripte ajax qui les dessinera
-*/
+	Cette classe appelle les differentes requetes
+	en vu de les retourner au scripte ajax qui les dessinera
+	*/
 
 	protected $Station=NULL; // name or ID nbr of station
 	protected $sensor=NULL; // name or ID nbr of station
@@ -13,6 +13,12 @@ en vu de les retourner au scripte ajax qui les dessinera
 	public $dataReader=NULL;
 	protected $force=NULL;
 
+/**
+
+	* @
+	* @param 
+	* @param 
+	*/
 	function __construct() {
 		parent::__construct();
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
@@ -62,7 +68,12 @@ en vu de les retourner au scripte ajax qui les dessinera
 	}
 
 
+/**
 
+	* @
+	* @param 
+	* @param 
+	*/
 	function setSensor($str) {
 		$this->sensor =  rawurldecode($str);
 		// if (isset($this->sensors[16])) unset($this->sensors[16]);
@@ -72,26 +83,37 @@ en vu de les retourner au scripte ajax qui les dessinera
 
 /**
 
-* @
-* @param 
-* @param 
-*/
+	* @
+	* @param 
+	* @param 
+	*/
 	function index() {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
-		$recomandGranularity = $this->dataReader->estimate (
-                $this->Since,
-                $this->To
-            );
-		print_r($recomandGranularity);
+
+	}
+
+	/**
+
+	* @
+	* @param 
+	* @param 
+	*/
+	function currents() {
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
+		
+		$itemConf = end($this->station->config($this->Station['_name'])); // $station est le ID ou le nom
+		$currents = $this->station->CurrentsCollector ($itemConf);
+
+		$this->dl_json ($currents);
 	}
 
 /**
 
-* @
-* @param since is the start date of result needed
-* @param lenght is the number of day
-* @param is the sensor name (one or more)
-*/
+	* @
+	* @param since is the start date of result needed
+	* @param lenght is the number of day
+	* @param is the sensor name (one or more)
+	*/
 	function curve(){
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,array($this->Station['_name'], $this->Since,	$this->To,	$this->Granularity));
 
@@ -122,17 +144,17 @@ en vu de les retourner au scripte ajax qui les dessinera
 	}
 /**
 
-* @
-* @param since is the start date of result needed
-* @param lenght is the number of day
-* @param is the sensor name (one or more)
-*		 for each we return by period :
-*			[first period value,
-*			min period value,
-*			avg period value,
-*			max period value,
-*			last period value]
-*/
+	* @
+	* @param since is the start date of result needed
+	* @param lenght is the number of day
+	* @param is the sensor name (one or more)
+	*		 for each we return by period :
+	*			[first period value,
+	*			min period value,
+	*			avg period value,
+	*			max period value,
+	*			last period value]
+	*/
 	function bracketCurve(){
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,array($this->Station['_name'], $this->Since,	$this->To,	$this->Granularity));
 
@@ -167,10 +189,10 @@ en vu de les retourner au scripte ajax qui les dessinera
 	}
 /**
 
-* @
-* @param since is the start date of result needed
-* @param lenght is the number of day
-*/
+	* @
+	* @param since is the start date of result needed
+	* @param lenght is the number of day
+	*/
 	function wind(){
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,array($this->Station['_name'], $this->Since,	$this->To,	$this->Granularity));
 
@@ -193,10 +215,10 @@ en vu de les retourner au scripte ajax qui les dessinera
 
 /**
 
-* @
-* @param since is the start date of result needed
-* @param lenght is the number of day
-*/
+	* @
+	* @param since is the start date of result needed
+	* @param lenght is the number of day
+	*/
 	private function dl_json ($data) {
 		$json = json_encode(array_merge($this->info, array('data' => $data)), JSON_NUMERIC_CHECK);
 		// ob_clean();

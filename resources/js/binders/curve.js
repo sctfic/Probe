@@ -133,11 +133,14 @@ function drawGraph (data, container, w, h) {
         dataIndex = pathEl.getPathSegAtLength((findX-BBox.x)/BBox.width*pathLength);
 
         infoBulle.text(pathData[0][dataIndex]['date'] + "\n" + pathData[0][dataIndex]['val']);
+        // console.log(curve1.zoom().x() , curve1.zoom().translate());
+        console.log("here", x.domain());
+
         });
 
 
     rect.call(d3.behavior.zoom().x(x).scaleExtent([1,10]).on("zoom", draw));
-    // d3.behavior.zoom().scale(4);
+    // d3.behavior.zoom().scale();
     draw();
 }
 
@@ -146,9 +149,15 @@ function draw() {
     // console.log('zoom().scale()', d3.behavior.zoom().scale());
     // if (d3.event.translate[0]>0) d3.event.translate[0]=0;
     // console.log('ptg', ptg);
+
+    // trace l'axe X
     svg.select("g.x.axis").call(xAxis);
+
+    // trace l'axe Y
     svg.select("g.y.axis").call(yAxis);
-    // svg.select("path.area").attr("d", area);
+
+    // trace la courbe
     svg.select("path.line").attr("d", line);
+
     // console.log(d3.event.scale, d3.event.translate[1], d3.event.translate[0]);
 }

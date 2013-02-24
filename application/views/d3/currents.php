@@ -21,11 +21,11 @@
 <script src="http://d3js.org/d3.v3.js"></script>
 <script>
 $(document).ready(function(){
-    var url = "http://probe.dev/data/curents?station=VP2_GTD";
+    var url = "http://probe.dev/data/currents?station=VP2_GTD";
     // $.getJSON(url, function(json) {
-    d3.tsv(url, function(error, tsv) {
+    d3.json(url, function(error, json) {
         if (error) return console.warn(error);
-        else return false;
+        else console.log(json);
    });
 });
 </script>

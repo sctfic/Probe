@@ -2,6 +2,11 @@
 
 // http://fmaz.developpez.com/tutoriels/php/comprendre-pdo/
 class Station extends CI_Model {
+
+/**
+
+	* 
+	*/
 	protected $DBConf = NULL;
 	public $stationsList = array();
 	protected $data = NULL;
@@ -10,8 +15,14 @@ class Station extends CI_Model {
 	protected $name = NULL;
 	protected $conf = NULL;
 	
-	function __construct()
-	{
+
+/**
+
+	* @param
+	* @var 
+	* @return 
+	*/
+	function __construct() {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		parent::__construct();
 		$this->load->database(); // charge la base par defaut : probe
@@ -19,12 +30,12 @@ class Station extends CI_Model {
 	}
 	
 	
-	/**
-	 * retourne un tableau de tous les noms et db_ID de toute les stations
-	 * @return	array (db_ID => Name)
-	 */
-	function listStations()
-	{
+/**
+
+	* retourne un tableau de tous les noms et db_ID de toute les stations
+	* @return	array (db_ID => Name)
+	*/
+	function listStations() {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 
 		// on demande la liste des NOM des stations meteo et les ID assoc
@@ -49,10 +60,11 @@ class Station extends CI_Model {
 	}
 
 
-	/*
-	 * recupere les premier ID nom utilisé parmis la liste des ID des stations
-	 * @return array ()
-	 */
+/**
+
+	* recupere les premier ID nom utilisé parmis la liste des ID des stations
+	* @return array ()
+	*/
 	function availableID () {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		// given array : $this->stationsList. [0,1,  3,4,  6,7  ]
@@ -64,14 +76,15 @@ class Station extends CI_Model {
 	}
 
 
-	/*
-	 * recupere sous forme de table l'ensemble des configs d'une ou de toutes les station
-	 * @var item
+/**
+
+	* recupere sous forme de table l'ensemble des configs d'une ou de toutes les station
+	* @var item
 		item peut etre le Numero db_ID ou le nom de la station dont on veut les confs
 		si item est ommis alors toutes les conf de toutes les stations sont retourné
-	 * @return array ('name' => array (configs))
-	 */
-	function config($item = null)	{
+	* @return array ('name' => array (configs))
+	*/
+	function config($item = null) {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		if (is_numeric($item) && array_key_exists($item, $this->stationsList)) {
 			//dans le cas ou je connais deja de ID de ma station
@@ -108,36 +121,40 @@ class Station extends CI_Model {
 	}
 
 
-	/**
-	 * retourne un tableau de tous les 
-	 * @return	array (db_ID => Value)
-	 */
-	function HilowsCollector($conf = null) {
-		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__);
-		if (!isset($conf['_type']))
-			throw new Exception(_('Prarametre invalide !'));
-		$type = strtolower($conf['_type']);
-		include_once(APPPATH.'models/'.$type.'.php');
-		$Current_WS = new $type($conf);
-		try {
-			if ( !$Current_WS->initConnection() )
-				throw new Exception( sprintf( _('Impossible de se connecter à %s par %s:%s'), $conf['_name'], $conf['_ip'], $conf['_port']));
-			$this->data = $Current_WS->GetHiLows ( );
-			if ( !$Current_WS->closeConnection() )
-				throw new Exception( sprintf( _('Fermeture de %s impossible'), $conf['_name']) );
-		}
-		catch (Exception $e) {
-			throw new Exception($e->getMessage());
-		}
-		return true;
-	}
 
-	/**
-	 * teste depuis combien de temps on ne s'est pas connecter a la station
-	 * si besoin alors on s'y connecte et on lit les configs, les datas et on refait une synchro.
-	 * @param array (toute les dernieres config de la station a verifier)
-	 * @return retourne true si tous s'est bien passé
-	 */
+/**
+
+	* @param
+	* @var 
+	* @return 
+	*/
+	// function HilowsCollector($conf = null) {
+	// 	where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__);
+	// 	if (!isset($conf['_type']))
+	// 		throw new Exception(_('Prarametre invalide !'));
+	// 	$type = strtolower($conf['_type']);
+	// 	include_once(APPPATH.'models/'.$type.'.php');
+	// 	$Current_WS = new $type($conf);
+	// 	try {
+	// 		if ( !$Current_WS->initConnection() )
+	// 			throw new Exception( sprintf( _('Impossible de se connecter à %s par %s:%s'), $conf['_name'], $conf['_ip'], $conf['_port']));
+	// 		$this->data = $Current_WS->GetHiLows ( );
+	// 		if ( !$Current_WS->closeConnection() )
+	// 			throw new Exception( sprintf( _('Fermeture de %s impossible'), $conf['_name']) );
+	// 	}
+	// 	catch (Exception $e) {
+	// 		throw new Exception($e->getMessage());
+	// 	}
+	// 	return true;
+	// }
+
+/**
+
+	* teste depuis combien de temps on ne s'est pas connecter a la station
+	* si besoin alors on s'y connecte et on lit les configs, les datas et on refait une synchro.
+	* @param array (toute les dernieres config de la station a verifier)
+	* @return retourne true si tous s'est bien passé
+	*/
 	function AllCollector($conf = null) {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__);
 		if (!isset($conf['_type']))
@@ -155,7 +172,6 @@ class Station extends CI_Model {
 	
 				// on lit et sauve les configs
 				$readconf = end ($Current_WS->GetConfig ( ));
-
 				foreach ($readconf as $key => $val) {
 					if (strpos($key, 'TR:Config:')!==FALSE) {
 						$ToStoreConfig[str_replace('TR:Config:', '', $key)] = $val;
@@ -185,94 +201,152 @@ class Station extends CI_Model {
 		}
 		else throw new Exception(sprintf( _('Les archives de "%s" sont a jour (en date du : %s)'), $conf['_name'], $Last_Arch));
 	}
+/**
 
-
-	/**
-	 * retourne un tableau de tous les 
-	 * @return	array ( => Value)
-	 */
-	function LpsCollector($conf) {
+	* teste depuis combien de temps on ne s'est pas connecter a la station
+	* si besoin alors on s'y connecte et on lit les configs, les datas et on refait une synchro.
+	* @param array (toute les dernieres config de la station a verifier)
+	* @return retourne true si tous s'est bien passé
+	*/
+	function CurrentsCollector($conf = null) {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__);
 		if (!isset($conf['_type']))
 			throw new Exception(_('Prarametre invalide !'));
 		$type = strtolower($conf['_type']);
 		include_once(APPPATH.'models/'.$type.'.php');
 		$Current_WS = new $type($conf);
+
 		try {
 			if ( !$Current_WS->initConnection() )
 				throw new Exception( sprintf( _('Impossible de se connecter à %s par %s:%s'), $conf['_name'], $conf['_ip'], $conf['_port']));
-			$this->data = $Current_WS->GetLPS ( );
+
+			// // on lit et sauve les configs
+			// $readconf = end ($Current_WS->GetConfig ( ));
+			// foreach ($readconf as $key => $val) {
+			// 	if (strpos($key, 'TR:Config:')!==FALSE) {
+			// 		$ToStoreConfig[str_replace('TR:Config:', '', $key)] = $val;
+			// 		$conf[str_replace('TR:Config:', '', $key)] = $val;
+			// 	}
+			// }
+			// $this->station->arrays2dbconfs($conf['_id'], $ToStoreConfig);
+			$this->data[0] = $conf;
+
+			// on lit et sauve les valeurs courantes
+			$this->data[1] = $Current_WS->GetLPS ( );
+
+			// on lit et sauve les maxi-mini
+			$this->data[2] = $Current_WS->GetHiLows ( );
+
 			if ( !$Current_WS->closeConnection() )
 				throw new Exception( sprintf( _('Fermeture de %s impossible'), $conf['_name']) );
 		}
 		catch (Exception $e) {
 			throw new Exception($e->getMessage());
 		}
-		return true;
+		return $this->data;
 	}
 
+/**
 
-	/*
-	 * recupere sous forme de table l'ensemble des configs d'une ou de toutes les station
-	 * @var item
-		item peut etre le Numero db_ID ou le nom de la station dont on veut les confs
-		si item est homis alors toutes les conf de toutes les stations sont retourné
-	 * @return array ('name' => array (configs))
-	 */
-	function ArchCollector($conf) {
-		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__);
-		if (!isset($conf['_type']))
-			throw new Exception(_('Prarametre invalide !'));
-		$type = strtolower($conf['_type']);
-		include_once(APPPATH.'models/'.$type.'.php');
-		$Current_WS = new $type($conf);
-		$Last_Arch = $Current_WS->get_Last_Date();
+	* @param
+	* @var 
+	* @return 
+	*/
+	// function LpsCollector($conf) {
+	// 	where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__);
+	// 	if (!isset($conf['_type']))
+	// 		throw new Exception(_('Prarametre invalide !'));
+	// 	$type = strtolower($conf['_type']);
+	// 	include_once(APPPATH.'models/'.$type.'.php');
+	// 	$Current_WS = new $type($conf);
+	// 	try {
+	// 		if ( !$Current_WS->initConnection() )
+	// 			throw new Exception( sprintf( _('Impossible de se connecter à %s par %s:%s'), $conf['_name'], $conf['_ip'], $conf['_port']));
+	// 		$this->data = $Current_WS->GetLPS ( );
+	// 		if ( !$Current_WS->closeConnection() )
+	// 			throw new Exception( sprintf( _('Fermeture de %s impossible'), $conf['_name']) );
+	// 	}
+	// 	catch (Exception $e) {
+	// 		throw new Exception($e->getMessage());
+	// 	}
+	// 	return true;
+	// }
 
-		if (!isset($conf['time:archive:period'])
-			|| strtotime(date ("Y/m/d H:i:s")) > strtotime($Last_Arch) + $conf['time:archive:period']*60*10) {
-			try {
-				if ( !$Current_WS->initConnection() )
-					throw new Exception( sprintf( _('Impossible de se connecter à %s par %s:%s'), $conf['_name'], $conf['_ip'], $conf['_port']));
-				$clock = $Current_WS->clockSync(5);
-				$this->data = $Current_WS->GetDmpAft ( $Last_Arch );
-				if ( !$Current_WS->closeConnection() )
-					throw new Exception( sprintf( _('Fermeture de %s impossible'), $conf['_name']) );
-			}
-			catch (Exception $e) {
-				throw new Exception($e->getMessage());
-			}
-			return true;
-		}
-		else log_message('wayting', sprintf(_( 'The latest collection of archives is only on %s'), date ("Y/m/d H:i:s")));
-		return true;
-	}
+/**
 
-	function ConfCollector($conf) {
-		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__);
-		if (!isset($conf['_type']))
-			throw new Exception(_('Prarametre invalide !'));
-		$type = strtolower($conf['_type']);
-		include_once(APPPATH.'models/'.$type.'.php');
-		$Current_WS = new $type($conf);
-		try {
-			if ( !$Current_WS->initConnection() )
-				throw new Exception( sprintf( _('Impossible de se connecter à %s par %s:%s'), $conf['_name'], $conf['_ip'], $conf['_port']));
-			$clock = $Current_WS->clockSync(2);
-			if (!($realconf = end($Current_WS->GetConfig())))
-				throw new Exception( sprintf( _('Lecture des config de %s impossible'),$conf['_name']));
-			// conf est un array('2012/08/04 15:30:00'=>array(...))
-			// qui ne contiend qu'une seule valeur de niveau 1 mais dont la clef est variable
-			// end() permet de recupere cette valeur quelque soit ca clef.
-			if ( !$Current_WS->closeConnection() )
-				throw new Exception( sprintf( _('Fermeture de %s impossible'), $conf['_name']) );
-		}
-		catch (Exception $e) {
-			throw new Exception( $e->getMessage() );
-		}
-		return $realconf;
-	}
+	* @
+	* recupere sous forme de table l'ensemble des configs d'une ou de toutes les station
+	* @var item
+	* 	item peut etre le Numero db_ID ou le nom de la station dont on veut les confs
+	* 	si item est homis alors toutes les conf de toutes les stations sont retourné
+	* @return array ('name' => array (configs))
+	*/
+	// function ArchCollector($conf) {
+	// 	where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__);
+	// 	if (!isset($conf['_type']))
+	// 		throw new Exception(_('Prarametre invalide !'));
+	// 	$type = strtolower($conf['_type']);
+	// 	include_once(APPPATH.'models/'.$type.'.php');
+	// 	$Current_WS = new $type($conf);
+	// 	$Last_Arch = $Current_WS->get_Last_Date();
+
+	// 	if (!isset($conf['time:archive:period'])
+	// 		|| strtotime(date ("Y/m/d H:i:s")) > strtotime($Last_Arch) + $conf['time:archive:period']*60*10) {
+	// 		try {
+	// 			if ( !$Current_WS->initConnection() )
+	// 				throw new Exception( sprintf( _('Impossible de se connecter à %s par %s:%s'), $conf['_name'], $conf['_ip'], $conf['_port']));
+	// 			$clock = $Current_WS->clockSync(5);
+	// 			$this->data = $Current_WS->GetDmpAft ( $Last_Arch );
+	// 			if ( !$Current_WS->closeConnection() )
+	// 				throw new Exception( sprintf( _('Fermeture de %s impossible'), $conf['_name']) );
+	// 		}
+	// 		catch (Exception $e) {
+	// 			throw new Exception($e->getMessage());
+	// 		}
+	// 		return true;
+	// 	}
+	// 	else log_message('wayting', sprintf(_( 'The latest collection of archives is only on %s'), date ("Y/m/d H:i:s")));
+	// 	return true;
+	// }
+
+/**
+
+	* @param
+	* @var 
+	* @return 
+	*/
+	// function ConfCollector($conf) {
+	// 	where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__);
+	// 	if (!isset($conf['_type']))
+	// 		throw new Exception(_('Prarametre invalide !'));
+	// 	$type = strtolower($conf['_type']);
+	// 	include_once(APPPATH.'models/'.$type.'.php');
+	// 	$Current_WS = new $type($conf);
+	// 	try {
+	// 		if ( !$Current_WS->initConnection() )
+	// 			throw new Exception( sprintf( _('Impossible de se connecter à %s par %s:%s'), $conf['_name'], $conf['_ip'], $conf['_port']));
+	// 		$clock = $Current_WS->clockSync(2);
+	// 		if (!($realconf = end($Current_WS->GetConfig())))
+	// 			throw new Exception( sprintf( _('Lecture des config de %s impossible'),$conf['_name']));
+	// 		// conf est un array('2012/08/04 15:30:00'=>array(...))
+	// 		// qui ne contiend qu'une seule valeur de niveau 1 mais dont la clef est variable
+	// 		// end() permet de recupere cette valeur quelque soit ca clef.
+	// 		if ( !$Current_WS->closeConnection() )
+	// 			throw new Exception( sprintf( _('Fermeture de %s impossible'), $conf['_name']) );
+	// 	}
+	// 	catch (Exception $e) {
+	// 		throw new Exception( $e->getMessage() );
+	// 	}
+	// 	return $realconf;
+	// }
 	
-		
+
+/**
+
+	* @param
+	* @var 
+	* @return 
+	*/		
 	function arrays2dbconfs($id, $conf) {/** 3 cas sont possible :
 	la conf n'existe pas > INSERT INTO
 	la conf existe mais ne change pas de valeur > on ni change rien ! ou on reecris la meme valeur.
