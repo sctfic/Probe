@@ -220,22 +220,13 @@ class Station extends CI_Model {
 			if ( !$Current_WS->initConnection() )
 				throw new Exception( sprintf( _('Impossible de se connecter à %s par %s:%s'), $conf['_name'], $conf['_ip'], $conf['_port']));
 
-			// // on lit et sauve les configs
-			// $readconf = end ($Current_WS->GetConfig ( ));
-			// foreach ($readconf as $key => $val) {
-			// 	if (strpos($key, 'TR:Config:')!==FALSE) {
-			// 		$ToStoreConfig[str_replace('TR:Config:', '', $key)] = $val;
-			// 		$conf[str_replace('TR:Config:', '', $key)] = $val;
-			// 	}
-			// }
-			// $this->station->arrays2dbconfs($conf['_id'], $ToStoreConfig);
-			$this->data[0] = $conf;
+			$this->data['CONF'] = $conf;
 
 			// on lit et sauve les valeurs courantes
-			$this->data[1] = $Current_WS->GetLPS ( );
+			$this->data['LPS'] = $Current_WS->GetLPS ( );
 
 			// on lit et sauve les maxi-mini
-			$this->data[2] = $Current_WS->GetHiLows ( );
+			$this->data['HILOW'] = $Current_WS->GetHiLows ( );
 
 			if ( !$Current_WS->closeConnection() )
 				throw new Exception( sprintf( _('Fermeture de %s impossible'), $conf['_name']) );
