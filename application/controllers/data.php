@@ -102,13 +102,13 @@ class Data extends CI_Controller {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		
 		$itemConf = end($this->station->config($this->Station['_name'])); // $station est le ID ou le nom
-		$currents = $this->station->CurrentsCollector ($itemConf);
+		$currents = $this->rebuild ($this->station->CurrentsCollector ($itemConf), 'Current');
 
 		$this->dl_json ($currents);
 	}
 
 /**
-
+make and download json curve of a sensor
 	* @
 	* @param since is the start date of result needed
 	* @param lenght is the number of day
@@ -143,7 +143,7 @@ class Data extends CI_Controller {
 
 	}
 /**
-
+make and download json bracketCurve of a sensor
 	* @
 	* @param since is the start date of result needed
 	* @param lenght is the number of day
@@ -188,7 +188,7 @@ class Data extends CI_Controller {
 		$this->dl_tsv ("date\tfirst\tmin\tavg\tmax\tlast\n".trim($tsv,"\n"));
 	}
 /**
-
+make and download json wind data
 	* @
 	* @param since is the start date of result needed
 	* @param lenght is the number of day
@@ -209,15 +209,46 @@ class Data extends CI_Controller {
 
 
 
-
+/**
 
 
 
 /**
-
+rebuild array
 	* @
-	* @param since is the start date of result needed
-	* @param lenght is the number of day
+	* @param data structure array()
+	*/
+	private function rebuild ($data, $mask) {
+		$new = array();
+
+		// on itaire sur tous les elements
+		foreach ($data as $key => $value) {
+
+			// recursif pour les array()
+			if (is_array($value))
+				$new = $this->rebuild($value);
+			else {
+				$keys = explode(':', $key);
+
+				// seulement pour les enregistrement de type $mask == 'Current'
+				if (empty($mask) || $keys[1]==$mask) {
+					$n = &$new;
+
+					// on ignore le premier segment
+					for ($i=1; $i<count($keys); $i++)
+						$n = &$n[$keys[$i]];
+					
+					$n = $value;
+				}
+			}
+		}
+		return $new;
+	}
+
+/**
+Download after convert data structure to json object
+	* @
+	* @param data structure array()
 	*/
 	private function dl_json ($data) {
 		$json = json_encode(array_merge($this->info, array('data' => $data)), JSON_NUMERIC_CHECK);
@@ -227,6 +258,11 @@ class Data extends CI_Controller {
 		force_download('data.json', $json);
 	}
 
+/**
+Download tsv file
+	* @
+	* @param data structure array()
+	*/
 	private function dl_tsv ($data) {
 		// ob_clean();
 		@ob_end_clean();

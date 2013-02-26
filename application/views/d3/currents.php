@@ -24,23 +24,39 @@
 <script>
 // http://jquery.bassistance.de/treeview/demo/
 
-
-
 $(document).ready(function(){
 	var url = "http://probe.dev/data/currents?station=VP2_GTD";
 	// $.getJSON(url, function(json) {
 	$.getJSON(url, function(data) {
-		 
-		$.each(data, function(key, val) { str = ''; recursiveFunction(key, val, 'Tree') });
-		console.log(str);
+		console.log(data);
+		
+		$.each(data.data, function(key, val) { str = ''; recursiveFunction(key, val, 'Tree') });
+		// console.log(str);
 		$('#Tree').append('<ul>'+str+'</ul>');
-		// $(function () {
-	    	$("#Tree").jstree({
-				"plugins" : [ "themes", "html_data" ]
-			});
-		// });
+
+		$("#Tree").jstree({
+			"themes" : {
+				"theme" : "apple"
+				// "dots" : false,
+				// "icons" : false
+			},
+			"types" : {
+				"types" : {
+					"Sensor" : {
+						"icon" : {
+							// "image" : "../resources/icons/famfamfam/bricks.png"
+							// "image" : "../resources/icons/famfamfam/map_go.png"
+							"image" : "../resources/icons/famfamfam/tag_pink.png"
+							// "image" : "../resources/icons/famfamfam/bullet_go.png"
+							// "image" : "../resources/icons/famfamfam/feed.png"
+						}
+					}
+				}
+			},
+			"plugins" : [ "html_data", "types", "themes" ]
+		});
 		console.log('end');
 
-    });
+	});
 });
 </script>

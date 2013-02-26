@@ -220,10 +220,10 @@ class Station extends CI_Model {
 			if ( !$Current_WS->initConnection() )
 				throw new Exception( sprintf( _('Impossible de se connecter à %s par %s:%s'), $conf['_name'], $conf['_ip'], $conf['_port']));
 
-			$this->data['CONF'] = $conf;
+			// $this->data['CONF'] = $conf;
 
 			// on lit et sauve les valeurs courantes
-			$this->data['LPS'] = $Current_WS->GetLPS ( );
+			$this->data['LPS'] = $Current_WS->GetLPS (1,1 );
 
 			// on lit et sauve les maxi-mini
 			$this->data['HILOW'] = $Current_WS->GetHiLows ( );
