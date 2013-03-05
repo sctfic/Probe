@@ -42,7 +42,7 @@
     YEAR()          Return the year
 */
 $(document).ready(function(){
-    var url = "http://probe.dev/data/wind?station=VP2_GTD&&Since=2013-01-01&Granularity=720";
+    var url = "/data/wind?station=VP2_GTD&&Since=2013-01-01&Granularity=720";
     // $.getJSON(url, function(json) {
     d3.json(url, function(error, json) {
         if (error) return console.warn(error);

@@ -52,7 +52,7 @@ class dao_data extends CI_Model {
     * @param $since is the start date of result needed
     * @param $to is the end date of result needed
     */
-    function estimate($since='2013-01-01T00:00', $to='2099-12-31T23:59') {
+    function estimate($since='2013-01-01T00:00', $to='2099-12-31T23:59', $nbr = 1000) {
         where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
         $queryString = 
         "SELECT MIN(  `UTC` ) AS first, MAX(  `UTC` ) AS last, COUNT(  `UTC` ) AS count
@@ -64,9 +64,9 @@ class dao_data extends CI_Model {
         $qurey_result = $this->dataDB->query($queryString);
         list($first,$last,$count) = array_values( end($qurey_result->result_array($qurey_result)) );
 
-        $GranularityFor1000Value = round((strtotime($last)-strtotime($first)) / $count * ($count/1000) / 60 , 1);
+        $GranularityForNbrValue = round((strtotime($last)-strtotime($first)) / $count * ($count/$nbr) / 60 , 1);
 
-        return $GranularityFor1000Value<5 ? 5 : $GranularityFor1000Value;
+        return $GranularityForNbrValue<5 ? 5 : $GranularityForNbrValue;
     }
 
 
@@ -88,9 +88,9 @@ class dao_data extends CI_Model {
                 AND utc < '$to'
         GROUP BY UTC_grp
         ORDER BY UTC_grp asc
-        LIMIT 0 , 5000";
+        LIMIT 0 , 100000";
 
-        $qurey_result = $this->dataDB->query($queryString);// ,
+        $qurey_result = $this->dataDB->query($queryString);
 
         $brut = $qurey_result->result_array($qurey_result);
         return $brut;
@@ -128,7 +128,7 @@ class dao_data extends CI_Model {
                 AND utc < '$to'
         GROUP BY UTC_grp
         ORDER BY UTC_grp asc
-        LIMIT 0 , 1000";
+        LIMIT 0 , 10000";
 
         $qurey_result = $this->dataDB->query($queryString);// ,
         $brut = $qurey_result->result_array($qurey_result);
@@ -145,7 +145,7 @@ class dao_data extends CI_Model {
     * @return 
     * 
     */
-    function wind($since='2013-01-01', $to='2099-12-31T23:59', $Granularity=360){
+    function wind($since='2013-01-01T00:00', $to='2099-12-31T23:59', $Granularity=360){
 
         where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
         try {

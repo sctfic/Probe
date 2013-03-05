@@ -58,7 +58,7 @@ rect.pane {
     </div>
     <noscript><?=i18n('warning.javascript.disable');?></noscript>
 </div>
-<script src="http://d3js.org/d3.v3.js"></script>
+<!-- <script src="http://d3js.org/d3.v3.js"></script> -->
 <script>
 /*
     TA:Arch:Hum:In:Current
@@ -83,7 +83,7 @@ rect.pane {
 */
 
 $(document).ready(function(){
-    var url = "http://probe.dev/data/curve?station=VP2_GTD&sensor=TA:Arch:Temp:Out:Average&Since=2013-01-01&_To=2099-01-01&_Granularity=120";
+    var url = "/data/curve?station=VP2_GTD&sensor=TA:Arch:Various:Wind:HighSpeed&Since=2013-01-01&_To=2099-01-01&_Granularity=120";
     // $.getJSON(url, function(json) {
     d3.tsv(url, function(error, tsv) {
       // console.log(tsv);

@@ -37,10 +37,10 @@ class Data extends CI_Controller {
 		$this->setSensor($this->input->get('sensor'));
 
 		$this->Since = rawurldecode($this->input->get('Since'));
-	        $this->Since = empty($this->Since) ? '2013-01-01T00:00':date('Y-m-dTH:i', strtotime($this->Since));
+	        $this->Since = empty($this->Since) ? '2013-01-01T00:00':date('c', strtotime($this->Since));
 
 		$this->To = $this->input->get('To');
-	        $this->To = empty($this->To) ? '2099-12-31T23:59':date('Y-m-dTH:i', strtotime($this->To));
+	        $this->To = empty($this->To) ? '2099-12-31T23:59':date('c', strtotime($this->To));
 
 		$this->force = $this->input->get('Force');
 	        $this->force = empty($this->force) ? false : true;
@@ -104,8 +104,13 @@ class Data extends CI_Controller {
 		$itemConf = end($this->station->config($this->Station['_name'])); // $station est le ID ou le nom
 		$currents = $this->rebuild ($this->station->CurrentsCollector ($itemConf), 'Current');
 
+//		echo uksort($currents['Current'], "strnatcasecmp");
+		deep_ksort($currents);
+
 		$this->dl_json ($currents);
 	}
+
+
 
 /**
 make and download json curve of a sensor
@@ -120,7 +125,8 @@ make and download json curve of a sensor
 		if (!$this->force) {
 			$recomandGranularity = $this->dataReader->estimate (
                 $this->Since,
-                $this->To
+                $this->To,
+                2000
             );
 			if ($this->Granularity >= $recomandGranularity*4 || $this->Granularity <= $recomandGranularity/2 )
 				$this->Granularity = $recomandGranularity;
@@ -226,18 +232,20 @@ rebuild array
 
 			// recursif pour les array()
 			if (is_array($value))
-				$new = $this->rebuild($value);
+				$new = $this->rebuild($value, $mask);
 			else {
 				$keys = explode(':', $key);
-
 				// seulement pour les enregistrement de type $mask == 'Current'
 				if (empty($mask) || $keys[1]==$mask) {
 					$n = &$new;
 
 					// on ignore le premier segment
 					for ($i=1; $i<count($keys); $i++)
+					{
+						// echo $keys[$i]." ";
 						$n = &$n[$keys[$i]];
-					
+					}					
+						// echo "\n";
 					$n = $value;
 				}
 			}

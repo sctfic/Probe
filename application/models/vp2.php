@@ -377,7 +377,7 @@ Lis les valeurs courantes de tous les capteurs disponible sur la station
 			while ($nbr > 0) {
 				$data = fread($this->fp, 97+2);
 				$this->VerifAnswersAndCRC($data, 97+2);
-				$packet_type = current($this->RawConverter(array('NO:Data::PacketType'=>$this->Loop['NO:Data::PacketType']), $data));
+				$packet_type = current($this->RawConverter(array('LPS0:Data:Packet:Type'=>$this->Loop['LPS0:Data:Packet:Type']), $data));
 				log_message('infos', '[LPS] : Download the current Values LOOP'.($packet_type?'':'2'));
 				switch($packet_type) {
 					case 0:

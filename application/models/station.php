@@ -226,7 +226,7 @@ class Station extends CI_Model {
 			$this->data['LPS'] = $Current_WS->GetLPS (1,1 );
 
 			// on lit et sauve les maxi-mini
-			$this->data['HILOW'] = $Current_WS->GetHiLows ( );
+			// $this->data['HILOW'] = $Current_WS->GetHiLows ( );
 
 			if ( !$Current_WS->closeConnection() )
 				throw new Exception( sprintf( _('Fermeture de %s impossible'), $conf['_name']) );

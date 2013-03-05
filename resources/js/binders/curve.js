@@ -1,20 +1,26 @@
 var parse = d3.time.format("%Y-%m-%d %H:%M").parse,
     format = d3.time.format("%Y");
 
-var svg, area, line, gradient, xAxis, yAxis;
-var color = d3.scale.category20();
+var svg, area, line, gradient, x, y, xAxis, yAxis;
+    var color = d3.scale.category20();
+var Zoomlevel, TranslateXY, TimeDomain;
+var ZmMin = 0.6,
+    ZmMax = 2.29;
+var curve1, rect;
+var url_=null, ajaxWork = false;
 
 function drawGraph (data, container, w, h) {
     var m = [5, 15, 20, 35], // [haut, droite, bas, gauche]
     w = w - m[1] - m[3],
     h = h - m[0] - m[2];
 
-    var x = d3.time.scale().range([0, w]),
-        y = d3.scale.linear().range([h, 0]);
+    $(container).empty();
+
+    x = d3.time.scale().range([0, w]);
+    y = d3.scale.linear().range([h, 0]);
 
     xAxis = d3.svg.axis().scale(x).orient("bottom"),//.tickSize(-h, 0).tickPadding(6),
     yAxis = d3.svg.axis().scale(y).orient("left");//.tickSize(-w).tickPadding(6);
-
 
     svg = d3.select(container).append("svg:svg")
         .attr("width", w + m[1] + m[3])
@@ -58,7 +64,7 @@ function drawGraph (data, container, w, h) {
     // hoverLine.classed("hide", true);
 
 
-    var rect = svg.append("svg:rect")
+    rect = svg.append("svg:rect")
         .attr("class", "pane")
         .attr("width", w)
         .attr("height", h);
@@ -90,7 +96,7 @@ function drawGraph (data, container, w, h) {
 
     // Bind the data to our path elements.
     // svg.select("path.area").data([data]);
-    var curve1 = svg.select("path.line").data([data]);
+    curve1 = svg.select("path.line").data([data]);
 
 
     var circle = svg.append("circle")
@@ -133,31 +139,128 @@ function drawGraph (data, container, w, h) {
         dataIndex = pathEl.getPathSegAtLength((findX-BBox.x)/BBox.width*pathLength);
 
         infoBulle.text(pathData[0][dataIndex]['date'] + "\n" + pathData[0][dataIndex]['val']);
-        // console.log(curve1.zoom().x() , curve1.zoom().translate());
-        console.log("here", x.domain());
-
+        // console.log("here", x.domain()); // retourne la plage de temp affiché
         });
 
+    rect.call(zm=d3.behavior.zoom().x(x).scaleExtent([ZmMin,ZmMax]).on("zoom", zoom));
+    // rect.call(dg=d3.behavior.drag().origin(Object).on("dragstart", draw).on("drag", draw).on("dragend", dragend));
 
-    rect.call(d3.behavior.zoom().x(x).scaleExtent([1,10]).on("zoom", draw));
-    // d3.behavior.zoom().scale();
+    // XTranslate;
+
     draw();
 }
 
-function draw() {
-    // var ptg = d3.event.translate[0]; // coordonnee X du point gauche en pixel
-    // console.log('zoom().scale()', d3.behavior.zoom().scale());
-    // if (d3.event.translate[0]>0) d3.event.translate[0]=0;
-    // console.log('ptg', ptg);
+function draw () {
+    // console.log("draw");
 
     // trace l'axe X
     svg.select("g.x.axis").call(xAxis);
-
-    // trace l'axe Y
+    var data = curve1.data()[0];
+    ymin = d3.min(data.map(function(d) { return d.val; }));
+    ymax = d3.max(data.map(function(d) { return d.val; }));
+    ymargin = (ymax - ymin)/50;
+    y.domain([ymin-ymargin, ymax+ymargin]);
+    // // trace l'axe Y
     svg.select("g.y.axis").call(yAxis);
 
     // trace la courbe
-    svg.select("path.line").attr("d", line);
+    svg.select("path.line").attr("d", line);    
+}
 
-    // console.log(d3.event.scale, d3.event.translate[1], d3.event.translate[0]);
+
+// function dragend() {
+//     console.log("dragend");
+//     if (!ajaxWork) {
+//         var TimeDomain = x.domain();
+//             TimeDomain[0] = TimeDomain[0].getTime();
+//             TimeDomain[1] = TimeDomain[1].getTime();
+//         var TimeMargin = (TimeDomain[1]-TimeDomain[0])/4;
+//             first = new Date(TimeDomain[0]-TimeMargin*2);
+//             last = new Date(TimeDomain[1]+TimeMargin*2);
+//         var firstData = curve1.data()[0][0];
+//         var lastData = curve1.data()[0][curve1.data()[0].length-1];
+//         url = "/data/curve?station=VP2_GTD&sensor=TA:Arch:Various:Wind:HighSpeed&Since="+formatDate(first)+"&To="+formatDate(last);
+//         if ( ( firstData.date.getTime() > TimeDomain[0]-TimeMargin // si la reserve de donnee a gauche est inferieur a 50%
+//                 || lastData.date.getTime() < TimeDomain[1]+TimeMargin) ) { // si la reserve de donnee a droite est inferieur a 50% 
+//             pullData(url);
+//         }
+//     }
+//     draw();
+//     eventFire(document,'click');
+// }
+
+
+function zoom() {
+    // console.log("zoom");
+
+    draw();
+    if (!ajaxWork) {
+        var Zoomlevel = zm.scale();
+        // var TranslateXY = zm.translate();
+        var TimeDomain = x.domain();
+            TimeDomain[0] = TimeDomain[0].getTime();
+            TimeDomain[1] = TimeDomain[1].getTime();
+        var TimeMargin = (TimeDomain[1]-TimeDomain[0])/4;
+            first = new Date(TimeDomain[0]-TimeMargin*2);
+            last = new Date(TimeDomain[1]+TimeMargin*2);
+        var firstData = curve1.data()[0][0];
+        var lastData = curve1.data()[0][curve1.data()[0].length-1];
+        url = "/data/curve?station=VP2_GTD&sensor=TA:Arch:Various:Wind:HighSpeed&Since="+formatDate(first)+"&To="+formatDate(last);
+        if (   Zoomlevel == ZmMax // on est au zoom maxi
+            || Zoomlevel == ZmMin 
+            || ( firstData.date.getTime() > TimeDomain[0]-TimeMargin 
+                || lastData.date.getTime() < TimeDomain[1]+TimeMargin) ) {// on est au zoom mini
+                pullData(url);
+            }
+    }
+}
+
+function pullData(url)
+{
+    // rect.call(zm=d3.behavior.zoom().x(x).scaleExtent([ZmMin,ZmMax]).on("zoom", null));
+    ajaxWork = true;
+    d3.tsv(url, function(error, tsv) {
+        if (error) {
+            console.warn(error);
+        }
+        else {
+            var d = new Date();
+            // console.log (d.getSeconds());
+            tsv.forEach(function(d) {
+                d.date = parse(d.date);
+                d.val = +d.val;
+            });
+            // if (tsv[0].date.getTime() != firstData.date.getTime()) {
+                curve1.data([tsv]);
+                rect.call(zm=d3.behavior.zoom().x(x).scaleExtent([ZmMin,ZmMax]).on("zoom", zoom));
+                draw();
+            // }
+        }
+        ajaxWork = false;
+    });
+}
+
+function formatDate(value)
+{
+
+    var dd = value.getDate(); 
+    var mm = value.getMonth()+1;//January is 0! 
+    var yyyy = value.getFullYear();
+    var H = value.getHours();
+    var m = value.getMinutes()
+    if(dd<10) dd='0'+dd ; 
+    if(mm<10) mm='0'+mm ; 
+    if(H<10) H='0'+H ; 
+    if(m<10) m='0'+m ; 
+   return yyyy + "-" + mm + "-" + dd + "T" + H + ":" + m  ;
+}
+
+function eventFire(el, etype){
+  if (el.fireEvent) {
+    (el.fireEvent('on' + etype));
+  } else {
+    var evObj = document.createEvent('Events');
+    evObj.initEvent(etype, true, false);
+    el.dispatchEvent(evObj);
+  }
 }

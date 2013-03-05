@@ -19,13 +19,13 @@
 	<noscript><?=i18n('warning.javascript.disable');?></noscript>
 </div>
 
-<script type="text/javascript" src="http://static.jstree.com/v.1.0pre/jquery.jstree.js"></script>
+<script type="text/javascript" src="/resources/js/libs/jstree/jquery.jstree.js"></script>
 
 <script>
 // http://jquery.bassistance.de/treeview/demo/
 
 $(document).ready(function(){
-	var url = "http://probe.dev/data/currents?station=VP2_GTD";
+	var url = "/data/currents?station=VP2_GTD";
 	// $.getJSON(url, function(json) {
 	$.getJSON(url, function(data) {
 		console.log(data);
@@ -33,24 +33,40 @@ $(document).ready(function(){
 		$.each(data.data, function(key, val) { str = ''; recursiveFunction(key, val, 'Tree') });
 		// console.log(str);
 		$('#Tree').append('<ul>'+str+'</ul>');
-
 		$("#Tree").jstree({
 			"themes" : {
-				"theme" : "apple"
+				"theme" : "apple",
+				// "url" : '/resources/icons/jstree/'
 				// "dots" : false,
 				// "icons" : false
 			},
 			"types" : {
 				"types" : {
-					"Sensor" : {
+					"Item" : {
 						"icon" : {
 							// "image" : "../resources/icons/famfamfam/bricks.png"
 							// "image" : "../resources/icons/famfamfam/map_go.png"
-							"image" : "../resources/icons/famfamfam/tag_pink.png"
+							"image" : "/resources/icons/famfamfam/tag_pink.png"
 							// "image" : "../resources/icons/famfamfam/bullet_go.png"
 							// "image" : "../resources/icons/famfamfam/feed.png"
 						}
+					},
+					"Grp" : {
+						// "icon" : {"image" : "../resources/icons/famfamfam/bricks.png"}
+					},
+					"Alarm" : {
+						"icon" : {"image" : "/resources/icons/famfamfam/clock.png"}
+					},
+					"Arch" : {
+						"icon" : {"image" : "/resources/icons/famfamfam/chart_curve.png"}
+					},
+					"Low" : {
+						"icon" : {"image" : "/resources/icons/famfamfam/tag_blue_delete.png"}
+					},
+					"High" : {
+						"icon" : {"image" : "/resources/icons/famfamfam/tag_blue_add.png"}
 					}
+
 				}
 			},
 			"plugins" : [ "html_data", "types", "themes" ]
