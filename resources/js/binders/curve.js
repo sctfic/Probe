@@ -153,6 +153,8 @@ function drawGraph (data, container, w, h) {
 function draw () {
     // console.log("draw");
 
+    // trace la courbe
+    svg.select("path.line").attr("d", line);    
     // trace l'axe X
     svg.select("g.x.axis").call(xAxis);
     var data = curve1.data()[0];
@@ -161,10 +163,10 @@ function draw () {
     ymargin = (ymax - ymin)/50;
     y.domain([ymin-ymargin, ymax+ymargin]);
     // // trace l'axe Y
-    svg.select("g.y.axis").call(yAxis);
+    svg.select("g.y.axis").transition().duration(1000).call(yAxis);
 
     // trace la courbe
-    svg.select("path.line").attr("d", line);    
+    svg.select("path.line").transition().duration(1000).attr("d", line);    
 }
 
 
