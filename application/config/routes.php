@@ -44,6 +44,7 @@ $route['404_override'] = '';
 
 $route['admin'] = "admin/admin";
 $route['setup'] = "setup/installer";
+$route['viewer/(:any)/(:any)/(:any)'] = "viewer/$1?station=$2&sensor=$3";
 
 
 /* End of file routes.php */
