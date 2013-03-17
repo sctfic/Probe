@@ -3,11 +3,10 @@ var parse = d3.time.format("%Y-%m-%d %H:%M").parse,
 
 var svg, area, line, gradient, x, y, xAxis, yAxis;
     var color = d3.scale.category20();
-var Zoomlevel, TranslateXY, TimeDomain;
-var ZmMin = 1,
-    ZmMax = 1000;
 var curve1, rect;
-var url_=null, ajaxWork = false;
+var url_=null, reversibleData = null;
+var Y_val=0, X_date=0, X_px=1, Y_px=1;
+
 
 function drawGraph (data, container, w, h) {
     var m = [5, 15, 20, 35], // [haut, droite, bas, gauche]
@@ -42,10 +41,12 @@ function drawGraph (data, container, w, h) {
 
     svg.append("svg:g")
         .attr("class", "x axis")
+        .attr("id", "xaxis")
         .attr("transform", "translate(0," + h + ")");
 
     svg.append("svg:path")
         .attr("class", "line")
+        // .style("fill", function(d) { return color('courbe1'); })
         .style("stroke", function(d) { return color('courbe1'); })
         .attr("clip-path", "url(#clip)");
 
@@ -66,6 +67,7 @@ function drawGraph (data, container, w, h) {
     data.forEach(function(d) {
         d.date = parse(d.date);
         d.val = +d.val;
+        // reversibleData[d.date]=d.val;
     });
 
     x.domain(d3.extent(data.map(function(d) { return d.date; })));
@@ -73,10 +75,18 @@ function drawGraph (data, container, w, h) {
     ymax = d3.max(data.map(function(d) { return d.val; }));
     ymargin = (ymax - ymin)/50;
     y.domain([ymin-ymargin, ymax+ymargin]);
-    console.log(ymin, ymax, ymargin)
 
     // Bind the data to our path elements.
     curve1 = svg.select("path.line").data([data]);
+
+    var legend1 = svg.append('text')
+            .text('Scroll for Zoom')
+            .attr('id', 'Cursor_' + 'courbe1')
+            .attr('x', w-200)
+            .attr('y', h-8)
+            .style("fill", function(d) { return color('courbe1'); });
+            // .style("stroke", '#000');
+            // .attr('fill', color('courbe1'))​;
 
     var circle = svg.append("circle")
             .attr("r", 8)
@@ -86,39 +96,40 @@ function drawGraph (data, container, w, h) {
             .attr("opacity", 0);
     var infoBulle = circle.append("svg:title");
 
-    hoverLineXOffset = m[3];
-
     rect.on("mousemove", function() {
-        var pathEl = curve1.node(); // recupere les point de la courbe
-        var pathData = curve1.data(); // recupere donnée de la courbe
-        var pathLength = pathEl.getTotalLength(); // longueur totale de la ligne de la courbe
-        var BBox = pathEl.getBBox(); // SVGRect {height: visible+caché, width: visible+caché, y: positionY, x: PositionX}
-
-        var mouseX = event.pageX-hoverLineXOffset,
-            findX = mouseX,
-            pos = pathEl.getPointAtLength((findX-BBox.x)/BBox.width*pathLength),
-            i=0;
-
-        while (Math.floor(pos.x,1) != mouseX && i<20) {
-            findX = findX+(mouseX-Math.floor(pos.x))/2;
-            pos = pathEl.getPointAtLength((findX-BBox.x)/BBox.width*pathLength);
-            i++;
-        }
-
-        circle.attr("opacity", 1)
-            .attr("cx", pos.x)
-            .attr("cy", pos.y);
+        X_px = d3.mouse(this)[0];
+        X_date = x.invert(X_px);
             
-        dataIndex = pathEl.getPathSegAtLength((findX-BBox.x)/BBox.width*pathLength);
-        infoBulle.text(pathData[0][dataIndex]['date'] + "\n" + pathData[0][dataIndex]['val']);
-        });
+        Y_px = y(Y_val);
+        var pathData = curve1.data()[0]; // recupere donnée de la courbe
 
-    rect.call(zm=d3.behavior.zoom().x(x).scaleExtent([ZmMin,ZmMax]).on("zoom", function(){
+        pathData.forEach(function(element, index, array) {
+            if ((index+1 < array.length) && (array[index].date <= X_date) && (array[index+1].date >= X_date)) {
+                if (X_date-array[index].date < array[index+1].date-X_date) {
+                    Y_val = array[index].val;
+                    X_date = array[index].date;
+                } else {
+                    Y_val = array[index+1].val;
+                    X_date = array[index+1].date;
+                }
+                X_px=Math.round(x(X_date));
+                Y_px=Math.round(y(Y_val));
+            }
+        });
+        circle.attr("opacity", 1)
+            .attr("cx", X_px)
+            .attr("cy", Y_px);
+        legend1.text("X = " + formatDate(X_date,' ') + " , Y = " + (Y_val));
+        infoBulle.text("X = " + (X_date) + "\nY = " + (Y_val));
+
+    });
+
+    rect.call(zm=d3.behavior.zoom().x(x).scaleExtent([1,1000]).on("zoom", function(){
         window.clearTimeout(timeoutID);
         timeoutID = window.setTimeout(function(){zoom()}, 400);
-        draw();
+        draw ();
     }));
-    draw();
+    draw ();
 }
 
 function draw () {
@@ -126,17 +137,27 @@ function draw () {
     svg.select("path.line").attr("d", line);    
     // trace l'axe X
     svg.select("g.x.axis").call(xAxis);
-    var data = curve1.data()[0];
-    ymin = d3.min(data.map(function(d) { return d.val; }));
-    ymax = d3.max(data.map(function(d) { return d.val; }));
-    ymargin = (ymax - ymin)/50;
-    y.domain([ymin-ymargin, ymax+ymargin]);
-    // // trace l'axe Y
-    svg.select("g.y.axis").transition().duration(1000).call(yAxis);
-
-    // trace la courbe
-    svg.select("path.line").transition().duration(1000).attr("d", line);    
+    // trace l'axe Y
+    svg.select("g.y.axis").call(yAxis);
 }
+// function redraw (visibleData) {
+//     ymin = d3.min(visibleData.map(function(d) { return d.val; }));
+//     ymax = d3.max(visibleData.map(function(d) { return d.val; }));
+//     ymargin = (ymax - ymin)/50;
+
+//     // trace la courbe avec l'ancienne echelle en Y
+//     svg.select("path.line").attr("d", line);    
+
+//     // on redefini l'echelle en Y
+//     y.domain([ymin-ymargin, ymax+ymargin]);
+//     // trace l'axe Y
+//     svg.select("g.y.axis").transition().duration(1000).call(yAxis);
+//     // trace la courbe
+//     svg.select("path.line").transition().duration(1000).attr("d", line);
+
+//     // trace l'axe X
+//     svg.select("g.x.axis").call(xAxis);
+// }
 
 var timeoutID=null;
 
@@ -144,16 +165,18 @@ function zoom() {
     var Zoomlevel = zm.scale();
 
     url = "/data/curve?station="+station+"&sensor="+sensor+"&Since="+formatDate(x.domain()[0])+"&To="+formatDate(x.domain()[1]);
-    // if (   Zoomlevel == ZmMax // on est au zoom maxi
-    //     || Zoomlevel == ZmMin 
-    //     || ( firstData.date.getTime() > TimeDomain[0]-TimeMargin 
-    //         || lastData.date.getTime() < TimeDomain[1]+TimeMargin) ) {// on est au zoom mini
     if (Zoomlevel>1)
         pullData(url);
-    else
+    else // Zoomlevel == 1
     {
         curve1.data([dataFullView]);
         draw();
+        // redraw(dataFullView);
+
+        // on recentre la courbe sur les données initiale
+        zm.translate([0,0]);
+        svg.select("path.line").transition().duration(2000).attr("d", line);
+        svg.select("g.x.axis").transition().duration(2000).call(xAxis);
     }
 }
 
@@ -166,11 +189,15 @@ function pullData(url) {
             tsv.forEach(function(d) {
                 d.date = parse(d.date);
                 d.val = +d.val;
+                // reversibleData[d.date]=d.val;
             });
-
+            visibleData = tsv;
+ 
             tsv = replaceInside(tsv);
             curve1.data([tsv]);
+
             draw();
+            // redraw(visibleData);
         }
     });
 }

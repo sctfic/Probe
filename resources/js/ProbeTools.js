@@ -1,5 +1,7 @@
-function formatDate(value)
+function formatDate(value, separator)
 {
+    //toDateString()
+    if(typeof(separator)==='undefined') separator = 'T';
     var dd = value.getDate(); 
     var mm = value.getMonth()+1;//January is 0! 
     var yyyy = value.getFullYear();
@@ -9,12 +11,12 @@ function formatDate(value)
     if(mm<10) mm='0'+mm ; 
     if(H<10) H='0'+H ; 
     if(m<10) m='0'+m ; 
-    return yyyy + "-" + mm + "-" + dd + "T" + H + ":" + m  + ":00";
+    return yyyy + "-" + mm + "-" + dd + separator + H + ":" + m  + ":00";
 }
 
 (function() {
     var previousStep = Date.now();
-    console.debug('[0.000 sec]', 'Initialize( console.TimeStep )');
+    // console.debug('[0.000 sec]', 'Initialize( console.TimeStep )');
     console.TimeStep = function(msg) {
         var step = Date.now()-previousStep;
         previousStep = Date.now();
