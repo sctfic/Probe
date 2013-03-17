@@ -81,7 +81,7 @@ class dao_data extends CI_Model {
         where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 
         $queryString = 
-        "SELECT FROM_UNIXTIME( TRUNCATE( UNIX_TIMESTAMP(`UTC`) / ".($Granularity*60).", 0)*".($Granularity*60)." ) as UTC_grp , round(avg(value), 2) as `value`
+        "SELECT FROM_UNIXTIME( TRUNCATE( UNIX_TIMESTAMP(`UTC`) / ".($Granularity*60).", 0)*".($Granularity*60)."+".($Granularity*60/2)." ) as UTC_grp , round(avg(value), 2) as `value`
             FROM  `".$this->SEN_TABLE."` 
             WHERE SEN_ID = ".$this->SEN_ID."
                 AND utc >= '$since'
@@ -116,7 +116,7 @@ class dao_data extends CI_Model {
         where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 
         $queryString = 
-        "SELECT FROM_UNIXTIME( TRUNCATE( UNIX_TIMESTAMP(`UTC`) / ".($Granularity*60).", 0)*".($Granularity*60)." ) as UTC_grp ,
+        "SELECT FROM_UNIXTIME( TRUNCATE( UNIX_TIMESTAMP(`UTC`) / ".($Granularity*60).", 0)*".($Granularity*60)."+".($Granularity*60/2)." ) as UTC_grp ,
                 SUBSTRING_INDEX(GROUP_CONCAT(CAST(`value` AS CHAR) ORDER BY utc),',',1) as first,
                 round(min(`value`), 2) as min,
                 round(avg(`value`), 2) as val,
@@ -152,8 +152,8 @@ class dao_data extends CI_Model {
         $queryString = sprintf(file_get_contents(SQL_DIR.'wind.sql'),
             $Granularity*60,
             $Granularity*60,
+            $Granularity*60/2,
             $this->SEN_LST['TA:Arch:Various:Wind:DominantDirection'],
-
             $this->SEN_LST['TA:Arch:Various:Wind:HighSpeed'],
             $this->SEN_LST['TA:Arch:Various:Wind:HighSpeedDirection'],
             $since,

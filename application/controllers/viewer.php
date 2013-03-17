@@ -44,12 +44,12 @@ class viewer extends CI_Controller
      *
      * @return [type] [description]
      */
-    public function index($dataBinder = null)
+    public function index($dataBinder = null, $station=null, $sensor=null)
     {
         if (empty($dataBinder) || !isset($dataBinder)) {
             $this->listView();
         } else {
-            $this->binderView($dataBinder);
+            $this->binderView($dataBinder, $station, $sensor);
         }
     }
 
@@ -60,7 +60,7 @@ class viewer extends CI_Controller
      *
      * @return view data visualization with dataBinder
      */
-    public function binderView($dataBinder)
+    public function binderView($dataBinder, $station=null, $sensor=null)
     {
         where_I_Am(__FILE__, __CLASS__, __FUNCTION__, __LINE__, func_get_args());
         $page = new Page_manager();
@@ -69,6 +69,8 @@ class viewer extends CI_Controller
         $data['viewer'] = true;
         // remove the controller name
         $data['dataBinder'] = $dataBinder;
+        $data['station'] = $station;
+        $data['sensor'] = $sensor;
 
         $data['breadcrumb'] = array(
             'viewer.list',
@@ -78,7 +80,7 @@ class viewer extends CI_Controller
                 'i18n'    =>  'viewer.'.$dataBinder
             )
         );
-
+// var_dump($data);
         // display the view
         $page->view(BINDER_DIR.$dataBinder, $data);
     }

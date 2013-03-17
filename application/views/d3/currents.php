@@ -9,7 +9,9 @@
 * @link	 http://probe.com/doc
  */
 // data getter
-// http://probe.dev/draw?station=VP2_GTD&sensors=TA:Arch:Temp:Out:Average&Since=2012-10-26T00:00:00&StepUnit=WEEK&StepNbr=6
+
+
+
 ?>
 <style>
 

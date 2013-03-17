@@ -181,7 +181,7 @@ function draw () {
 //             last = new Date(TimeDomain[1]+TimeMargin*2);
 //         var firstData = curve1.data()[0][0];
 //         var lastData = curve1.data()[0][curve1.data()[0].length-1];
-//         url = "/data/curve?station=VP2_GTD&sensor=TA:Arch:Various:Wind:HighSpeed&Since="+formatDate(first)+"&To="+formatDate(last);
+//         url = "/data/curve?station="+staion+"&sensor="+sensor+"&Since="+formatDate(first)+"&To="+formatDate(last);
 //         if ( ( firstData.date.getTime() > TimeDomain[0]-TimeMargin // si la reserve de donnee a gauche est inferieur a 50%
 //                 || lastData.date.getTime() < TimeDomain[1]+TimeMargin) ) { // si la reserve de donnee a droite est inferieur a 50% 
 //             pullData(url);
@@ -207,7 +207,7 @@ function zoom() {
             last = new Date(TimeDomain[1]+TimeMargin*2);
         var firstData = curve1.data()[0][0];
         var lastData = curve1.data()[0][curve1.data()[0].length-1];
-        url = "/data/curve?station=VP2_GTD&sensor=TA:Arch:Various:Wind:HighSpeed&Since="+formatDate(first)+"&To="+formatDate(last);
+        url = "/data/curve?station="+staion+"&sensor="+sensor+"&Since="+formatDate(first)+"&To="+formatDate(last);
         if (   Zoomlevel == ZmMax // on est au zoom maxi
             || Zoomlevel == ZmMin 
             || ( firstData.date.getTime() > TimeDomain[0]-TimeMargin 
