@@ -9,7 +9,7 @@ var Y_val=0, X_date=0, X_px=1, Y_px=1;
 
 
 function drawGraph (data, container, w, h) {
-    var m = [5, 15, 20, 35], // [haut, droite, bas, gauche]
+    var m = [0, 00, 0, 0], // [haut, droite, bas, gauche]
     w = w - m[1] - m[3],
     h = h - m[0] - m[2];
 
@@ -27,13 +27,13 @@ function drawGraph (data, container, w, h) {
         .append("svg:g")
         .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
 
-    svg.append("svg:clipPath")
-        .attr("id", "clip")
-        .append("svg:rect")
-        .attr("x", x(0))
-        .attr("y", y(1))
-        .attr("width", x(1) - x(0))
-        .attr("height", y(0) - y(1));
+    // svg.append("svg:clipPath")
+    //     .attr("id", "clip")
+    //     .append("svg:rect")
+    //     .attr("x", x(0))
+    //     .attr("y", y(1))
+    //     .attr("width", x(1) - x(0))
+    //     .attr("height", y(0) - y(1));
 
     svg.append("svg:g")
         .attr("class", "y axis")
@@ -51,6 +51,7 @@ function drawGraph (data, container, w, h) {
         .attr("clip-path", "url(#clip)");
 
     rect = svg.append("svg:rect")
+        // .attr("id","droppable")
         .attr("class", "pane")
         .attr("width", w)
         .attr("height", h);
@@ -64,11 +65,11 @@ function drawGraph (data, container, w, h) {
 
         var dataRebuild = [];
     // Parse dates and numbers.
-    data.forEach(function(d) {
-        d.date = parse(d.date);
-        d.val = +d.val;
-        // reversibleData[d.date]=d.val;
-    });
+    // data.forEach(function(d) {
+    //     d.date = parse(d.date);
+    //     d.val = +d.val;
+    //     // reversibleData[d.date]=d.val;
+    // });
 
     x.domain(d3.extent(data.map(function(d) { return d.date; })));
     ymin = d3.min(data.map(function(d) { return d.val; }));

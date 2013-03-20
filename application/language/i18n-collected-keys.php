@@ -52,3 +52,5 @@ i18n('SmartCurve?station=VP2_GTD&sensor=TA:Arch:Temp:Out:Average:title');
 i18n('SmartCurve?station=VP2_GTD&sensor=TA:Arch:Temp:Out:Average:description');
 i18n('SmartCurve?station=VP2_Gtd&sensor=test:title');
 i18n('SmartCurve?station=VP2_Gtd&sensor=test:description');
+i18n('SmartCurves:title');
+i18n('SmartCurves:description');
