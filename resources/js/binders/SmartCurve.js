@@ -9,7 +9,7 @@ var Y_val=0, X_date=0, X_px=1, Y_px=1;
 
 
 function drawGraph (data, container, w, h) {
-    var m = [0, 00, 0, 0], // [haut, droite, bas, gauche]
+    var m = [5, 15, 20, 35], // [haut, droite, bas, gauche]
     w = w - m[1] - m[3],
     h = h - m[0] - m[2];
 

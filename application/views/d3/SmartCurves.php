@@ -15,7 +15,7 @@
 ?>
 <div id="resizable" class="ui-widget-content">
     <h4 class="ui-widget-header">Resizable</h4>
-    <div id="SvgZone" >
+    <div id="SvgZone" style='border:solid red 1px;'>
         <!-- d3 content should be -dynamically- placed here -->
     </div>
 </div>
