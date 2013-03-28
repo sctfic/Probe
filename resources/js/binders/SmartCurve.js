@@ -27,13 +27,13 @@ function drawGraph (data, container, w, h) {
         .append("svg:g")
         .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
 
-    // svg.append("svg:clipPath")
-    //     .attr("id", "clip")
-    //     .append("svg:rect")
-    //     .attr("x", x(0))
-    //     .attr("y", y(1))
-    //     .attr("width", x(1) - x(0))
-    //     .attr("height", y(0) - y(1));
+    svg.append("svg:clipPath")
+        .attr("id", "clip")
+        .append("svg:rect")
+        .attr("x", x(0))
+        .attr("y", y(1))
+        .attr("width", x(1) - x(0))
+        .attr("height", y(0) - y(1));
 
     svg.append("svg:g")
         .attr("class", "y axis")

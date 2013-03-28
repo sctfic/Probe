@@ -12,11 +12,18 @@ function curve(parent, init) {
 
     this.dark = color(this.id);
     this.bright = color(this.id+'2');
+
+    this.parent.svg().append("svg:path")
+        .attr("id", "line-"+this.id)
+        .attr("class", "line")
+        .style("stroke", this.dark)
+        .attr("clip-path", "url(#maskArea)");
+thisCurve = this;
     // define the line generator
     this.line = d3.svg.line()
         .interpolate("linear")
-        .x(function(d) { return this.parent._range.x(d.date); })
-        .y(function(d) { return this.parent._range.y(d.val); });
+        .x(function(d) { return thisCurve.parent._range.x(d.date); })
+        .y(function(d) { return thisCurve.parent._range.y(d.val); });
 
     this.url =  "/data/curve?station="+this.station+"&sensor="+this.sensor;
     // console.log(this.parent);
@@ -33,22 +40,24 @@ function curve(parent, init) {
     // this.legend = function(){
         if (!d3.select('#LegendSpot-' + this.id)[0][0]) {
             console.log('add <legend> '+this.id);
-            this.parent.svg().append('text')
+            this.legend = this.parent.svg().append('text')
                 .text('> xxxxxxxxxxxx-XXXXXXXXX')
                 .attr('id', 'LegendSpot-' + this.id)
+                .attr('class', 'Legend')
                 .attr('x', this.parent._innerWidth()-200)
                 .attr('y', this.parent._innerHeight()-8)
                 .style({fill: this.dark, display: "none"});
         }
-        // };
+    // };
 
     // this.spot = function(){
         if (!d3.select('#Spot-' + this.id)[0][0]) {
             console.log('add <spot> '+this.id);
-            this.parent.svg().append("circle")
+            this.spot = this.parent.svg().append("circle")
                 .attr('id', 'Spot-' + this.id)
                 .on('mouseover', function() {
-                        d3.select('#Legend' + this.id).style({fill: this.dark, display: "block"});
+                        d3.selectAll('.Legend').style({display: "none"});
+                        d3.select('#Legend' + this.id).style({display: "block"});
                     })
                 .attr("r", 8)
                 .attr("cx", 0)
@@ -57,29 +66,42 @@ function curve(parent, init) {
                 // .attr("opacity", 0);
                 // .append("svg:title");
         }
-        // };
-        this.infos = function(px, date){
-            // var pathData = curve1.data()[0]; // recupere donnée de la courbe
-            // pathData.forEach( function(element, index, array) {
-            //     if ((index+1 < array.length) && (array[index].date <= X_date) && (array[index+1].date >= X_date)) {
-            //         if (X_date-array[index].date < array[index+1].date-X_date) {
-            //             Y_val = array[index].val;
-            //             X_date = array[index].date;
-            //         } else {
-            //             Y_val = array[index+1].val;
-            //             X_date = array[index+1].date;
-            //         }
-            //         X_px=Math.round(x(X_date));
-            //         Y_px=Math.round(y(Y_val));
-            //     }
-            // });
-            // circle.attr("opacity", 1)
-            //     .attr("cx", X_px)
-            //     .attr("cy", Y_px);
-            // legend1.text("X = " + formatDate(X_date,' ') + " , Y = " + (Y_val));
-            // infoBulle.text("X = " + (X_date) + "\nY = " + (Y_val));
-        }
-    
+    // };
+    this.draw = function(){
+        // trace la courbe
+        console.log('calculate each point')
+        this.parent.svg().select('#line-'+this.id).data([this.data.initial]);
+        this.parent.svg().select('#line-'+this.id).attr("d", this.line);
+        // trace l'axe Y
+        // svg.select("g.y.axis").call(this._domain.y);
+        };
+    this.zoom = function(){
+
+        };
+    this.infos = function(px, date){
+        py = 100; // position en Y du spot sur la courbe en pixel
+        val = 50; // valeur de chaque courbe correspondant a cette date
+        // var pathData = curve1.data()[0]; // recupere donnée de la courbe
+        // pathData.forEach( function(element, index, array) {
+        //     if ((index+1 < array.length) && (array[index].date <= X_date) && (array[index+1].date >= X_date)) {
+        //         if (X_date-array[index].date < array[index+1].date-X_date) {
+        //             Y_val = array[index].val;
+        //             X_date = array[index].date;
+        //         } else {
+        //             Y_val = array[index+1].val;
+        //             X_date = array[index+1].date;
+        //         }
+        //         X_px=Math.round(x(X_date));
+        //         Y_px=Math.round(y(Y_val));
+        //     }
+        // });
+        this.spot
+            .attr("cx", px)
+            .attr("cy", py);
+        this.legend.text("X = " + formatDate(date,' ') + " , Y = " + (val));
+        // infoBulle.text("X = " + (X_date) + "\nY = " + (Y_val));
+    }
+    this.draw();
 }
 
 
@@ -132,10 +154,22 @@ function graph(init) {
         return this._svg;
         };
 
+    this.CurrentZoom = null;
+    this.timeoutID = null;
+
     this._Sensitive = undefined; // ptr to <clipPath>
-    this.Sensitive = function(){ // return ptr to <clipPath>
-        if (!d3.select('#sensitive')[0][0]){
-            this._Sensitive = this.svg().append("svg:clipPath")
+    this.Sensitive = function() { // return ptr to <clipPath>
+        if (!d3.select('#sensitive')[0][0]) {
+
+            this.svg().append("svg:clipPath")   // drawing mask area
+                .attr("id", "maskArea")
+                .append("svg:rect")             // invisible black rectangle is my mask
+                .attr("x", this._range.x(0))
+                .attr("y", this._range.y(1))
+                .attr("width", this._range.x(1) - this._range.x(0))
+                .attr("height", this._range.y(0) - this._range.y(1));
+
+            this._Sensitive = this.svg()
                 .append("svg:rect")
                 .attr("id", "sensitive")
                 .attr("x", this._range.x(0))
@@ -143,17 +177,30 @@ function graph(init) {
                 .attr("width", this._range.x(1) - this._range.x(0))
                 .attr("height", this._range.y(0) - this._range.y(1));
 
+            me = this;
             this._Sensitive.on("mousemove", function() {
-                px = d3.mouse(this)[0]; // position en X de la sourie en pixel
-                date = this._range.x.invert(px); // Date correspondant a cette position
-
-                // py = null; // position en Y du spot sur la courbe en pixel
-                // val = null; // valeur de chaque courbe correspondant a cette date
-
+                px = d3.mouse(me)[0];             // position en X de la sourie en pixel
+                date = me._range.x.invert(px);    // Date correspondant a cette position
                 this.curves.forEach( function(element, index, array) {
                     element.infos(px, date);
                 });
+                console.log('event <MouseMove>', px, date, me);
             });
+            this._Sensitive.call(
+                this.CurrentZoom = d3.behavior.zoom()
+                                        .x(this._range.x)
+                                        .scaleExtent([1,1000])
+                                        .on("zoom", function() {
+                                            window.clearTimeout(me.timeoutID);
+                                            me.timeoutID = window.setTimeout(function() {
+                                                // me.zoom();
+                                                console.log('event <Improove granularity>', me);
+                                            },
+                                            400); // Delay (in ms) before request new data
+                                            me.draw ();
+                                        }
+                                    )
+                                );
 
             console.log('add <clipPath>');
         }
@@ -200,21 +247,32 @@ function graph(init) {
                     objGrapgh.curves[objGrapgh.curves.length] = new curve(objGrapgh, {data: data,station:'VP2_GTD',sensor:'TA:Arch:Temp:Out:Average'});
                 }
             );
-        console.log('adding <line> '+line);
+            console.log('adding <line> '+line);
         };
 
-    this.rmAllCurves = function(){
 
-        };
-    this.refresh = function(){
+    this.draw = function() {
+        // trace l'axe X
+        this.svg().select("#xAxis").call(this.curves[0]._domain.x);
 
+        this.curves.forEach( function(element, index, array) {
+                element.draw();
+            });
         };
-    this.draw = function(){
+    // this.rmAllCurves = function(){
 
-        };
-    this.redraw = function(){
+    //     };
+    // this.refresh = function(){
 
-        };
+    //     };
+    // this.zoom = function(){
+    //     this.curves.forEach( function(element, index, array) {
+    //             element.zoom();
+    //         });
+    //     };
+    // this.redraw = function(){
+
+    //     };
     this.pullData = function(url, myCallBack){
         var objGrapgh = this;
         // var myCallBack = callback;
@@ -232,6 +290,7 @@ function graph(init) {
                     // reversibleData[d.date]=d.val;
                 });
                 myCallBack(objGrapgh, tsv);
+
                 // console.log(objGrapgh);
             }
             console.log('Data Avaible',url);

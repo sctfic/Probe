@@ -20,7 +20,21 @@
     </div>
 </div>
 
-
+<style>
+#sensitive {
+    cursor: move;
+    fill: none;
+    pointer-events: all;
+}
+.line {
+	fill: none;
+	stroke-width: 1px;
+}
+.line:hover {
+	stroke-width: 1.6px;
+	stroke-opacity: .6;
+}
+</style>
 <script src="/resources/js/ProbeTools.js"></script>
 <script src="/resources/js/libs/base64.js"></script>
 <script src="/resources/js/libs/jquery-ui-1.10.2.custom.js"></script>
