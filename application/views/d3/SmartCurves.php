@@ -15,7 +15,7 @@
 ?>
 <div id="resizable" class="ui-widget-content">
     <h4 class="ui-widget-header">Resizable</h4>
-    <div id="SvgZone" style='border:solid red 1px;'>
+    <div id="SvgZone" style='border:solid red 1px;height:320px;'>
         <!-- d3 content should be -dynamically- placed here -->
     </div>
 </div>
@@ -30,15 +30,48 @@
 	fill: none;
 	stroke-width: 1px;
 }
-.line:hover {
+svg {
+	font-size: 10px;
+}
+
+.axis {
+	shape-rendering: crispEdges;
+}
+
+.axis path, .axis line {
+	stroke: #000;
+	fill: none;
+	stroke-width: 1px;
+}
+
+.x.axis path, .x.axis line {
+	stroke: #555;
+	/*stroke-opacity: .5;*/
+}
+
+.y.axis path, .y.axis line {
+	stroke: #555;
+	/*stroke-opacity: .5;*/
+}
+.Legend {
+	/*font-family: Arial;*/
+	font-size:12px;
+	font-weight:bold;
+	stroke:#000;
+	kerning:1.1;
+	stroke:#000;
+	stroke-width:.2px;
+}
+  /*.line:hover {
 	stroke-width: 1.6px;
 	stroke-opacity: .6;
-}
+}*/
 </style>
+<script>
+	var station='<?=$station?>';
+	var sensor='<?=$sensor?>';
+</script>
 <script src="/resources/js/ProbeTools.js"></script>
 <script src="/resources/js/libs/base64.js"></script>
 <script src="/resources/js/libs/jquery-ui-1.10.2.custom.js"></script>
-<script>
 
-
-</script>

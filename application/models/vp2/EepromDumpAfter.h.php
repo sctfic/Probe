@@ -59,8 +59,8 @@ Convention de nomage :
 	'TA:Arch:Temp:Out:High'			=>	array( 'pos' => 6,	'len' => 2,	'fn'=>'sSht_01',	'SI'=>'F2kelvin',	'min'=>-90,	'max'=>180,	'err'=>-32768,	'unit'=> '°F'	),
 	'TA:Arch:Temp:Out:Low'			=>	array( 'pos' => 8,	'len' => 2,	'fn'=>'sSht_01',	'SI'=>'F2kelvin',	'min'=>-90,	'max'=>180,	'err'=>32767,	'unit'=> '°F'	),
 
-	'TA:Arch:Various:RainFall:Sample'		=>	array( 'pos' => 10,	'len' => 2,	'fn'=>'s2uSht',		'SI'=>'',	'min'=>0,	'max'=>600,	'err'=>0,	'unit'=> 'clic'	),
-	'TA:Arch:Various:RainRate:HighSample'	=>	array( 'pos' => 12,	'len' => 2,	'fn'=>'s2uSht',		'SI'=>'',	'min'=>0,	'max'=>900,	'err'=>0,	'unit'=> 'clic/h'),
+	'TA:Arch:Various:RainFall:Sample'		=>	array( 'pos' => 10,	'len' => 2,	'fn'=>'s2uSht',		'SI'=>'',	'min'=>0,	'max'=>600,	'err'=>32767,	'unit'=> 'clic'	),
+	'TA:Arch:Various:RainRate:HighSample'	=>	array( 'pos' => 12,	'len' => 2,	'fn'=>'s2uSht',		'SI'=>'',	'min'=>0,	'max'=>900,	'err'=>32767,	'unit'=> 'clic/h'),
 	'TA:Arch:Various:Bar:Current'		=>	array( 'pos' => 14,	'len' => 2,	'fn'=>'_0001',		'SI'=>'inHg2hPa',	'min'=>25,	'max'=>33,	'err'=>0,	'unit'=> 'in.Hg'),
 	'TA:Arch:Various:Solar:Radiation'	=>	array( 'pos' => 16,	'len' => 2,	'fn'=>'s2sSht',		'SI'=>NULL,		'min'=>0,	'max'=>1409,	'err'=>32767,	'unit'=> 'W/m²'	),
 //	'TA:Arch:Various:Wind:Sample'		=>	array( 'pos' => 18,	'len' => 2,	'fn'=>'s2uSht',		'SI'=>NULL,		'min'=>0,	'max'=>0xFFFF,	'err'=>0,	'unit'=> '-'	),
@@ -71,13 +71,13 @@ Convention de nomage :
 	'TA:Arch:Hum:Out:Current'		=>	array( 'pos' => 23,	'len' => 1,	'fn'=>'s2uc',		'SI'=>NULL,		'min'=>0,	'max'=>100,	'err'=>255,	'unit'=> '%'	),
 
 	'TA:Arch:Various:Wind:SpeedAvg'	=>	array( 'pos' => 24,	'len' => 1,	'fn'=>'hexToDec',	'SI'=>'MPH2SI',		'min'=>0,	'max'=>200,	'err'=>255,	'unit'=> 'mph'	),
-	'TA:Arch:Various:Wind:HighSpeed'	=>	array( 'pos' => 25,	'len' => 1,	'fn'=>'hexToDec',	'SI'=>'MPH2SI',		'min'=>0,	'max'=>250,	'err'=>0,	'unit'=> 'mph'	),
+	'TA:Arch:Various:Wind:HighSpeed'	=>	array( 'pos' => 25,	'len' => 1,	'fn'=>'hexToDec',	'SI'=>'MPH2SI',		'min'=>0,	'max'=>250,	'err'=>255,	'unit'=> 'mph'	),
 	'TA:Arch:Various:Wind:HighSpeedDirection'=>	array( 'pos' => 26,	'len' => 1,	'fn'=>'s2uc',		'SI'=>NULL,		'min'=>0,	'max'=>16,	'err'=>255,	'unit'=> '°'	),
 	'TA:Arch:Various:Wind:DominantDirection'=>	array( 'pos' => 27,	'len' => 1,	'fn'=>'s2uc',		'SI'=>NULL,		'min'=>0,	'max'=>16,	'err'=>255,	'unit'=> '°'	),
 
 	'TA:Arch:Various:UV:IndexAvg'		=>	array( 'pos' => 28,	'len' => 1,	'fn'=>'UV',		'SI'=>NULL,		'min'=>0,	'max'=>17,	'err'=>255,	'unit'=> '-'	),
-	'TA:Arch:Various:ET:Hour'		=>	array( 'pos' => 29,	'len' => 1,	'fn'=>'ET_h',		'SI'=>NULL,		'min'=>0,	'max'=>2,	'err'=>0,	'unit'=> 'mm'	),
-	'TA:Arch:Various:Solar:HighRadiation'	=>	array( 'pos' => 30,	'len' => 2,	'fn'=>'s2sSht',		'SI'=>NULL,		'min'=>0,	'max'=>1409,	'err'=>0,	'unit'=> 'W/m²'	),
+	'TA:Arch:Various:ET:Hour'		=>	array( 'pos' => 29,	'len' => 1,	'fn'=>'ET_h',		'SI'=>NULL,		'min'=>0,	'max'=>2,	'err'=>255,	'unit'=> 'mm'	),
+	'TA:Arch:Various:Solar:HighRadiation'	=>	array( 'pos' => 30,	'len' => 2,	'fn'=>'s2sSht',		'SI'=>NULL,		'min'=>0,	'max'=>1409,	'err'=>32767,	'unit'=> 'W/m²'	),
 	'TA:Arch:Various:UV:HighIndex'		=>	array( 'pos' => 32,	'len' => 1,	'fn'=>'UV',		'SI'=>NULL,		'min'=>0,	'max'=>25,	'err'=>255,	'unit'=> 'W/m²'	),
 	'TA:Arch:Various::ForecastRule'	=>	array( 'pos' => 33,	'len' => 1,	'fn'=>'s2uc',		'SI'=>NULL,		'min'=>0,	'max'=>0xFF,	'err'=>193,	'unit'=> '-'	),
 

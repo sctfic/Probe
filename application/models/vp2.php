@@ -223,81 +223,7 @@ class vp2 extends CI_Model {
 		}
 	}
 
-/**
 
-	* @return: protected functionReturn
-	* @param: returnValue
-	*/
-	protected function subRaw($RawStr, $val) {
-		if (is_int($val['pos'])) {
-			// si la donnée est sur un nombre entier d'octés de la chaine RAW
-			return substr ($RawStr, $val['pos'], $val['len']);
-		}
-		else {	// dans le cas ou la donnée n'est que sur quelques bits
-			return getBits(
-				hexToDec(substr ($RawStr, (int)$val['pos'],1)),
-				((($val['pos']*10)-((int)$val['pos'])*10)-1),
-				$val['len']);
-		}
-	}
-
-/**
-
-	* @param
-	* @var 
-	* @return 
-	*/
-	protected function convertRaw($StrValue, $limits) {
-	// Retourne la chaine binaire sous la forme Numerique dans l'unité de la VP2
-	// retourne NULL si le capteur retourne la valeur d'erreur
-		if (is_callable($limits['fn'])) {
-			if ($limits['fn']=='DMPAFT_GetVP2Date')
-				$val = DMPAFT_GetVP2Date ($StrValue, $this->OffsetTime);
-			else
-				$val = $limits['fn']($StrValue);
-			if ($val == $limits['err']) {
-// where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,array($val, $limits['err']));
-							return NULL;
-			}
-			return $val;
-		}
-		return '<!> Missing function : ['.$limits['fn'].'] to convert RAW data.<!>';
-	}
-
-/**
-
-	* @param
-	* @var 
-	* @return 
-	*/
-	protected function convertUnit($Value, $limits) {
-	// Retourne la valeur numerique coverti en unité SI
-	// Retourne FALSE si la valeur est incohérante.
-		if (is_callable($limits['SI']) and !is_string($Value)) {
-			if ($Value < $limits['min'] or $Value > $limits['max']) {
-// where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,array($Value , $limits['min'] , $limits['max']));
-							return FALSE;
-			}
-			return $limits['SI']($Value);
-		}
-		return $Value;
-	}
-
-/**
-
-	* @param
-	* @var 
-	* @return 
-	*/
-	protected function RawConverter($DataModele, $RawStr) {
-		$data = array();
-		foreach($DataModele as $key=>$limits)
-// where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,array($key));
-			$data[$key] = $this->convertUnit( $this->convertRaw( $this->subRaw( $RawStr, $limits), $limits), $limits);
-
-// where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,$data);
-		return $data;
-	}
 /**
 Lis les config courante disponible sur la station
 	* @return: retourne un tableau de la forme :
@@ -568,6 +494,81 @@ Force l´heure de la station a la meme heure que le serveur web
 		}
 		return False;
 	}
+/**
+decoupe la chaine de donne VP2 en segment pour chaque item de donnee
+	* @return: protected functionReturn
+	* @param: returnValue
+	*/
+	protected function subRaw($RawStr, $val) {
+		if (is_int($val['pos'])) {
+			// si la donnée est sur un nombre entier d'octés de la chaine RAW
+			return substr ($RawStr, $val['pos'], $val['len']);
+		}
+		else {	// dans le cas ou la donnée n'est que sur quelques bits
+			return getBits(
+				hexToDec(substr ($RawStr, (int)$val['pos'],1)),
+				((($val['pos']*10)-((int)$val['pos'])*10)-1),
+				$val['len']);
+		}
+	}
+
+/**
+
+	* @param
+	* @var 
+	* @return 
+	*/
+	protected function convertRaw($StrValue, $limits) {
+	// Retourne la chaine binaire sous la forme Numerique dans l'unité de la VP2
+	// retourne NULL si le capteur retourne la valeur d'erreur
+		if (is_callable($limits['fn'])) {
+			if ($limits['fn']=='DMPAFT_GetVP2Date')
+				$val = DMPAFT_GetVP2Date ($StrValue, $this->OffsetTime);
+			else
+				$val = $limits['fn']($StrValue);
+			if ($val == $limits['err']) {
+// where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,array($val, $limits['err']));
+							return NULL;
+			}
+			return $val;
+		}
+		return '<!> Missing function : ['.$limits['fn'].'] to convert RAW data.<!>';
+	}
+
+/**
+
+	* @param
+	* @var 
+	* @return 
+	*/
+	protected function convertUnit($Value, $limits) {
+	// Retourne la valeur numerique coverti en unité SI
+	// Retourne FALSE si la valeur est incohérante.
+		if (is_callable($limits['SI']) and !is_string($Value)) {
+			if ($Value < $limits['min'] or $Value > $limits['max']) {
+			// where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,array($Value , $limits['min'] , $limits['max']));
+				return FALSE;
+			}
+			return $limits['SI']($Value);
+		}
+		return $Value;
+	}
+
+/**
+Converti la chaine de donnee VP2 en valeur numerique puis en unite SI
+	* @param
+	* @var 
+	* @return 
+	*/
+	protected function RawConverter($DataModele, $RawStr) {
+		$data = array();
+		foreach($DataModele as $key=>$limits)
+		// where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,array($key));
+			$data[$key] = $this->convertUnit( $this->convertRaw( $this->subRaw( $RawStr, $limits), $limits), $limits);
+
+		// where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,$data);
+		return $data;
+	}
 
 /**
 Enregistre les archives dans la base de donnée
@@ -595,6 +596,7 @@ Enregistre les archives dans la base de donnée
 				}
 
 			}
+			else log_message('data', 'No save in DB : '.$name.'	=	'.var_export($val, true));
 		}
 	}
 
