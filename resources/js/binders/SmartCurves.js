@@ -43,7 +43,7 @@ function curve(parent, init) {
         .x(function(d) { return ths.xDomain(d.date); })
         .y(function(d) { return ths.yDomain(d.val); });
 
-console.log (ths.yRange.domain(), ths.yDomain() );
+// console.log (ths.yRange.domain(), ths.yDomain() );
 
     // ths.legend = function(){
         if (!d3.select('#LegendSpot-' + ths.id)[0][0]) {
@@ -54,7 +54,7 @@ console.log (ths.yRange.domain(), ths.yDomain() );
                 .attr('class', 'Legend')
                 .attr('x', ths.parent._innerWidth()-100)
                 .attr('y', ths.parent._innerHeight()-2-14*ths.id)
-                .style({fill: ths.dark, display: "none"});
+                .style({fill: ths.dark/*, display: "none"*/});
         }
     // };
 
@@ -65,7 +65,9 @@ console.log (ths.yRange.domain(), ths.yDomain() );
                 .attr('id', 'Spot-' + ths.id)
                 .on('mouseover', function() {
                         // d3.selectAll('.Legend').style({display: "none"});
-                        d3.select('#LegendSpot-' + ths.id).style({display: "block"});
+                        // d3.select('#LegendSpot-' + ths.id).style({display: "block"});
+                        d3.selectAll('.line').style({'stroke-width': '1px', 'stroke-opacity':.5});
+                        d3.select('#line-' + ths.id).style({'stroke-width': '2px', 'stroke-opacity':1});
                     })
                 .attr("r", 8)
                 .attr("cx", 0)
@@ -111,7 +113,7 @@ console.log (ths.yRange.domain(), ths.yDomain() );
         ths.spot
             .attr("cx", px)
             .attr("cy", py);
-        ths.legend.text(" Y = " + (val));
+        ths.legend.text((val));
    }
     ths.draw();
 }
@@ -280,7 +282,7 @@ function graph(init) {
                     ths.svg().select("#xAxis").call(ths.xAxis);
                 }
             );
-            console.log('adding <line> '+line);
+            console.log('adding <line> ');
         };
 
     // ths.rmAllCurves = function(){
@@ -349,14 +351,18 @@ function graph(init) {
 
 
 $(document).ready(function(){
+    if (station=='') console.error('Aucune station definie !');
     console.group("Drawing SmartCurves");
     var graphs = new graph({container: '#SvgZone'});
 
         // graphs.curves[0] = new curve({station:'VP2_GTD',sensor:'Sensor1'});
         // graphs.init();
         graphs.addCurve(station, 'TA:Arch:Temp:Out:Average');
-        // graphs.addCurve(station, 'TA:Arch:Various:Solar:Radiation');
+        graphs.addCurve(station, 'TA:Arch:Various:Solar:Radiation');
         graphs.addCurve(station, 'TA:Arch:Various:Bar:Current');
+        graphs.addCurve(station, 'TA:Arch:Various:Wind:SpeedAvg');
+        graphs.addCurve(station, 'TA:Arch:Various:RainFall:Sample');
+        graphs.addCurve(station, 'TA:Arch:Various:UV:IndexAvg');
 
 //    console.log(graphs);
     console.groupEnd();

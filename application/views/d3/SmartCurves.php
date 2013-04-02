@@ -15,7 +15,7 @@
 ?>
 <div id="resizable" class="ui-widget-content">
     <h4 class="ui-widget-header">Resizable</h4>
-    <div id="SvgZone" style='border:solid red 1px;height:320px;'>
+    <div id="SvgZone" style='border:solid red 1px;height:640px;'>
         <!-- d3 content should be -dynamically- placed here -->
     </div>
 </div>
@@ -57,10 +57,12 @@ svg {
 	/*font-family: Arial;*/
 	font-size:12px;
 	font-weight:bold;
+	fill:#999;
 	stroke:#000;
 	kerning:1.1;
 	stroke:#000;
-	stroke-width:.2px;
+	stroke-width:1px;
+	stroke-opacity:.2;
 }
   /*.line:hover {
 	stroke-width: 1.6px;
