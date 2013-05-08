@@ -54,3 +54,5 @@ i18n('SmartCurve?station=VP2_Gtd&sensor=test:title');
 i18n('SmartCurve?station=VP2_Gtd&sensor=test:description');
 i18n('SmartCurves:title');
 i18n('SmartCurves:description');
+i18n('SmartChart:title');
+i18n('SmartChart:description');

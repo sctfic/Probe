@@ -130,6 +130,7 @@ function drawGraph (data, container, w, h) {
         timeoutID = window.setTimeout(function(){zoom()}, 400);
         draw ();
     }));
+    console.log(zm);
     draw ();
 }
 
