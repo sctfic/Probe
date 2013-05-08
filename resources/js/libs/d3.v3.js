@@ -3789,6 +3789,7 @@
       if (!arguments.length) return x1;
       x1 = z;
       x0 = z.copy();
+ console.error('domain x0 = ', x0.domain(),'domain x1 = ', x1.domain());
       translate = [ 0, 0 ];
       scale = 1;
       return zoom;
@@ -3809,6 +3810,7 @@
     }
     function scaleTo(s) {
       scale = Math.max(scaleExtent[0], Math.min(scaleExtent[1], s));
+// x.domain() n'as pas emcore changé
     }
     function translateTo(p, l) {
       l = point(l);
@@ -3816,9 +3818,17 @@
       translate[1] += p[1] - l[1];
     }
     function rescale() {
+ console.error('domain x0 = ', x0.domain(),'domain x1 = ', x1.domain());
+ // console.error(    'pxl = ', x0.range().map(function(x) { return (x - translate[0]) / scale; }));
+ // console.error(    'time = ', x0.range().map(function(x) { return (x - translate[0]) / scale; }).map(x0.invert));
+
       if (x1) x1.domain(x0.range().map(function(x) {
         return (x - translate[0]) / scale;
       }).map(x0.invert));
+
+    // ici le domaine a changé !!!
+ // console.error('domain x0 = ', x0.domain(),'domain x1 = ', x1.domain());
+
       if (y1) y1.domain(y0.range().map(function(y) {
         return (y - translate[1]) / scale;
       }).map(y0.invert));
@@ -3855,6 +3865,7 @@
       if (!translate0) translate0 = location(d3.mouse(this));
       scaleTo(Math.pow(2, d3_behavior_zoomDelta() * .002) * scale);
       translateTo(d3.mouse(this), translate0);
+// x.domain() n'as pas emcore changé
       dispatch(event.of(this, arguments));
     }
     function mousemove() {
