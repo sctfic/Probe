@@ -212,44 +212,47 @@ index() recupere toutes les donnees recuperable sur la station
 
 			$this->load->view('configuration/add-station');
 		} else {
+            try {
+                where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,array('debug'));
+                include_once(APPPATH.'models/db_builder.php');
+                $newID = current ($this->station->availableID()); // prend le 1er ID vide parmis ceux disponible
+
+                /**
+                 * TODO: this should be dynamic, based on information provided during installation
+                */
+                $dbb = new db_builder(
+                    $this->input->post('dbms-engine'),
+                    $this->input->post('dbms-password'),
+                    $this->input->post('dbms-username'),
+                    $this->input->post('dbms-host'),
+                    $this->input->post('dbms-port'),
+                    APP_DB.'_station'.$newID
+                );
+
+                $dbb->createAppDb($newID);
+                $dsn = $dbb->getDsn();
+
+                $this->station->arrays2dbconfs(
+                    $newID,
+                    array_merge(
+                        array(
+                            '_ip' => $this->input->post('network-_ip'),
+                            '_port' => $this->input->post('network-_port'),
+                            '_name' => $this->input->post('network-_name'),
+                            '_type' => $this->input->post('network-_type')
+                            ),
+                        $dsn
+                        )
+                    );
+                return true; // after, you can read : $this->station->config($newID);
+            }
+            catch (Exception $e) {
+                log_message('warning',  $e->getMessage());
+            }
+
             $this->load->view('configuration/add-station-success');
-		}
+        }
 
-		try {
-			include_once(APPPATH.'models/db_builder.php');
-			$newID = current ($this->station->availableID()); // prend le 1er ID vide parmis ceux disponible
-
-            /**
-             * TODO: this should be dynamic, based on information provided during installation
-            */
-            $dbb = new db_builder(
-                $workingDb['dbdriver'] = 'mysql',
-                $workingDb['password'] = 'nbv4023',
-                $workingDb['username'] = 'root',
-                $workingDb['hostname'] = 'localhost',
-                $workingDb['port'] = 3306,
-                $workingDb['database'] = APP_DB.'_Weather'.$newID);
-
-            $dbb->createAppDb($newID);
-            $dsn = $dbb->getDsn();
-
-			$this->station->arrays2dbconfs(
-				$newID, 
-				array_merge(
-					array(
-						'_ip'=>'192.168.0.xxx', 
-						'_port'=>22222, 
-						'_name'=>'NewVP2-'.$newID, 
-						'_type'=>'vp2'
-						), 
-					$dsn
-					)
-				);
-			return true; // after, you can read : $this->station->config($newID);
-		}
-		catch (Exception $e) {
-			log_message('warning',  $e->getMessage());
-		}
-		return false;
+        return false;
 	}
 }
