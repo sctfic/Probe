@@ -195,7 +195,10 @@ index() recupere toutes les donnees recuperable sur la station
 			foreach ($fields as $field => $value) {
 				if ($field != 'port') {
 					$this->form_validation->set_rules(
-						$field, i18n(sprintf("install.%s.%s", $section, $field)), 'trim|required');
+						sprintf('%s-%s', $section, $field),
+                        i18n(sprintf("install.%s.%s", $section, $field)),
+                        'trim|required'
+                    );
 				}
 			}
 		}
