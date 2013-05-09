@@ -10,6 +10,7 @@
 		<?php 
 			$active = 'active';
 			$i = 1;
+			var_export($form);
 			foreach ($form as $label => $type): 
 		?>
 			<li class="<?=$active; $active=null; ?>">

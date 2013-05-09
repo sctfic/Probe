@@ -31,7 +31,12 @@ function curve(parent, init) {
     ths.xAxis = d3.svg.axis().scale(ths.parent.xRange).orient("bottom");
     ths.xDomain = ths.parent.xRange.domain(d3.extent(ths.data.initial.map(function(d) { return d.date; })));
 
-    ths.yAxis = d3.svg.axis().scale(ths.yRange).orient("left");
+    // Shallow copy
+    // var newObject = jQuery.extend({}, oldObject);
+    // Deep copy
+    // var ths.yRange = $.extend(true, {}, ths.parent.yRange );
+
+    ths.yAxis = d3.svg.axis().scale(ths.parent.yRange).orient("left");
     ths.yDomain = ths.parent.yRange.domain(d3.extent(ths.data.initial.map(function(d) { return d.val; })));
 
 console.log ('ths.parent.xRange.domain()=', ths.parent.xRange.domain());
@@ -107,6 +112,7 @@ console.log ('ths.parent.xRange.domain()=', ths.parent.xRange.domain());
                 py=Math.round(ths.yDomain(val));
             }
         });
+        console.log(d3.extent(ths.data.initial.map(function(d) { return d.val; })));
         ths.spot
             .attr("cx", px)
             .attr("cy", py);

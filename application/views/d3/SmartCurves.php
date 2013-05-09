@@ -21,7 +21,7 @@
 </div>
 
 <style>
-#sensitive {
+#Sensitive {
     cursor: move;
     fill: none;
     pointer-events: all;
