@@ -31,7 +31,7 @@ class Install extends CI_Controller {
     protected  $_breadcrumb = array(
         'dbms' =>  array(
             array(
-                'status' => 'active', 
+                'status' => 'active',
                 'url' => '/install/dbms',
                 'i18n' => 'install.breadcrumb.dbms'
             ),
