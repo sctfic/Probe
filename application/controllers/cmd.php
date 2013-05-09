@@ -209,9 +209,10 @@ index() recupere toutes les donnees recuperable sur la station
             $page = new Page_manager();
             $data = $page->fetchConfig('configure-add-station'); // fetch information to build the HTML header
             $data['form'] = $this->config->item('add-station-form');
+
 			$this->load->view('configuration/add-station');
 		} else {
-			$this->load->view('configuration/add-station/success');
+            $this->load->view('configuration/add-station-success');
 		}
 
 		try {
