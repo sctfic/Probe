@@ -5,8 +5,8 @@ class cmd extends CI_Controller {
 /**
 
 	* @param
-	* @var 
-	* @return 
+	* @var
+	* @return
 	*/
 	function __construct() {
 		// if (isset($_SERVER['REMOTE_ADDR'])) { // n'est pas definie en php5-cli
@@ -16,6 +16,7 @@ class cmd extends CI_Controller {
 
 		parent::__construct();
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
+        $this->load->library('page_manager');
 
 		include_once(BASEPATH.'core/Model.php'); // need for load models manualy
 		include_once(APPPATH.'models/station.php');
@@ -27,8 +28,8 @@ class cmd extends CI_Controller {
 /**
 index() recupere toutes les donnees recuperable sur la station
 	* @param
-	* @var 
-	* @return 
+	* @var
+	* @return
 	*/
 	// clear;php5 -f /var/www/Probe/cli.php 'cmd'
 	function index($station = null) {
@@ -61,8 +62,8 @@ index() recupere toutes les donnees recuperable sur la station
 /**
 
 	* @param
-	* @var 
-	* @return 
+	* @var
+	* @return
 	*/
 	// function hilowsCollectors($station = null) {
 	// 	where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
@@ -81,13 +82,13 @@ index() recupere toutes les donnees recuperable sur la station
 	// 		log_message('warning',  $e->getMessage());
 	// 	}
 	// }
-	
+
 
 /**
 
 	* @param
-	* @var 
-	* @return 
+	* @var
+	* @return
 	*/
 	function curentsCollectors($station = null) {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
@@ -109,8 +110,8 @@ index() recupere toutes les donnees recuperable sur la station
 /**
 
 	* @param
-	* @var 
-	* @return 
+	* @var
+	* @return
 	*/
 	// function dataCollectors($station = null) {
 	// 	where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
@@ -129,7 +130,7 @@ index() recupere toutes les donnees recuperable sur la station
 	// 	try {
 	// 		// on recupere les confs de $station
 	// 		$conf = end($this->station->config($station)); // $station est le ID ou le nom
-			
+
 	// 		// on lance la recup des Archives de cette station
 	// 		$this->station->ArchCollector ($conf);
 	// 	}
@@ -137,13 +138,13 @@ index() recupere toutes les donnees recuperable sur la station
 	// 		log_message('warning',  $e->getMessage());
 	// 	}
 	// }
-	
-	
+
+
 /**
 
 	* @param
-	* @var 
-	* @return 
+	* @var
+	* @return
 	*/
 	// function configCollectors($station = null, $force = false) {
 	// 	where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
@@ -195,16 +196,23 @@ index() recupere toutes les donnees recuperable sur la station
 			foreach ($fields as $field => $value) {
 				if ($field != 'port') {
 					$this->form_validation->set_rules(
-						$field, i18n(sprintf("install.%s.%s", $section, $field)), 'trim|required');
+						sprintf('%s-%s', $section, $field),
+                        i18n(sprintf("install.%s.%s", $section, $field)),
+                        'trim|required'
+                    );
 				}
 			}
 		}
 		$this->form_validation->set_rules('dbms-password', i18n('install.dbms.password'), 'minlength[8]');
 
 		if ($this->form_validation->run() == FALSE) {
+            $page = new Page_manager();
+            $data = $page->fetchConfig('configure-add-station'); // fetch information to build the HTML header
+            $data['form'] = $this->config->item('add-station-form');
+
 			$this->load->view('configuration/add-station');
 		} else {
-			$this->load->view('configuration/add-station/success');
+            $this->load->view('configuration/add-station-success');
 		}
 
 		try {
