@@ -155,8 +155,8 @@ class Install extends CI_Controller {
         include_once APPPATH.'models/db_builder.php';
 
         $dbEngine=$this->input->post('dbms-engine');
-        $dbUserName=$this->input->post('dbms-username');
         $dbUserPassword=$this->input->post('dbms-password');
+        $dbUserName=$this->input->post('dbms-username');
         $dbHost=$this->input->post('dbms-host');
         $dbPort=$this->input->post('dbms-port');
 
