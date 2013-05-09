@@ -181,6 +181,48 @@ class dao_data extends CI_Model {
             throw new Exception( $e->getMessage() );
         }
     }
+    /**
+
+    * @
+    * @param $since is the start date of result needed
+    * @param $to is the end date of result needed
+    * @param $Granularity
+    *
+    * @return 
+    * 
+    */
+    function histoWind($since='2013-01-01T00:00', $to='2099-12-31T23:59', $Granularity=360){
+
+        where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
+        try {
+        $queryString = sprintf(file_get_contents(SQL_DIR.'histoWind.sql'),
+            $Granularity*60,
+            $Granularity*60,
+            $Granularity*60/2,
+            $this->SEN_LST['TA:Arch:Various:Wind:DominantDirection'],
+            $this->SEN_LST['TA:Arch:Various:Wind:SpeedAvg'],
+            $since,
+            $to
+        );
+
+            $qurey_result = $this->dataDB->query($queryString);// ,
+
+            $brut = $qurey_result->result_array($qurey_result);
+            $reformated = null;
+            foreach ($brut as $key => $value) {
+                if (isset($reformated[$value['UTC_grp']]))
+                    $reformated[$value['UTC_grp']] = array_merge(
+                        $reformated[$value['UTC_grp']],
+                        array(array('Dir'=>$value['DominantDirection'], 'Spd'=>$value['SpeedAverage'], 'Spl'=>$value['SampleCount'], 'Max'=>$value['UTC_grpMaxSpeedInThisDirection']))
+                    );
+                else
+                    $reformated[$value['UTC_grp']] = array(array('Dir'=>$value['DominantDirection'], 'Spd'=>$value['SpeedAverage'], 'Spl'=>$value['SampleCount'], 'Max'=>$value['UTC_grpMaxSpeedInThisDirection']));
+            }
+            return $reformated;
+        } catch (PDOException $e) {
+            throw new Exception( $e->getMessage() );
+        }
+    }
 
 /**
 

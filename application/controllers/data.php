@@ -212,7 +212,33 @@ make and download json wind data
 		);
 		$this->dl_json ($data);
 	}
+/**
+make and download json wind data
+	* @
+	* @param since is the start date of result needed
+	* @param lenght is the number of day
+	*/
+	function histoWind(){
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,array($this->Station['_name'], $this->Since,	$this->To,	$this->Granularity));
 
+		$this->Granularity = empty($this->Granularity) ? 360 : $this->Granularity ; // in minutes
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,array($this->Station['_name'], $this->Since,	$this->To,	$this->Granularity));
+
+		$data = $this->dataReader->histoWind (
+			$this->Since,
+			$this->To,
+			$this->Granularity
+		);
+		$j = count($data);
+	    $tsv = '';
+	    for ($i=0;$i<$j;$i++) {
+			$tsv .= substr(	$data[$i]['date'],0,-3)."\t".
+							$data[$i]['speed']."\t".
+							$data[$i]['angle']."\n";
+		}
+
+		$this->dl_tsv ("date\tspeed\tangle\n".trim($tsv,"\n"));
+	}
 
 
 /**

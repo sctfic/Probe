@@ -163,7 +163,7 @@ class Install extends CI_Controller {
         try {
             $this->dbb = new db_builder($dbEngine, $dbUserPassword, $dbUserName, $dbHost, $dbPort);
 
-            $this->dbb->createAppDb();
+            $this->dbb->createAppDb(APP_DB);
             $dns = $this->dbb->getDsn();
 
             saveDataOnFile(APPPATH.'config/db-default', $dns, FORMAT_PHP, "db['default']");

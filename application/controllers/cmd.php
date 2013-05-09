@@ -216,13 +216,13 @@ index() recupere toutes les donnees recuperable sur la station
             */
             $dbb = new db_builder(
                 $workingDb['dbdriver'] = 'mysql',
-                $workingDb['password'] = 'st4t10n0',
-                $workingDb['username'] = 'station0',
+                $workingDb['password'] = 'nbv4023',
+                $workingDb['username'] = 'root',
                 $workingDb['hostname'] = 'localhost',
                 $workingDb['port'] = 3306,
-                $workingDb['database'] = 'station0');
+                $workingDb['database'] = APP_DB.'_Weather'.$newID);
 
-            $dbb->createAppDb($workingDb['database']);
+            $dbb->createAppDb($newID);
             $dsn = $dbb->getDsn();
 
 			$this->station->arrays2dbconfs(

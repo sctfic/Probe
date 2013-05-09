@@ -55,6 +55,7 @@ class db_builder extends CI_Model {
 				$this->userPassword
 			);
 
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		} catch (PDOException $e) {
 			throw new Exception( $e->getMessage() );
 		}
@@ -148,7 +149,7 @@ class db_builder extends CI_Model {
 	* @param $userName => WARNING the username lenght is limited to 16 chars !
 	* @param $userPassword
 	*/
-	function addDbUser($dbID='') {
+	function addDbUser($dbID) {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		// supprime les utilisateur vide qui provoque des probleme de connection
 		// $this->pdoConnection->query("DELETE FROM user WHERE user = '';");
@@ -170,10 +171,10 @@ class db_builder extends CI_Model {
 	 * @param $dbID
 	 * @return array ()
 	 */
-	function createAppDb($dbID=APP_DB) {
+	function createAppDb($dbID) {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		try {
-			$this->setDbName(is_string($dbID) ? $dbID : APP_DB);
+			//$this->setDbName(is_string($dbID) ? $dbID : APP_DB);
 			// dans le cas ou la base est fournie avec l'user adequat pas besoin de le refaire
 			if (!$this->dbExists($this->dbName)) {
 				//Creation of database
@@ -181,7 +182,7 @@ class db_builder extends CI_Model {
 				$this->pdoConnection->query($sqlCreate);
 				if ( ! $this->dbExists($this->dbName) )
 					throw new Exception( 'Impossible de créer la base ! '.$this->dbName );
-				else log_message('db', $this->dbName.' est maintenant disponible !');
+				else log_message('db', $this->dbName.' est maintenant disponible (vide) !');
 
 				//Creation of user
 				$this->addDbUser(is_numeric($dbID) ? $dbID : 'Admin');
