@@ -61,7 +61,7 @@ class Install extends CI_Controller {
         where_I_Am(__FILE__, __CLASS__, __FUNCTION__, __LINE__, func_get_args());
 
         $this->load->helper('url');
-        $this->load->library('page_manager');
+        $this->load->library('Page_manager');
         $this->i18n->setLocaleEnv($this->config->item('probe:locale'), 'global');
 
         if (file_exists(APPPATH."config/db-default.php")) {
