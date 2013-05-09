@@ -16,6 +16,7 @@ class cmd extends CI_Controller {
 
 		parent::__construct();
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
+        $this->load->library('page_manager');
 
 		include_once(BASEPATH.'core/Model.php'); // need for load models manualy
 		include_once(APPPATH.'models/station.php');
@@ -205,6 +206,9 @@ index() recupere toutes les donnees recuperable sur la station
 		$this->form_validation->set_rules('dbms-password', i18n('install.dbms.password'), 'minlength[8]');
 
 		if ($this->form_validation->run() == FALSE) {
+            $page = new Page_manager();
+            $data = $page->fetchConfig('configure-add-station'); // fetch information to build the HTML header
+            $data['form'] = $this->config->item('add-station-form');
 			$this->load->view('configuration/add-station');
 		} else {
 			$this->load->view('configuration/add-station/success');
