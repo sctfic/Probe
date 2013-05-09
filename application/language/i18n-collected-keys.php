@@ -56,3 +56,7 @@ i18n('SmartCurves:title');
 i18n('SmartCurves:description');
 i18n('SmartChart:title');
 i18n('SmartChart:description');
+i18n('histoWind:title');
+i18n('histoWind:description');
+i18n('wind:title');
+i18n('wind:description');
