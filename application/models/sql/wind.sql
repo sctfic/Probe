@@ -1,5 +1,5 @@
 SELECT
-    FROM_UNIXTIME( TRUNCATE( UNIX_TIMESTAMP(sa.utc) / %s, 0)*%s+%s ) AS UTC_grp,
+    FROM_UNIXTIME( TRUNCATE( UNIX_TIMESTAMP(sa.utc) / (%s), 0)*(%s)+(%s) ) AS UTC_grp,
     IFNULL( dd.value * 22.5, 'null' ) AS DominantDirection,
     COUNT(sa.utc) AS SampleCount,
     ROUND(AVG(sa.value), 3) AS SpeedAverage,
