@@ -3,6 +3,42 @@
 // require_once APPPATH."/controllers/checkSetup.php";
 
 class Configuration extends CI_Controller {
+    /*
+     * data for the breadcrumbs related to installation
+     */
+    protected  $_breadcrumb = array(
+        'dashboard' => array(// in case list-station isn't the home anymore
+            array(
+                'status' => 'active',
+                'url' => '/configuration/list-stations',
+                'i18n' => 'configuration.breadcrumb.stations.dashboard'
+            )
+        ),
+        'list-stations' => array(
+            array(
+                'url' => '/configuration/list-stations',
+                'i18n' => 'configuration.breadcrumb.stations.list'
+            ),
+        array(
+            'status' => 'active',
+            'url' => '/configuration/list-stations',
+            'i18n' => 'configuration.breadcrumb.stations.list'
+        )
+        ),
+        'add-station' => array(
+            array(
+                'url' => '/configuration/',
+                'i18n' => 'configuration.breadcrumb.stations.list'
+            ),
+            array(
+                'status' => 'active',
+                'url' => '/configuration/',
+                'i18n' => 'configuration.breadcrumb.stations.add'
+            )
+        )
+
+    );
+
 
 	public function __construct() {
 		parent::__construct();
@@ -32,6 +68,7 @@ class Configuration extends CI_Controller {
             // unset($data['stationsConf'][$station]['_name']);
             // unset($data['stationsConf'][$station]['password']);
         }
+        $data['breadcrumb'] = $this->_breadcrumb['dashboard'];
         // display the view
 		$page->view('configuration/list-stations', $data);
 	}
@@ -42,6 +79,7 @@ class Configuration extends CI_Controller {
 
         $page = new Page_manager();
         $data = $page->fetchConfig('configure-add-station'); // fetch information to build the HTML header
+        $data['breadcrumb'] = $this->_breadcrumb['add-station'];
         $data['form'] = $this->config->item('add-station-form');
 
         $data['dbmsUsername'] = null;
