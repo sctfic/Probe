@@ -55,6 +55,7 @@ class Configuration extends CI_Controller {
 	}
 
 	public function listStations() {
+        $this->load->model('station');
         $page = new Page_manager();
 
         // build view data
