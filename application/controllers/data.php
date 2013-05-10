@@ -234,16 +234,13 @@ make and download json wind data
 	    for ($i=0;$i<$j;$i++) {
 			$tsv .= substr(	$data[$i]['UTC_grp'],0,-3)."\t".
 							$data[$i]['AvgSpeed']."\t".
-							$data[$i]['AvgDirection']."\n";
+							$data[$i]['AvgDirection']."\t".
+							$data[$i]['x']."\t".
+							$data[$i]['y']."\n";
 		}
 
-		$this->dl_tsv ("date\tspeed\tangle\n".trim($tsv,"\n"));
+		$this->dl_tsv ("date\tspeed\tangle\tx\ty\n".trim($tsv,"\n"));
 	}
-
-
-/**
-
-
 
 /**
 rebuild array
