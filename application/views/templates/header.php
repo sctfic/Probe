@@ -40,18 +40,6 @@
      * TODO: use CDN URL for static resources
      */
     ?>
-    <link href="/resources/less/bootstrap/responsive.less" rel="stylesheet/less">
-
-    <link type="image/png" rel="shortcut icon" href="/.favicon.png">
-    <link rel="stylesheet/less" href="/resources/less/probe.less">
-    <script src="/resources/js/libs/less-1.3.0.min.js"></script>
-
-    <!-- Use SimpLESS (Win/Linux/Mac) or LESS.app (Mac) to compile your .less files
-    to style.css, and replace the 2 lines above by this one:
-
-    <link rel="stylesheet/less" href="less/style.css">
-     -->
-
-    <!-- modernizr/HTML5shiv must be in the head as the create HTML5 tag when non exixtent -->
-<!--     <script src="/resources/js/libs/modernizr-2.5.3-respond-1.1.0.min.js"></script> -->
+    <link type="image/png" rel="shortcut icon" href=".favicon.png">
+    <link rel="stylesheet" type="text/css" href="/resources/css/probe.css">
 </head>
