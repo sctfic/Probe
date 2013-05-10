@@ -8,14 +8,14 @@
 		?>
 		<!-- Server host/IP -->
 		<div class="control-group">
-			<label class="control-label" for="station-"<?=$confName?>>
+			<label class="control-label" for="station-<?=$confName?>">
 				<?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('configuration.station.'.$confName), i18n('required'), i18n('&nbsp;:')) ?>
 			</label>
 			<div class="controls">
-				<input id="station-host"
+				<input id="station-<?=$confName?>"
 					type="text" required
-					name="station-host" value="<?=$value?>" 
-					class="input-large" placeholder="<?=i18n('configuration.station.host.placeholder')?>"
+					name="station-<?=$confName?>" value="<?=$value?>"
+					class="input-large" placeholder="<?=i18n(sprintf('configuration.station.%s.placeholder', $confName))?>"
 				>
 			</div>
 		</div>
