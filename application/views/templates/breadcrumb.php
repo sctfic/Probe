@@ -24,7 +24,7 @@
     <?php foreach ($breadcrumb as $key => $step): ?>
         <?php if (is_array($step)): ?>
         <li class="<?=isset($step['status']) ? $step['status'] : 'disabled';?>">
-            <a href="<?=$step['url']?>"><?=i18n($step['i18n'])?></a>
+            <a href="<?=$step['url']?>"><?=i18n($step['i18n'], true)?></a>
             <?php else: ?>
         <li>
             <?= i18n($step); ?>
