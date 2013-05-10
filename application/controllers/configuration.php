@@ -49,13 +49,9 @@ class Configuration extends CI_Controller {
 	}
 
 	public function index() {
-		// include_once(APPPATH.'models/station.php');
-		// $this->stations = new station();
 		$this->load->model('station');
 
 		$this->listStations();
-
-		// redirect('configuration/stations-list');
 	}
 
 	public function listStations() {
@@ -65,8 +61,6 @@ class Configuration extends CI_Controller {
         $data = $page->fetchConfig('configure-station-list'); // fetch information to build the HTML header
         foreach ($this->station->stationsList as $id => $station) {
             $data['stationsConf'][$station] = current($this->station->config($id));
-            // unset($data['stationsConf'][$station]['_name']);
-            // unset($data['stationsConf'][$station]['password']);
         }
         $data['breadcrumb'] = $this->_breadcrumb['dashboard'];
         // display the view
