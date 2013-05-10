@@ -1,92 +1,105 @@
-/** SmartChart.js
-* D3 binder to visualize <dataset> data
-*
-* @category D3Binder
-* @package  Probe
-* @author   alban lopez <alban.lopez+probe@gmail.com>
-* @license  http://creativecommons.org/licenses/by-nc-sa/3.0/legalcode CC-by-nc-sa-3.0
-* @link     http://probe.com/doc
-*/
-
-
 function timeSeriesChart() {
-	var margin = {top: 20, right: 20, bottom: 20, left: 20},
-		width = 760,
-		height = 120,
-		xValue = function(d) { return d[0]; },
-		yValue = function(d) { return d[1]; },
-		xScale = d3.time.scale(),
-		yScale = d3.scale.linear(),
-		xAxis = d3.svg.axis().scale(xScale).orient("bottom").tickSize(6, 0),
-		// area = d3.svg.area().x(X).y1(Y),
-		line = d3.svg.line().x(X).y(Y);
-	var parse = d3.time.format("%Y-%m-%d %H:%M").parse
-	var color = d3.scale.category20();
+  var margin = {top: 5, right: 5, bottom: 20, left: 30},
+      width = 1200,
+      height = 120,
+      meanDate = function(d) { return d.date; },
+      Speed = function(d) { return d.speed; },
+      angle = function(d) { return d.angle; },
+      xSpeed = function(d) { return d.x; },
+      ySpeed = function(d) { return d.y; },
+      xScale = d3.time.scale().range([0, width]),
+      yScale = d3.scale.linear().range([height, 0]),
+      xAxis = d3.svg.axis().scale(xScale).orient("bottom").tickSize(4,0),
+      yAxis = d3.svg.axis().scale(yScale).orient("left").ticks(4).tickSize(3,0),
+      line = d3.svg.line().x(X).y(Y);
+      // circle = d3.svg.circle().
 
 
-	function hair(selection) {
+    function chart(selection) {
+        // console.log(selection);
+        //selection represente la liste de block ou ecire les donnees
+        selection.each(function(data) {
+            // Convert data to standard representation greedily;
+            // this is needed for nondeterministic accessors.
+            data = data.map(function(d, i) {
+                return {
+                    date:meanDate.call(data, d, i),
+                    Speed:Speed.call(data, d, i),
+                    angle:angle.call(data, d, i),
+                    xSpeed:xSpeed.call(data, d, i),
+                    ySpeed:ySpeed.call(data, d, i)
+                };
+            });
 
-	}
-	
-	function chart(selection) {
+            // Update the x-scale.
+            xScale
+                .domain(d3.extent(data, function(d) { return d.date; }))
+                .range([0, width - margin.left - margin.right]);
+
+            // Update the y-scale.
+            yScale
+                .domain(d3.extent(data, function(d) {return d.ySpeed; }))
+                .range([height - margin.top - margin.bottom, 0]);
+
+            // Select the svg element, if it exists.
+            var svg = d3.select(this).selectAll("svg").data([data]);
+
+            // Otherwise, create the skeletal chart.
+            var gEnter = svg.enter().append("svg").append("g");
+
+            // gEnter.append("path").attr("class", "area");
+            gEnter.append("circle")
+                .attr("class", "dot")
+                .attr("cx", function(d) {return xScale (d.date); })
+                .attr("cy", function(d) {return d.ySpeed; })
+                .attr("r", function(d) {return d.xSpeed; });
+
+            gEnter.append("path").attr("class", "line");
+            gEnter.append("g").attr("class", "x axis");
+            gEnter.append("g").attr("class", "y axis");
+
+            // Update the outer dimensions.
+            svg .attr("width", width)
+                .attr("height", height);
+
+            // Update the inner dimensions.
+            var g = svg.select("g")
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+            // Update the line path.
+            g.select(".line")
+                .attr("d", line);
+            
+
+            // chose the possition of x-Axis
+            if (0<yScale.domain()[0])
+            	xPos = yScale.range()[0];
+            else if (yScale.domain()[1]<0)
+            	xPos = yScale.range()[1];
+            else
+            	xPos = yScale(0);
+            // Update the x-axis.
+            g.select(".x.axis")
+                .attr("transform", "translate(0," + xPos + ")") // axe tjrs en bas : yScale.range()[0] + ")")
+                .call(xAxis);
+            g.select(".y.axis")
+                .attr("transform", "translate(0,0)")
+                .call(yAxis);
+        });
+    }  
 
 
-		// Update the x-scale.
-		xScale
-		  .domain(d3.extent(data.map(function(d) { return d.date; })))
-		  .range([0, width - margin.left - margin.right]);
-
-
-		// Select the svg element, if it exists.
-		var svg = d3.select(this).selectAll("svg").data([data]);
-
-		// Otherwise, create the skeletal chart.
-		var gEnter = svg.enter().append("svg").append("g");
-		// gEnter.append("path").attr("class", "area");
-		gEnter.append("path").attr("class", "line");
-		gEnter.append("g").attr("class", "x axis");
-
-		// Update the outer dimensions.
-		svg .attr("width", width)
-		  .attr("height", height);
-
-		// Update the inner dimensions.
-		var g = svg.select("g")
-		  .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-		// Update the area path.
-		// g.select(".area")
-		  // .attr("d", area.y0(yScale.range()[0]));
-
-		// Update the line path.
-		g.select(".line")
-		  .attr("d", line);
-
-		// Update the x-axis.
-		g.select(".x.axis")
-		  .attr("transform", "translate(0," + yScale.range()[0] + ")")
-		  .call(xAxis);
-		});
-	}
 
 
 
-
-
-
-
-
-
-
-
-  // The x-accessor for the path generator; xScale ∘ xValue.
+  // The x-accessor for the path generator; xScale ∘ meanDate.
   function X(d) {
-    return xScale(d[0]);
+    return xScale(d.date);
   }
 
-  // The x-accessor for the path generator; yScale ∘ yValue.
+  // The x-accessor for the path generator; yScale ∘ Speed.
   function Y(d) {
-    return yScale(d[1]);
+    return yScale(d.ySpeed);
   }
 
   chart.margin = function(_) {
@@ -107,15 +120,31 @@ function timeSeriesChart() {
     return chart;
   };
 
-  chart.x = function(_) {
-    if (!arguments.length) return xValue;
-    xValue =_;
+
+  chart.date = function(_) {
+    if (!arguments.length) return meanDate;
+    meanDate = _;
     return chart;
   };
 
-  chart.y = function(_) {
-    if (!arguments.length) return yValue;
-    yValue = _;
+  chart.speed = function(_) {
+    if (!arguments.length) return Speed;
+    Speed = _;
+    return chart;
+  };
+  chart.angle = function(_) {
+    if (!arguments.length) return angle;
+    angle = _;
+    return chart;
+  };
+  chart.xSpeed = function(_) {
+    if (!arguments.length) return xSpeed;
+    xSpeed = _;
+    return chart;
+  };
+  chart.ySpeed = function(_) {
+    if (!arguments.length) return ySpeed;
+    ySpeed = _;
     return chart;
   };
 

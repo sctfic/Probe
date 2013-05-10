@@ -14,59 +14,26 @@
 ?>
 <div id="resizable" class="ui-widget-content">
     <h4 class="ui-widget-header">Resizable</h4>
-    <div id="SvgZone" style='border:solid red 1px;height:160px;'>
+    <div id="svgArea" style='border:solid red 1px;height:160px;'>
         <!-- d3 content should be -dynamically- placed here -->
     </div>
 </div>
 
 <style>
-#sensitive {
-    cursor: move;
-    fill: none;
-    pointer-events: all;
-}
+
 .line {
-	/*fill: none;*/
-	stroke-width: 1px;
-}
-svg {
-	font-size: 10px;
+  fill: none;
+  stroke: #000;
+  stroke-width: 1px;
 }
 
-.axis {
-	shape-rendering: crispEdges;
+.axis line,.axis path {
+  fill: none;
+  stroke: #000;
+  stroke-width: 1px;
+  shape-rendering: crispEdges;
 }
 
-.axis path, .axis line {
-	stroke: #000;
-	fill: none;
-	stroke-width: 1px;
-}
-
-.x.axis path, .x.axis line {
-	stroke: #555;
-	/*stroke-opacity: .5;*/
-}
-
-.y.axis path, .y.axis line {
-	stroke: #555;
-	/*stroke-opacity: .5;*/
-}
-.Legend {
-	/*font-family: Arial;*/
-	font-size:12px;
-	font-weight:bold;
-	fill:#999;
-	stroke:#000;
-	kerning:1.1;
-	stroke:#000;
-	stroke-width:1px;
-	stroke-opacity:.2;
-}
-  /*.line:hover {
-	stroke-width: 1.6px;
-	stroke-opacity: .6;
-}*/
 </style>
 <script>
 	$(document).ready(function(){
@@ -74,14 +41,17 @@ svg {
 	    var url = "/data/histoWind?station="+station+"&Granularity=720";
 
 		d3.tsv(url, function(data) {
-			var formatDate = d3.time.format("%Y-%m-%d %H:%M");
+		  var formatDate = d3.time.format("%Y-%m-%d %H:%M");
 
-			d3.select("#SvgZone")
-				.datum(data)
-				.call(timeSeriesChart()
-					.date(function(d) { return formatDate.parse(d.date); })
-					.speed(function(d) { return +d.speed; })
-					.angle(function(d) { return +d.angle; }));
+		  d3.select("#svgArea")
+		      .datum(data)
+		    .call(timeSeriesChart()
+				.date(function(d) { return formatDate.parse(d.date); })
+				.speed(function(d) { return +d.speed; })
+				.angle(function(d) { return +d.angle; })
+				.xSpeed(function(d) { return +d.x; })
+				.ySpeed(function(d) { return +d.y; })
+		    );
 		});
 	});
 </script>

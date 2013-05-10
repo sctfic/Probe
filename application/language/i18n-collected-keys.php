@@ -60,3 +60,5 @@ i18n('histoWind:title');
 i18n('histoWind:description');
 i18n('wind:title');
 i18n('wind:description');
+i18n('exemple:title');
+i18n('exemple:description');
