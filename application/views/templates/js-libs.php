@@ -14,7 +14,7 @@
 <script src="/resources/js/libs/jquery-ui-1.10.2.custom.js"></script>
 <script src="/resources/js/libs/jquery.bgpos.js"></script>
 
-<script src="/resources/js/libs/bootstrap/bootstrap.js"></script>
+<script src="/resources/js/libs/bootstrap.js"></script>
 
 <?php if ($viewer === true) : ?>
     <script src="/resources/js/libs/d3.v3.js"></script>

@@ -1,0 +1,14 @@
+.debug-border {
+  border: thin dotted #ccc; }
+
+#stations-list {
+  float: left;
+  /*     min-width: 15em; */
+  width: 15em;
+  height: 100%; }
+
+.station-config {
+  padding-left: 1em;
+  margin-left: 15em; }
+
+/* # */
