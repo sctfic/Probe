@@ -35,6 +35,11 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
     <script>window.jQuery || document.write('<script src="/resources/js/libs/jquery-1.8.3.min.js"><\/script>')</script>
 
+    <?
+    /*
+     * TODO: use CDN URL for static resources
+     */
+    ?>
     <link href="/resources/less/bootstrap/responsive.less" rel="stylesheet/less">
 
     <link type="image/png" rel="shortcut icon" href="/.favicon.png">
