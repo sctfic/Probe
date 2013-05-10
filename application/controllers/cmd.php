@@ -249,7 +249,7 @@ index() recupere toutes les donnees recuperable sur la station
                 log_message('warning',  $e->getMessage());
             }
 
-            $this->load->view('configuration/add-station-success');
+            $this->listStations();
         }
 
         return false;
