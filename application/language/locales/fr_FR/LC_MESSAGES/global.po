@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: probe\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-01-13 12:05+0100\n"
-"PO-Revision-Date: 2013-01-13 12:29+0100\n"
+"PO-Revision-Date: 2013-05-10 16:28+0100\n"
 "Last-Translator: Édouard Lopez <dev+i18n@edouard-lopez.com>\n"
 "Language-Team: probe <dev+probe@edouard-lopez.com>\n"
 "Language: \n"
@@ -121,7 +121,7 @@ msgstr "Administrateur"
 
 #: Probe/application/models/dao/dao_user.php:87
 msgid "error.user-creation.invalid.email"
-msgstr ""
+msgstr "L'adresse e-mail est mal-formée."
 
 #: Probe/application/models/service/service_user.php:44
 msgid "login.fail.username.password.incorrect"
@@ -543,11 +543,11 @@ msgid "configuration.station.network._type.placeholder"
 msgstr "VP2, VP"
 
 #: Probe/application/language/i18n-collected-keys.php:20
-msgid "configure-station-list:title"
+msgid "configure-list-station:title"
 msgstr "Liste des stations"
 
 #: Probe/application/language/i18n-collected-keys.php:21
-msgid "configure-station-list:description"
+msgid "configure-list-station:description"
 msgstr "Liste des stations gérées"
 
 #: Probe/application/language/i18n-collected-keys.php:22
@@ -608,12 +608,10 @@ msgid "list-view:description"
 msgstr "Liste des visualisations de données météorologique disponibles"
 
 #: Probe/application/language/i18n-collected-keys.php:36
-#, fuzzy
 msgid "viewer:title"
-msgstr "Connexion"
+msgstr "Visionneuse"
 
 #: Probe/application/language/i18n-collected-keys.php:37
-#, fuzzy
 msgid "viewer:description"
-msgstr "Connexion à l'interface d'administration"
+msgstr "Visualisation des données"
 
