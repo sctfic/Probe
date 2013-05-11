@@ -1,7 +1,7 @@
 function timeSeriesChart() {
   var margin = {top: 5, right: 5, bottom: 20, left: 30},
-      width = 1200,
-      height = 120,
+      width = 1800,
+      height = 160,
       meanDate = function(d) { return d.date; },
       Speed = function(d) { return d.speed; },
       angle = function(d) { return d.angle; },
@@ -9,6 +9,7 @@ function timeSeriesChart() {
       ySpeed = function(d) { return d.y; },
       xScale = d3.time.scale().range([0, width]),
       yScale = d3.scale.linear().range([height, 0]),
+      // rScale = d3.scale.sqrt().range([1,5]),
       xAxis = d3.svg.axis().scale(xScale).orient("bottom").tickSize(4,0),
       yAxis = d3.svg.axis().scale(yScale).orient("left").ticks(4).tickSize(3,0),
       line = d3.svg.line().x(X).y(Y);
@@ -16,7 +17,6 @@ function timeSeriesChart() {
 
 
     function chart(selection) {
-        // console.log(selection);
         //selection represente la liste de block ou ecire les donnees
         selection.each(function(data) {
             // Convert data to standard representation greedily;
@@ -40,19 +40,17 @@ function timeSeriesChart() {
             yScale
                 .domain(d3.extent(data, function(d) {return d.ySpeed; }))
                 .range([height - margin.top - margin.bottom, 0]);
+            
+            // Update the r-scale.
+            // rScale
+            // .domain(d3.extent(data, function(d) { return d.xSpeed; }))
+            // .range([1,5]);
 
             // Select the svg element, if it exists.
             var svg = d3.select(this).selectAll("svg").data([data]);
 
             // Otherwise, create the skeletal chart.
             var gEnter = svg.enter().append("svg").append("g");
-
-            // gEnter.append("path").attr("class", "area");
-            gEnter.append("circle")
-                .attr("class", "dot")
-                .attr("cx", function(d) {return xScale (d.date); })
-                .attr("cy", function(d) {return d.ySpeed; })
-                .attr("r", function(d) {return d.xSpeed; });
 
             gEnter.append("path").attr("class", "line");
             gEnter.append("g").attr("class", "x axis");
@@ -67,26 +65,59 @@ function timeSeriesChart() {
                 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
             // Update the line path.
-            g.select(".line")
-                .attr("d", line);
-            
+            // g.select(".line")
+            //     .attr("d", line);
+            var coef = (yScale.range()[0]-yScale.range()[1])/(yScale.domain()[1]-yScale.domain()[0]);
+            //Draw the line
+            g.selectAll(".hair")
+                .data(data).enter().append("line")
+                    .attr("class", "hair")
+                    .attr("x1", function(d) { return xScale(d.date); })
+                    .attr("y1", function(d) { return yScale(0); })
+                    .attr("x2", function(d) { return xScale(d.date)+d.xSpeed*coef; })
+                    .attr("y2", function(d) { return yScale(d.ySpeed); })
+                    .attr("stroke-width", 1)
+                    .attr("stroke", "#888");
+
+            g.selectAll(".arrow")
+                .data(data)
+                .enter().append("polygon")
+                .attr("points","-1.5,0 0,-4 1.5,0")
+                .attr("class", "arrow")
+                .attr("stroke-width", 0.7)
+                .attr("stroke", "#888")
+                .attr("fill","none")
+                .attr("transform", function(d) {
+                    return "translate("+(xScale(d.date) + d.xSpeed*coef)+","+(yScale(d.ySpeed))+") rotate("+(d.angle)+")";
+                });
 
             // chose the possition of x-Axis
             if (0<yScale.domain()[0])
-            	xPos = yScale.range()[0];
+              xPos = yScale.range()[0];
             else if (yScale.domain()[1]<0)
-            	xPos = yScale.range()[1];
+              xPos = yScale.range()[1];
             else
-            	xPos = yScale(0);
+              xPos = yScale(0);
+
             // Update the x-axis.
             g.select(".x.axis")
                 .attr("transform", "translate(0," + xPos + ")") // axe tjrs en bas : yScale.range()[0] + ")")
                 .call(xAxis);
-            g.select(".y.axis")
-                .attr("transform", "translate(0,0)")
-                .call(yAxis);
+            // g.select(".y.axis")
+            //     .attr("transform", "translate(0,0)")
+            //     .call(yAxis);
+
+            // attempt to use circle instead of line < - - - - - - -
+            // g.selectAll('.circle').data(data).enter().append("circle")
+            //     .attr("stroke-width", 1)
+            //     .attr("stroke", "black")
+            //     .attr("fill","red")
+            //     .attr("class", "dot")
+            //     .attr("cx", function(d) {return xScale (d.date); })
+            //     .attr("cy", function(d) {return yScale (0); })
+            //     .attr("r", 2);
         });
-    }  
+    }
 
 
 

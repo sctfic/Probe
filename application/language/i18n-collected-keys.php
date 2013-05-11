@@ -62,3 +62,5 @@ i18n('wind:title');
 i18n('wind:description');
 i18n('exemple:title');
 i18n('exemple:description');
+i18n('dotShart:title');
+i18n('dotShart:description');

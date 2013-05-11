@@ -20,7 +20,9 @@
 </div>
 
 <style>
-
+svg {
+	font-size: 10px;
+}
 .line {
   fill: none;
   stroke: #000;
@@ -38,11 +40,11 @@
 <script>
 	$(document).ready(function(){
 		var station='<?=$station?>';
-	    var url = "/data/histoWind?station="+station+"&Granularity=720";
+	    var url = "/data/histoWind?station="+station+"&Granularity=30";
 
 		d3.tsv(url, function(data) {
 		  var formatDate = d3.time.format("%Y-%m-%d %H:%M");
-
+console.log(data);
 		  d3.select("#svgArea")
 		      .datum(data)
 		    .call(timeSeriesChart()
