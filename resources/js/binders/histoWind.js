@@ -9,11 +9,9 @@ function timeSeriesChart() {
       ySpeed = function(d) { return d.y; },
       xScale = d3.time.scale().range([0, width]),
       yScale = d3.scale.linear().range([height, 0]),
-      // rScale = d3.scale.sqrt().range([1,5]),
       xAxis = d3.svg.axis().scale(xScale).orient("bottom").tickSize(4,0),
-      yAxis = d3.svg.axis().scale(yScale).orient("left").ticks(4).tickSize(3,0),
-      line = d3.svg.line().x(X).y(Y);
-      // circle = d3.svg.circle().
+      yAxis = d3.svg.axis().scale(yScale).orient("left").ticks(4).tickSize(3,0);
+      // line = d3.svg.line().x(X).y(Y);
 
 
     function chart(selection) {
@@ -40,11 +38,6 @@ function timeSeriesChart() {
             yScale
                 .domain(d3.extent(data, function(d) {return d.ySpeed; }))
                 .range([height - margin.top - margin.bottom, 0]);
-            
-            // Update the r-scale.
-            // rScale
-            // .domain(d3.extent(data, function(d) { return d.xSpeed; }))
-            // .range([1,5]);
 
             // Select the svg element, if it exists.
             var svg = d3.select(this).selectAll("svg").data([data]);
@@ -54,7 +47,7 @@ function timeSeriesChart() {
 
             gEnter.append("path").attr("class", "line");
             gEnter.append("g").attr("class", "x axis");
-            gEnter.append("g").attr("class", "y axis");
+            // gEnter.append("g").attr("class", "y axis");
 
             // Update the outer dimensions.
             svg .attr("width", width)
@@ -68,28 +61,31 @@ function timeSeriesChart() {
             // g.select(".line")
             //     .attr("d", line);
             var coef = (yScale.range()[0]-yScale.range()[1])/(yScale.domain()[1]-yScale.domain()[0]);
-            //Draw the line
-            g.selectAll(".hair")
-                .data(data).enter().append("line")
+
+            // Draw arrow block
+            var arrow = g.selectAll(".arrow")
+                .data(data).enter().append("g")
+                .attr("class", "arrow");
+
+                //Draw the line
+                arrow.append("line")
                     .attr("class", "hair")
                     .attr("x1", function(d) { return xScale(d.date); })
                     .attr("y1", function(d) { return yScale(0); })
-                    .attr("x2", function(d) { return xScale(d.date)+d.xSpeed*coef; })
-                    .attr("y2", function(d) { return yScale(d.ySpeed); })
-                    .attr("stroke-width", 1)
-                    .attr("stroke", "#888");
+                    .attr("x2", function(d) { return xScale(d.date) + d.xSpeed*coef; })
+                    .attr("y2", function(d) { return yScale(d.ySpeed); });
 
-            g.selectAll(".arrow")
-                .data(data)
-                .enter().append("polygon")
-                .attr("points","-1.5,0 0,-4 1.5,0")
-                .attr("class", "arrow")
-                .attr("stroke-width", 0.7)
-                .attr("stroke", "#888")
-                .attr("fill","none")
-                .attr("transform", function(d) {
-                    return "translate("+(xScale(d.date) + d.xSpeed*coef)+","+(yScale(d.ySpeed))+") rotate("+(d.angle)+")";
-                });
+                arrow.append("polygon")
+                    .attr("class", "marker")
+                    .attr("points","-1.5,2 0,-2 1.5,2")
+                    .attr("transform", function(d) {
+                            return "translate("+(xScale(d.date) + d.xSpeed*coef)+","+(yScale(d.ySpeed))+") rotate("+(d.angle)+")";
+                        });
+
+                arrow.append("title")
+                    .text(function(d) {
+                            return "Speed Avg: "+ d.Speed+"m/s\nAngle Avg: "+d.angle+"°\nAverage on: "+d.date ;
+                        });
 
             // chose the possition of x-Axis
             if (0<yScale.domain()[0])
@@ -106,16 +102,6 @@ function timeSeriesChart() {
             // g.select(".y.axis")
             //     .attr("transform", "translate(0,0)")
             //     .call(yAxis);
-
-            // attempt to use circle instead of line < - - - - - - -
-            // g.selectAll('.circle').data(data).enter().append("circle")
-            //     .attr("stroke-width", 1)
-            //     .attr("stroke", "black")
-            //     .attr("fill","red")
-            //     .attr("class", "dot")
-            //     .attr("cx", function(d) {return xScale (d.date); })
-            //     .attr("cy", function(d) {return yScale (0); })
-            //     .attr("r", 2);
         });
     }
 

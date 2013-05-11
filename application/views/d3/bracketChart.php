@@ -14,7 +14,7 @@
 ?>
 <div id="resizable" class="ui-widget-content">
     <h4 class="ui-widget-header">Resizable</h4>
-    <div id="svgArea" style='border:solid red 1px;height:160px;'>
+    <div id="svgArea" style='border:solid red 1px;height:480px;'>
         <!-- d3 content should be -dynamically- placed here -->
     </div>
 </div>
@@ -35,27 +35,31 @@ svg {
   stroke-width: 1px;
   shape-rendering: crispEdges;
 }
-.arrow:hover>.hair, .arrow:hover>.marker {
+.box:hover>.rect, .box:hover>.line {
   stroke: #E6550D;
   stroke-width: 2px;
 }
+.box:hover>text{
+	display: block;
+}
 /*Blue:#1F77B4 #3182bd #6baed6*/
 /*Red:#E6550D*/
-.hair {
-  fill: none;
-  stroke: #3182bd;
+.rect, .line {
+  fill: #FFF;
+  stroke: #1F77B4;
   stroke-width: 1px;
 }
-.marker {
-  fill: #FFF;
-  stroke: #3182bd;
-  stroke-width: .7px;
+.box text {
+	display:none;
+	font-size: 10px;
 }
 </style>
+
 <script>
 	$(document).ready(function(){
 		var station='<?=$station?>';
-	    var url = "/data/histoWind?station="+station+"&Granularity=30";
+		var sensor='<?=$sensor?>';
+	    var url = "/data/bracketCurve?station="+station+"&sensor="+sensor+"&Granularity=120";
 
 		d3.tsv(url, function(data) {
 		  var formatDate = d3.time.format("%Y-%m-%d %H:%M");
@@ -63,10 +67,11 @@ svg {
 		      .datum(data)
 		    .call(timeSeriesChart()
 				.date(function(d) { return formatDate.parse(d.date); })
-				.speed(function(d) { return +d.speed; })
-				.angle(function(d) { return +d.angle; })
-				.xSpeed(function(d) { return +d.x; })
-				.ySpeed(function(d) { return +d.y; })
+				.min(function(d) { return +d.min; })
+				.first(function(d) { return +d.first; })
+				.avg(function(d) { return +d.avg; })
+				.last(function(d) { return +d.last; })
+				.max(function(d) { return +d.max; })
 		    );
 		});
 	});

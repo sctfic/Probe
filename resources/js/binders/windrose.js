@@ -406,7 +406,7 @@ function plotProbabilityRose(Data, container, R, clear) {
         ProbabilityArc.selectAll("path")
             .data(winds)
             .append("title")
-            .text(function(d) {return d.d + "\u00b0 \n" + (100*d.p).toFixed(1) + " % \n" + (d.s).toFixed(1) + " km/h\n Maxi : " + (d.m).toFixed(1) + " km/h"; });
+            .text(function(d) {return d.d + "\u00b0 \n" + (100*d.p).toFixed(1) + " % \n" + (d.s).toFixed(1) + " km/h\nMaxi : " + (d.m).toFixed(1) + " km/h"; });
         ProbabilityArc.selectAll("path")
             .data(winds)
             .transition().delay(function(d) { return d.d*0;}).duration(500)

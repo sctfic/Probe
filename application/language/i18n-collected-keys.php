@@ -64,3 +64,5 @@ i18n('exemple:title');
 i18n('exemple:description');
 i18n('dotShart:title');
 i18n('dotShart:description');
+i18n('bracketChart:title');
+i18n('bracketChart:description');
