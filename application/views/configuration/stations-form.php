@@ -2,7 +2,7 @@
 
 	<fieldset>
 		<legend>
-			<h2><?=i18n('configuration.stations-list.legend.stem');?></h2>
+            <h2><?=$confs['_name']?></h2>
 		</legend>
 		<?php foreach ($confs as $confName => $value) {
 		?>
