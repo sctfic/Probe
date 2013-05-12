@@ -35,9 +35,12 @@
         >
             <?php
             if (!empty($stationsConf)) {
+                $i = 0;
                 foreach ($stationsConf as $_name => $conf) {
-                    $confs['confs'] = $conf;
-                    $this->load->view('configuration/stations-form', $confs);
+                    $data['confs'] = $conf;
+                    $data['active'] = ($i == 0 ? 'active': null);
+                    $this->load->view('configuration/stations-form', $data);
+                    $i++;
                 }
             }
             ?>
