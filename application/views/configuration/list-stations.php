@@ -3,8 +3,9 @@
     <article class="row-fluid">
         <section id="stations-list" class="span3"
                  data-spy="affix" data-offset-top="100">
-            <nav>
-                <ol>
+            <nav class="tabbable tabs-left">
+                <ul class="nav nav-tabs">
+                    <li class="nav-header">i18n:Liste des stations</li>
                     <?php
                     if (!empty($stationsConf)) {
                         foreach ($stationsConf as $_name => $conf) {
@@ -26,10 +27,12 @@
                         <?php
                     }
                     ?>
-                </ol>
+                </ul>
             </nav>
         </section>
-        <section id="stations-form" class="span4">
+        <section id="stations-form" class="tab-content span9"
+                 data-spy="scroll" data-target="#stations-list"
+        >
             <?php
             if (!empty($stationsConf)) {
                 foreach ($stationsConf as $_name => $conf) {
