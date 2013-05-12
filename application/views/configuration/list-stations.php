@@ -1,4 +1,4 @@
-<div class="container">
+<div id="list-stations" class="container">
     <!-- <div class="row"> -->
     <article class="row-fluid">
         <section id="stations-list" class="span3"
