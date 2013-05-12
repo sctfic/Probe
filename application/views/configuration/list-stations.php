@@ -47,4 +47,3 @@
     </article>
     <!-- </div> -->
 </div>
-<script src="/resources/js/libs/bootstrap/bootstrap-affix.js"/>
