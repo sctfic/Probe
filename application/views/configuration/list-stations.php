@@ -9,7 +9,11 @@
                     if (!empty($stationsConf)) {
                         foreach ($stationsConf as $_name => $conf) {
                             ?>
-                            <li><?=$_name?></li>
+                            <li>
+                                <a href="#station-<?=$_name?>" data-toggle="tab">
+                                    <?=$_name?>
+                                </a>
+                            </li>
                             <?php
                         }
                     } else {

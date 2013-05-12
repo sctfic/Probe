@@ -1,4 +1,4 @@
-<article class="span10">
+<article id="station-<?=$confs['_name']?>" class="tab-pane <?=$active?> form-horizontal span10">
 
 	<fieldset>
 		<legend>
