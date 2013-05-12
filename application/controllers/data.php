@@ -164,16 +164,6 @@ make and download json bracketCurve of a sensor
 	function bracketCurve(){
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,array($this->Station['_name'], $this->Since,	$this->To,	$this->Granularity));
 
-		if (!$this->force) {
-			$recomandGranularity = $this->dataReader->estimate (
-                $this->Since,
-                $this->To
-            );
-			if ($this->Granularity >= $recomandGranularity*10 || $this->Granularity <= $recomandGranularity )
-				$this->Granularity = $recomandGranularity/3;
-		}
-
-
 		$data = $this->dataReader->bracketCurve (
 			$this->Since,
 			$this->To,
@@ -184,14 +174,14 @@ make and download json bracketCurve of a sensor
 	    $tsv = '';
 	    for ($i=0;$i<$j;$i++) {
 			$tsv .= substr(	$data[$i]['UTC_grp'],0,-3)."\t".
-							$data[$i]['first']."\t".
 							$data[$i]['min']."\t".
+							$data[$i]['first']."\t".
 							$data[$i]['val']."\t".
-							$data[$i]['max']."\t".
-							$data[$i]['last']."\n";
+							$data[$i]['last']."\t".
+							$data[$i]['max']."\n";
 		}
 
-		$this->dl_tsv ("date\tfirst\tmin\tavg\tmax\tlast\n".trim($tsv,"\n"));
+		$this->dl_tsv ("date\tmin\tfirst\tavg\tlast\tmax\n".trim($tsv,"\n"));
 	}
 /**
 make and download json wind data

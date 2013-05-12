@@ -117,11 +117,13 @@ class dao_data extends CI_Model {
 
         $queryString = 
         "SELECT FROM_UNIXTIME( TRUNCATE( UNIX_TIMESTAMP(`UTC`) / ".($Granularity*60).", 0)*".($Granularity*60)."+".($Granularity*60/2)." ) as UTC_grp ,
-                SUBSTRING_INDEX(GROUP_CONCAT(CAST(`value` AS CHAR) ORDER BY utc),',',1) as first,
+                -- SUBSTRING_INDEX(GROUP_CONCAT(CAST(`value` AS CHAR) ORDER BY utc),',',1) as first,
                 round(min(`value`), 2) as min,
+                round(avg(`value`)-STD(`value`), 2) as first,
                 round(avg(`value`), 2) as val,
-                round(max(`value`), 2) as max,
-                SUBSTRING_INDEX(GROUP_CONCAT(CAST(`value` AS CHAR) ORDER BY utc),',',-1) as last
+                round(avg(`value`)+STD(`value`), 2) as last,
+                round(max(`value`), 2) as max
+                -- SUBSTRING_INDEX(GROUP_CONCAT(CAST(`value` AS CHAR) ORDER BY utc),',',-1) as last
             FROM  `".$this->SEN_TABLE."` 
             WHERE SEN_ID = ".$this->SEN_ID."
                 AND utc >= '$since'
@@ -129,8 +131,9 @@ class dao_data extends CI_Model {
         GROUP BY UTC_grp
         ORDER BY UTC_grp asc
         LIMIT 0 , 10000";
-
+var_export($queryString);
         $qurey_result = $this->dataDB->query($queryString);
+        var_export($qurey_result);
         $brut = $qurey_result->result_array($qurey_result);
         return $brut;
     }
