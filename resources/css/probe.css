@@ -5858,7 +5858,8 @@ circle:hover + .petals {
 .breadcrumb {
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
-  border-radius: 0; }
+  border-radius: 0;
+  border-bottom: thin solid #d4d4d4; }
 
 .breadcrumb .active {
   font-weight: bold; }
@@ -6015,5 +6016,10 @@ footer > a > img {
   #add-station .modal-header > .nav {
     margin-bottom: 0; }
 
-#stations-form > .btn {
-  clear: both; }
+#list-stations #stations-list {
+  width: 10em; }
+#list-stations #stations-form {
+  margin-left: 12em;
+  position: absolute; }
+  #list-stations #stations-form > .btn {
+    clear: both; }

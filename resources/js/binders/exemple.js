@@ -47,13 +47,6 @@ function timeSeriesChart() {
             // Otherwise, create the skeletal chart.
             var gEnter = svg.enter().append("svg").append("g");
 
-            // gEnter.append("path").attr("class", "area");
-            gEnter.append("circle")
-                .attr("class", "dot")
-                .attr("cx", function(d) {return xScale (d.date); })
-                .attr("cy", function(d) {return d.ySpeed; })
-                .attr("r", function(d) {return d.xSpeed; });
-
             gEnter.append("path").attr("class", "line");
             gEnter.append("g").attr("class", "x axis");
             gEnter.append("g").attr("class", "y axis");
@@ -69,16 +62,13 @@ function timeSeriesChart() {
             // Update the line path.
             g.select(".line")
                 .attr("d", line);
-            
 
-            // chose the possition of x-Axis
-            if (0<yScale.domain()[0])
-            	xPos = yScale.range()[0];
-            else if (yScale.domain()[1]<0)
-            	xPos = yScale.range()[1];
-            else
-            	xPos = yScale(0);
             // Update the x-axis.
+                // console.log(yScale.domain())
+                // [-0.642, 1.61] 
+            if (0<yScale.domain()[0]) xPos = yScale.range()[0];
+            else if (yScale.domain()[1]<0) xPos = yScale.range()[1];
+            else xPos = yScale(0);
             g.select(".x.axis")
                 .attr("transform", "translate(0," + xPos + ")") // axe tjrs en bas : yScale.range()[0] + ")")
                 .call(xAxis);

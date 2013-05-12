@@ -66,3 +66,5 @@ i18n('configuration.breadcrumb.stations.list');
 i18n('configuration.breadcrumb.stations.dashboard');
 i18n('configuration.breadcrumb.stations.add');
 i18n('viewer.histoWind');
+i18n('exemple:title');
+i18n('exemple:description');
