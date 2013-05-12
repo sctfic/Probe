@@ -46,6 +46,7 @@ circle:hover+.petals {
 
 .breadcrumb {
     @include border-radius(0);
+    border-bottom: thin solid $navbarBorder;
 }
 .breadcrumb .active {
     font-weight: bold;
