@@ -2,7 +2,7 @@
     <!-- <div class="row"> -->
     <article class="row-fluid">
         <section id="stations-list" class="span3"
-                 data-spy="affix" data-offset-top="200">
+                 data-spy="affix" data-offset-top="100">
             <nav>
                 <ol>
                     <?php

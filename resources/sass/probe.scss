@@ -254,6 +254,14 @@ footer {
 }
 
 #list-stations {
+  #stations-list {
+    width: $ui-sidebarSize;
+  }
+  #stations-form {
+    margin-left: $ui-sidebarMargin;
+    position: absolute;
+    > .btn {
+      clear: both;
     }
   }
 }
