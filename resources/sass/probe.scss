@@ -259,8 +259,7 @@ footer {
     width: $ui-sidebarSize;
   }
   #stations-form {
-    margin-left: $ui-sidebarMargin;
-    position: absolute;
+    float: right;
     > .btn {
       clear: both;
     }

@@ -6019,7 +6019,6 @@ footer > a > img {
 #list-stations #stations-list {
   width: 10em; }
 #list-stations #stations-form {
-  margin-left: 12em;
-  position: absolute; }
+  float: right; }
   #list-stations #stations-form > .btn {
     clear: both; }
