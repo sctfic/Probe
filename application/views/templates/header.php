@@ -32,9 +32,6 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="/resources/js/libs/jquery-1.8.3.min.js"><\/script>')</script>
-
     <?
     /*
      * TODO: use CDN URL for static resources
