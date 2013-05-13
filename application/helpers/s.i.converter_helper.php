@@ -25,9 +25,9 @@
 	}
 
 
-	function inHg2hPa ($val){
+	function inHg2Pa ($val){
 		//		http://www.sensorsone.co.uk/pressure-measurement-glossary/inhg-inch-of-mercury-0-deg-c-pressure-unit.html#factors
-		return round(33.8639*$val, 2)	;
+		return round(3386.39*$val, 1)	;
 	}
 	function RainSample2mm($Sample) {
 		global $auge;
