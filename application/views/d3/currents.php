@@ -26,7 +26,7 @@
 <script>
 // http://jquery.bassistance.de/treeview/demo/
 
-$(document).ready(function(){
+function probeViewer(){
     var url = "/data/currents?station=VP2_GTD";
     // $.getJSON(url, function(json) {
     $.getJSON(url, function(data) {
@@ -76,5 +76,5 @@ $(document).ready(function(){
         console.log('end');
 
     });
-});
+}
 </script>

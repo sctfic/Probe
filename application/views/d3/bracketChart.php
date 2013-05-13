@@ -56,7 +56,7 @@ svg {
 </style>
 
 <script>
-	$(document).ready(function(){
+	function probeViewer(){
 		var station='<?=$station?>';
 		var sensor='<?=$sensor?>';
 	    var url = "/data/bracketCurve?station="+station+"&sensor="+sensor+"&Granularity=120";
@@ -74,7 +74,7 @@ svg {
 				.max(function(d) { return +d.max; })
 		    );
 		});
-	});
+	}
 </script>
 <script src="/resources/js/ProbeTools.js"></script>
 <script src="/resources/js/libs/base64.js"></script>

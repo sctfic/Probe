@@ -43,9 +43,7 @@
     TA:Arch:Various:Wind:SpeedAvg
 */
 
-$(document).ready(function(){
-     (tsv, '#display0', 1600, 480);
-
-   });
-});
+function probeViewer(){
+    (tsv, '#display0', 1600, 480);
+}
 </script>
