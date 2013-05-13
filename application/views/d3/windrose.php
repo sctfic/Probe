@@ -41,7 +41,7 @@
     MONTH()         Return the month from the date passed
     YEAR()          Return the year
 */
-$(document).ready(function(){
+function probeViewer(){
     var url = "/data/wind?station=VP2_GTD&&Since=2013-01-01&Granularity=720";
     // $.getJSON(url, function(json) {
     d3.json(url, function(error, json) {
@@ -51,5 +51,5 @@ $(document).ready(function(){
         // plotSpeedRose(json.data['2012-01-29'], '#display2',120);
 
    });
-});
+}
 </script>

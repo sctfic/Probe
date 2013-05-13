@@ -20,6 +20,12 @@
 <?php if ($viewer === true) : ?>
     <script src="/resources/js/libs/d3.v3.js"></script>
     <script src="/resources/js/binders/<?=$dataBinder;?>.js"></script>
+    <script>
+        // all binders should expose a function named 'probeViewer'
+        $(document).ready(
+            function() { probeViewer(); }
+        );
+    </script>
 <?php endif; ?>
 
 <?php if (file_exists(FCPATH.'resources/js/pages/'.$page.'.js')) : ?>

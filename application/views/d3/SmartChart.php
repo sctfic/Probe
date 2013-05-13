@@ -69,7 +69,7 @@ svg {
 }*/
 </style>
 <script>
-	$(document).ready(function(){
+	function probeViewer(){
 		var station='<?=$station?>';
 		var sensor='<?=$sensor?>';
 	    var url = "/data/curve?station="+station+"&sensor="+sensor+"&Since=2012-01-01&_To=2099-01-01&_Granularity=120";
@@ -83,7 +83,7 @@ svg {
 					.x(function(d) { return formatDate.parse(d.date); })
 					.y(function(d) { return +d.val; }));
 		});
-	});
+	}
 </script>
 <script src="/resources/js/ProbeTools.js"></script>
 <script src="/resources/js/libs/base64.js"></script>

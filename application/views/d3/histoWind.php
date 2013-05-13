@@ -53,7 +53,7 @@ svg {
 }
 </style>
 <script>
-	$(document).ready(function(){
+	function probeViewer(){
 		var station='<?=$station?>';
 	    var url = "/data/histoWind?station="+station+"&Granularity=30";
 
@@ -69,7 +69,7 @@ svg {
 				.ySpeed(function(d) { return +d.y; })
 		    );
 		});
-	});
+	}
 </script>
 <script src="/resources/js/ProbeTools.js"></script>
 <script src="/resources/js/libs/base64.js"></script>

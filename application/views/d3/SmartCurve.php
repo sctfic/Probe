@@ -128,7 +128,7 @@ var sensor='<?=$sensor?>';
 var dataFullView=null;
 
 
-$(document).ready(function(){
+function probeViewer(){
     var url = "/data/curve?station="+station+"&sensor="+sensor+"&Since=2012-01-01&_To=2099-01-01&_Granularity=120";
     // $.getJSON(url, function(json) {
     d3.tsv(url, function(error, tsv) {
@@ -144,7 +144,7 @@ $(document).ready(function(){
             drawGraph (dataFullView, '#SvgZone', parentblock.width(), parentblock.height() - $('#resizable h4:first-child').height() - 10);
         }
    });
-});
+}
 </script>
 
 <script>
