@@ -62,5 +62,5 @@ require_once '../config/stations.conf.php';
     <?php endforeach ?>
     </section>
 </article>
-<a href="./?stop" class='btn'><?=_('logOut'); ?></a>
-<a href="/admin/logout" class='btn'><?=_('logOut'); ?></a>
+<a href="./?stop" class='btn'><?=i18n('logout.request.label'); ?></a>
+<a href="/admin/logout" class='btn'><?=i18n('logout.request.label'); ?></a>
