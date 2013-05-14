@@ -69,7 +69,7 @@
 
     <aside class="js time-indicator">
       <div class="now"><?=date('Y-m-d H:i')?>
-        <!-- <img class="time-indicator" src="/themes/icons/weather-clear.png" alt="<?=i18n("sunny weather")?>?>" /> -->
+        <!-- <img class="time-indicator" src="/themes/icons/weather-clear.png" alt="<?=i18n("weather.sunny")?>?>" /> -->
       </div>
     </aside>
 
