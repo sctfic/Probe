@@ -48,6 +48,9 @@ class Data extends CI_Controller {
 		$this->Granularity = $this->input->get('Granularity'); // Granularity in minutes
 			$this->Granularity = is_integer($this->Granularity*1) ? $this->Granularity : 0; // in minutes
 
+		$this->displaySize = $this->input->get('displaySize'); // displaySize in pixels
+			$this->displaySize = is_integer($this->displaySize*1) ? $this->displaySize : 0; // in pixels
+
 		$this->Station = end($this->station->config($station));
 		// print_r($this->Station);
 		$this->info = array("info"=>array(
@@ -279,6 +282,17 @@ Download after convert data structure to json object
 		force_download('data.json', $json);
 	}
 
+/**
+Download tsv file
+	* @
+	* @param data structure array()
+	*/
+	private function dl_tsv ($data) {
+		// ob_clean();
+		@ob_end_clean();
+		header_remove();
+		force_download('data.tsv', $data);
+	}
 /**
 Download tsv file
 	* @

@@ -33,7 +33,7 @@ Convertie toutes les unités de base SI en d'autre unitées connues
 function formulaConverter (input, outputUnit)
 {
 array()
-    var units = [
+    var units = {
         WindSpeed:{
         	// ref: 'http://en.wikipedia.org/wiki/Speed'
             { name: 'Metres per second',	symbol: 'm/s',	formula:function(SI){return +SI;},	// ok
@@ -104,7 +104,7 @@ array()
         Solar: {
             { name: 'Solar radiation', symbol: 'w/m²',	formula: function(SI){return +SI;},	// ok
         }
-    ];
+    };
     // si on as pas d'argument demandé
     if (!arguments.length) return width;
     // si on demande une grandeur sans lunite de conversion

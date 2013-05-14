@@ -59,7 +59,7 @@ Convention de nomage :
 'LPS0:Current:Air:Bar:3hTrend::'		=> array( 'pos' => 3, 'len' => 1, 'fn'=>'BTrend','SI'=>NULL,'min'=>0, 'max'=>0xFF, 'err'=>255, 'unit'=> '' ),
 'LPS0:Data:Packet:Type:::'		=> array( 'pos' => 4, 'len' => 1, 'fn'=>'s2uc','SI'=>NULL,'min'=>0, 'max'=>8,'err'=>255, 'unit'=> '' ), 
 //'LPS0:Data::Nextrecord:::'		=> array( 'pos' => 5, 'len' => 2, 'fn'=>'Temp','SI'=>NULL,'min'=>0, 'max'=>0xFF, 'err'=>255, 'unit'=> '' ),
-'LPS0:Current:Air:Bar::Current:now'		=> array( 'pos' => 7, 'len' => 2, 'fn'=>'Pressure', 'SI'=>NULL,'min'=>0, 'max'=>0xFF, 'err'=>255, 'unit'=> '' ),
+'LPS0:Current:Air:Bar::Current:now'		=> array( 'pos' => 7, 'len' => 2, 'fn'=>'inHg2Pa', 'SI'=>NULL,'min'=>0, 'max'=>0xFF, 'err'=>255, 'unit'=> '' ),
 'LPS0:Current:Air:Temp:In#0:Current:now'		=> array( 'pos' => 9, 'len' => 2, 'fn'=>'Temp','SI'=>'tempSI', 'min'=>-90, 'max'=>164,'err'=>255, 'unit'=> '°F' ),
 'LPS0:Current:Air:Hum:In#0:Current:now'		=> array( 'pos' => 11, 'len' => 1, 'fn'=>'Rate','SI'=>NULL,'min'=>0, 'max'=>100,'err'=>255, 'unit'=> '%' ),
 'LPS0:Current:Air:Temp:Out#1:Current:now'		=> array( 'pos' => 12, 'len' => 2, 'fn'=>'Temp','SI'=>'tempSI', 'min'=>-90, 'max'=>164,'err'=>255, 'unit'=> '°F' ),
