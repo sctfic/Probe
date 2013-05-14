@@ -10,12 +10,14 @@
  */
 ?>
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<?php if ($_SERVER["HTTP_HOST"]	!= DEV_HOST): ?>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<?php endif ?>
 <script>window.jQuery || document.write('<script src="/resources/js/libs/jquery-1.8.3.min.js"><\/script>')</script>
 <script src="/resources/js/libs/jquery.bgpos.js"></script>
 
-<!--<script src="/resources/js/libs/bootstrap.min.js"></script>-->
-<script src="/resources/js/libs/bootstrap.js"></script>
+<script src="/resources/js/libs/bootstrap.min.js"></script>
+<!--<script src="/resources/js/libs/bootstrap.js"></script>-->
 
 <?php if ($viewer === true) : ?>
     <script src="/resources/js/libs/d3.v3.js"></script>
