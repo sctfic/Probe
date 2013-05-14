@@ -131,7 +131,7 @@ class Install extends CI_Controller {
         $page = new Page_manager();
 
         // build view data
-        $data = $page->fetchConfig('setup-dbms'); // fetch information to build the HTML header
+        $data = $page->fetchConfig('install.dbms'); // fetch information to build the HTML header
         $data['breadcrumb'] = $this->_breadcrumb['dbms'];
         $data['dbmsUsername'] = null;
         $data['dbmsPassword'] = null;
@@ -226,7 +226,7 @@ class Install extends CI_Controller {
         $page = new Page_manager();
 
         // build view data
-        $data = $page->fetchConfig('setup-admin-user'); // fetch information to build the HTML header
+        $data = $page->fetchConfig('install.admin-user'); // fetch information to build the HTML header
         $data['breadcrumb'] = $this->_breadcrumb['admin-user'];
 
         $data['adminUsername'] = null;
