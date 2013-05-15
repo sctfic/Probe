@@ -180,15 +180,15 @@ msgid "configuration-list-station.description.metadata"
 msgstr "Consulter la liste des stations connectées"
 
 #: application/language/i18n-collected-keys.php:61
-msgid "configuration-breadcrumb.stations.list"
-msgstr "Tableau de bord"
+msgid "configuration-station.list.breadcrumb"
+msgstr "Liste des stations"
 
 #: application/language/i18n-collected-keys.php:62
-msgid "configuration-breadcrumb.stations.dashboard"
+msgid "configuration-station.dashboard.breadcrumb"
 msgstr "Tableau de bord"
 
 #: application/language/i18n-collected-keys.php:63
-msgid "configuration-breadcrumb.stations.add"
+msgid "configuration-station.add.breadcrumb"
 msgstr "Ajout de station"
 
 #: application/language/i18n-collected-keys.php:64
@@ -443,17 +443,17 @@ msgstr "Vous êtes déconnecté."
 
 #: application/views/login.php:3
 #, fuzzy
-msgid "install-breadcrumb.dbms"
+msgid "install.dbms.breadcrumb"
 msgstr "Base de données"
 
 #: application/views/login.php:4
 #, fuzzy
-msgid "install-breadcrumb.administrator"
+msgid "install.administrator.breadcrumb"
 msgstr "Compte administrateur"
 
 #: application/views/login.php:5
 #, fuzzy
-msgid "install-breadcrumb.login"
+msgid "install.login.breadcrumb"
 msgstr "Authentification"
 
 #: application/views/login.php:18
@@ -730,7 +730,7 @@ msgstr "Ajouter une station"
 
 #: application/views/admin/dashboard.php:5
 #, fuzzy
-msgid "install-breadcrumb.dashboard"
+msgid "install.dashboard.breadcrumb"
 msgstr "Tableau de bord"
 
 #: application/views/admin/dashboard.php:38

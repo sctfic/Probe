@@ -33,22 +33,22 @@ class Install extends CI_Controller {
             array(
                 'status' => 'active',
                 'url' => '/install/dbms',
-                'i18n' => 'install-breadcrumb.dbms'
+                'i18n' => 'install.dbms.breadcrumb'
             ),
-            'i18n' => 'install-breadcrumb.administrator',
-            'i18n' => 'install-breadcrumb.dashboard'
+            'i18n' => 'install.administrator.breadcrumb',
+            'i18n' => 'install.dashboard.breadcrumb'
         ),
         'admin-user' => array(
             array(
                 'url' => '/install/dbms',
-                'i18n' => 'install-breadcrumb.dbms',
+                'i18n' => 'install.dbms.breadcrumb',
             ),
             array(
                 'status' => 'active',
                 'url' => '/install/admin-user',
-                'i18n' => 'install-breadcrumb.administrator',
+                'i18n' => 'install.administrator.breadcrumb',
             ),
-            'i18n' => 'install-breadcrumb.dashboard',
+            'i18n' => 'install.dashboard.breadcrumb',
         )
     );
 
