@@ -9,7 +9,7 @@
 * @link     http://probe.com/doc
  */
 ?>
-<ul id="viewer-list">
+<ul id="list-viewer">
     <?php foreach ($list as $key => $file): ?>
         <li>
             <a href="/viewer/<?=$file;?>"><?=$file;?></a>
