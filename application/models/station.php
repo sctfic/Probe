@@ -150,7 +150,7 @@ class Station extends CI_Model {
 	// 			throw new Exception( sprintf( i18n('station.open-connexion[%s%s%s]:fail.label'), $conf['_name'], $conf['_ip'], $conf['_port']));
 	// 		$this->data = $Current_WS->GetHiLows ( );
 	// 		if ( !$Current_WS->closeConnection() )
-	// 			throw new Exception( sprintf( i18n('Fermeture de %s impossible'), $conf['_name']) );
+	// 			throw new Exception( sprintf( i18n('station.close-connexion[%s]:fail.label'), $conf['_name']) );
 	// 	}
 	// 	catch (Exception $e) {
 	// 		throw new Exception($e->getMessage());
@@ -210,7 +210,10 @@ class Station extends CI_Model {
 				$this->data = $Current_WS->GetHiLows ( );
 	
 				if ( !$Current_WS->closeConnection() )
-					throw new Exception( sprintf( i18n('Fermeture de %s impossible'), $conf['_name']) );
+					throw new Exception( sprintf(
+                        i18n('station.close-connexion[%s]:fail.label'),
+                        $conf['_name']
+                    ));
 			}
 			catch (Exception $e) {
 				throw new Exception($e->getMessage());
@@ -251,7 +254,9 @@ class Station extends CI_Model {
 			$this->data['HILOW'] = $Current_WS->GetHiLows ( );
 
 			if ( !$Current_WS->closeConnection() )
-				throw new Exception( sprintf( i18n('Fermeture de %s impossible'), $conf['_name']) );
+				throw new Exception( sprintf(
+                    i18n('station.close-connexion[%s]:fail.label'), $conf['_name']
+                ));
 		}
 		catch (Exception $e) {
 			throw new Exception($e->getMessage());
@@ -277,7 +282,7 @@ class Station extends CI_Model {
 	// 			throw new Exception( sprintf( i18n('station.open-connexion[%s%s%s]:fail.label'), $conf['_name'], $conf['_ip'], $conf['_port']));
 	// 		$this->data = $Current_WS->GetLPS ( );
 	// 		if ( !$Current_WS->closeConnection() )
-	// 			throw new Exception( sprintf( i18n('Fermeture de %s impossible'), $conf['_name']) );
+	// 			throw new Exception( sprintf( i18n('station.close-connexion[%s]:fail.label'), $conf['_name']) );
 	// 	}
 	// 	catch (Exception $e) {
 	// 		throw new Exception($e->getMessage());
@@ -311,7 +316,7 @@ class Station extends CI_Model {
 	// 			$clock = $Current_WS->clockSync(5);
 	// 			$this->data = $Current_WS->GetDmpAft ( $Last_Arch );
 	// 			if ( !$Current_WS->closeConnection() )
-	// 				throw new Exception( sprintf( i18n('Fermeture de %s impossible'), $conf['_name']) );
+	// 				throw new Exception( sprintf( i18n('station.close-connexion[%s]:fail.label'), $conf['_name']) );
 	// 		}
 	// 		catch (Exception $e) {
 	// 			throw new Exception($e->getMessage());
@@ -345,7 +350,7 @@ class Station extends CI_Model {
 	// 		// qui ne contiend qu'une seule valeur de niveau 1 mais dont la clef est variable
 	// 		// end() permet de recupere cette valeur quelque soit ca clef.
 	// 		if ( !$Current_WS->closeConnection() )
-	// 			throw new Exception( sprintf( i18n('Fermeture de %s impossible'), $conf['_name']) );
+	// 			throw new Exception( sprintf( i18n('station.close-connexion[%s]:fail.label'), $conf['_name']) );
 	// 	}
 	// 	catch (Exception $e) {
 	// 		throw new Exception( $e->getMessage() );

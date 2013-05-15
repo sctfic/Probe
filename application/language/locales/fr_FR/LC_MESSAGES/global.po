@@ -401,11 +401,10 @@ msgstr "Aucune configuration valide n'est disponible."
 msgid "station.open-connexion[%s%s%s]:fail.label"
 msgstr "Station indisponible, veuillez vérifiez les paramètres de connexion (nom: %s, adresse: %s:%s)."
 
-#: application/models/station.php:196
-#: application/models/station.php:232
-#, fuzzy, php-format
-msgid "Fermeture de %s impossible"
-msgstr "Unidades de fomento"
+#: application/models/station.php:255
+#, php-format
+msgid "station.close-connexion[%s]:fail.label"
+msgstr "[i] Fermeture impossible de la connexion à : %s."
 
 #: application/models/station.php:202
 #, php-format
