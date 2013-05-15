@@ -304,11 +304,11 @@ msgid "weather.storm-night.label"
 msgstr "nuit orageuse"
 
 #: application/libraries/Page_manager.php:51
-msgid "error.file.missing.title"
+msgid "error.file:missing.title"
 msgstr "Fichier manquant ou non valable"
 
 #: application/libraries/Page_manager.php:52
-msgid "error.file.missing"
+msgid "error.file:missing.description"
 msgstr "Erreur à l'ouverture du fichier"
 
 #: application/libraries/Page_manager.php:54
@@ -317,7 +317,7 @@ msgid "solution.file[%s].missing"
 msgstr "Vérifier que le fichier <var>%s</var> existe bien et que vous avez les droits suffisants pour le lire"
 
 #: application/libraries/Page_manager.php:59
-msgid "error.file.missing.header"
+msgid "error.file:missing.header"
 msgstr "Fichier manquant ou non valable."
 
 #: application/libraries/Page_manager.php:85

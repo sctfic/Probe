@@ -48,15 +48,15 @@ class Page_manager {
             // Whoops, we don't have a page for that!
             show_error(
                 array(
-                    'error-title' => i18n('error.file.missing.title'),
-                    'error-description' => i18n('error.file.missing'),
+                    'error-title' => i18n('error.file:missing.title'),
+                    'error-description' => i18n('error.file:missing.description'),
                     'error-solution' => sprintf(
                             i18n('solution.file[%s].missing'),
                             $page.'.php'
                         ).':'.$view.var_dump($data)
                     ),
                 404,
-                i18n('error.file.missing.header')
+                i18n('error.file:missing.header')
             );
         }
 
