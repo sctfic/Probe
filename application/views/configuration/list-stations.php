@@ -5,7 +5,7 @@
                  data-spy="affix" data-offset-top="100">
             <nav class="tabbable tabs-left">
                 <ul class="nav nav-tabs">
-                    <li class="nav-header"><?=i18n('configuration.stations.list.header')?></li>
+                    <li class="nav-header"><?=i18n('configuration-stations.list.header')?></li>
                     <?php
                     if (!empty($stationsConf)) {
                         foreach ($stationsConf as $_name => $conf) {
@@ -21,7 +21,7 @@
                         ?>
                         <li>
                             <a href="/configuration/add-station">
-                                <?=i18n('configuration.stations.add-new.station')?>
+                                <?=i18n('configuration-stations.add-new.station')?>
                             </a>
                         </li>
                         <?php
@@ -47,7 +47,7 @@
             <!-- <a href="#" class="btn"><i class="fam-add"></i> Add New Station</a> -->
             <a href="/configuration/add-station" class="btn btn-success">
                 <i class="icon-white icon-plus"></i>
-                <?=i18n('configuration.station.add-new')?>
+                <?=i18n('configuration-station.add-new')?>
             </a>
         </section>
     </article>

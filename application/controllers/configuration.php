@@ -59,7 +59,7 @@ class Configuration extends CI_Controller {
         $page = new Page_manager();
 
         // build view data
-        $data = $page->fetchConfig('configure-list-station'); // fetch information to build the HTML header
+        $data = $page->fetchConfig('configuration-list-station'); // fetch information to build the HTML header
         foreach ($this->station->stationsList as $id => $station) {
             $data['stationsConf'][$station] = current($this->station->config($id));
         }
@@ -73,7 +73,7 @@ class Configuration extends CI_Controller {
         $this->load->library('form_validation');
 
         $page = new Page_manager();
-        $data = $page->fetchConfig('configure-add-station'); // fetch information to build the HTML header
+        $data = $page->fetchConfig('configuration-add-station'); // fetch information to build the HTML header
         $data['breadcrumb'] = $this->_breadcrumb['add-station'];
         $data['form'] = $this->config->item('form.add-station');
 

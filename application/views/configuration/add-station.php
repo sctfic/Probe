@@ -14,7 +14,7 @@
 		?>
 			<li class="<?=$active; $active=null; ?>">
 				<a href="#settings-<?=$label?>" data-toggle="tab">
-					<?=$i++.'. '.i18n('configuration.station.tab.'.$label, true)?>
+					<?=$i++.'. '.i18n('configuration-station.tab.'.$label, true)?>
 				</a>
 			</li>
 		<?php endforeach; ?>
@@ -27,7 +27,7 @@
 
 		<fieldset id="settings-dbms" class="tab-pane active">
 			<p class="alert alert-info">
-				<?=i18n('configuration.station.settings.dbms.info')?>
+				<?=i18n('configuration-station.settings.dbms.info')?>
 			</p>
 			<?php foreach ($form['dbms'] as $input => $type): ?>
 				<!-- <?=$input?> <?=$type?> -->
@@ -75,7 +75,7 @@
 
 		<fieldset id="settings-network" class="tab-pane">
 			<p class="alert alert-info">
-				<?=i18n('configuration.station.settings.network.info')?>
+				<?=i18n('configuration-station.settings.network.info')?>
 			</p>
 			<?php foreach ($form['network'] as $input => $type): ?>
 				<!-- <?=$input?> <?=$type?> -->
@@ -88,7 +88,7 @@
 					<?php else: ?>
 						<label class="control-label" for="network-<?=$input?>">
 							<?=sprintf('%s <span class="hidden">(%s)</span>%s', 
-								i18n(sprintf('configuration.station.network.%s', $input), true), 
+								i18n(sprintf('configuration-station.network.%s', $input), true),
 								i18n('required'), 
 								i18n('&nbsp;:')) 
 						?>
@@ -103,7 +103,7 @@
 								name="network-<?=$input?>" 
 								value="<?=set_value('network-'.$input)?>"
 								class="input-large" 
-								placeholder="<?=i18n(sprintf('configuration.station.network.%s.placeholder', $input), true)?>"
+								placeholder="<?=i18n(sprintf('configuration-station.network.%s.placeholder', $input), true)?>"
 							>
 						</div>
 					<?php endif; ?>
@@ -114,7 +114,7 @@
 
 	</article>
 	<div class="modal-footer">
-		<?=form_submit('configure', i18n('configuration.station.add-new.valid'), 'class="btn btn-primary pull-right"')?>
+		<?=form_submit('configure', i18n('configuration-station.add-new.valid'), 'class="btn btn-primary pull-right"')?>
 	</div>
 <?=form_close()?>
 
