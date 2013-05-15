@@ -148,38 +148,28 @@ msgstr "Probe est une application web moderne pour gérer les stations météo d
 
 #: application/language/i18n-collected-keys.php:38
 #: application/libraries/Page_manager.php:87
-msgid "probe:authors"
-msgstr "Probe Team"
+msgid "probe.authors.metadata"
+msgstr "Équipe Probe"
 
 #: application/language/i18n-collected-keys.php:39
 #, fuzzy
 msgid "curve.title.metadata"
-msgstr "Titre"
+msgstr "Courbe"
 
 #: application/language/i18n-collected-keys.php:40
 #, fuzzy
 msgid "curve.description.metadata"
-msgstr "Probe est une application web moderne pour gérer les stations météo de la marque Davis Instrument™ et archiver les relevés"
+msgstr "Courbes"
 
 #: application/language/i18n-collected-keys.php:41
 #, fuzzy
-msgid "curents.title.metadata"
-msgstr "Titre"
+msgid "currents.title.metadata"
+msgstr "Conditions actuelles"
 
 #: application/language/i18n-collected-keys.php:42
 #, fuzzy
-msgid "curents.description.metadata"
-msgstr "Probe est une application web moderne pour gérer les stations météo de la marque Davis Instrument™ et archiver les relevés"
-
-#: application/language/i18n-collected-keys.php:43
-#, fuzzy
-msgid "currents.title.metadata"
-msgstr "Titre"
-
-#: application/language/i18n-collected-keys.php:44
-#, fuzzy
 msgid "currents.description.metadata"
-msgstr "Probe est une application web moderne pour gérer les stations météo de la marque Davis Instrument™ et archiver les relevés"
+msgstr "Conditions météo actuelle"
 
 #: application/language/i18n-collected-keys.php:45
 #, fuzzy

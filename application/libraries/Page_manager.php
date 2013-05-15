@@ -84,7 +84,7 @@ class Page_manager {
         $data['page'] = $page;
         $data['title'] = i18n($page . '.title.metadata', true);
         $data['description'] = i18n($page . '.description.metadata', true);
-        $data['author'] = i18n('probe:authors', true);
+        $data['author'] = i18n('probe.authors.metadata', true);
 
         return $data;
     }

@@ -35,7 +35,7 @@ i18n('list-view.title.metadata');
 i18n('list-view.description.metadata');
 i18n('viewer.title.metadata');
 i18n('viewer.description.metadata');
-i18n('probe:authors');
+i18n('probe.authors.metadata');
 i18n('curve.title.metadata');
 i18n('curve.description.metadata');
 i18n('curents.title.metadata');
