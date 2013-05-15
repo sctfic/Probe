@@ -114,7 +114,9 @@ class vp2 extends CI_Model {
 				if ($this->wakeUp()) {
 					// if ($this->config->item('verbose_threshold') > 2)
 					// 	$this->toggleBacklight (1);
-					log_message('infos', i18n( sprintf('Ouverture de la connexion à %s', $this->conf['_name']) ) );
+					log_message('infos', i18n(
+                        sprintf('info-cli.open-connexion[%s].label', $this->conf['_name'])
+                    ) );
 					return TRUE;
 				}
 				else {
