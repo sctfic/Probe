@@ -203,15 +203,6 @@ msgstr "Exemple d3 ré-utilisable"
 msgid "exemple.description.metadata"
 msgstr "Exemple d3 de graphique, expose des setters/getters et permet le chaînage de méthodes"
 
-#: application/language/i18n-collected-keys.php:69
-msgid "bracketChart.title.metadata"
-msgstr ""
-
-#: application/language/i18n-collected-keys.php:70
-#, fuzzy
-msgid "bracketChart.description.metadata"
-msgstr "Probe est une application web moderne pour gérer les stations météo de la marque Davis Instrument™ et archiver les relevés"
-
 #: application/language/i18n-weather-conditions.php:2
 msgid "weather.clear"
 msgstr "ciel dégagé"

@@ -54,5 +54,3 @@ i18n('configuration-station.add.breadcrumb');
 i18n('histoWind.view.label');
 i18n('exemple.title.metadata');
 i18n('exemple.description.metadata');
-i18n('bracketChart.title.metadata');
-i18n('bracketChart.description.metadata');
