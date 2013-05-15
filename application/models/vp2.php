@@ -207,9 +207,10 @@ class vp2 extends CI_Model {
 		
 		$crc = CalculateCRC($data);
 		if ($crc != DBL_NULL /* chr(0).(0) "\x00\x00" */ ){
-			throw new Exception(sprintf(i18n('Wrong CRC, on good data : crc=0x%X 0x%X , strlen=%d'),
-											$crc[0], $crc[1],
-												strlen($data)));
+			throw new Exception(sprintf(
+                i18n('error-cli.checksum[%X]:fail[%s][%d].label'),
+                $crc[0], $crc[1], strlen($data)
+            ));
 		}
 		return true;
 	}
