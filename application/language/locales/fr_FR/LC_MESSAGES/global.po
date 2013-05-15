@@ -196,14 +196,12 @@ msgid "histoWind.view.label"
 msgstr "historique des vents"
 
 #: application/language/i18n-collected-keys.php:65
-#, fuzzy
 msgid "exemple.title.metadata"
-msgstr "Exemple ré-utilisable de graphique, expose des setters/getters et permet le chaînage de méthodes"
+msgstr "Exemple d3 ré-utilisable"
 
 #: application/language/i18n-collected-keys.php:66
-#, fuzzy
 msgid "exemple.description.metadata"
-msgstr "Exemple de "
+msgstr "Exemple d3 de graphique, expose des setters/getters et permet le chaînage de méthodes"
 
 #: application/language/i18n-collected-keys.php:67
 #, fuzzy
