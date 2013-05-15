@@ -102,7 +102,10 @@ class Station extends CI_Model {
 
 		foreach($stationsList as $id => $item)
 		{ // pour chaque station meteo on dresse la liste des configs
-			log_message('db', "Load DB confs for : $item (id:$id)");
+			log_message('db', sprintf(
+                i18n("db-station[%s%s].fetch-config.label"),
+                $item, $id
+            ));
 			$CurentStation = $this->db->query($query, $id);
 			$confs[$item]['_id'] = $id;
 			foreach($CurentStation->result() as $val)

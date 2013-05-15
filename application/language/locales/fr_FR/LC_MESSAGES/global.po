@@ -380,6 +380,11 @@ msgstr "[~] La station est désynchronisée (%ss), veuillez la synchroniser."
 msgid "error.parameter:type-exception.label"
 msgstr "Type de paramètre non pris en charge."
 
+#: application/models/station.php:106
+#, php-format
+msgid "db-station[%s%s].fetch-config.label"
+msgstr "Récupération des informations de la station : %s (id: %s)."
+
 #: application/models/station.php:116
 msgid "Aucune configuration valide n'est disponible"
 msgstr ""
