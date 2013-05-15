@@ -168,7 +168,9 @@ class Station extends CI_Model {
 	function AllCollector($conf = null) {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__);
 		if (!isset($conf['_type']))
-			throw new Exception(i18n('Prarametre invalide !'));
+			throw new Exception(
+                i18n('error.parameter:type-exception.label')
+            );
 		$type = strtolower($conf['_type']);
 		include_once(APPPATH.'models/'.$type.'.php');
 		$Current_WS = new $type($conf);
