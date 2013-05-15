@@ -116,16 +116,6 @@ msgstr "Rose des vents"
 msgid "windrose.description.metadata"
 msgstr "Visualisation de l'orientation et de la vitesse des vents"
 
-#: application/language/i18n-collected-keys.php:36
-#, fuzzy
-msgid "viewer.title.metadata"
-msgstr "Titre"
-
-#: application/language/i18n-collected-keys.php:37
-#, fuzzy
-msgid "viewer.description.metadata"
-msgstr "Probe est une application web moderne pour gérer les stations météo de la marque Davis Instrument™ et archiver les relevés"
-
 #: application/language/i18n-collected-keys.php:38
 #: application/libraries/Page_manager.php:87
 msgid "probe.authors.metadata"
