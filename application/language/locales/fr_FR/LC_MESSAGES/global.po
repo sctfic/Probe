@@ -171,16 +171,6 @@ msgstr "Historique des vents"
 msgid "histoWind.description.metadata"
 msgstr "Historique de l'orientation et de la vitesse des vents"
 
-#: application/language/i18n-collected-keys.php:57
-#, fuzzy
-msgid "wind.title.metadata"
-msgstr "Connexion"
-
-#: application/language/i18n-collected-keys.php:58
-#, fuzzy
-msgid "wind.description.metadata"
-msgstr "Probe est une application web moderne pour gérer les stations météo de la marque Davis Instrument™ et archiver les relevés"
-
 #: application/language/i18n-collected-keys.php:59
 #, fuzzy
 msgid "configuration-list-station.title.metadata"
