@@ -382,17 +382,17 @@ msgstr "Type de paramètre non pris en charge."
 
 #: application/models/station.php:106
 #, php-format
-msgid "db-station[%s%s].fetch-config.label"
+msgid "station[%s%s].fetch-config.label"
 msgstr "Récupération des informations de la station : %s (id: %s)."
 
 #: application/models/station.php:117
 #, php-format
-msgid "db-station[%s].fetch-config:fail.label"
+msgid "station[%s].fetch-config:fail.label"
 msgstr "La station %s a été <b>ignoré</b> (informations indisponibles)."
 
 
 #: application/models/station.php:116
-msgid "db-station.fetch-config:none.label"
+msgid "station.fetch-config:none.label"
 msgstr "Aucune configuration valide n'est disponible."
 
 #: application/models/station.php:184

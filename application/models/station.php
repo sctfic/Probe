@@ -103,7 +103,7 @@ class Station extends CI_Model {
 		foreach($stationsList as $id => $item)
 		{ // pour chaque station meteo on dresse la liste des configs
 			log_message('db', sprintf(
-                i18n("db-station[%s%s].fetch-config.label"),
+                i18n("station[%s%s].fetch-config.label"),
                 $item, $id
             ));
 			$CurentStation = $this->db->query($query, $id);
@@ -114,7 +114,7 @@ class Station extends CI_Model {
 			}
 			if (empty($confs[$item]['username']) || empty($confs[$item]['password']) || empty($confs[$item]['dbdriver']) || empty($confs[$item]['_ip']) || empty($confs[$item]['_port']) || empty($confs[$item]['_type'])) {
 				log_message('warning', sprintf(
-                    i18n('db-station[%s].fetch-config:fail.label'),
+                    i18n('station[%s].fetch-config:fail.label'),
                     $item
                 ));
 				unset($confs[$item]);
@@ -122,7 +122,7 @@ class Station extends CI_Model {
 		}
 		if (count($confs) == 0){
 			throw new Exception(
-                i18n('db-station.fetch-config:none.label')
+                i18n('station.fetch-config:none.label')
             );
 		}
 		// on decode le password.
@@ -181,7 +181,7 @@ class Station extends CI_Model {
 			try {
 				if ( !$Current_WS->initConnection() )
 					throw new Exception( sprintf(
-                        i18n('station.open-connexion[%s%s%s]:fail.label'),
+                        i18n('station[%s].open-connexion[%s%s]:fail.label'),
                         $conf['_name'],
                         $conf['_ip'],
                         $conf['_port']
@@ -243,7 +243,7 @@ class Station extends CI_Model {
 		try {
 			if ( !$Current_WS->initConnection() )
 				throw new Exception( sprintf(
-                    i18n('station.open-connexion[%s%s%s]:fail.label'),
+                    i18n('station[%s].open-connexion[%s%s]:fail.label'),
                     $conf['_name'],
                     $conf['_ip'],
                     $conf['_port']
@@ -283,7 +283,7 @@ class Station extends CI_Model {
 	// 	$Current_WS = new $type($conf);
 	// 	try {
 	// 		if ( !$Current_WS->initConnection() )
-	// 			throw new Exception( sprintf( i18n('station.open-connexion[%s%s%s]:fail.label'), $conf['_name'], $conf['_ip'], $conf['_port']));
+	// 			throw new Exception( sprintf( i18n('station[%s].open-connexion[%s%s]:fail.label'), $conf['_name'], $conf['_ip'], $conf['_port']));
 	// 		$this->data = $Current_WS->GetLPS ( );
 	// 		if ( !$Current_WS->closeConnection() )
 	// 			throw new Exception( sprintf( i18n('station.close-connexion[%s]:fail.label'), $conf['_name']) );
@@ -316,7 +316,7 @@ class Station extends CI_Model {
 	// 		|| strtotime(date ("Y/m/d H:i:s")) > strtotime($Last_Arch) + $conf['time:archive:period']*60*10) {
 	// 		try {
 	// 			if ( !$Current_WS->initConnection() )
-	// 				throw new Exception( sprintf( i18n('station.open-connexion[%s%s%s]:fail.label'), $conf['_name'], $conf['_ip'], $conf['_port']));
+	// 				throw new Exception( sprintf( i18n('station[%s].open-connexion[%s%s]:fail.label'), $conf['_name'], $conf['_ip'], $conf['_port']));
 	// 			$clock = $Current_WS->clockSync(5);
 	// 			$this->data = $Current_WS->GetDmpAft ( $Last_Arch );
 	// 			if ( !$Current_WS->closeConnection() )
@@ -346,7 +346,7 @@ class Station extends CI_Model {
 	// 	$Current_WS = new $type($conf);
 	// 	try {
 	// 		if ( !$Current_WS->initConnection() )
-	// 			throw new Exception( sprintf( i18n('station.open-connexion[%s%s%s]:fail.label'), $conf['_name'], $conf['_ip'], $conf['_port']));
+	// 			throw new Exception( sprintf( i18n('station[%s].open-connexion[%s%s]:fail.label'), $conf['_name'], $conf['_ip'], $conf['_port']));
 	// 		$clock = $Current_WS->clockSync(2);
 	// 		if (!($realconf = end($Current_WS->GetConfig())))
 	// 			throw new Exception( sprintf( i18n('Lecture des config de %s impossible'),$conf['_name']));
