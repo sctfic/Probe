@@ -78,12 +78,12 @@ msgstr "Connexion à l'interface d'administration"
 
 #: application/language/i18n-collected-keys.php:24
 #, fuzzy
-msgid "configuration-station.tab.dbms"
+msgid "configuration-station.dbms.label"
 msgstr "Base de données"
 
 #: application/language/i18n-collected-keys.php:25
 #, fuzzy
-msgid "configuration-station.tab.network"
+msgid "configuration-station.network.label"
 msgstr "Réseau"
 
 #: application/language/i18n-collected-keys.php:26
