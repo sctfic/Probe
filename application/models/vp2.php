@@ -199,7 +199,10 @@ class vp2 extends CI_Model {
 	*/
 	protected function VerifAnswersAndCRC($data, $len) {
 		if (strlen($data)!=$len){
-			throw new Exception(sprintf(_('Incomplete Data strlen = %d insted of : %d'),strlen($data),$len));
+			throw new Exception(sprintf(
+                i18n('error-cli.CRC[%d]:incomplete[%d].label'),
+                strlen($data), $len
+            ));
 		}
 		
 		$crc = CalculateCRC($data);
