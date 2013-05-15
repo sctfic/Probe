@@ -322,56 +322,56 @@ msgstr "Fichier manquant ou non valable."
 
 #: application/models/vp2.php:138
 #, fuzzy, php-format
-msgid "info-cli.close-connexion[%s]:success.label"
+msgid "cli-info.close-connexion[%s]:success.label"
 msgstr "[i] Fermeture correcte de la connexion à : %s."
 
 #: application/models/vp2.php:93
 #, fuzzy, php-format
-msgid "warning-cli.available-connexion[%s]:fail.label"
+msgid "cli-warning.available-connexion[%s]:fail.label"
 msgstr "[~] Une connexion est déjà en cours vers : %s."
 
 #: application/models/vp2.php:118
 #, fuzzy, php-format
-msgid "info-cli.open-connexion[%s].label"
+msgid "cli-info.open-connexion[%s].label"
 msgstr "[i] Ouverture de la connexion vers : %s."
 
 #: application/models/vp2.php:195
 #, php-format
-msgid "error-cli.transmission[%d]:incomplete[%d].label"
+msgid "cli-error.transmission[%d]:incomplete[%d].label"
 msgstr "[!] Données reçues incomplètes : %d au lieu de %d."
 
 #: application/models/vp2.php:210
 #, php-format
-msgid "error-cli.checksum[%X%X]:fail[%d].label"
+msgid "cli-error.checksum[%X%X]:fail[%d].label"
 msgstr "[!] Somme de controle incorrecte : crc=0x%X 0x%X, strlen=%d."
 
 #: application/models/vp2.php:231
 #, fuzzy, php-format
-msgid "error-cli.command[%s]:fail.label"
+msgid "cli-error.command[%s]:fail.label"
 msgstr "[!] Commande incorrecte: '%s'."
 
 #: application/models/vp2.php:237
 #, php-format
-msgid "error-cli.command[%s]:exception.label"
+msgid "cli-error.command[%s]:exception.label"
 msgstr "[!] Erreur inconnu: '%s'. \nRe-connexion."
 
 #: application/models/vp2.php:388
-msgid "error-cli.download:fail.label"
+msgid "cli-error.download:fail.label"
 msgstr "[!] La station est indisponible, veuillez ré-essayer ultérieurement."
 
 #: application/models/vp2.php:410
 #, php-format
-msgid "info-cli.block[%d%d%s]:out-of-range.label"
+msgid "cli-info.block[%d%d%s]:out-of-range.label"
 msgstr "[i] Bloc %s ignoré (valeurs hors limites: #%d/%d)."
 
 #: application/models/vp2.php:435
 #, php-format
-msgid "warning-cli.clock-delay[%s].label"
+msgid "cli-warning.clock-delay[%s].label"
 msgstr "[~] Décalage de l'horloge: %ss."
 
 #: application/models/vp2.php:419
 #, php-format
-msgid "warning-cli.clock-delay[%s]:off-limit.label"
+msgid "cli-warning.clock-delay[%s]:off-limit.label"
 msgstr "[~] La station est désynchronisée (%ss), veuillez la synchroniser."
 
 #: application/models/station.php:97

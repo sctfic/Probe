@@ -90,7 +90,7 @@ class vp2 extends CI_Model {
 			return true;
 		}
 		log_message('infos', i18n(
-            sprintf('warning-cli.available-connexion[%s]:fail.label', $this->conf['_name'])
+            sprintf('cli-warning.available-connexion[%s]:fail.label', $this->conf['_name'])
         ) );
 		return FALSE;
 	}
@@ -115,7 +115,7 @@ class vp2 extends CI_Model {
 					// if ($this->config->item('verbose_threshold') > 2)
 					// 	$this->toggleBacklight (1);
 					log_message('infos', i18n(
-                        sprintf('info-cli.open-connexion[%s].label', $this->conf['_name'])
+                        sprintf('cli-info.open-connexion[%s].label', $this->conf['_name'])
                     ) );
 					return TRUE;
 				}
@@ -140,7 +140,7 @@ class vp2 extends CI_Model {
 			rename($this->lockFile, ".trash");
 		if (fclose($this->fp)) {
 			log_message('infos', sprintf(
-                i18n('info-cli.close-connexion[%s]:success.label'),
+                i18n('cli-info.close-connexion[%s]:success.label'),
                     $this->conf['_name']
             ) );
             return true;
@@ -200,7 +200,7 @@ class vp2 extends CI_Model {
 	protected function VerifAnswersAndCRC($data, $len) {
 		if (strlen($data)!=$len){
 			throw new Exception(sprintf(
-                i18n('error-cli.transmission[%d]:incomplete[%d].label'),
+                i18n('cli-error.transmission[%d]:incomplete[%d].label'),
                 strlen($data), $len
             ));
 		}
@@ -208,7 +208,7 @@ class vp2 extends CI_Model {
 		$crc = CalculateCRC($data);
 		if ($crc != DBL_NULL /* chr(0).(0) "\x00\x00" */ ){
 			throw new Exception(sprintf(
-                i18n('error-cli.checksum[%X]:fail[%s][%d].label'),
+                i18n('cli-error.checksum[%X]:fail[%s][%d].label'),
                 $crc[0], $crc[1], strlen($data)
             ));
 		}
@@ -228,13 +228,13 @@ class vp2 extends CI_Model {
 		else if ($r == NAK)
 		{
 			throw new Exception(sprintf(
-                i18n('error-cli.command[%s]:fail.label'),
+                i18n('cli-error.command[%s]:fail.label'),
                 $cmd
             ));
 		}
 		else {
 			throw new Exception(sprintf(
-                i18n('error-cli.command[%s]:exception.label'),
+                i18n('cli-error.command[%s]:exception.label'),
                 $cmd
             ));
 		}
@@ -385,7 +385,7 @@ Lis les valeur d´archive a partir d´une date
 				if ( $ISS_time<6 ) {
 				// la recuperation des archives bloque la lecture des capteurs donc on le fait par petit bout
 					throw new Exception(
-                        i18n('error-cli.download:fail.label')
+                        i18n('cli-error.download:fail.label')
                     );
 				}
 				$Page = fread($this->fp, 267);
@@ -407,7 +407,7 @@ Lis les valeur d´archive a partir d´une date
 					}
 					else {
 						throw new Exception(sprintf(
-                            i18n('info-cli.block[%d%d%s]:out-of-range.label'),
+                            i18n('cli-info.block[%d%d%s]:out-of-range.label'),
                             $j, $k, $ArchDate
                         ));
 					}
@@ -432,7 +432,7 @@ Compare l'heure de la station a celle du serveur web et lance la synchro si beso
 		$realLag = abs(strtotime($this->fetchStationTime()) - strtotime(date('Y/m/d H:i:s')));
 		if ($realLag > $maxLag || $force) {
 			log_message('warning', sprintf(
-                i18n('warning-cli.clock-sync[%s].label'),
+                i18n('cli-warning.clock-sync[%s].label'),
                 $realLag
             ));
 			if ($realLag < 3600+$maxLag || $realLag > 3600*12 || $force) {
@@ -442,7 +442,7 @@ Compare l'heure de la station a celle du serveur web et lance la synchro si beso
 				// else log_message('warning', i18n( 'Clock synch.'));
 			}
 			else log_message('warning', sprintf(
-                i18n('warning-cli.clock-delay[%s]:off-limit.label'),
+                i18n('cli-warning.clock-delay[%s]:off-limit.label'),
                 $realLag
             ));
 		}
