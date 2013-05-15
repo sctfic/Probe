@@ -193,7 +193,7 @@ msgstr "Ajout de station"
 
 #: application/language/i18n-collected-keys.php:64
 msgid "histoWind.view.label"
-msgstr ""
+msgstr "historique des vents"
 
 #: application/language/i18n-collected-keys.php:65
 #, fuzzy
