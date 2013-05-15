@@ -132,41 +132,36 @@ msgid "currents.description.metadata"
 msgstr "Conditions météo actuelle"
 
 #: application/language/i18n-collected-keys.php:47
-#, fuzzy
 msgid "curves.title.metadata"
-msgstr "Titre"
+msgstr "Courbes"
 
 #: application/language/i18n-collected-keys.php:48
-#, fuzzy
 msgid "curves.description.metadata"
-msgstr "Probe est une application web moderne pour gérer les stations météo de la marque Davis Instrument™ et archiver les relevés"
+msgstr "Visualisation par courbes"
 
 #: application/language/i18n-collected-keys.php:49
 msgid "SmartCurve.title.metadata"
-msgstr ""
+msgstr "Courbe interactive"
 
 #: application/language/i18n-collected-keys.php:50
-#, fuzzy
 msgid "SmartCurve.description.metadata"
-msgstr "Probe est une application web moderne pour gérer les stations météo de la marque Davis Instrument™ et archiver les relevés"
+msgstr "Courbe interactive avec un zoom et canvas redimensionnable"
 
 #: application/language/i18n-collected-keys.php:51
 msgid "SmartCurves.title.metadata"
-msgstr ""
+msgstr "Comparateur de courbes"
 
 #: application/language/i18n-collected-keys.php:52
-#, fuzzy
 msgid "SmartCurves.description.metadata"
-msgstr "Probe est une application web moderne pour gérer les stations météo de la marque Davis Instrument™ et archiver les relevés"
+msgstr "Interface de comparaison de données"
 
 #: application/language/i18n-collected-keys.php:53
 msgid "SmartChart.title.metadata"
-msgstr ""
+msgstr "Graphique interactif"
 
 #: application/language/i18n-collected-keys.php:54
-#, fuzzy
 msgid "SmartChart.description.metadata"
-msgstr "Probe est une application web moderne pour gérer les stations météo de la marque Davis Instrument™ et archiver les relevés"
+msgstr "Graphique interactif avec zoom"
 
 #: application/language/i18n-collected-keys.php:55
 #, fuzzy
