@@ -431,7 +431,10 @@ Compare l'heure de la station a celle du serveur web et lance la synchro si beso
 		$TIME = False;
 		$realLag = abs(strtotime($this->fetchStationTime()) - strtotime(date('Y/m/d H:i:s')));
 		if ($realLag > $maxLag || $force) {
-			log_message('warning', sprintf( i18n('Default Clock synchronize : %ssec'), $realLag) );
+			log_message('warning', sprintf(
+                i18n('warning-cli.clock-sync[%s].label'),
+                $realLag
+            ));
 			if ($realLag < 3600+$maxLag || $realLag > 3600*12 || $force) {
 				// if ($TIME = $this->updateStationTime()) {
 				// 	log_message('infos', i18n('Clock synchronizing.'));

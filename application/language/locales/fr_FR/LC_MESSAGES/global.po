@@ -364,10 +364,10 @@ msgstr "[!] La station est indisponible, veuillez ré-essayer ultérieurement."
 msgid "info-cli.block[%d%d%s]:out-of-range.label"
 msgstr "[i] Bloc %s ignoré (valeurs hors limites: #%d/%d)."
 
-#: application/models/vp2.php:412
+#: application/models/vp2.php:435
 #, php-format
-msgid "Default Clock synchronize : %ssec"
-msgstr ""
+msgid "warning-cli.clock-sync[%s].label"
+msgstr "[~] Synchronization par défaut de l'horloge: %ss."
 
 #: application/models/vp2.php:419
 #, php-format
