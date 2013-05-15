@@ -406,10 +406,10 @@ msgstr "Station indisponible, veuillez vérifiez les paramètres de connexion (n
 msgid "station.close-connexion[%s]:fail.label"
 msgstr "[i] Fermeture impossible de la connexion à : %s."
 
-#: application/models/station.php:202
+#: application/models/station.php:223
 #, php-format
-msgid "Les archives de \"%s\" sont a jour (en date du : %s)"
-msgstr ""
+msgid "station[%s].archives:up-to-date[%s].label"
+msgstr "Les archives de la station <i>%s</i> sont à jour (%s)."
 
 #: application/models/db_builder.php:213
 msgid "database.table.role:admin.label"
