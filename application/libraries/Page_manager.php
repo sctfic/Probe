@@ -51,7 +51,7 @@ class Page_manager {
                     'error-title' => i18n('error.file:missing.title'),
                     'error-description' => i18n('error.file:missing.description'),
                     'error-solution' => sprintf(
-                            i18n('solution.file[%s].missing'),
+                            i18n('solution.file:missing[%s].description'),
                             $page.'.php'
                         ).':'.$view.var_dump($data)
                     ),

@@ -313,7 +313,7 @@ msgstr "Erreur à l'ouverture du fichier"
 
 #: application/libraries/Page_manager.php:54
 #, php-format
-msgid "solution.file[%s].missing"
+msgid "solution.file:missing[%s].description"
 msgstr "Vérifier que le fichier <var>%s</var> existe bien et que vous avez les droits suffisants pour le lire"
 
 #: application/libraries/Page_manager.php:59
