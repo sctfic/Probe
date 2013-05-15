@@ -328,12 +328,12 @@ msgstr "[i] Fermeture correcte de la connexion à : %s."
 #: application/models/vp2.php:93
 #, fuzzy, php-format
 msgid "warning-cli.available-connexion[%s]:fail.label"
-msgstr "[!] Une connexion est déjà en cours vers : %s."
+msgstr "[~] Une connexion est déjà en cours vers : %s."
 
 #: application/models/vp2.php:118
 #, fuzzy, php-format
 msgid "info-cli.open-connexion[%s].label"
-msgstr "[!] Ouverture de la connexion vers : %s."
+msgstr "[i] Ouverture de la connexion vers : %s."
 
 #: application/models/vp2.php:195
 #, php-format
