@@ -113,7 +113,10 @@ class Station extends CI_Model {
 				$confs[$item][$val->CFG_LABEL] = $val->CFG_VALUE;
 			}
 			if (empty($confs[$item]['username']) || empty($confs[$item]['password']) || empty($confs[$item]['dbdriver']) || empty($confs[$item]['_ip']) || empty($confs[$item]['_port']) || empty($confs[$item]['_type'])) {
-				log_message('warning', 'Missing confs for '.$item.' > Skipped!');
+				log_message('warning', sprintf(
+                    i18n('db-station[%s].fetch-config:fail.label'),
+                    $item
+                ));
 				unset($confs[$item]);
 			}
 		}
