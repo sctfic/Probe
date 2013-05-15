@@ -48,7 +48,7 @@ Describe a `label` (in a form or elsewhere):
 
 ## Same property different context
 
-    install>dbms.username.placeholder
+    install-dbms.username.placeholder
 The key describe the `@placeholder` attribute of a field:
 * view: _install-dbms_,
 * property: _username_,
