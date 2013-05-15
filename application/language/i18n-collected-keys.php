@@ -34,8 +34,6 @@ i18n('curve.title.metadata');
 i18n('curve.description.metadata');
 i18n('currents.title.metadata');
 i18n('currents.description.metadata');
-i18n('graph.title.metadata');
-i18n('graph.description.metadata');
 i18n('curves.title.metadata');
 i18n('curves.description.metadata');
 i18n('SmartCurve.title.metadata');

@@ -129,7 +129,7 @@ msgstr "Courbe"
 #: application/language/i18n-collected-keys.php:40
 #, fuzzy
 msgid "curve.description.metadata"
-msgstr "Courbes"
+msgstr "Courbe de visualisation"
 
 #: application/language/i18n-collected-keys.php:41
 #, fuzzy
@@ -140,16 +140,6 @@ msgstr "Conditions actuelles"
 #, fuzzy
 msgid "currents.description.metadata"
 msgstr "Conditions météo actuelle"
-
-#: application/language/i18n-collected-keys.php:45
-#, fuzzy
-msgid "graph.title.metadata"
-msgstr "Titre"
-
-#: application/language/i18n-collected-keys.php:46
-#, fuzzy
-msgid "graph.description.metadata"
-msgstr "Probe est une application web moderne pour gérer les stations météo de la marque Davis Instrument™ et archiver les relevés"
 
 #: application/language/i18n-collected-keys.php:47
 #, fuzzy
