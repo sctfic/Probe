@@ -384,7 +384,9 @@ Lis les valeur d´archive a partir d´une date
 				$ISS_time = time()%300;
 				if ( $ISS_time<6 ) {
 				// la recuperation des archives bloque la lecture des capteurs donc on le fait par petit bout
-					throw new Exception(i18n('Please retry later to finish, Data sensors must be checked in few second.'));
+					throw new Exception(
+                        i18n('error-cli.download:fail.label')
+                    );
 				}
 				$Page = fread($this->fp, 267);
 				log_message('infos', 'Archive PAGE #'.$j."\t".'Since: '.DMPAFT_GetVP2Date(substr($Page,1+52*($firstArch),4), $this->OffsetTime).' Sheets #[1,2,3,4,5]');

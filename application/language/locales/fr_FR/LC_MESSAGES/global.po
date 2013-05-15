@@ -355,9 +355,9 @@ msgstr "[!] Commande incorrecte: '%s'."
 msgid "error-cli.command[%s]:exception.label"
 msgstr "[!] Erreur inconnu: '%s'. \nRe-connexion."
 
-#: application/models/vp2.php:370
-msgid "Please retry later to finish, Data sensors must be checked in few second."
-msgstr ""
+#: application/models/vp2.php:388
+msgid "error-cli.download:fail.label"
+msgstr "[i] La station est indisponible, veuillez ré-essayer ultérieurement."
 
 #: application/models/vp2.php:390
 #, fuzzy, php-format
