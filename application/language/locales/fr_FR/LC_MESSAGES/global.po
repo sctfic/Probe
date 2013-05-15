@@ -121,16 +121,6 @@ msgstr "Visualisation de l'orientation et de la vitesse des vents"
 msgid "probe.authors.metadata"
 msgstr "Équipe Probe"
 
-#: application/language/i18n-collected-keys.php:39
-#, fuzzy
-msgid "curve.title.metadata"
-msgstr "Courbe"
-
-#: application/language/i18n-collected-keys.php:40
-#, fuzzy
-msgid "curve.description.metadata"
-msgstr "Courbe de visualisation"
-
 #: application/language/i18n-collected-keys.php:41
 #, fuzzy
 msgid "currents.title.metadata"
