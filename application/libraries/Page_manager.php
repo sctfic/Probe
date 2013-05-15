@@ -82,8 +82,8 @@ class Page_manager {
         where_I_Am(__FILE__, __CLASS__, __FUNCTION__, __LINE__, func_get_args());
         $data = array();
         $data['page'] = $page;
-        $data['title'] = i18n($page . ':title', true);
-        $data['description'] = i18n($page . ':description', true);
+        $data['title'] = i18n($page . '.title.metadata', true);
+        $data['description'] = i18n($page . '.description.metadata', true);
         $data['author'] = i18n('probe:authors', true);
 
         return $data;
