@@ -51,7 +51,7 @@ i18n('configuration-list-station.description.metadata');
 i18n('configuration-station.list.breadcrumb');
 i18n('configuration-station.dashboard.breadcrumb');
 i18n('configuration-station.add.breadcrumb');
-i18n('viewer.histoWind');
+i18n('histoWind.view.label');
 i18n('exemple.title.metadata');
 i18n('exemple.description.metadata');
 i18n('dotShart.title.metadata');

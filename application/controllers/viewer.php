@@ -76,8 +76,8 @@ class viewer extends CI_Controller
             'list-viewer',
             array(
                 'status'  =>  'active',
-                'url'     =>  '/viewer/'.$dataBinder,
-                'i18n'    =>  'viewer.'.$dataBinder
+                'url'     =>  sprintf('/viewer/%s', $dataBinder),
+                'i18n'    =>  sprintf('%s.view.label', $dataBinder)
             )
         );
 // var_dump($data);

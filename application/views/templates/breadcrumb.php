@@ -13,7 +13,7 @@
  *     '1' => array(
  *         'status'  =>  'active',
  *         'url'     =>  '/viewer',
- *         'i18n'    =>  'viewer.list'
+ *         'i18n'    =>  '*.view.label'
  *     )
  * )
  */

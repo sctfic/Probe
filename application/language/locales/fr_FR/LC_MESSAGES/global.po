@@ -192,7 +192,7 @@ msgid "configuration-station.add.breadcrumb"
 msgstr "Ajout de station"
 
 #: application/language/i18n-collected-keys.php:64
-msgid "viewer.histoWind"
+msgid "histoWind.view.label"
 msgstr ""
 
 #: application/language/i18n-collected-keys.php:65
