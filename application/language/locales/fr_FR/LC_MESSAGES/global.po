@@ -337,7 +337,7 @@ msgstr "[i] Ouverture de la connexion vers : %s."
 
 #: application/models/vp2.php:195
 #, php-format
-msgid "error-cli.CRC[%d]:incomplete[%d].label"
+msgid "error-cli.transmission[%d]:incomplete[%d].label"
 msgstr "[!] Données reçues incomplètes : %d au lieu de %d."
 
 #: application/models/vp2.php:200
