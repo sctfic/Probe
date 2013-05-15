@@ -121,7 +121,9 @@ class Station extends CI_Model {
 			}
 		}
 		if (count($confs) == 0){
-			throw new Exception(i18n('Aucune configuration valide n\'est disponible'));
+			throw new Exception(
+                i18n('db-station.fetch-config:none.label')
+            );
 		}
 		// on decode le password.
 		$confs[$item]['password'] = $this->encrypt->decode($confs[$item]['password']);
