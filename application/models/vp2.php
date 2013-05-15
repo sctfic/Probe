@@ -135,7 +135,13 @@ class vp2 extends CI_Model {
 		if (!unlink($this->lockFile))
 			rename($this->lockFile, ".trash");
 		if (fclose($this->fp)) {
-			log_message('infos', sprintf( _('Fermeture de %s correcte.'), $this->conf['_name'] ) );
+			log_message(
+                'infos',
+                sprintf(
+                    i18n('info-cli.close-connexion[%s]:success.label'),
+                    $this->conf['_name']
+                )
+            );
 			return TRUE;
 		}
 		return FALSE;

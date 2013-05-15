@@ -322,7 +322,7 @@ msgstr "Fichier manquant ou non valable."
 
 #: application/models/vp2.php:138
 #, fuzzy, php-format
-msgid "Fermeture de %s correcte."
+msgid "info-cli.close-connexion[%s]:success.label"
 msgstr "Unidades de fomento"
 
 #: application/models/vp2.php:195
