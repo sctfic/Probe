@@ -172,14 +172,12 @@ msgid "histoWind.description.metadata"
 msgstr "Historique de l'orientation et de la vitesse des vents"
 
 #: application/language/i18n-collected-keys.php:59
-#, fuzzy
 msgid "configuration-list-station.title.metadata"
 msgstr "Liste des stations"
 
 #: application/language/i18n-collected-keys.php:60
-#, fuzzy
 msgid "configuration-list-station.description.metadata"
-msgstr "Liste des stations gérées"
+msgstr "Consulter la liste des stations connectées"
 
 #: application/language/i18n-collected-keys.php:61
 msgid "configuration.breadcrumb.stations.list"
