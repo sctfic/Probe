@@ -89,7 +89,9 @@ class vp2 extends CI_Model {
 			file_put_contents($this->lockFile, date ("Y/m/d H:i:s"));
 			return true;
 		}
-		log_message('infos', i18n( sprintf('Connexion à %s deja en cour sous un autre process.', $this->conf['_name']) ) );
+		log_message('infos', i18n(
+            sprintf('warning-cli.available-connexion[%s]:fail.label', $this->conf['_name'])
+        ) );
 		return FALSE;
 	}
 
