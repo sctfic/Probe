@@ -204,103 +204,103 @@ msgid "exemple.description.metadata"
 msgstr "Exemple d3 de graphique, expose des setters/getters et permet le chaînage de méthodes"
 
 #: application/language/i18n-weather-conditions.php:2
-msgid "weather.clear"
+msgid "weather.clear.label"
 msgstr "ciel dégagé"
 
 #: application/language/i18n-weather-conditions.php:3
-msgid "weather.clear-night"
+msgid "weather.clear-night.label"
 msgstr "nuit claire"
 
 #: application/language/i18n-weather-conditions.php:4
-msgid "weather.clouds"
+msgid "weather.clouds.label"
 msgstr "nuageux"
 
 #: application/language/i18n-weather-conditions.php:5
-msgid "weather.clouds-night"
+msgid "weather.clouds-night.label"
 msgstr "nuit nuageuse"
 
 #: application/language/i18n-weather-conditions.php:6
-msgid "weather.few-clouds"
+msgid "weather.few-clouds.label"
 msgstr "quelques nuages"
 
 #: application/language/i18n-weather-conditions.php:7
-msgid "weather.few-clouds-night"
+msgid "weather.few-clouds-night.label"
 msgstr "quelques nuages"
 
 #: application/language/i18n-weather-conditions.php:8
-msgid "weather.freezing-rain"
+msgid "weather.freezing-rain.label"
 msgstr "pluie verglasante"
 
 #: application/language/i18n-weather-conditions.php:9
-msgid "weather.hail"
+msgid "weather.hail.label"
 msgstr "Grêle"
 
 #: application/language/i18n-weather-conditions.php:10
-msgid "weather.many-clouds"
+msgid "weather.many-clouds.label"
 msgstr "couvert"
 
 #: application/language/i18n-weather-conditions.php:11
-msgid "weather.mist"
+msgid "weather.mist.label"
 msgstr "brume"
 
 #: application/language/i18n-weather-conditions.php:12
-msgid "weather.none-available"
+msgid "weather.none-available.label"
 msgstr "conditions météo indisponibles"
 
 #: application/language/i18n-weather-conditions.php:13
-msgid "weather.showers"
+msgid "weather.showers.label"
 msgstr "Averses"
 
 #: application/language/i18n-weather-conditions.php:14
-msgid "weather.showers-day"
+msgid "weather.showers-day.label"
 msgstr "Averses"
 
 #: application/language/i18n-weather-conditions.php:15
-msgid "weather.showers-night"
+msgid "weather.showers-night.label"
 msgstr "averses nocturnes"
 
 #: application/language/i18n-weather-conditions.php:16
-msgid "weather.showers-scattered"
+msgid "weather.showers-scattered.label"
 msgstr "pluie avec éclaircies"
 
 #: application/language/i18n-weather-conditions.php:17
-msgid "weather.showers-scattered-day"
+msgid "weather.showers-scattered-day.label"
 msgstr "pluie avec éclaircies"
 
 #: application/language/i18n-weather-conditions.php:18
-msgid "weather.showers-scattered-night"
+msgid "weather.showers-scattered-night.label"
 msgstr "pluie avec éclaircies"
 
 #: application/language/i18n-weather-conditions.php:19
-msgid "weather.snow"
+msgid "weather.snow.label"
 msgstr "neige"
 
 #: application/language/i18n-weather-conditions.php:20
-msgid "weather.snow-rain"
+msgid "weather.snow-rain.label"
 msgstr "neige fondue"
 
 #: application/language/i18n-weather-conditions.php:21
-msgid "weather.snow-scattered"
+msgid "weather.snow-scattered.label"
 msgstr "neige avec éclaircies"
 
 #: application/language/i18n-weather-conditions.php:22
-msgid "weather.snow-scattered-day"
+msgid "weather.snow-scattered-day.label"
 msgstr "neige avec éclaircies"
 
 #: application/language/i18n-weather-conditions.php:23
-msgid "weather.snow-scattered-night"
+msgid "weather.snow-scattered-night.label"
 msgstr "neige avec éclaircies"
 
 #: application/language/i18n-weather-conditions.php:24
-msgid "weather.storm"
+msgid "weather.storm.label"
 msgstr "Tempête"
 
 #: application/language/i18n-weather-conditions.php:25
-msgid "weather.storm-day"
+msgid "weather.storm-day.label"
 msgstr "journée orageuse"
 
 #: application/language/i18n-weather-conditions.php:26
-msgid "weather.storm-night"
+msgid "weather.storm-night.label"
 msgstr "nuit orageuse"
 
 #: application/libraries/Page_manager.php:51
@@ -521,7 +521,7 @@ msgid "login.password-confirmation.placeholder"
 msgstr "pour éviter les erreurs de saisie"
 
 #: application/views/login.php:72
-msgid "weather.sunny"
+msgid "weather.sunny.label"
 msgstr "Ensoleillé"
 
 #: application/views/login.php:77
