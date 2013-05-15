@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: probe\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-14 16:14+0100\n"
-"PO-Revision-Date: 2013-05-14 16:33+0100\n"
+"POT-Creation-Date: 2013-05-15 13:07+0100\n"
+"PO-Revision-Date: 2013-05-15 13:09+0100\n"
 "Last-Translator: Édouard Lopez <dev+i18n@edouard-lopez.com>\n"
 "Language-Team: probe <dev+probe@edouard-lopez.com>\n"
 "Language: \n"
@@ -27,42 +27,44 @@ msgid "configuration-add-station.description.metadata"
 msgstr "Ajouter une nouvelle station au tableau de bord"
 
 #: application/language/i18n-collected-keys.php:12
-msgid "configuration-station.network._ip"
+msgid "configuration-station.network-_ip.label"
 msgstr "Adresse <abbr title=\"format #.#.#.#\">IP</abbr>"
 
 #: application/language/i18n-collected-keys.php:13
-msgid "configuration-station.network._ip.placeholder"
+msgid "configuration-station.network-_ip.placeholder"
 msgstr "exemple : 127.0.0.1"
 
 #: application/language/i18n-collected-keys.php:14
-msgid "configuration-station.network._name"
+msgid "configuration-station.network-_name.label"
 msgstr "Nom de la station"
 
 #: application/language/i18n-collected-keys.php:15
-msgid "configuration-station.network._name.placeholder"
+msgid "configuration-station.network-_name.placeholder"
 msgstr "p. ex. modele-station"
 
 #: application/language/i18n-collected-keys.php:16
-msgid "configuration-station.network._port"
+msgid "configuration-station.network-_port.label"
 msgstr "Port"
 
 #: application/language/i18n-collected-keys.php:17
-msgid "configuration-station.network._port.placeholder"
-msgstr "défaut: 3306"
+msgid "configuration-station.network-_port.placeholder"
+msgstr "défaut: 80"
 
 #: application/language/i18n-collected-keys.php:18
-msgid "configuration-station.network._type"
+msgid "configuration-station.network-_type.label"
 msgstr "Modèle"
 
 #: application/language/i18n-collected-keys.php:19
-msgid "configuration-station.network._type.placeholder"
+msgid "configuration-station.network-_type.placeholder"
 msgstr "VP2, VP"
 
 #: application/language/i18n-collected-keys.php:20
+#, fuzzy
 msgid "configuration-station-list.title.metadata"
 msgstr "Liste des stations"
 
 #: application/language/i18n-collected-keys.php:21
+#, fuzzy
 msgid "configuration-station-list.description.metadata"
 msgstr "Liste des stations gérées. Permet l'ajout de nouvelle stations ou la modification des configurations des stations existantes"
 
@@ -75,26 +77,32 @@ msgid "login.description.metadata"
 msgstr "Connexion à l'interface d'administration"
 
 #: application/language/i18n-collected-keys.php:24
+#, fuzzy
 msgid "configuration-station.tab.dbms"
 msgstr "Base de données"
 
 #: application/language/i18n-collected-keys.php:25
+#, fuzzy
 msgid "configuration-station.tab.network"
 msgstr "Réseau"
 
 #: application/language/i18n-collected-keys.php:26
+#, fuzzy
 msgid "install.dbms.title.metadata"
 msgstr "Installation › Configuration de la base de données"
 
 #: application/language/i18n-collected-keys.php:27
+#, fuzzy
 msgid "install.dbms.description.metadata"
 msgstr "Paramétrage de la base de données d'administration des utilisateurs et des stations"
 
 #: application/language/i18n-collected-keys.php:28
+#, fuzzy
 msgid "install.admin-user.title.metadata"
 msgstr "Installation › Configuration du compte administrateur"
 
 #: application/language/i18n-collected-keys.php:29
+#, fuzzy
 msgid "install.admin-user.description.metadata"
 msgstr "Paramétrage du compte administrateur responsable de l'application et des bases de données de chaque station."
 
@@ -109,10 +117,12 @@ msgid "probe_d3.description.metadata"
 msgstr "Probe est une application web moderne pour gérer les stations météo de la marque Davis Instrument™ et archiver les relevés"
 
 #: application/language/i18n-collected-keys.php:32
+#, fuzzy
 msgid "windrose.title.metadata"
 msgstr "Rose des vents"
 
 #: application/language/i18n-collected-keys.php:33
+#, fuzzy
 msgid "windrose.description.metadata"
 msgstr "Visualisation de l'orientation et de la vitesse des vents"
 
@@ -239,10 +249,12 @@ msgid "wind.description.metadata"
 msgstr "Probe est une application web moderne pour gérer les stations météo de la marque Davis Instrument™ et archiver les relevés"
 
 #: application/language/i18n-collected-keys.php:59
+#, fuzzy
 msgid "configuration-list-station.title.metadata"
 msgstr "Liste des stations"
 
 #: application/language/i18n-collected-keys.php:60
+#, fuzzy
 msgid "configuration-list-station.description.metadata"
 msgstr "Liste des stations gérées"
 
@@ -263,10 +275,12 @@ msgid "viewer.histoWind"
 msgstr ""
 
 #: application/language/i18n-collected-keys.php:65
+#, fuzzy
 msgid "exemple.title.metadata"
 msgstr "Exemple ré-utilisable de graphique, expose des setters/getters et permet le chaînage de méthodes"
 
 #: application/language/i18n-collected-keys.php:66
+#, fuzzy
 msgid "exemple.description.metadata"
 msgstr "Exemple de "
 
@@ -408,9 +422,10 @@ msgstr "Fichier manquant ou non valable."
 
 #: application/libraries/Page_manager.php:85
 msgid ".title.metadata"
-msgstr "Titre"
+msgstr ""
 
 #: application/libraries/Page_manager.php:86
+#, fuzzy
 msgid ".description.metadata"
 msgstr "Probe est une application web moderne pour gérer les stations météo de la marque Davis Instrument™ et archiver les relevés"
 
@@ -421,8 +436,8 @@ msgstr "Unidades de fomento"
 
 #: application/models/vp2.php:195
 #, php-format
-msgid "cli.CRC:incomplete-data.error"
-msgstr "Incomplete Data strlen = %d insted of : %d"
+msgid "error-cli.CRC.invalid.length[%s%s]"
+msgstr ""
 
 #: application/models/vp2.php:200
 #, php-format
@@ -720,10 +735,12 @@ msgid "install.dbms.configure"
 msgstr "Configurer →"
 
 #: application/views/configuration/add-station.php:17
+#, fuzzy
 msgid "configuration-station.tab."
 msgstr "dynamic"
 
 #: application/views/configuration/add-station.php:30
+#, fuzzy
 msgid "configuration-station.settings.dbms.info"
 msgstr "Configuration de la base de données pour les relevés"
 
@@ -734,10 +751,12 @@ msgid "install.dbms."
 msgstr "Configuration de la base de données"
 
 #: application/views/configuration/add-station.php:78
+#, fuzzy
 msgid "configuration-station.settings.network.info"
 msgstr "Configuration réseaux permettant de contacter la station."
 
 #: application/views/configuration/add-station.php:117
+#, fuzzy
 msgid "configuration-station.add-new.valid"
 msgstr "Ajouter la station"
 
@@ -755,6 +774,7 @@ msgid "configuration-stations.add-new.station"
 msgstr "Ajouter une station"
 
 #: application/views/configuration/list-stations.php:50
+#, fuzzy
 msgid "configuration-station.add-new"
 msgstr "Ajouter une station"
 
@@ -800,6 +820,11 @@ msgstr "Licence Creative Commons CC-by-nc-sa"
 #: application/views/templates/footer.php:23
 msgid "project.license.logo-title"
 msgstr "Licence Creative Commons CC-by-nc-sa"
+
+#: application/controllers/cmd.php:205
+#, fuzzy
+msgid "install-dbms.password"
+msgstr "Mot de passe"
 
 #: application/controllers/install.php:73
 msgid "error.database.unreachable.title"
@@ -856,6 +881,12 @@ msgstr "Confirmation du mot de passe"
 msgid "error.file[%s].creation"
 msgstr "Erreur lors de la création du fichier : %s."
 
+#~ msgid "login:description"
+#~ msgstr "Connexion à l'interface d'administration"
+
+#~ msgid ":title"
+#~ msgstr "Titre"
+
 #, fuzzy
 #~ msgid "You're now logged out."
 #~ msgstr "Vous allez être déconnecté automatiquement dans %d seconde."
@@ -865,7 +896,7 @@ msgstr "Erreur lors de la création du fichier : %s."
 #~ msgstr "Afficher la _météo"
 
 #, fuzzy
-#~ msgid "setup-dbms.title.metadata"
+#~ msgid "setup-dbms:title"
 #~ msgstr ""
 #~ "Probe est une application web moderne pour gérer les stations météo de la "
 #~ "marque Davis Instrument™ et archiver les relevés"

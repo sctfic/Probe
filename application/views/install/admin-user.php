@@ -22,7 +22,7 @@
     ?>
         <div class="modal-header">
             <!-- <legend> -->
-                <h3><?=i18n("install.administrator.legend")?></h3>
+                <h3><?=i18n("install-administrator.legend")?></h3>
             <!-- </legend>	 -->
         </div>
 
@@ -30,52 +30,52 @@
             <?=validation_errors()?>
 
     <div class="alert alert-info">
-        <?=i18n('install.administrator.description')?>
+        <?=i18n('install-administrator.description')?>
     </div>
 
             <!-- Admin Username -->
             <div class="control-group">
                 <label class="control-label" for="admin-username">
-                    <?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('install.administrator.username'), i18n('required'), i18n('&nbsp;:')) ?>
+                    <?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('install-administrator.username'), i18n('required'), i18n('&nbsp;:')) ?>
                 </label>
                 <div class="controls">
                     <input id="admin-username"
                         type="text" required
                         name="admin-username" value="<?=$adminUsername?>"
-                        class="input-large" placeholder="<?=i18n('install.administrator.username.placeholder')?>">
+                        class="input-large" placeholder="<?=i18n('install-administrator.username.placeholder')?>">
                 </div>
             </div>
 
             <!-- Administrator's password -->
             <div class="control-group">
                 <label class="control-label" for="admin-password">
-                    <?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('install.administrator.password'), i18n('required'), i18n('&nbsp;:'))?>
+                    <?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('install-administrator.password'), i18n('required'), i18n('&nbsp;:'))?>
                 </label>
                 <div class="controls">
                     <input id="admin-password"
                         type="password" required
                         name="admin-password" value="<?=$adminPassword?>"
-                        class="input-large" placeholder="<?=i18n('install.administrator.password.placeholder')?>">
+                        class="input-large" placeholder="<?=i18n('install-administrator.password.placeholder')?>">
                 </div>
             </div>
 
             <!-- Administrator's password confirmation -->
             <div class="control-group">
                 <label class="control-label" for="admin-password-confirmation">
-                    <?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('install.administrator.password-confirmation'), i18n('required'), i18n('&nbsp;:'))?>
+                    <?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('install-administrator.password-confirmation'), i18n('required'), i18n('&nbsp;:'))?>
                 </label>
                 <div class="controls">
                     <input id="admin-password-confirmation"
                     type="password" required
                     name="admin-password-confirmation" value="<?=$adminConfirm?>"
-                    class="input-large" placeholder="<?=i18n('install.administrator.password-confirmation.placeholder')?>">
+                    class="input-large" placeholder="<?=i18n('install-administrator.password-confirmation.placeholder')?>">
                 </div>
             </div>
 
         </fieldset>
         <div class="modal-footer form-actions">
       <a href="/install/dbms" class="btn"><?=i18n('form.action.back');?></a>
-            <?=form_submit('configure', i18n('install.administrator.configure'), 'class="btn btn-primary pull-right"')?>
+            <?=form_submit('configure', i18n('install-administrator.configure'), 'class="btn btn-primary pull-right"')?>
         </div>
     <?=form_close()?>
 </div>

@@ -34,7 +34,7 @@
 				<div class="control-group">
 					<?php if (is_array($type) && ($type['type'] == 'radio' || $type['type'] == 'select')): ?>
 						<label class="control-label">
-							<?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('install.dbms.engine'), i18n('required'), i18n('&nbsp;:')) ?>
+							<?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('install-dbms.engine'), i18n('required'), i18n('&nbsp;:')) ?>
 						</label>
 						<div class="controls">
 						<?php foreach ($type['values'] as $value): ?>
@@ -44,7 +44,7 @@
 									name="dbms-<?=$input?>" value="<?=$value?>"
 								>
 								<?=sprintf('%s <span class="hidden">(%s)</span>', 
-									i18n(sprintf('install.dbms.%s-%s', $input, $value)), i18n('required'));
+									i18n(sprintf('install-dbms.%s-%s', $input, $value)), i18n('required'));
 								?>
 							</label>
 						<?php endforeach; ?>
@@ -52,7 +52,7 @@
 					<?php else: ?>
 						<label class="control-label" for="dbms-<?=$input?>">
 							<?=sprintf('%s <span class="hidden">(%s)</span>%s', 
-								i18n('install.dbms.'.$input), 
+								i18n('install-dbms.'.$input),
 								i18n('required'), 
 								i18n('&nbsp;:')) 
 						?>
@@ -65,7 +65,7 @@
 								name="dbms-<?=$input?>" 
 								value="<?=set_value('dbms-'.$input)?>"
 								class="input-large" 
-								placeholder="<?=i18n('install.dbms.'.$input.'.placeholder')?>"
+								placeholder="<?=i18n('install-dbms.'.$input.'.placeholder')?>"
 							>
 						</div>
 					<?php endif; ?>
