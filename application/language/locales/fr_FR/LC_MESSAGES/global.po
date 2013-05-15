@@ -88,22 +88,22 @@ msgstr "Réseau"
 
 #: application/language/i18n-collected-keys.php:26
 #, fuzzy
-msgid "install.dbms.title.metadata"
+msgid "install-dbms.title.metadata"
 msgstr "Installation › Configuration de la base de données"
 
 #: application/language/i18n-collected-keys.php:27
 #, fuzzy
-msgid "install.dbms.description.metadata"
+msgid "install-dbms.description.metadata"
 msgstr "Paramétrage de la base de données d'administration des utilisateurs et des stations"
 
 #: application/language/i18n-collected-keys.php:28
 #, fuzzy
-msgid "install.admin-user.title.metadata"
+msgid "install-admin-user.title.metadata"
 msgstr "Installation › Configuration du compte administrateur"
 
 #: application/language/i18n-collected-keys.php:29
 #, fuzzy
-msgid "install.admin-user.description.metadata"
+msgid "install-admin-user.description.metadata"
 msgstr "Paramétrage du compte administrateur responsable de l'application et des bases de données de chaque station."
 
 #: application/language/i18n-collected-keys.php:30
@@ -521,15 +521,15 @@ msgid "logout.success.label"
 msgstr "Vous êtes déconnecté."
 
 #: application/views/login.php:3
-msgid "install.breadcrumb.dbms"
+msgid "install-breadcrumb.dbms"
 msgstr "Base de données"
 
 #: application/views/login.php:4
-msgid "install.breadcrumb.administrator"
+msgid "install-breadcrumb.administrator"
 msgstr "Compte administrateur"
 
 #: application/views/login.php:5
-msgid "install.breadcrumb.login"
+msgid "install-breadcrumb.login"
 msgstr "Authentification"
 
 #: application/views/login.php:18
@@ -626,35 +626,35 @@ msgid "login.authentificate"
 msgstr "S'authentifier →"
 
 #: application/views/install/admin-user.php:25
-msgid "install.administrator.legend"
+msgid "install-administrator.legend"
 msgstr "Configuration du compte administrateur"
 
 #: application/views/install/admin-user.php:33
-msgid "install.administrator.description"
+msgid "install-administrator.description"
 msgstr "Utilisateur responsable de l'application. Il peut ajouter et supprimer des stations."
 
 #: application/views/install/admin-user.php:39
-msgid "install.administrator.username"
+msgid "install-administrator.username"
 msgstr "Utilisateur «&nbsp;admin&nbsp;»"
 
 #: application/views/install/admin-user.php:45
-msgid "install.administrator.username.placeholder"
+msgid "install-administrator.username.placeholder"
 msgstr "gestionnaire de l'application"
 
 #: application/views/install/admin-user.php:52
-msgid "install.administrator.password"
+msgid "install-administrator.password"
 msgstr "Mot de passe"
 
 #: application/views/install/admin-user.php:58
-msgid "install.administrator.password.placeholder"
+msgid "install-administrator.password.placeholder"
 msgstr "plus long c'est mieux"
 
 #: application/views/install/admin-user.php:65
-msgid "install.administrator.password-confirmation"
+msgid "install-administrator.password-confirmation"
 msgstr "Confirmer"
 
 #: application/views/install/admin-user.php:71
-msgid "install.administrator.password-confirmation.placeholder"
+msgid "install-administrator.password-confirmation.placeholder"
 msgstr "pour éviter les erreurs de saisie"
 
 #: application/views/install/admin-user.php:77
@@ -662,76 +662,76 @@ msgid "form.action.back"
 msgstr "Retour"
 
 #: application/views/install/admin-user.php:78
-msgid "install.administrator.configure"
+msgid "install-administrator.configure"
 msgstr "Configurer →"
 
 #: application/views/install/dbms.php:22
-msgid "install.dbms.legend"
+msgid "install-dbms.legend"
 msgstr "Configuration de la base de données"
 
 #: application/views/install/dbms.php:31
 #: application/views/configuration/add-station.php:37
-msgid "install.dbms.engine"
+msgid "install-dbms.engine"
 msgstr "Moteur de la Base"
 
 #: application/views/install/dbms.php:39
-msgid "install.dbms.engine-mysql"
+msgid "install-dbms.engine-mysql"
 msgstr "MySQL 5+"
 
 #: application/views/install/dbms.php:46
-msgid "install.dbms.engine-sqlite"
+msgid "install-dbms.engine-sqlite"
 msgstr "SQLite 3+"
 
 #: application/views/install/dbms.php:65
-msgid "install.dbms.host"
+msgid "install-dbms.host"
 msgstr "Nom d'hôte"
 
 #: application/views/install/dbms.php:72
-msgid "install.dbms.host.placeholder"
+msgid "install-dbms.host.placeholder"
 msgstr "exemple.fr, localhost ou 127.0.0.1"
 
 #: application/views/install/dbms.php:80
-msgid "install.dbms.port"
+msgid "install-dbms.port"
 msgstr "Port"
 
 #: application/views/install/dbms.php:86
-msgid "install.dbms.port.placeholder"
+msgid "install-dbms.port.placeholder"
 msgstr "défaut: 3306"
 
 #: application/views/install/dbms.php:94
-msgid "install.dbms.database-name"
+msgid "install-dbms.database-name"
 msgstr "Nom de la base"
 
 #: application/views/install/dbms.php:108
-msgid "install.dbms.advanced-user.management"
+msgid "install-dbms.advanced-user.management"
 msgstr "Le nom et le mot de passe sont ceux de l'administrateur de la base de données (<abbr title=\"par exemple\">p. ex.</abbr>, <var>root</var> ou <em>plus restreint</em>)."
 
 #: application/views/install/dbms.php:114
-msgid "install.dbms.username"
+msgid "install-dbms.username"
 msgstr "Utilisateur"
 
 #: application/views/install/dbms.php:120
-msgid "install.dbms.username.placeholder"
+msgid "install-dbms.username.placeholder"
 msgstr "gestionnaire de l'application"
 
 #: application/views/install/dbms.php:128
-msgid "install.dbms.password"
+msgid "install-dbms.password"
 msgstr "Mot de passe"
 
 #: application/views/install/dbms.php:134
-msgid "install.dbms.password.placeholder"
+msgid "install-dbms.password.placeholder"
 msgstr "mot de passe du gestionnaire"
 
 #: application/views/install/dbms.php:142
-msgid "install.dbms.path"
+msgid "install-dbms.path"
 msgstr "Fichier"
 
 #: application/views/install/dbms.php:148
-msgid "install.dbms.path.placeholder"
+msgid "install-dbms.path.placeholder"
 msgstr "fichier de stockage"
 
 #: application/views/install/dbms.php:155
-msgid "install.dbms.configure"
+msgid "install-dbms.configure"
 msgstr "Configurer →"
 
 #: application/views/configuration/add-station.php:17
@@ -747,7 +747,7 @@ msgstr "Configuration de la base de données pour les relevés"
 #: application/views/configuration/add-station.php:55
 #: application/views/configuration/add-station.php:68
 #, fuzzy
-msgid "install.dbms."
+msgid "install-dbms."
 msgstr "Configuration de la base de données"
 
 #: application/views/configuration/add-station.php:78
@@ -779,7 +779,7 @@ msgid "configuration-station.add-new"
 msgstr "Ajouter une station"
 
 #: application/views/admin/dashboard.php:5
-msgid "install.breadcrumb.dashboard"
+msgid "install-breadcrumb.dashboard"
 msgstr "Tableau de bord"
 
 #: application/views/admin/dashboard.php:38
@@ -826,40 +826,40 @@ msgstr "Licence Creative Commons CC-by-nc-sa"
 msgid "install-dbms.password"
 msgstr "Mot de passe"
 
-#: application/controllers/install.php:73
+#: application/controllers/install-php:73
 msgid "error.database.unreachable.title"
 msgstr "Erreur : base de données inaccessible"
 
-#: application/controllers/install.php:74
+#: application/controllers/install-php:74
 msgid "error.database.unreachable"
 msgstr "Le fichier de configuration contient des <strong>paramètres de connexion invalide</strong>. La base de données est inaccessible."
 
-#: application/controllers/install.php:75
+#: application/controllers/install-php:75
 msgid "solution.database.unreachable"
 msgstr "Vérifier que la base est présente ou que les configurations sont correctes. Sinon supprimez celui-ci."
 
-#: application/controllers/install.php:78
+#: application/controllers/install-php:78
 msgid "error.database.unreachable.header"
 msgstr "Base de données est inaccessible"
 
-#: application/controllers/install.php:175
+#: application/controllers/install-php:175
 msgid "error.database.access-denied.title"
 msgstr "Erreur : Accès à la base refusé"
 
-#: application/controllers/install.php:176
+#: application/controllers/install-php:176
 msgid "error.database.access-denied"
 msgstr "L'<strong>utilisateur et l'hôte</strong> ne permette pas de se connecter à la base de donnée."
 
-#: application/controllers/install.php:177
+#: application/controllers/install-php:177
 msgid "solution.database.access-denied"
 msgstr "Vérifiez que le couple formé par l'hôte d'origine et l'utilisateur est bien le plus spécifique (cf. <a href=\"http://stackoverflow.com/questions/10299148/mysql-error-1045-28000-access-denied-for-user-billlocalhost-using-passw/11216911#11216911\">MySQL ERROR 1045 (28000): Access denied for user 'bill'@'localhost' (using password: YES)</a>)."
 
-#: application/controllers/install.php:180
+#: application/controllers/install-php:180
 msgid "error.database.access-denied.header"
 msgstr "Accès à la base refusé"
 
-#: application/controllers/install.php:204
-msgid "error.install.admin.exists"
+#: application/controllers/install-php:204
+msgid "error.install-admin.exists"
 msgstr "Un utilisateur «&nbsp;admin&nbsp;» est déjà présent dans la base."
 
 #: application/controllers/admin/admin.php:80
