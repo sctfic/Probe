@@ -147,7 +147,7 @@ class Station extends CI_Model {
 	// 	$Current_WS = new $type($conf);
 	// 	try {
 	// 		if ( !$Current_WS->initConnection() )
-	// 			throw new Exception( sprintf( i18n('station.open-connexion[%s%s%s]:fail.label'), $conf['_name'], $conf['_ip'], $conf['_port']));
+	// 			throw new Exception( sprintf( i18n('station[%s].open-connexion[%s%s]:fail.label'), $conf['_name'], $conf['_ip'], $conf['_port']));
 	// 		$this->data = $Current_WS->GetHiLows ( );
 	// 		if ( !$Current_WS->closeConnection() )
 	// 			throw new Exception( sprintf( i18n('station.close-connexion[%s]:fail.label'), $conf['_name']) );

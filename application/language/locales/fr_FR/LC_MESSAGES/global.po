@@ -398,7 +398,7 @@ msgstr "Aucune configuration valide n'est disponible."
 #: application/models/station.php:184
 #: application/models/station.php:238
 #, php-format
-msgid "station.open-connexion[%s%s%s]:fail.label"
+msgid "station[%s].open-connexion[%s%s]:fail.label"
 msgstr "Station indisponible, veuillez vérifiez les paramètres de connexion (nom: %s, adresse: %s:%s)."
 
 #: application/models/station.php:255
