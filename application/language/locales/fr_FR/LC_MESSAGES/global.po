@@ -320,15 +320,6 @@ msgstr "Vérifier que le fichier <var>%s</var> existe bien et que vous avez les 
 msgid "error.file:missing.header"
 msgstr "Fichier manquant ou non valable."
 
-#: application/libraries/Page_manager.php:85
-msgid ".title.metadata"
-msgstr ""
-
-#: application/libraries/Page_manager.php:86
-#, fuzzy
-msgid ".description.metadata"
-msgstr "Probe est une application web moderne pour gérer les stations météo de la marque Davis Instrument™ et archiver les relevés"
-
 #: application/models/vp2.php:138
 #, fuzzy, php-format
 msgid "Fermeture de %s correcte."
