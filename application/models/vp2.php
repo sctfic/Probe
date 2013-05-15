@@ -233,7 +233,10 @@ class vp2 extends CI_Model {
             ));
 		}
 		else {
-			throw new Exception(i18n('Unknow Error, Reconnection'));
+			throw new Exception(sprintf(
+                i18n('error-cli.command[%s]:exception.label'),
+                $cmd
+            ));
 		}
 	}
 

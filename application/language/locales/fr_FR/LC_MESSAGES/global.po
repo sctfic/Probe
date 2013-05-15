@@ -350,10 +350,10 @@ msgstr "[!] Somme de controle incorrecte : crc=0x%X 0x%X, strlen=%d."
 msgid "error-cli.command[%s]:fail.label"
 msgstr "[!] Commande incorrecte: '%s'."
 
-#: application/models/vp2.php:222
-#, fuzzy
-msgid "Unknow Error, Reconnection"
-msgstr "Le fichier de configuration contient des <strong>paramètres de connexion invalide</strong>. La base de données est inaccessible."
+#: application/models/vp2.php:237
+#, php-format
+msgid "error-cli.command[%s]:exception.label"
+msgstr "[!] Erreur inconnu: '%s'. \nRe-connexion."
 
 #: application/models/vp2.php:370
 msgid "Please retry later to finish, Data sensors must be checked in few second."
