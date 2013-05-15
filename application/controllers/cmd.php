@@ -196,13 +196,13 @@ index() recupere toutes les donnees recuperable sur la station
 				if ($field != 'port') {
 					$this->form_validation->set_rules(
 						sprintf('%s-%s', $section, $field),
-                        i18n(sprintf("install.%s.%s", $section, $field)),
+                        i18n(sprintf("install-%s.%s", $section, $field)),
                         'trim|required'
                     );
 				}
 			}
 		}
-		$this->form_validation->set_rules('dbms-password', i18n('install.dbms.password'), 'minlength[8]');
+		$this->form_validation->set_rules('dbms-password', i18n('install-dbms.password'), 'minlength[8]');
 
 		if ($this->form_validation->run() == FALSE) {
             $page = new Page_manager();
