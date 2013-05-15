@@ -164,14 +164,12 @@ msgid "SmartChart.description.metadata"
 msgstr "Graphique interactif avec zoom"
 
 #: application/language/i18n-collected-keys.php:55
-#, fuzzy
 msgid "histoWind.title.metadata"
-msgstr "Connexion"
+msgstr "Historique des vents"
 
 #: application/language/i18n-collected-keys.php:56
-#, fuzzy
 msgid "histoWind.description.metadata"
-msgstr "Connexion à l'interface d'administration"
+msgstr "Historique de l'orientation et de la vitesse des vents"
 
 #: application/language/i18n-collected-keys.php:57
 #, fuzzy
