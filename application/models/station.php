@@ -94,7 +94,7 @@ class Station extends CI_Model {
 			//dans le cas ou je ne connais que le nom
 			$stationsList[array_search($item, $this->stationsList)]=$item;
 		}
-		else throw new Exception(_('Prarametre invalide !'));
+		else throw new Exception(i18n('Prarametre invalide !'));
 		
 		$query = 'SELECT * FROM `TR_CONFIG` WHERE `CFG_STATION_ID`=? LIMIT 100';
 
@@ -113,7 +113,7 @@ class Station extends CI_Model {
 			}
 		}
 		if (count($confs) == 0){
-			throw new Exception(_('Aucune configuration valide n\'est disponible'));
+			throw new Exception(i18n('Aucune configuration valide n\'est disponible'));
 		}
 		// on decode le password.
 		$confs[$item]['password'] = $this->encrypt->decode($confs[$item]['password']);
@@ -131,16 +131,16 @@ class Station extends CI_Model {
 	// function HilowsCollector($conf = null) {
 	// 	where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__);
 	// 	if (!isset($conf['_type']))
-	// 		throw new Exception(_('Prarametre invalide !'));
+	// 		throw new Exception(i18n('Prarametre invalide !'));
 	// 	$type = strtolower($conf['_type']);
 	// 	include_once(APPPATH.'models/'.$type.'.php');
 	// 	$Current_WS = new $type($conf);
 	// 	try {
 	// 		if ( !$Current_WS->initConnection() )
-	// 			throw new Exception( sprintf( _('Impossible de se connecter à %s par %s:%s'), $conf['_name'], $conf['_ip'], $conf['_port']));
+	// 			throw new Exception( sprintf( i18n('Impossible de se connecter à %s par %s:%s'), $conf['_name'], $conf['_ip'], $conf['_port']));
 	// 		$this->data = $Current_WS->GetHiLows ( );
 	// 		if ( !$Current_WS->closeConnection() )
-	// 			throw new Exception( sprintf( _('Fermeture de %s impossible'), $conf['_name']) );
+	// 			throw new Exception( sprintf( i18n('Fermeture de %s impossible'), $conf['_name']) );
 	// 	}
 	// 	catch (Exception $e) {
 	// 		throw new Exception($e->getMessage());
@@ -158,7 +158,7 @@ class Station extends CI_Model {
 	function AllCollector($conf = null) {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__);
 		if (!isset($conf['_type']))
-			throw new Exception(_('Prarametre invalide !'));
+			throw new Exception(i18n('Prarametre invalide !'));
 		$type = strtolower($conf['_type']);
 		include_once(APPPATH.'models/'.$type.'.php');
 		$Current_WS = new $type($conf);
@@ -168,7 +168,7 @@ class Station extends CI_Model {
 		{
 			try {
 				if ( !$Current_WS->initConnection() )
-					throw new Exception( sprintf( _('Impossible de se connecter à %s par %s:%s'), $conf['_name'], $conf['_ip'], $conf['_port']));
+					throw new Exception( sprintf( i18n('Impossible de se connecter à %s par %s:%s'), $conf['_name'], $conf['_ip'], $conf['_port']));
 	
 				// on lit et sauve les configs
 				$readconf = end ($Current_WS->GetConfig ( ));
@@ -193,13 +193,13 @@ class Station extends CI_Model {
 				$this->data = $Current_WS->GetHiLows ( );
 	
 				if ( !$Current_WS->closeConnection() )
-					throw new Exception( sprintf( _('Fermeture de %s impossible'), $conf['_name']) );
+					throw new Exception( sprintf( i18n('Fermeture de %s impossible'), $conf['_name']) );
 			}
 			catch (Exception $e) {
 				throw new Exception($e->getMessage());
 			}
 		}
-		else throw new Exception(sprintf( _('Les archives de "%s" sont a jour (en date du : %s)'), $conf['_name'], $Last_Arch));
+		else throw new Exception(sprintf( i18n('Les archives de "%s" sont a jour (en date du : %s)'), $conf['_name'], $Last_Arch));
 	}
 /**
 
@@ -211,14 +211,14 @@ class Station extends CI_Model {
 	function CurrentsCollector($conf = null) {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__);
 		if (!isset($conf['_type']))
-			throw new Exception(_('Prarametre invalide !'));
+			throw new Exception(i18n('Prarametre invalide !'));
 		$type = strtolower($conf['_type']);
 		include_once(APPPATH.'models/'.$type.'.php');
 		$Current_WS = new $type($conf);
 
 		try {
 			if ( !$Current_WS->initConnection() )
-				throw new Exception( sprintf( _('Impossible de se connecter à %s par %s:%s'), $conf['_name'], $conf['_ip'], $conf['_port']));
+				throw new Exception( sprintf( i18n('Impossible de se connecter à %s par %s:%s'), $conf['_name'], $conf['_ip'], $conf['_port']));
 
 			// $this->data['CONF'] = $conf;
 
@@ -229,7 +229,7 @@ class Station extends CI_Model {
 			$this->data['HILOW'] = $Current_WS->GetHiLows ( );
 
 			if ( !$Current_WS->closeConnection() )
-				throw new Exception( sprintf( _('Fermeture de %s impossible'), $conf['_name']) );
+				throw new Exception( sprintf( i18n('Fermeture de %s impossible'), $conf['_name']) );
 		}
 		catch (Exception $e) {
 			throw new Exception($e->getMessage());
@@ -246,16 +246,16 @@ class Station extends CI_Model {
 	// function LpsCollector($conf) {
 	// 	where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__);
 	// 	if (!isset($conf['_type']))
-	// 		throw new Exception(_('Prarametre invalide !'));
+	// 		throw new Exception(i18n('Prarametre invalide !'));
 	// 	$type = strtolower($conf['_type']);
 	// 	include_once(APPPATH.'models/'.$type.'.php');
 	// 	$Current_WS = new $type($conf);
 	// 	try {
 	// 		if ( !$Current_WS->initConnection() )
-	// 			throw new Exception( sprintf( _('Impossible de se connecter à %s par %s:%s'), $conf['_name'], $conf['_ip'], $conf['_port']));
+	// 			throw new Exception( sprintf( i18n('Impossible de se connecter à %s par %s:%s'), $conf['_name'], $conf['_ip'], $conf['_port']));
 	// 		$this->data = $Current_WS->GetLPS ( );
 	// 		if ( !$Current_WS->closeConnection() )
-	// 			throw new Exception( sprintf( _('Fermeture de %s impossible'), $conf['_name']) );
+	// 			throw new Exception( sprintf( i18n('Fermeture de %s impossible'), $conf['_name']) );
 	// 	}
 	// 	catch (Exception $e) {
 	// 		throw new Exception($e->getMessage());
@@ -275,7 +275,7 @@ class Station extends CI_Model {
 	// function ArchCollector($conf) {
 	// 	where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__);
 	// 	if (!isset($conf['_type']))
-	// 		throw new Exception(_('Prarametre invalide !'));
+	// 		throw new Exception(i18n('Prarametre invalide !'));
 	// 	$type = strtolower($conf['_type']);
 	// 	include_once(APPPATH.'models/'.$type.'.php');
 	// 	$Current_WS = new $type($conf);
@@ -285,18 +285,18 @@ class Station extends CI_Model {
 	// 		|| strtotime(date ("Y/m/d H:i:s")) > strtotime($Last_Arch) + $conf['time:archive:period']*60*10) {
 	// 		try {
 	// 			if ( !$Current_WS->initConnection() )
-	// 				throw new Exception( sprintf( _('Impossible de se connecter à %s par %s:%s'), $conf['_name'], $conf['_ip'], $conf['_port']));
+	// 				throw new Exception( sprintf( i18n('Impossible de se connecter à %s par %s:%s'), $conf['_name'], $conf['_ip'], $conf['_port']));
 	// 			$clock = $Current_WS->clockSync(5);
 	// 			$this->data = $Current_WS->GetDmpAft ( $Last_Arch );
 	// 			if ( !$Current_WS->closeConnection() )
-	// 				throw new Exception( sprintf( _('Fermeture de %s impossible'), $conf['_name']) );
+	// 				throw new Exception( sprintf( i18n('Fermeture de %s impossible'), $conf['_name']) );
 	// 		}
 	// 		catch (Exception $e) {
 	// 			throw new Exception($e->getMessage());
 	// 		}
 	// 		return true;
 	// 	}
-	// 	else log_message('wayting', sprintf(_( 'The latest collection of archives is only on %s'), date ("Y/m/d H:i:s")));
+	// 	else log_message('wayting', sprintf(i18n( 'The latest collection of archives is only on %s'), date ("Y/m/d H:i:s")));
 	// 	return true;
 	// }
 
@@ -309,21 +309,21 @@ class Station extends CI_Model {
 	// function ConfCollector($conf) {
 	// 	where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__);
 	// 	if (!isset($conf['_type']))
-	// 		throw new Exception(_('Prarametre invalide !'));
+	// 		throw new Exception(i18n('Prarametre invalide !'));
 	// 	$type = strtolower($conf['_type']);
 	// 	include_once(APPPATH.'models/'.$type.'.php');
 	// 	$Current_WS = new $type($conf);
 	// 	try {
 	// 		if ( !$Current_WS->initConnection() )
-	// 			throw new Exception( sprintf( _('Impossible de se connecter à %s par %s:%s'), $conf['_name'], $conf['_ip'], $conf['_port']));
+	// 			throw new Exception( sprintf( i18n('Impossible de se connecter à %s par %s:%s'), $conf['_name'], $conf['_ip'], $conf['_port']));
 	// 		$clock = $Current_WS->clockSync(2);
 	// 		if (!($realconf = end($Current_WS->GetConfig())))
-	// 			throw new Exception( sprintf( _('Lecture des config de %s impossible'),$conf['_name']));
+	// 			throw new Exception( sprintf( i18n('Lecture des config de %s impossible'),$conf['_name']));
 	// 		// conf est un array('2012/08/04 15:30:00'=>array(...))
 	// 		// qui ne contiend qu'une seule valeur de niveau 1 mais dont la clef est variable
 	// 		// end() permet de recupere cette valeur quelque soit ca clef.
 	// 		if ( !$Current_WS->closeConnection() )
-	// 			throw new Exception( sprintf( _('Fermeture de %s impossible'), $conf['_name']) );
+	// 			throw new Exception( sprintf( i18n('Fermeture de %s impossible'), $conf['_name']) );
 	// 	}
 	// 	catch (Exception $e) {
 	// 		throw new Exception( $e->getMessage() );
