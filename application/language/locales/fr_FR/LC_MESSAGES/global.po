@@ -106,16 +106,6 @@ msgstr "Installation › Configuration du compte administrateur"
 msgid "install-admin-user.description.metadata"
 msgstr "Paramétrage du compte administrateur responsable de l'application et des bases de données de chaque station."
 
-#: application/language/i18n-collected-keys.php:30
-#, fuzzy
-msgid "probe_d3.title.metadata"
-msgstr "Titre"
-
-#: application/language/i18n-collected-keys.php:31
-#, fuzzy
-msgid "probe_d3.description.metadata"
-msgstr "Probe est une application web moderne pour gérer les stations météo de la marque Davis Instrument™ et archiver les relevés"
-
 #: application/language/i18n-collected-keys.php:32
 #, fuzzy
 msgid "windrose.title.metadata"

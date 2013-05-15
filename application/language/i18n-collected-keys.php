@@ -27,8 +27,6 @@ i18n('install-dbms.title.metadata');
 i18n('install-dbms.description.metadata');
 i18n('install-admin-user.title.metadata');
 i18n('install-admin-user.description.metadata');
-i18n('probe_d3.title.metadata');
-i18n('probe_d3.description.metadata');
 i18n('windrose.title.metadata');
 i18n('windrose.description.metadata');
 i18n('viewer.title.metadata');
