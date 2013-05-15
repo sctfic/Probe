@@ -345,10 +345,10 @@ msgstr "[!] Données reçues incomplètes : %d au lieu de %d."
 msgid "error-cli.checksum[%X%X]:fail[%d].label"
 msgstr "[!] Somme de controle incorrecte : crc=0x%X 0x%X, strlen=%d."
 
-#: application/models/vp2.php:219
+#: application/models/vp2.php:231
 #, fuzzy, php-format
-msgid "Command [%s] not understand"
-msgstr "Commande non trouvée"
+msgid "error-cli.command[%s]:fail.label"
+msgstr "[!] Commande incorrecte: '%s'."
 
 #: application/models/vp2.php:222
 #, fuzzy

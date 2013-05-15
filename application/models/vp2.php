@@ -227,7 +227,10 @@ class vp2 extends CI_Model {
 		}
 		else if ($r == NAK)
 		{
-			throw new Exception(sprintf(i18n('Command [%s] not understand'),$cmd));
+			throw new Exception(sprintf(
+                i18n('error-cli.command[%s]:fail.label'),
+                $cmd
+            ));
 		}
 		else {
 			throw new Exception(i18n('Unknow Error, Reconnection'));
