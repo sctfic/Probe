@@ -441,7 +441,10 @@ Compare l'heure de la station a celle du serveur web et lance la synchro si beso
 				// }
 				// else log_message('warning', i18n( 'Clock synch.'));
 			}
-			else log_message('warning', sprintf( i18n('So mutch Default : %ssec. Please change it manualy'), $realLag) );
+			else log_message('warning', sprintf(
+                i18n('warning-cli.clock-delay[%s]:off-limit.label'),
+                $realLag
+            ));
 		}
 		else return true;
 		log_message('Step',  __FUNCTION__.'('.__CLASS__.")\n".__FILE__.' ['.__LINE__.']');

@@ -371,8 +371,8 @@ msgstr "[~] Décalage de l'horloge: %ss."
 
 #: application/models/vp2.php:419
 #, php-format
-msgid "So mutch Default : %ssec. Please change it manualy"
-msgstr ""
+msgid "warning-cli.clock-delay[%s]:off-limit.label"
+msgstr "[~] La station est désynchronisée (%ss), veuillez la synchroniser."
 
 #: application/models/station.php:97
 #: application/models/station.php:161
