@@ -89,7 +89,7 @@ index() recupere toutes les donnees recuperable sur la station
 	* @var
 	* @return
 	*/
-	function curentsCollectors($station = null) {
+	function currentsCollectors($station = null) {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 
 		try {
