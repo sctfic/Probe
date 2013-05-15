@@ -147,7 +147,7 @@ class Station extends CI_Model {
 	// 	$Current_WS = new $type($conf);
 	// 	try {
 	// 		if ( !$Current_WS->initConnection() )
-	// 			throw new Exception( sprintf( i18n('Impossible de se connecter à %s par %s:%s'), $conf['_name'], $conf['_ip'], $conf['_port']));
+	// 			throw new Exception( sprintf( i18n('station.open-connexion[%s%s%s]:fail.label'), $conf['_name'], $conf['_ip'], $conf['_port']));
 	// 		$this->data = $Current_WS->GetHiLows ( );
 	// 		if ( !$Current_WS->closeConnection() )
 	// 			throw new Exception( sprintf( i18n('Fermeture de %s impossible'), $conf['_name']) );
@@ -180,7 +180,12 @@ class Station extends CI_Model {
 		{
 			try {
 				if ( !$Current_WS->initConnection() )
-					throw new Exception( sprintf( i18n('Impossible de se connecter à %s par %s:%s'), $conf['_name'], $conf['_ip'], $conf['_port']));
+					throw new Exception( sprintf(
+                        i18n('station.open-connexion[%s%s%s]:fail.label'),
+                        $conf['_name'],
+                        $conf['_ip'],
+                        $conf['_port']
+                    ));
 	
 				// on lit et sauve les configs
 				$readconf = end ($Current_WS->GetConfig ( ));
@@ -230,9 +235,14 @@ class Station extends CI_Model {
 
 		try {
 			if ( !$Current_WS->initConnection() )
-				throw new Exception( sprintf( i18n('Impossible de se connecter à %s par %s:%s'), $conf['_name'], $conf['_ip'], $conf['_port']));
+				throw new Exception( sprintf(
+                    i18n('station.open-connexion[%s%s%s]:fail.label'),
+                    $conf['_name'],
+                    $conf['_ip'],
+                    $conf['_port']
+                ));
 
-			// $this->data['CONF'] = $conf;
+            // $this->data['CONF'] = $conf;
 
 			// on lit et sauve les valeurs courantes
 			$this->data['LPS'] = $Current_WS->GetLPS (1,1 );
@@ -264,7 +274,7 @@ class Station extends CI_Model {
 	// 	$Current_WS = new $type($conf);
 	// 	try {
 	// 		if ( !$Current_WS->initConnection() )
-	// 			throw new Exception( sprintf( i18n('Impossible de se connecter à %s par %s:%s'), $conf['_name'], $conf['_ip'], $conf['_port']));
+	// 			throw new Exception( sprintf( i18n('station.open-connexion[%s%s%s]:fail.label'), $conf['_name'], $conf['_ip'], $conf['_port']));
 	// 		$this->data = $Current_WS->GetLPS ( );
 	// 		if ( !$Current_WS->closeConnection() )
 	// 			throw new Exception( sprintf( i18n('Fermeture de %s impossible'), $conf['_name']) );
@@ -297,7 +307,7 @@ class Station extends CI_Model {
 	// 		|| strtotime(date ("Y/m/d H:i:s")) > strtotime($Last_Arch) + $conf['time:archive:period']*60*10) {
 	// 		try {
 	// 			if ( !$Current_WS->initConnection() )
-	// 				throw new Exception( sprintf( i18n('Impossible de se connecter à %s par %s:%s'), $conf['_name'], $conf['_ip'], $conf['_port']));
+	// 				throw new Exception( sprintf( i18n('station.open-connexion[%s%s%s]:fail.label'), $conf['_name'], $conf['_ip'], $conf['_port']));
 	// 			$clock = $Current_WS->clockSync(5);
 	// 			$this->data = $Current_WS->GetDmpAft ( $Last_Arch );
 	// 			if ( !$Current_WS->closeConnection() )
@@ -327,7 +337,7 @@ class Station extends CI_Model {
 	// 	$Current_WS = new $type($conf);
 	// 	try {
 	// 		if ( !$Current_WS->initConnection() )
-	// 			throw new Exception( sprintf( i18n('Impossible de se connecter à %s par %s:%s'), $conf['_name'], $conf['_ip'], $conf['_port']));
+	// 			throw new Exception( sprintf( i18n('station.open-connexion[%s%s%s]:fail.label'), $conf['_name'], $conf['_ip'], $conf['_port']));
 	// 		$clock = $Current_WS->clockSync(2);
 	// 		if (!($realconf = end($Current_WS->GetConfig())))
 	// 			throw new Exception( sprintf( i18n('Lecture des config de %s impossible'),$conf['_name']));

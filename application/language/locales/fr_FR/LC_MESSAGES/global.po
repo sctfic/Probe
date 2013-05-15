@@ -395,11 +395,11 @@ msgstr "La station %s a été <b>ignoré</b> (informations indisponibles)."
 msgid "db-station.fetch-config:none.label"
 msgstr "Aucune configuration valide n'est disponible."
 
-#: application/models/station.php:171
-#: application/models/station.php:221
+#: application/models/station.php:184
+#: application/models/station.php:238
 #, php-format
-msgid "Impossible de se connecter à %s par %s:%s"
-msgstr ""
+msgid "station.open-connexion[%s%s%s]:fail.label"
+msgstr "Station indisponible, veuillez vérifiez les paramètres de connexion (nom: %s, adresse: %s:%s)."
 
 #: application/models/station.php:196
 #: application/models/station.php:232
