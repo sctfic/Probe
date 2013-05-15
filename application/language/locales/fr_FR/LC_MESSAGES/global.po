@@ -377,8 +377,8 @@ msgstr "[~] La station est désynchronisée (%ss), veuillez la synchroniser."
 #: application/models/station.php:97
 #: application/models/station.php:161
 #: application/models/station.php:214
-msgid "Prarametre invalide !"
-msgstr ""
+msgid "error.parameter:type-exception.label"
+msgstr "Type de paramètre non pris en charge."
 
 #: application/models/station.php:116
 msgid "Aucune configuration valide n'est disponible"
