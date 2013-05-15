@@ -11,29 +11,29 @@ class Configuration extends CI_Controller {
             array(
                 'status' => 'active',
                 'url' => '/configuration/list-stations',
-                'i18n' => 'configuration.breadcrumb.stations.dashboard'
+                'i18n' => 'configuration-breadcrumb.stations.dashboard'
             )
         ),
         'list-stations' => array(
             array(
                 'url' => '/configuration/list-stations',
-                'i18n' => 'configuration.breadcrumb.stations.list'
+                'i18n' => 'configuration-breadcrumb.stations.list'
             ),
         array(
             'status' => 'active',
             'url' => '/configuration/list-stations',
-            'i18n' => 'configuration.breadcrumb.stations.list'
+            'i18n' => 'configuration-breadcrumb.stations.list'
         )
         ),
         'add-station' => array(
             array(
                 'url' => '/configuration/',
-                'i18n' => 'configuration.breadcrumb.stations.list'
+                'i18n' => 'configuration-breadcrumb.stations.list'
             ),
             array(
                 'status' => 'active',
                 'url' => '/configuration/',
-                'i18n' => 'configuration.breadcrumb.stations.add'
+                'i18n' => 'configuration-breadcrumb.stations.add'
             )
         )
 

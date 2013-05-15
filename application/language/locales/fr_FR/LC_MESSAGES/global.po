@@ -180,15 +180,15 @@ msgid "configuration-list-station.description.metadata"
 msgstr "Consulter la liste des stations connectées"
 
 #: application/language/i18n-collected-keys.php:61
-msgid "configuration.breadcrumb.stations.list"
+msgid "configuration-breadcrumb.stations.list"
 msgstr "Tableau de bord"
 
 #: application/language/i18n-collected-keys.php:62
-msgid "configuration.breadcrumb.stations.dashboard"
+msgid "configuration-breadcrumb.stations.dashboard"
 msgstr "Tableau de bord"
 
 #: application/language/i18n-collected-keys.php:63
-msgid "configuration.breadcrumb.stations.add"
+msgid "configuration-breadcrumb.stations.add"
 msgstr "Ajout de station"
 
 #: application/language/i18n-collected-keys.php:64
