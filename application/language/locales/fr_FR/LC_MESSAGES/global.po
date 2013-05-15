@@ -366,8 +366,8 @@ msgstr "[i] Bloc %s ignoré (valeurs hors limites: #%d/%d)."
 
 #: application/models/vp2.php:435
 #, php-format
-msgid "warning-cli.clock-sync[%s].label"
-msgstr "[~] Synchronization par défaut de l'horloge: %ss."
+msgid "warning-cli.clock-delay[%s].label"
+msgstr "[~] Décalage de l'horloge: %ss."
 
 #: application/models/vp2.php:419
 #, php-format
