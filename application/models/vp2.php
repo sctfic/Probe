@@ -406,7 +406,10 @@ Lis les valeur d´archive a partir d´une date
 						$LastArchDate = $ArchDate;
 					}
 					else {
-						throw new Exception(sprintf(i18n('Page #%d-%d of %s Ignored (Out of Range).'),$j, $k, $ArchDate));
+						throw new Exception(sprintf(
+                            i18n('info-cli.block[%d%d%s]:out-of-range.label'),
+                            $j, $k, $ArchDate
+                        ));
 					}
 					$firstArch=0;
 				}

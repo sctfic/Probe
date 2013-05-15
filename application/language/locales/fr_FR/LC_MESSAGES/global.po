@@ -359,10 +359,10 @@ msgstr "[!] Erreur inconnu: '%s'. \nRe-connexion."
 msgid "error-cli.download:fail.label"
 msgstr "[i] La station est indisponible, veuillez ré-essayer ultérieurement."
 
-#: application/models/vp2.php:390
-#, fuzzy, php-format
-msgid "Page #%d-%d of %s Ignored (Out of Range)."
-msgstr "Bloc défectueux %u hors limite ; ignoré.\n"
+#: application/models/vp2.php:410
+#, php-format
+msgid "info-cli.block[%d%d%s]:out-of-range.label"
+msgstr "[i] Bloc %s ignoré (valeurs hors limites: #%d/%d)."
 
 #: application/models/vp2.php:412
 #, php-format
