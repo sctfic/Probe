@@ -357,7 +357,7 @@ msgstr "[!] Erreur inconnu: '%s'. \nRe-connexion."
 
 #: application/models/vp2.php:388
 msgid "error-cli.download:fail.label"
-msgstr "[i] La station est indisponible, veuillez ré-essayer ultérieurement."
+msgstr "[!] La station est indisponible, veuillez ré-essayer ultérieurement."
 
 #: application/models/vp2.php:410
 #, php-format
