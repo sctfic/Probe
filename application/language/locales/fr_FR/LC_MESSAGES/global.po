@@ -592,9 +592,8 @@ msgid "install-dbms.main-content.header"
 msgstr "Installation › Configuration de la base de données"
 
 #: application/views/install/dbms.php:31
-#: application/views/configuration/add-station.php:37
 #, fuzzy
-msgid "install-dbms.engine"
+msgid "install-dbms.engine.label"
 msgstr "Moteur de la Base"
 
 #: application/views/install/dbms.php:39
@@ -606,28 +605,23 @@ msgid "install-dbms.engine:sqlite.label"
 msgstr "SQLite 3+"
 
 #: application/views/install/dbms.php:65
-#, fuzzy
-msgid "install-dbms.host"
+msgid "install-dbms.host.label"
 msgstr "Nom d'hôte"
 
 #: application/views/install/dbms.php:72
-#, fuzzy
 msgid "install-dbms.host.placeholder"
 msgstr "exemple.fr, localhost ou 127.0.0.1"
 
 #: application/views/install/dbms.php:80
-#, fuzzy
-msgid "install-dbms.port"
+msgid "install-dbms.port.label"
 msgstr "Port"
 
 #: application/views/install/dbms.php:86
-#, fuzzy
 msgid "install-dbms.port.placeholder"
 msgstr "défaut: 3306"
 
 #: application/views/install/dbms.php:94
-#, fuzzy
-msgid "install-dbms.database-name"
+msgid "install-dbms.database-name.label"
 msgstr "Nom de la base"
 
 #: application/views/install/dbms.php:108
@@ -636,32 +630,26 @@ msgid "install-dbms.advanced-user.management"
 msgstr "Le nom et le mot de passe sont ceux de l'administrateur de la base de données (<abbr title=\"par exemple\">p. ex.</abbr>, <var>root</var> ou <em>plus restreint</em>)."
 
 #: application/views/install/dbms.php:114
-#, fuzzy
-msgid "install-dbms.username"
+msgid "install-dbms.username.label"
 msgstr "Utilisateur"
 
 #: application/views/install/dbms.php:120
-#, fuzzy
 msgid "install-dbms.username.placeholder"
 msgstr "gestionnaire de l'application"
 
 #: application/views/install/dbms.php:128
-#, fuzzy
-msgid "install-dbms.password"
+msgid "install-dbms.password.label"
 msgstr "Mot de passe"
 
 #: application/views/install/dbms.php:134
-#, fuzzy
 msgid "install-dbms.password.placeholder"
 msgstr "mot de passe du gestionnaire"
 
 #: application/views/install/dbms.php:142
-#, fuzzy
-msgid "install-dbms.path"
+msgid "install-dbms.path.label"
 msgstr "Fichier"
 
 #: application/views/install/dbms.php:148
-#, fuzzy
 msgid "install-dbms.path.placeholder"
 msgstr "fichier de stockage"
 

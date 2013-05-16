@@ -28,7 +28,7 @@
         <!-- Engine: MySQL vs. SQLite  -->
         <div id="dbms-engine" class="control-group">
             <label class="control-label">
-                <?=sprintf('%s%s', i18n('install-dbms.engine'), i18n('&nbsp;:')) ?>
+                <?=sprintf('%s%s', i18n('install-dbms.engine.label'), i18n('&nbsp;:')) ?>
             </label>
             <div class="controls">
                 <label class="control-label inline" for="dbms-engine-mysql">
@@ -62,7 +62,7 @@
         <!-- MySQL Server host/IP -->
 		<div id="dbms-host" class="control-group mysql">
 			<label class="control-label" for="dbms-host">
-				<?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('install-dbms.host'), i18n('required'), i18n('&nbsp;:')) ?>
+				<?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('install-dbms.host.label'), i18n('required'), i18n('&nbsp;:')) ?>
 			</label>
 			<div class="controls">
                 <input name="dbms-host"
@@ -77,7 +77,7 @@
 		<!-- Server port (range between: 1-65535) -->
 		<div class="control-group mysql">
 			<label class="control-label" for="dbms-port">
-				<?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('install-dbms.port'), i18n('required'), i18n('&nbsp;:')) ?>
+				<?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('install-dbms.port.label'), i18n('required'), i18n('&nbsp;:')) ?>
 			</label>
 			<div class="controls">
 				<input id="dbms-port"
@@ -91,7 +91,7 @@
 		<div class="control-group mysql">
 		<!-- Server database name -->
 			<label class="control-label" for="dbms-database-name">
-				<?=sprintf('%s %s', i18n('install-dbms.database-name'), i18n('&nbsp;:'))?>
+				<?=sprintf('%s %s', i18n('install-dbms.database-name.label'), i18n('&nbsp;:'))?>
 			</label>
 			<div class="controls">
 				<input id="dbms-database-name"
@@ -111,7 +111,7 @@
 		<!-- Database's manager's username -->
 		<div class="control-group mysql">
 			<label class="control-label" for="dbms-username">
-				<?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('install-dbms.username'), i18n('required'), i18n('&nbsp;:'))?>
+				<?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('install-dbms.username.label'), i18n('required'), i18n('&nbsp;:'))?>
 			</label>
 			<div class="controls">
 				<input id="dbms-username"
@@ -125,7 +125,7 @@
 		<!-- Database's manager's password -->
 		<div class="control-group mysql">
 			<label class="control-label" for="dbms-password">
-				<?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('install-dbms.password'), i18n('required'), i18n('&nbsp;:'))?>
+				<?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('install-dbms.password.label'), i18n('required'), i18n('&nbsp;:'))?>
 			</label>
 			<div class="controls">
 				<input id="dbms-password"
@@ -139,7 +139,7 @@
         <!-- SQLite file Path (disable by default) -->
         <div id="dbms-path" class="control-group sqlite">
             <label class="control-label" for="dbms-path">
-                <?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('install-dbms.path'), i18n('required'), i18n('&nbsp;:')) ?>
+                <?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('install-dbms.path.label'), i18n('required'), i18n('&nbsp;:')) ?>
             </label>
             <div class="controls">
                 <input name="dbms-path"
