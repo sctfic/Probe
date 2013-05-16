@@ -27,7 +27,7 @@
 
 		<fieldset id="settings-dbms" class="tab-pane active">
 			<p class="alert alert-info">
-				<?=i18n('configuration-station.settings.dbms.info')?>
+				<?=i18n('configuration-add-station.main-content:dbms.tip')?>
 			</p>
 			<?php foreach ($form['dbms'] as $input => $type): ?>
 				<!-- <?=$input?> <?=$type?> -->
@@ -80,7 +80,7 @@
 
 		<fieldset id="settings-network" class="tab-pane">
 			<p class="alert alert-info">
-				<?=i18n('configuration-station.settings.network.info')?>
+				<?=i18n('configuration-add-station.main-content:network.tip')?>
 			</p>
 			<?php foreach ($form['network'] as $input => $type): ?>
 				<!-- <?=$input?> <?=$type?> -->
