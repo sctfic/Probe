@@ -12,6 +12,10 @@ $config['probe:password'] = '';
 // Locale/language to use for the interface
 $config['probe:locale'] = 'fr';
 
+// Label that will appear after page title (e.g.: installation - Probe.com)
+$config['page.title:suffix.metadata'] = 'Probe';
+
+
 /*
 *redirection URLs for the admin area
 */
