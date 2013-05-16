@@ -21,6 +21,7 @@
                         ?>
                         <li>
                             <a href="/configuration/add-station">
+                                <i class="icon icon-plus"></i>
                                 <?=i18n('configuration-stations.add-new.station')?>
                             </a>
                         </li>
