@@ -63,7 +63,6 @@
                             ) ?>
                         </label>
 						<div class="controls">
-							<?=var_dump($input, $type);?>
 							<input id="dbms-<?=$input?>"
 								required
 								type="<?=$type?>" 
@@ -100,10 +99,8 @@
 						</label>
 						<div class="controls">
 							<input id="network-<?=$input?>"
-								<?php 
-									if (strpos($type, 'pattern') === FALSE) { echo sprintf('type="%s"', $type); }
-									else { echo $type; }
-							 	?>
+								<?= printf("%s", strpos($type, 'pattern')===false? null: $type); ?>
+                                type="text"
 								required
 								name="network-<?=$input?>" 
 								value="<?=set_value('network-'.$input)?>"
