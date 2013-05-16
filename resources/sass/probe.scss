@@ -266,7 +266,7 @@ footer {
 
 #list-stations {
   #stations-list {
-    width: $ui-sidebarSize;
+    min-width: $ui-sidebarSize;
   }
   #stations-form {
     float: right;
