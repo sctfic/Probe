@@ -103,25 +103,34 @@ msgstr "Paramétrage du compte administrateur responsable de l'application et de
 msgid "windrose.title.metadata"
 msgstr "Rose des vents"
 
-#: application/language/i18n-collected-keys.php:33
-#, fuzzy
+#: application/language/i18n-collected-keys.php:31
 msgid "windrose.description.metadata"
-msgstr "Visualisation de l'orientation et de la vitesse des vents"
+msgstr "Visualisation de la direction et de la vitesse des vents"
 
 #: application/language/i18n-collected-keys.php:32
 #: application/libraries/Page_manager.php:87
 msgid "probe.authors.metadata"
 msgstr "Équipe Probe"
 
-#: application/language/i18n-collected-keys.php:41
+#: application/language/i18n-collected-keys.php:33
+#, fuzzy
+msgid "curve.title.metadata"
+msgstr "Courbes"
+
+#: application/language/i18n-collected-keys.php:34
+#, fuzzy
+msgid "curve.description.metadata"
+msgstr "Visualisation par courbes"
+
+#: application/language/i18n-collected-keys.php:35
 #, fuzzy
 msgid "currents.title.metadata"
 msgstr "Conditions actuelles"
 
-#: application/language/i18n-collected-keys.php:42
+#: application/language/i18n-collected-keys.php:36
 #, fuzzy
 msgid "currents.description.metadata"
-msgstr "Conditions météo actuelle"
+msgstr "Conditions météo actuelles"
 
 #: application/language/i18n-collected-keys.php:37
 msgid "curves.title.metadata"
@@ -368,11 +377,6 @@ msgstr "Vérifier que le fichier <var>%s</var> existe bien et que vous avez les 
 msgid "error.file:missing.header"
 msgstr "Fichier manquant ou non valable."
 
-#: application/models/vp2.php:143
-#, php-format
-msgid "cli-info.close-connexion[%s]:success.label"
-msgstr "[i] Fermeture correcte de la connexion à : %s."
-
 #: application/models/vp2.php:93
 #, fuzzy, php-format
 msgid "cli-warning.available-connexion[%s]:fail.label"
@@ -382,6 +386,12 @@ msgstr "[~] Une connexion est déjà en cours vers : %s."
 #, fuzzy, php-format
 msgid "cli-info.open-connexion[%s].label"
 msgstr "[i] Ouverture de la connexion vers : %s."
+
+#: application/models/vp2.php:143
+#, php-format
+msgid "cli-info.close-connexion[%s]:success.label"
+msgstr "[i] Fermeture correcte de la connexion à : %s."
+
 #: application/models/vp2.php:203
 #, php-format
 msgid "cli-error.transmission[%d]:incomplete[%d].label"
@@ -400,7 +410,9 @@ msgstr "[!] Commande incorrecte: '%s'."
 #: application/models/vp2.php:237
 #, php-format
 msgid "cli-error.command[%s]:exception.label"
-msgstr "[!] Erreur inconnu: '%s'. \nRe-connexion."
+msgstr ""
+"[!] Erreur inconnu: '%s'. \n"
+"Re-connexion."
 
 #: application/models/vp2.php:388
 msgid "cli-error.download:fail.label"
