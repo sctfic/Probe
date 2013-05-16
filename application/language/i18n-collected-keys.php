@@ -67,3 +67,6 @@ i18n('configuration-dbms.port.placeholder');
 i18n('install-dbms.title.metadata');
 i18n('install-dbms.description.metadata');
 i18n('install.dbms.breadcrumb');
+i18n('install-admin-user.title.metadata');
+i18n('install-admin-user.description.metadata');
+i18n('install.administrator.breadcrumb');
