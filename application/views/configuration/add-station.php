@@ -10,11 +10,11 @@
 		<?php 
 			$active = 'active';
 			$i = 1;
-			foreach ($form as $label => $type):
+			foreach ($form as $tabLabel => $type):
 		?>
 			<li class="<?=$active; $active=null; ?>">
-				<a href="#settings-<?=$label?>" data-toggle="tab">
-					<?=$i++.'. '.i18n('configuration-station.tab.'.$label, true)?>
+				<a href="#settings-<?=$tabLabel?>" data-toggle="tab">
+					<?=$i++.'. '.i18n(sprintf('configuration-station.%s.label', $tabLabel), true)?>
 				</a>
 			</li>
 		<?php endforeach; ?>
