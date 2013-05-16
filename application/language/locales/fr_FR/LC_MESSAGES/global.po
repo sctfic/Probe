@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: probe\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-15 13:28+0100\n"
-"PO-Revision-Date: 2013-05-15 13:28+0100\n"
+"POT-Creation-Date: 2013-05-16 15:37+0100\n"
+"PO-Revision-Date: 2013-05-16 15:38+0100\n"
 "Last-Translator: Édouard Lopez <dev+i18n@edouard-lopez.com>\n"
 "Language-Team: probe <dev+probe@edouard-lopez.com>\n"
 "Language: \n"
@@ -79,25 +79,24 @@ msgid "configuration-station.dbms.label"
 msgstr "Base de données"
 
 #: application/language/i18n-collected-keys.php:25
-#, fuzzy
 msgid "configuration-station.network.label"
-msgstr "Adresse <abbr title=\"format #.#.#.#\">IP</abbr>"
+msgstr "Réseau"
 
 #: application/language/i18n-collected-keys.php:26
-msgid "install-dbms.title.metadata"
-msgstr "Installation › Configuration de la base de données"
+msgid "configuration-dbms.title.metadata"
+msgstr "Configurer la base de données"
 
 #: application/language/i18n-collected-keys.php:27
-msgid "install-dbms.description.metadata"
-msgstr "Paramétrage de la base de données d'administration des utilisateurs et des stations"
+msgid "configuration-dbms.description.metadata"
+msgstr "Configuration de la base de données permettant à probe de stocker les relevés météorologiques"
 
 #: application/language/i18n-collected-keys.php:28
-msgid "install-admin-user.title.metadata"
-msgstr "Installation › Configuration du compte administrateur"
+msgid "configuration-admin-user.title.metadata"
+msgstr "Configurer le compte administrateur"
 
 #: application/language/i18n-collected-keys.php:29
-msgid "install-admin-user.description.metadata"
-msgstr "Paramétrage du compte administrateur responsable de l'application et des bases de données de chaque station."
+msgid "configuration-admin-user.description.metadata"
+msgstr "L'administrateur est responsable de l'application et des bases de données correspondantes à chaque station météorologiques"
 
 #: application/language/i18n-collected-keys.php:30
 msgid "windrose.title.metadata"
@@ -212,53 +211,45 @@ msgstr "Exemple d3 ré-utilisable"
 msgid "exemple.description.metadata"
 msgstr "Exemple d3 de graphique, expose des setters/getters et permet le chaînage de méthodes"
 
-#: application/language/i18n-collected-keys.php:56
-#, fuzzy
-msgid "configuration-station.tab.dbms"
-msgstr "Base de données"
-
 #: application/language/i18n-collected-keys.php:57
-#, fuzzy
-msgid "configuration-station.tab.network"
-msgstr "Réseau"
+msgid "configuration-dbms.engine:mysql.label"
+msgstr "MySQL 5+"
 
 #: application/language/i18n-collected-keys.php:58
-msgid "configuration-station.network._ip"
-msgstr "Adresse <abbr title=\"format #.#.#.#\">IP</abbr>"
+msgid "configuration-dbms.engine:sqlite.label"
+msgstr "SQLite 3+"
 
 #: application/language/i18n-collected-keys.php:59
-msgid "configuration-station.network._ip.placeholder"
-msgstr "exemple : 127.0.0.1"
+msgid "configuration-dbms.username.label"
+msgstr "Utilisateur"
 
 #: application/language/i18n-collected-keys.php:60
-#, fuzzy
-msgid "configuration-station.network._name"
-msgstr "Réseau"
+msgid "configuration-dbms.username.placeholder"
+msgstr "gestionnaire de l'application"
 
 #: application/language/i18n-collected-keys.php:61
-#, fuzzy
-msgid "configuration-station.network._name.placeholder"
-msgstr "p. ex. modele-station"
+msgid "configuration-dbms.password.label"
+msgstr "Mot de passe"
 
 #: application/language/i18n-collected-keys.php:62
-#, fuzzy
-msgid "configuration-station.network._port"
-msgstr "Port"
+msgid "configuration-dbms.password.placeholder"
+msgstr "mot de passe du gestionnaire"
 
 #: application/language/i18n-collected-keys.php:63
-#, fuzzy
-msgid "configuration-station.network._port.placeholder"
-msgstr "défaut: 80"
+msgid "configuration-dbms.host.label"
+msgstr "\"Nom d'hôte"
 
 #: application/language/i18n-collected-keys.php:64
-#, fuzzy
-msgid "configuration-station.network._type"
-msgstr "Modèle"
+msgid "configuration-dbms.host.placeholder"
+msgstr "exemple.fr, localhost ou 127.0.0.1"
 
 #: application/language/i18n-collected-keys.php:65
-#, fuzzy
-msgid "configuration-station.network._type.placeholder"
-msgstr "VP2, VP"
+msgid "configuration-dbms.port.label"
+msgstr "Port"
+
+#: application/language/i18n-collected-keys.php:66
+msgid "configuration-dbms.port.placeholder"
+msgstr "défaut: 3306"
 
 #: application/language/i18n-weather-conditions.php:2
 msgid "weather.clear.label"
@@ -378,12 +369,12 @@ msgid "error.file:missing.header"
 msgstr "Fichier manquant ou non valable."
 
 #: application/models/vp2.php:93
-#, fuzzy, php-format
+#, php-format
 msgid "cli-warning.available-connexion[%s]:fail.label"
 msgstr "[~] Une connexion est déjà en cours vers : %s."
 
 #: application/models/vp2.php:118
-#, fuzzy, php-format
+#, php-format
 msgid "cli-info.open-connexion[%s].label"
 msgstr "[i] Ouverture de la connexion vers : %s."
 
@@ -419,7 +410,7 @@ msgid "cli-error.download:fail.label"
 msgstr "[!] La station est indisponible, veuillez ré-essayer ultérieurement."
 
 #: application/models/vp2.php:410
-#, fuzzy, php-format
+#, php-format
 msgid "cli-info.block[%s%d%d]:out-of-range.label"
 msgstr "[i] Bloc %s ignoré (valeurs hors limites: #%d/%d)."
 
@@ -527,11 +518,11 @@ msgstr "Utilisateur"
 #: application/views/install/dbms.php:114
 #: application/views/install/dbms.php:128
 #: application/views/install/dbms.php:142
-#: application/views/configuration/add-station.php:37
-#: application/views/configuration/add-station.php:47
-#: application/views/configuration/add-station.php:56
-#: application/views/configuration/add-station.php:92
-#: application/views/configuration/stations-form.php:12
+#: application/views/configuration/add-station.php:39
+#: application/views/configuration/add-station.php:52
+#: application/views/configuration/add-station.php:61
+#: application/views/configuration/add-station.php:96
+#: application/views/configuration/stations-form.php:14
 msgid "required"
 msgstr "nécessaire"
 
@@ -550,10 +541,10 @@ msgstr "nécessaire"
 #: application/views/install/dbms.php:114
 #: application/views/install/dbms.php:128
 #: application/views/install/dbms.php:142
-#: application/views/configuration/add-station.php:37
-#: application/views/configuration/add-station.php:57
-#: application/views/configuration/add-station.php:93
-#: application/views/configuration/stations-form.php:12
+#: application/views/configuration/add-station.php:40
+#: application/views/configuration/add-station.php:62
+#: application/views/configuration/add-station.php:97
+#: application/views/configuration/stations-form.php:15
 msgid "&nbsp;:"
 msgstr ""
 
@@ -604,8 +595,7 @@ msgid "install-administrator.main-content.description"
 msgstr "Utilisateur responsable de l'application. Il peut ajouter et supprimer des stations."
 
 #: application/views/install/admin-user.php:39
-#, fuzzy
-msgid "install-administrator.username"
+msgid "install-administrator.username.label"
 msgstr "Utilisateur «&nbsp;admin&nbsp;»"
 
 #: application/views/install/admin-user.php:45
@@ -613,8 +603,7 @@ msgid "install-administrator.username.placeholder"
 msgstr "gestionnaire de l'application"
 
 #: application/views/install/admin-user.php:52
-#, fuzzy
-msgid "install-administrator.password"
+msgid "install-administrator.password.label"
 msgstr "Mot de passe"
 
 #: application/views/install/admin-user.php:58
@@ -622,8 +611,7 @@ msgid "install-administrator.password.placeholder"
 msgstr "plus long c'est mieux"
 
 #: application/views/install/admin-user.php:65
-#, fuzzy
-msgid "install-administrator.password-confirmation"
+msgid "install-administrator.password-confirmation.label"
 msgstr "Confirmer"
 
 #: application/views/install/admin-user.php:71
@@ -635,17 +623,14 @@ msgid "form.action.back"
 msgstr "Retour"
 
 #: application/views/install/admin-user.php:78
-#, fuzzy
-msgid "install-administrator.configure"
+msgid "install-administrator.configure.label"
 msgstr "Configurer →"
 
 #: application/views/install/dbms.php:22
-#, fuzzy
 msgid "install-dbms.main-content.header"
-msgstr "Installation › Configuration de la base de données"
+msgstr "Configuration de la base de données"
 
 #: application/views/install/dbms.php:31
-#, fuzzy
 msgid "install-dbms.engine.label"
 msgstr "Moteur de la Base"
 
@@ -678,8 +663,7 @@ msgid "install-dbms.database-name.label"
 msgstr "Nom de la base"
 
 #: application/views/install/dbms.php:108
-#, fuzzy
-msgid "install-dbms.advanced-user.management"
+msgid "install-dbms.advanced-user-management.label"
 msgstr "Le nom et le mot de passe sont ceux de l'administrateur de la base de données (<abbr title=\"par exemple\">p. ex.</abbr>, <var>root</var> ou <em>plus restreint</em>)."
 
 #: application/views/install/dbms.php:114
@@ -707,40 +691,24 @@ msgid "install-dbms.path.placeholder"
 msgstr "fichier de stockage"
 
 #: application/views/install/dbms.php:155
-#, fuzzy
-msgid "install-dbms.configure"
+msgid "install-dbms.configure.label"
 msgstr "Configurer →"
 
-#: application/views/configuration/add-station.php:17
-#, fuzzy
-msgid "configuration-station.tab."
-msgstr "dynamic"
-
 #: application/views/configuration/add-station.php:30
-#, fuzzy
-msgid "configuration-station.settings.dbms.info"
+msgid "configuration-add-station.main-content:dbms.tip"
 msgstr "Configuration de la base de données pour les relevés"
 
-#: application/views/configuration/add-station.php:55
-#: application/views/configuration/add-station.php:68
-#, fuzzy
-msgid "install-dbms."
-msgstr "Configuration de la base de données"
+#: application/views/configuration/add-station.php:38
+msgid "configuration-dbms.engine.label"
+msgstr "Moteur de la Base"
 
-#: application/views/configuration/add-station.php:78
-#, fuzzy
-msgid "configuration-station.settings.network.info"
+#: application/views/configuration/add-station.php:82
+msgid "configuration-add-station.main-content:network.tip"
 msgstr "Configuration réseaux permettant de contacter la station."
 
-#: application/views/configuration/add-station.php:117
-#, fuzzy
-msgid "configuration-station.add-new.valid"
+#: application/views/configuration/add-station.php:119
+msgid "configuration-station.add-new.label"
 msgstr "Ajouter la station"
-
-#: application/views/configuration/stations-form.php:12
-#, fuzzy
-msgid "configuration-station."
-msgstr "dynamic"
 
 #: application/views/configuration/list-stations.php:8
 msgid "configuration-stations.list.header"
@@ -750,13 +718,7 @@ msgstr "Liste des stations"
 msgid "configuration-stations.add-new.station"
 msgstr "Ajouter une station"
 
-#: application/views/configuration/list-stations.php:50
-#, fuzzy
-msgid "configuration-station.add-new"
-msgstr "Ajouter une station"
-
 #: application/views/admin/dashboard.php:5
-#, fuzzy
 msgid "install.dashboard.breadcrumb"
 msgstr "Tableau de bord"
 
@@ -854,9 +816,103 @@ msgstr "Confirmation du mot de passe"
 msgid "error.file[%s].creation"
 msgstr "Erreur lors de la création du fichier : %s."
 
+#~ msgid "configuration-station.network._ip.placeholder"
+#~ msgstr "exemple : 127.0.0.1"
+
+#, fuzzy
+#~ msgid "configuration-station.network._name.placeholder"
+#~ msgstr "p. ex. modele-station"
+
+#, fuzzy
+#~ msgid "configuration-station.network._port.placeholder"
+#~ msgstr "défaut: 80"
+
+#, fuzzy
+#~ msgid "configuration-station.network._type.placeholder"
+#~ msgstr "VP2, VP"
+
+#~ msgid "install-dbms.title.metadata"
+#~ msgstr "Installation › Configuration de la base de données"
+
+#~ msgid "install-dbms.description.metadata"
+#~ msgstr ""
+#~ "Paramétrage de la base de données d'administration des utilisateurs et "
+#~ "des stations"
+
+#~ msgid "install-admin-user.title.metadata"
+#~ msgstr "Installation › Configuration du compte administrateur"
+
+#~ msgid "install-admin-user.description.metadata"
+#~ msgstr ""
+#~ "Paramétrage du compte administrateur responsable de l'application et des "
+#~ "bases de données de chaque station."
+
+#, fuzzy
+#~ msgid "install-dbms.password"
+#~ msgstr "Mot de passe"
+
+#, fuzzy
+#~ msgid "configuration-station.add-new"
+#~ msgstr "Ajouter une station"
+
+#, fuzzy
+#~ msgid "configuration-station.tab.dbms"
+#~ msgstr "Base de données"
+
+#, fuzzy
+#~ msgid "install-dbms.engine-mysql"
+#~ msgstr "Moteur de la Base"
+
+#, fuzzy
+#~ msgid "install-dbms.engine-sqlite"
+#~ msgstr "SQLite 3+"
+
+#~ msgid "configuration-station.network._ip"
+#~ msgstr "Adresse <abbr title=\"format #.#.#.#\">IP</abbr>"
+
+#, fuzzy
+#~ msgid "configuration-station.network._name"
+#~ msgstr "Réseau"
+
+#, fuzzy
+#~ msgid "configuration-station.network._port"
+#~ msgstr "Port"
+
+#, fuzzy
+#~ msgid "configuration-station.network._type"
+#~ msgstr "Modèle"
+
 #, fuzzy
 #~ msgid "configuration-station.tab.network"
 #~ msgstr "Réseau"
+
+#, fuzzy
+#~ msgid "configuration-station.settings.dbms.info"
+#~ msgstr "Configuration de la base de données pour les relevés"
+
+#, fuzzy
+#~ msgid "install-dbms."
+#~ msgstr "Configuration de la base de données"
+
+#, fuzzy
+#~ msgid "configuration-station.settings.network.info"
+#~ msgstr "Configuration réseaux permettant de contacter la station."
+
+#, fuzzy
+#~ msgid "configuration-station."
+#~ msgstr "dynamic"
+
+#, fuzzy
+#~ msgid "configuration-station.tab."
+#~ msgstr "dynamic"
+
+#, fuzzy
+#~ msgid "install-dbms.legend"
+#~ msgstr "Configuration de la base de données"
+
+#, fuzzy
+#~ msgid "install-administrator.legend"
+#~ msgstr "Configuration du compte administrateur"
 
 #~ msgid "install.dbms.password"
 #~ msgstr "Mot de passe"
