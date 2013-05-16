@@ -52,7 +52,7 @@
                            type="radio"
                            name="dbms-engine" value="postgresql"
                             >
-                    <?=sprintf('%s', i18n('install-dbms.engine-postgresql')) ?>
+                    <?=sprintf('%s', i18n('install-dbms.engine:postgresql.label')) ?>
                 </label>
                 */
                 ?>
@@ -105,7 +105,7 @@
 		</div>
 
         <div class="alert mysql">
-            <?=i18n('install-dbms.advanced-user.management')?>
+            <?=i18n('install-dbms.advanced-user-management.label')?>
         </div>
 
 		<!-- Database's manager's username -->
@@ -152,7 +152,7 @@
 
 	</fieldset>
 	<div class="modal-footer">
-		<?=form_submit('configure', i18n('install-dbms.configure'), 'class="btn btn-primary pull-right"')?>
+		<?=form_submit('configure', i18n('install-dbms.configure.label'), 'class="btn btn-primary pull-right"')?>
 	</div>
 <?=form_close()?>
 <?

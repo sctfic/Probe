@@ -34,7 +34,11 @@
 				<div class="control-group">
 					<?php if (is_array($type) && ($type['type'] == 'radio' || $type['type'] == 'select')): ?>
 						<label class="control-label">
-							<?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('install-dbms.engine'), i18n('required'), i18n('&nbsp;:')) ?>
+							<?=sprintf('%s <span class="hidden">(%s)</span>%s',
+                                i18n('install-dbms.engine.label'),
+                                i18n('required'),
+                                i18n('&nbsp;:')
+                            ) ?>
 						</label>
 						<div class="controls">
 						<?php foreach ($type['values'] as $value): ?>
@@ -52,11 +56,11 @@
 					<?php else: ?>
 						<label class="control-label" for="dbms-<?=$input?>">
 							<?=sprintf('%s <span class="hidden">(%s)</span>%s', 
-								i18n('install-dbms.'.$input),
+								i18n(sprintf('install-dbms.%s.label', $input), true),
 								i18n('required'), 
-								i18n('&nbsp;:')) 
-						?>
-						</label>
+								i18n('&nbsp;:')
+                            ) ?>
+                        </label>
 						<div class="controls">
 							<?=var_dump($input, $type);?>
 							<input id="dbms-<?=$input?>"
@@ -88,7 +92,7 @@
 					<?php else: ?>
 						<label class="control-label" for="network-<?=$input?>">
 							<?=sprintf('%s <span class="hidden">(%s)</span>%s', 
-								i18n(sprintf('configuration-station.network.%s', $input), true),
+								i18n(sprintf('configuration-station.network-%s.label', $input), true),
 								i18n('required'), 
 								i18n('&nbsp;:')) 
 						?>
@@ -103,7 +107,7 @@
 								name="network-<?=$input?>" 
 								value="<?=set_value('network-'.$input)?>"
 								class="input-large" 
-								placeholder="<?=i18n(sprintf('configuration-station.network.%s.placeholder', $input), true)?>"
+								placeholder="<?=i18n(sprintf('configuration-station.network-%s.placeholder', $input), true)?>"
 							>
 						</div>
 					<?php endif; ?>
@@ -114,7 +118,7 @@
 
 	</article>
 	<div class="modal-footer">
-		<?=form_submit('configure', i18n('configuration-station.add-new.valid'), 'class="btn btn-primary pull-right"')?>
+		<?=form_submit('configure', i18n('configuration-station.add-new.label'), 'class="btn btn-primary pull-right"')?>
 	</div>
 <?=form_close()?>
 

@@ -9,7 +9,10 @@
 		<!-- Server host/IP -->
 		<div class="control-group">
 			<label class="control-label" for="station-<?=$confName?>">
-				<?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('configuration-station.'.$confName), i18n('required'), i18n('&nbsp;:')) ?>
+				<?=sprintf('%s <span class="hidden">(%s)</span>%s',
+                    i18n(sprintf('configuration-station.%s.label', $confName), true),
+                    i18n('required'),
+                    i18n('&nbsp;:')
 			</label>
 			<div class="controls">
 				<input id="station-<?=$confName?>"

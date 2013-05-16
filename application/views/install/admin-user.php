@@ -36,7 +36,7 @@
             <!-- Admin Username -->
             <div class="control-group">
                 <label class="control-label" for="admin-username">
-                    <?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('install-administrator.username'), i18n('required'), i18n('&nbsp;:')) ?>
+                    <?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('install-administrator.username.label'), i18n('required'), i18n('&nbsp;:')) ?>
                 </label>
                 <div class="controls">
                     <input id="admin-username"
@@ -49,7 +49,7 @@
             <!-- Administrator's password -->
             <div class="control-group">
                 <label class="control-label" for="admin-password">
-                    <?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('install-administrator.password'), i18n('required'), i18n('&nbsp;:'))?>
+                    <?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('install-administrator.password.label'), i18n('required'), i18n('&nbsp;:'))?>
                 </label>
                 <div class="controls">
                     <input id="admin-password"
@@ -62,7 +62,7 @@
             <!-- Administrator's password confirmation -->
             <div class="control-group">
                 <label class="control-label" for="admin-password-confirmation">
-                    <?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('install-administrator.password-confirmation'), i18n('required'), i18n('&nbsp;:'))?>
+                    <?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('install-administrator.password-confirmation.label'), i18n('required'), i18n('&nbsp;:'))?>
                 </label>
                 <div class="controls">
                     <input id="admin-password-confirmation"
@@ -75,7 +75,7 @@
         </fieldset>
         <div class="modal-footer form-actions">
       <a href="/install/dbms" class="btn"><?=i18n('form.action.back');?></a>
-            <?=form_submit('configure', i18n('install-administrator.configure'), 'class="btn btn-primary pull-right"')?>
+            <?=form_submit('configure', i18n('install-administrator.configure.label'), 'class="btn btn-primary pull-right"')?>
         </div>
     <?=form_close()?>
 </div>
