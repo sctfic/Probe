@@ -89,7 +89,9 @@ class vp2 extends CI_Model {
 			file_put_contents($this->lockFile, date ("Y/m/d H:i:s"));
 			return true;
 		}
-		log_message('infos', _( sprintf('Connexion à %s deja en cour sous un autre process.', $this->conf['_name']) ) );
+		log_message('infos', sprintf(
+            i18n('cli-warning.available-connexion[%s]:fail.label', $this->conf['_name'])
+        ) );
 		return FALSE;
 	}
 
@@ -112,7 +114,9 @@ class vp2 extends CI_Model {
 				if ($this->wakeUp()) {
 					// if ($this->config->item('verbose_threshold') > 2)
 					// 	$this->toggleBacklight (1);
-					log_message('infos', _( sprintf('Ouverture de la connexion à %s', $this->conf['_name']) ) );
+					log_message('infos', sprintf(
+                        i18n('cli-info.open-connexion[%s].label', $this->conf['_name'])
+                    ) );
 					return TRUE;
 				}
 				else {
@@ -135,8 +139,11 @@ class vp2 extends CI_Model {
 		if (!unlink($this->lockFile))
 			rename($this->lockFile, ".trash");
 		if (fclose($this->fp)) {
-			log_message('infos', sprintf( _('Fermeture de %s correcte.'), $this->conf['_name'] ) );
-			return TRUE;
+			log_message('infos', sprintf(
+                i18n('cli-info.close-connexion[%s]:success.label'),
+                    $this->conf['_name']
+            ) );
+            return true;
 		}
 		return FALSE;
 	}
@@ -192,14 +199,18 @@ class vp2 extends CI_Model {
 	*/
 	protected function VerifAnswersAndCRC($data, $len) {
 		if (strlen($data)!=$len){
-			throw new Exception(sprintf(_('Incomplete Data strlen = %d insted of : %d'),strlen($data),$len));
+			throw new Exception(sprintf(
+                i18n('cli-error.transmission[%d]:incomplete[%d].label'),
+                strlen($data), $len
+            ));
 		}
 		
 		$crc = CalculateCRC($data);
 		if ($crc != DBL_NULL /* chr(0).(0) "\x00\x00" */ ){
-			throw new Exception(sprintf(_('Wrong CRC, on good data : crc=0x%X 0x%X , strlen=%d'),
-											$crc[0], $crc[1],
-												strlen($data)));
+			throw new Exception(sprintf(
+                i18n('cli-error.checksum[%X%X]:fail[%d].label'),
+                $crc[0], $crc[1], strlen($data)
+            ));
 		}
 		return true;
 	}
@@ -216,10 +227,16 @@ class vp2 extends CI_Model {
 		}
 		else if ($r == NAK)
 		{
-			throw new Exception(sprintf(_('Command [%s] not understand'),$cmd));
+			throw new Exception(sprintf(
+                i18n('cli-error.command[%s]:fail.label'),
+                $cmd
+            ));
 		}
 		else {
-			throw new Exception(_('Unknow Error, Reconnection'));
+			throw new Exception(sprintf(
+                i18n('cli-error.command[%s]:exception.label'),
+                $cmd
+            ));
 		}
 	}
 
@@ -367,7 +384,9 @@ Lis les valeur d´archive a partir d´une date
 				$ISS_time = time()%300;
 				if ( $ISS_time<6 ) {
 				// la recuperation des archives bloque la lecture des capteurs donc on le fait par petit bout
-					throw new Exception(_('Please retry later to finish, Data sensors must be checked in few second.'));
+					throw new Exception(
+                        i18n('cli-error.download:fail.label')
+                    );
 				}
 				$Page = fread($this->fp, 267);
 				log_message('infos', 'Archive PAGE #'.$j."\t".'Since: '.DMPAFT_GetVP2Date(substr($Page,1+52*($firstArch),4), $this->OffsetTime).' Sheets #[1,2,3,4,5]');
@@ -382,12 +401,15 @@ Lis les valeur d´archive a partir d´une date
 						$DATAS = $this->RawConverter($this->DumpAfter, $ArchiveStrRaw);
 						if ($save) {
 							$this->save_Archive($DATAS);
-							// log_message('save', sprintf(_('Page #%d-%d of %s archived Ok.'),$j, $k, $ArchDate));
+							// log_message('save', sprintf(i18n('Page #%d-%d of %s archived Ok.'),$j, $k, $ArchDate));
 						}
 						$LastArchDate = $ArchDate;
 					}
 					else {
-						throw new Exception(sprintf(_('Page #%d-%d of %s Ignored (Out of Range).'),$j, $k, $ArchDate));
+						throw new Exception(sprintf(
+                            i18n('cli-info.block[%s%d%d]:out-of-range.label'),
+                            $j, $k, $ArchDate
+                        ));
 					}
 					$firstArch=0;
 				}
@@ -409,14 +431,20 @@ Compare l'heure de la station a celle du serveur web et lance la synchro si beso
 		$TIME = False;
 		$realLag = abs(strtotime($this->fetchStationTime()) - strtotime(date('Y/m/d H:i:s')));
 		if ($realLag > $maxLag || $force) {
-			log_message('warning', sprintf( _('Default Clock synchronize : %ssec'), $realLag) );
+			log_message('warning', sprintf(
+                i18n('cli-warning.clock-sync[%s].label'),
+                $realLag
+            ));
 			if ($realLag < 3600+$maxLag || $realLag > 3600*12 || $force) {
 				// if ($TIME = $this->updateStationTime()) {
-				// 	log_message('infos', _('Clock synchronizing.'));
+				// 	log_message('infos', i18n('Clock synchronizing.'));
 				// }
-				// else log_message('warning', _( 'Clock synch.'));
+				// else log_message('warning', i18n( 'Clock synch.'));
 			}
-			else log_message('warning', sprintf( _('So mutch Default : %ssec. Please change it manualy'), $realLag) );
+			else log_message('warning', sprintf(
+                i18n('cli-warning.clock-delay[%s]:off-limit.label'),
+                $realLag
+            ));
 		}
 		else return true;
 		log_message('Step',  __FUNCTION__.'('.__CLASS__.")\n".__FILE__.' ['.__LINE__.']');

@@ -1,8 +1,8 @@
 <div class="navbar navbar-inverse navbar-fixed-top">
   <ul class="breadcrumb">
-      <li class="disabled"><a href="/install/dbms"><?=i18n("install.breadcrumb.dbms")?></a> <span class="divider">/</span></li>
-      <li class="disabled"><a href="/install/admin-user"><?=i18n("install.breadcrumb.administrator")?></a> <span class="divider">/</span></li>
-      <li class="active"><?=i18n("install.breadcrumb.login")?> <span class="divider">/</span></li>
+      <li class="disabled"><a href="/install/dbms"><?=i18n("install.dbms.breadcrumb")?></a> <span class="divider">/</span></li>
+      <li class="disabled"><a href="/install/admin-user"><?=i18n("install.administrator.breadcrumb")?></a> <span class="divider">/</span></li>
+      <li class="active"><?=i18n("install.login.breadcrumb")?> <span class="divider">/</span></li>
   </ul>
 </div>
 
@@ -69,7 +69,7 @@
 
     <aside class="js time-indicator">
       <div class="now"><?=date('Y-m-d H:i')?>
-        <!-- <img class="time-indicator" src="/themes/icons/weather-clear.png" alt="<?=i18n("sunny weather")?>?>" /> -->
+        <!-- <img class="time-indicator" src="/themes/icons/weather-clear.png" alt="<?=i18n("weather.sunny.label")?>?>" /> -->
       </div>
     </aside>
 

@@ -48,15 +48,15 @@ class Page_manager {
             // Whoops, we don't have a page for that!
             show_error(
                 array(
-                    'error-title' => i18n('error.file.missing.title'),
-                    'error-description' => i18n('error.file.missing'),
+                    'error-title' => i18n('error.file:missing.title'),
+                    'error-description' => i18n('error.file:missing.description'),
                     'error-solution' => sprintf(
-                            i18n('solution.file[%s].missing'),
+                            i18n('solution.file:missing[%s].description'),
                             $page.'.php'
                         ).':'.$view.var_dump($data)
                     ),
                 404,
-                i18n('error.file.missing.header')
+                i18n('error.file:missing.header')
             );
         }
 
@@ -82,9 +82,9 @@ class Page_manager {
         where_I_Am(__FILE__, __CLASS__, __FUNCTION__, __LINE__, func_get_args());
         $data = array();
         $data['page'] = $page;
-        $data['title'] = i18n($page . ':title', true);
-        $data['description'] = i18n($page . ':description', true);
-        $data['author'] = i18n('probe:authors', true);
+        $data['title'] = i18n(sprintf('%s.title.metadata', $page), true);
+        $data['description'] = i18n(sprintf('%s.description.metadata', $page), true);
+        $data['author'] = i18n('probe.authors.metadata', true);
 
         return $data;
     }

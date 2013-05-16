@@ -89,7 +89,7 @@ index() recupere toutes les donnees recuperable sur la station
 	* @var
 	* @return
 	*/
-	function curentsCollectors($station = null) {
+	function currentsCollectors($station = null) {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 
 		try {
@@ -190,24 +190,24 @@ index() recupere toutes les donnees recuperable sur la station
 		$this->load->helper(array('form', 'url'));
 		$this->load->library('form_validation');
 
-		$formFields = $this->config->item('form.add-station');
+		$formFields = $this->config->item('add-station.form.structure');
 		foreach ($formFields as $section => $fields) {
 			foreach ($fields as $field => $value) {
 				if ($field != 'port') {
 					$this->form_validation->set_rules(
 						sprintf('%s-%s', $section, $field),
-                        i18n(sprintf("install.%s.%s", $section, $field)),
+                        i18n(sprintf("configuration-%s.%s.label", $section, $field)),
                         'trim|required'
                     );
 				}
 			}
 		}
-		$this->form_validation->set_rules('dbms-password', i18n('install.dbms.password'), 'minlength[8]');
+		$this->form_validation->set_rules('dbms-password', i18n('configuration-dbms.password.label'), 'minlength[8]');
 
 		if ($this->form_validation->run() == FALSE) {
             $page = new Page_manager();
-            $data = $page->fetchConfig('configure-add-station'); // fetch information to build the HTML header
-            $data['form'] = $this->config->item('form.add-station');
+            $data = $page->fetchConfig('configuration-add-station'); // fetch information to build the HTML header
+            $data['form'] = $this->config->item('add-station.form.structure');
 
 			$this->load->view('configuration/add-station');
 		} else {

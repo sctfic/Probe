@@ -1,3 +1,3 @@
 <div id='logout'>
-    <p><?php echo _("You're now logged out.");?></p>
+    <p><?php echo i18n("logout.success.label");?></p>
 </div>

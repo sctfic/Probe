@@ -104,23 +104,29 @@ article {
         , aside {
         }
         > fieldset {
+            width: 70%;
             float: left;
-            border-right: thin dotted $borderGrey;
+            //border-right: thin dotted $borderGrey;
+            padding-top: 35px;
+            padding-right : 0;
         }
         > aside {
-            width: 25%;
             float: right;
+            height: 100px;
+            padding-top: 30px;
+            width: 24%;
             .now {
                 position: relative;
                 width: 100%;
-                background: url("/resources/icons/weather-clear.png") no-repeat scroll 0% 0% transparent;
-                img {
-                    position: relative;
-                    bottom: 30%;
-                    left: -20%;
+              text-indent: -999em;
+              height: 100%;
+              background: url("/resources/img/weather-clear.png") no-repeat scroll 0% 0% transparent;
+              img {
+                  position: relative;
+                  bottom: 30%;
+                  left: -20%;
                 }
             }
-            .now { text-indent: -999em; }
         }
         > aside.css {
             &:hover img {
@@ -129,12 +135,12 @@ article {
                 @include transition($transition);
             }
         }
-        > aside + .modal-footer {
+        .modal-footer {
             clear: both;
         }
     }
     .btn {
-        display: block;
+        //display: block;
     }
 
 footer {
@@ -164,6 +170,10 @@ footer {
 #dbms {
   input[type="radio"] {
     margin-top: 0;
+  }
+  #dbms-engine div.controls label {
+    margin-right: 1em;
+    width: auto;
   }
   #dbms-path {
     display: none;
@@ -256,10 +266,13 @@ footer {
 
 #list-stations {
   #stations-list {
-    width: $ui-sidebarSize;
+    min-width: $ui-sidebarSize;
   }
   #stations-form {
     float: right;
+    .btn {
+      display: block;
+    }
     > .btn {
       clear: both;
     }

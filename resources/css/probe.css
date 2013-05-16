@@ -5912,32 +5912,33 @@ article {
   max-height: 600px; }
 
 #authentification > fieldset {
+  width: 70%;
   float: left;
-  border-right: thin dotted #dddddd; }
+  padding-top: 35px;
+  padding-right: 0; }
 #authentification > aside {
-  width: 25%;
-  float: right; }
+  float: right;
+  height: 100px;
+  padding-top: 30px;
+  width: 24%; }
   #authentification > aside .now {
     position: relative;
     width: 100%;
-    background: url("/resources/icons/weather-clear.png") no-repeat scroll 0% 0% transparent; }
+    text-indent: -999em;
+    height: 100%;
+    background: url("/resources/img/weather-clear.png") no-repeat scroll 0% 0% transparent; }
     #authentification > aside .now img {
       position: relative;
       bottom: 30%;
       left: -20%; }
-  #authentification > aside .now {
-    text-indent: -999em; }
 #authentification > aside.css:hover img {
   left: 100%;
   -webkit-transition: left 2s ease-in-out;
   -moz-transition: left 2s ease-in-out;
   -o-transition: left 2s ease-in-out;
   transition: left 2s ease-in-out; }
-#authentification > aside + .modal-footer {
+#authentification .modal-footer {
   clear: both; }
-
-.btn {
-  display: block; }
 
 footer {
   text-align: center;
@@ -5963,6 +5964,9 @@ footer > a > img {
 */
 #dbms input[type="radio"] {
   margin-top: 0; }
+#dbms #dbms-engine div.controls label {
+  margin-right: 1em;
+  width: auto; }
 #dbms #dbms-path {
   display: none; }
 
@@ -6017,8 +6021,10 @@ footer > a > img {
     margin-bottom: 0; }
 
 #list-stations #stations-list {
-  width: 10em; }
+  min-width: 15em; }
 #list-stations #stations-form {
   float: right; }
+  #list-stations #stations-form .btn {
+    display: block; }
   #list-stations #stations-form > .btn {
     clear: both; }

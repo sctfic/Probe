@@ -16,7 +16,7 @@
    version="1.1"
    inkscape:version="0.48.3.1 r9886"
    sodipodi:docname="probe-logo.svg"
-   inkscape:export-filename="/home/sctfic/probe-logo.png"
+   inkscape:export-filename="./probe-logo.png"
    inkscape:export-xdpi="90"
    inkscape:export-ydpi="90">
   <defs
@@ -69,7 +69,7 @@
      pagecolor="#ffffff"
      bordercolor="#666666"
      borderopacity="1.0"
-     inkscape:pageopacity="0.0"
+     inkscape:pageopacity="1"
      inkscape:pageshadow="2"
      inkscape:zoom="0.7897499"
      inkscape:cx="172.74607"
@@ -96,7 +96,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -131,7 +131,7 @@
            sodipodi:cy="33.744804"
            sodipodi:rx="59.829063"
            sodipodi:ry="64.893959"
-           d="m 326.68569,33.744804 c 0,35.839944 -26.78638,64.893959 -59.82906,64.893959 -33.04268,0 -59.82906,-29.054015 -59.82906,-64.893959 0,-35.8399436 26.78638,-64.893959 59.82906,-64.893959 33.04268,0 59.82906,29.0540154 59.82906,64.893959 z"
+           d="m 326.68569,33.744804 a 59.829063,64.893959 0 1 1 -119.65812,0 59.829063,64.893959 0 1 1 119.65812,0 z"
            transform="translate(112.79457,803.30238)" />
         <path
            sodipodi:type="arc"
@@ -141,7 +141,7 @@
            sodipodi:cy="291.73788"
            sodipodi:rx="27.540363"
            sodipodi:ry="3.1655586"
-           d="m 317.86287,294.44426 c -13.00379,0.90687 -29.94141,0.43035 -37.83121,-1.06433 -7.88981,-1.49469 -3.7441,-3.44155 9.2597,-4.34842 13.0038,-0.90687 29.94141,-0.43036 37.83122,1.06433 6.1738,1.1696 5.11244,2.66273 -2.63124,3.70162"
+           d="m 317.86287,294.44426 a 27.540363,3.1655586 0 1 1 6.62847,-0.6468"
            transform="translate(76.075987,632.36218)"
            sodipodi:start="1.0254424"
            sodipodi:end="6.9915872"
