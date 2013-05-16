@@ -59,12 +59,10 @@ msgid "configuration-station.network-_type.placeholder"
 msgstr "VP2, VP"
 
 #: application/language/i18n-collected-keys.php:20
-#, fuzzy
 msgid "configuration-station-list.title.metadata"
 msgstr "Liste des stations"
 
 #: application/language/i18n-collected-keys.php:21
-#, fuzzy
 msgid "configuration-station-list.description.metadata"
 msgstr "Liste des stations gérées. Permet l'ajout de nouvelle stations ou la modification des configurations des stations existantes"
 
@@ -77,7 +75,6 @@ msgid "login.description.metadata"
 msgstr "Connexion à l'interface d'administration"
 
 #: application/language/i18n-collected-keys.php:24
-#, fuzzy
 msgid "configuration-station.dbms.label"
 msgstr "Base de données"
 
@@ -87,27 +84,22 @@ msgid "configuration-station.network.label"
 msgstr "Adresse <abbr title=\"format #.#.#.#\">IP</abbr>"
 
 #: application/language/i18n-collected-keys.php:26
-#, fuzzy
 msgid "install-dbms.title.metadata"
 msgstr "Installation › Configuration de la base de données"
 
 #: application/language/i18n-collected-keys.php:27
-#, fuzzy
 msgid "install-dbms.description.metadata"
 msgstr "Paramétrage de la base de données d'administration des utilisateurs et des stations"
 
 #: application/language/i18n-collected-keys.php:28
-#, fuzzy
 msgid "install-admin-user.title.metadata"
 msgstr "Installation › Configuration du compte administrateur"
 
 #: application/language/i18n-collected-keys.php:29
-#, fuzzy
 msgid "install-admin-user.description.metadata"
 msgstr "Paramétrage du compte administrateur responsable de l'application et des bases de données de chaque station."
 
-#: application/language/i18n-collected-keys.php:32
-#, fuzzy
+#: application/language/i18n-collected-keys.php:30
 msgid "windrose.title.metadata"
 msgstr "Rose des vents"
 
@@ -116,7 +108,7 @@ msgstr "Rose des vents"
 msgid "windrose.description.metadata"
 msgstr "Visualisation de l'orientation et de la vitesse des vents"
 
-#: application/language/i18n-collected-keys.php:38
+#: application/language/i18n-collected-keys.php:32
 #: application/libraries/Page_manager.php:87
 msgid "probe.authors.metadata"
 msgstr "Équipe Probe"
@@ -131,77 +123,133 @@ msgstr "Conditions actuelles"
 msgid "currents.description.metadata"
 msgstr "Conditions météo actuelle"
 
-#: application/language/i18n-collected-keys.php:47
+#: application/language/i18n-collected-keys.php:37
 msgid "curves.title.metadata"
 msgstr "Courbes"
 
-#: application/language/i18n-collected-keys.php:48
+#: application/language/i18n-collected-keys.php:38
 msgid "curves.description.metadata"
 msgstr "Visualisation par courbes"
 
-#: application/language/i18n-collected-keys.php:49
+#: application/language/i18n-collected-keys.php:39
 msgid "SmartCurve.title.metadata"
 msgstr "Courbe interactive"
 
-#: application/language/i18n-collected-keys.php:50
+#: application/language/i18n-collected-keys.php:40
 msgid "SmartCurve.description.metadata"
 msgstr "Courbe interactive avec un zoom et canvas redimensionnable"
 
-#: application/language/i18n-collected-keys.php:51
+#: application/language/i18n-collected-keys.php:41
 msgid "SmartCurves.title.metadata"
 msgstr "Comparateur de courbes"
 
-#: application/language/i18n-collected-keys.php:52
+#: application/language/i18n-collected-keys.php:42
 msgid "SmartCurves.description.metadata"
 msgstr "Interface de comparaison de données"
 
-#: application/language/i18n-collected-keys.php:53
+#: application/language/i18n-collected-keys.php:43
 msgid "SmartChart.title.metadata"
 msgstr "Graphique interactif"
 
-#: application/language/i18n-collected-keys.php:54
+#: application/language/i18n-collected-keys.php:44
 msgid "SmartChart.description.metadata"
 msgstr "Graphique interactif avec zoom"
 
-#: application/language/i18n-collected-keys.php:55
+#: application/language/i18n-collected-keys.php:45
 msgid "histoWind.title.metadata"
 msgstr "Historique des vents"
 
-#: application/language/i18n-collected-keys.php:56
+#: application/language/i18n-collected-keys.php:46
 msgid "histoWind.description.metadata"
 msgstr "Historique de l'orientation et de la vitesse des vents"
 
-#: application/language/i18n-collected-keys.php:59
+#: application/language/i18n-collected-keys.php:47
+msgid "wind.title.metadata"
+msgstr "Direction et vitesse journalière"
+
+#: application/language/i18n-collected-keys.php:48
+msgid "wind.description.metadata"
+msgstr "Visualisation de la direction et de la vitesse journalière moyenne des vents"
+
+#: application/language/i18n-collected-keys.php:49
 msgid "configuration-list-station.title.metadata"
 msgstr "Liste des stations"
 
-#: application/language/i18n-collected-keys.php:60
+#: application/language/i18n-collected-keys.php:50
 msgid "configuration-list-station.description.metadata"
 msgstr "Consulter la liste des stations connectées"
 
-#: application/language/i18n-collected-keys.php:61
+#: application/language/i18n-collected-keys.php:51
 msgid "configuration-station.list.breadcrumb"
 msgstr "Liste des stations"
 
-#: application/language/i18n-collected-keys.php:62
+#: application/language/i18n-collected-keys.php:52
 msgid "configuration-station.dashboard.breadcrumb"
 msgstr "Tableau de bord"
 
-#: application/language/i18n-collected-keys.php:63
+#: application/language/i18n-collected-keys.php:53
 msgid "configuration-station.add.breadcrumb"
 msgstr "Ajout de station"
 
-#: application/language/i18n-collected-keys.php:64
+#: application/language/i18n-collected-keys.php:54
 msgid "histoWind.view.label"
 msgstr "historique des vents"
 
-#: application/language/i18n-collected-keys.php:65
+#: application/language/i18n-collected-keys.php:55
 msgid "exemple.title.metadata"
 msgstr "Exemple d3 ré-utilisable"
 
-#: application/language/i18n-collected-keys.php:66
+#: application/language/i18n-collected-keys.php:56
 msgid "exemple.description.metadata"
 msgstr "Exemple d3 de graphique, expose des setters/getters et permet le chaînage de méthodes"
+
+#: application/language/i18n-collected-keys.php:56
+#, fuzzy
+msgid "configuration-station.tab.dbms"
+msgstr "Base de données"
+
+#: application/language/i18n-collected-keys.php:57
+#, fuzzy
+msgid "configuration-station.tab.network"
+msgstr "Réseau"
+
+#: application/language/i18n-collected-keys.php:58
+msgid "configuration-station.network._ip"
+msgstr "Adresse <abbr title=\"format #.#.#.#\">IP</abbr>"
+
+#: application/language/i18n-collected-keys.php:59
+msgid "configuration-station.network._ip.placeholder"
+msgstr "exemple : 127.0.0.1"
+
+#: application/language/i18n-collected-keys.php:60
+#, fuzzy
+msgid "configuration-station.network._name"
+msgstr "Réseau"
+
+#: application/language/i18n-collected-keys.php:61
+#, fuzzy
+msgid "configuration-station.network._name.placeholder"
+msgstr "p. ex. modele-station"
+
+#: application/language/i18n-collected-keys.php:62
+#, fuzzy
+msgid "configuration-station.network._port"
+msgstr "Port"
+
+#: application/language/i18n-collected-keys.php:63
+#, fuzzy
+msgid "configuration-station.network._port.placeholder"
+msgstr "défaut: 80"
+
+#: application/language/i18n-collected-keys.php:64
+#, fuzzy
+msgid "configuration-station.network._type"
+msgstr "Modèle"
+
+#: application/language/i18n-collected-keys.php:65
+#, fuzzy
+msgid "configuration-station.network._type.placeholder"
+msgstr "VP2, VP"
 
 #: application/language/i18n-weather-conditions.php:2
 msgid "weather.clear.label"
@@ -320,8 +368,8 @@ msgstr "Vérifier que le fichier <var>%s</var> existe bien et que vous avez les 
 msgid "error.file:missing.header"
 msgstr "Fichier manquant ou non valable."
 
-#: application/models/vp2.php:138
-#, fuzzy, php-format
+#: application/models/vp2.php:143
+#, php-format
 msgid "cli-info.close-connexion[%s]:success.label"
 msgstr "[i] Fermeture correcte de la connexion à : %s."
 
@@ -334,19 +382,18 @@ msgstr "[~] Une connexion est déjà en cours vers : %s."
 #, fuzzy, php-format
 msgid "cli-info.open-connexion[%s].label"
 msgstr "[i] Ouverture de la connexion vers : %s."
-
-#: application/models/vp2.php:195
+#: application/models/vp2.php:203
 #, php-format
 msgid "cli-error.transmission[%d]:incomplete[%d].label"
 msgstr "[!] Données reçues incomplètes : %d au lieu de %d."
 
-#: application/models/vp2.php:210
+#: application/models/vp2.php:211
 #, php-format
 msgid "cli-error.checksum[%X%X]:fail[%d].label"
 msgstr "[!] Somme de controle incorrecte : crc=0x%X 0x%X, strlen=%d."
 
 #: application/models/vp2.php:231
-#, fuzzy, php-format
+#, php-format
 msgid "cli-error.command[%s]:fail.label"
 msgstr "[!] Commande incorrecte: '%s'."
 
@@ -366,17 +413,17 @@ msgstr "[i] Bloc %s ignoré (valeurs hors limites: #%d/%d)."
 
 #: application/models/vp2.php:435
 #, php-format
-msgid "cli-warning.clock-delay[%s].label"
+msgid "cli-warning.clock-sync[%s].label"
 msgstr "[~] Décalage de l'horloge: %ss."
 
-#: application/models/vp2.php:419
+#: application/models/vp2.php:445
 #, php-format
 msgid "cli-warning.clock-delay[%s]:off-limit.label"
 msgstr "[~] La station est désynchronisée (%ss), veuillez la synchroniser."
 
-#: application/models/station.php:97
-#: application/models/station.php:161
-#: application/models/station.php:214
+#: application/models/station.php:98
+#: application/models/station.php:172
+#: application/models/station.php:238
 msgid "error.parameter:type-exception.label"
 msgstr "Type de paramètre non pris en charge."
 
@@ -390,18 +437,18 @@ msgstr "Récupération des informations de la station : %s (id: %s)."
 msgid "station[%s].fetch-config:fail.label"
 msgstr "La station %s a été <b>ignoré</b> (informations indisponibles)."
 
-
-#: application/models/station.php:116
+#: application/models/station.php:125
 msgid "station.fetch-config:none.label"
 msgstr "Aucune configuration valide n'est disponible."
 
 #: application/models/station.php:184
-#: application/models/station.php:238
+#: application/models/station.php:246
 #, php-format
 msgid "station[%s].open-connexion[%s%s]:fail.label"
 msgstr "Station indisponible, veuillez vérifiez les paramètres de connexion (nom: %s, adresse: %s:%s)."
 
-#: application/models/station.php:255
+#: application/models/station.php:214
+#: application/models/station.php:262
 #, php-format
 msgid "station.close-connexion[%s]:fail.label"
 msgstr "[i] Fermeture impossible de la connexion à : %s."
@@ -432,17 +479,14 @@ msgid "logout.success.label"
 msgstr "Vous êtes déconnecté."
 
 #: application/views/login.php:3
-#, fuzzy
 msgid "install.dbms.breadcrumb"
 msgstr "Base de données"
 
 #: application/views/login.php:4
-#, fuzzy
 msgid "install.administrator.breadcrumb"
 msgstr "Compte administrateur"
 
 #: application/views/login.php:5
-#, fuzzy
 msgid "install.login.breadcrumb"
 msgstr "Authentification"
 
@@ -553,7 +597,6 @@ msgid "install-administrator.username"
 msgstr "Utilisateur «&nbsp;admin&nbsp;»"
 
 #: application/views/install/admin-user.php:45
-#, fuzzy
 msgid "install-administrator.username.placeholder"
 msgstr "gestionnaire de l'application"
 
@@ -563,7 +606,6 @@ msgid "install-administrator.password"
 msgstr "Mot de passe"
 
 #: application/views/install/admin-user.php:58
-#, fuzzy
 msgid "install-administrator.password.placeholder"
 msgstr "plus long c'est mieux"
 
@@ -573,7 +615,6 @@ msgid "install-administrator.password-confirmation"
 msgstr "Confirmer"
 
 #: application/views/install/admin-user.php:71
-#, fuzzy
 msgid "install-administrator.password-confirmation.placeholder"
 msgstr "pour éviter les erreurs de saisie"
 
