@@ -540,13 +540,11 @@ msgid "login.authentificate"
 msgstr "S'authentifier →"
 
 #: application/views/install/admin-user.php:25
-#, fuzzy
-msgid "install-administrator.legend"
+msgid "install-administrator.main-content.header"
 msgstr "Configuration du compte administrateur"
 
 #: application/views/install/admin-user.php:33
-#, fuzzy
-msgid "install-administrator.description"
+msgid "install-administrator.main-content.description"
 msgstr "Utilisateur responsable de l'application. Il peut ajouter et supprimer des stations."
 
 #: application/views/install/admin-user.php:39
@@ -590,8 +588,8 @@ msgstr "Configurer →"
 
 #: application/views/install/dbms.php:22
 #, fuzzy
-msgid "install-dbms.legend"
-msgstr "Configuration de la base de données"
+msgid "install-dbms.main-content.header"
+msgstr "Installation › Configuration de la base de données"
 
 #: application/views/install/dbms.php:31
 #: application/views/configuration/add-station.php:37

@@ -19,7 +19,7 @@
 
 	<div class="modal-header">
 		<!-- <legend> -->
-			<h3><?=i18n("install-dbms.legend")?></h3>
+			<h3><?=i18n("install-dbms.main-content.header")?></h3>
 		<!-- </legend>	 -->
 	</div>
 	<fieldset class="modal-body">

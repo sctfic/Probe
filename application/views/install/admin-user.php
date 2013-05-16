@@ -22,7 +22,7 @@
     ?>
         <div class="modal-header">
             <!-- <legend> -->
-                <h3><?=i18n("install-administrator.legend")?></h3>
+                <h3><?=i18n("install-administrator.main-content.header")?></h3>
             <!-- </legend>	 -->
         </div>
 
@@ -30,7 +30,7 @@
             <?=validation_errors()?>
 
     <div class="alert alert-info">
-        <?=i18n('install-administrator.description')?>
+        <?=i18n('install-administrator.main-content.description')?>
     </div>
 
             <!-- Admin Username -->
