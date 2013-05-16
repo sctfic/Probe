@@ -115,8 +115,17 @@
 
 
 	</article>
-	<div class="modal-footer">
-		<?=form_submit('configure', i18n('configuration-station.add-new.label'), 'class="btn btn-primary pull-right"')?>
+    <div class="modal-footer form-actions">
+        <a href="/configuration/" class="btn btn-small pull-left">
+            <?=i18n('configuration-station.list.button');?>
+        </a>
+        <a href="#dbms" class="btn btn-small btn-primary pull-right hidden">
+            <?=i18n('configuration-station.configure:dbms.button');?>
+        </a>
+        <a href="#network" class="btn btn-small btn-primary pull-right">
+            <?=i18n('configuration-station.configure:network.button');?>
+        </a>
+		<?=form_submit('configure', i18n('configuration-station.add-new.label'), 'class="btn btn-primary pull-right hidden"')?>
 	</div>
 <?=form_close()?>
 
