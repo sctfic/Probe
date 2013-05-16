@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: probe\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-05-16 16:29+0100\n"
-"PO-Revision-Date: 2013-05-16 16:30+0100\n"
+"PO-Revision-Date: 2013-05-16 16:57+0100\n"
 "Last-Translator: Édouard Lopez <dev+i18n@edouard-lopez.com>\n"
 "Language-Team: probe <dev+probe@edouard-lopez.com>\n"
 "Language: \n"
@@ -554,7 +554,7 @@ msgstr "nécessaire"
 #: application/views/configuration/add-station.php:97
 #: application/views/configuration/stations-form.php:15
 msgid "&nbsp;:"
-msgstr ""
+msgstr "&nbsp;:"
 
 #: application/views/login.php:38
 #: application/views/login.php:56
@@ -775,15 +775,15 @@ msgstr "Erreur : base de données inaccessible"
 
 #: application/controllers/install.php:74
 msgid "error.database.unreachable"
-msgstr "Le fichier de configuration contient des <strong>paramètres de connexion invalide</strong>. La base de données est inaccessible."
+msgstr "Le fichier de configuration contient des <strong>paramètres de connexion invalides</strong>. La base de données est inaccessible."
 
 #: application/controllers/install.php:75
 msgid "solution.database.unreachable"
-msgstr "Vérifier que la base est présente ou que les configurations sont correctes. Sinon supprimez celui-ci."
+msgstr "Vérifier que :<ul><li>la base est présente&nbsp;;</li><li>les configurations sont correctes&nbsp;;<br/>ou</li><li>supprimer le fichier contenant les paramètres de connexion (<var>db-default.php</var>).</li>"
 
 #: application/controllers/install.php:78
 msgid "error.database.unreachable.header"
-msgstr "Base de données est inaccessible"
+msgstr "Base de données inaccessible"
 
 #: application/controllers/install.php:175
 msgid "error.database.access-denied.title"
