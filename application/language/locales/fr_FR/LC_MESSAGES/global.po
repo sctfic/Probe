@@ -360,8 +360,8 @@ msgid "cli-error.download:fail.label"
 msgstr "[!] La station est indisponible, veuillez ré-essayer ultérieurement."
 
 #: application/models/vp2.php:410
-#, php-format
-msgid "cli-info.block[%d%d%s]:out-of-range.label"
+#, fuzzy, php-format
+msgid "cli-info.block[%s%d%d]:out-of-range.label"
 msgstr "[i] Bloc %s ignoré (valeurs hors limites: #%d/%d)."
 
 #: application/models/vp2.php:435

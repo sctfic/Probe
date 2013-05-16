@@ -208,7 +208,7 @@ class vp2 extends CI_Model {
 		$crc = CalculateCRC($data);
 		if ($crc != DBL_NULL /* chr(0).(0) "\x00\x00" */ ){
 			throw new Exception(sprintf(
-                i18n('cli-error.checksum[%X]:fail[%s][%d].label'),
+                i18n('cli-error.checksum[%X%X]:fail[%d].label'),
                 $crc[0], $crc[1], strlen($data)
             ));
 		}
@@ -407,7 +407,7 @@ Lis les valeur d´archive a partir d´une date
 					}
 					else {
 						throw new Exception(sprintf(
-                            i18n('cli-info.block[%d%d%s]:out-of-range.label'),
+                            i18n('cli-info.block[%s%d%d]:out-of-range.label'),
                             $j, $k, $ArchDate
                         ));
 					}
