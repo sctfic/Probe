@@ -35,8 +35,8 @@ class Install extends CI_Controller {
                 'url' => '/install/dbms',
                 'i18n' => 'install.dbms.breadcrumb'
             ),
-            'i18n' => 'install.administrator.breadcrumb',
-            'i18n' => 'install.dashboard.breadcrumb'
+            'install.administrator.breadcrumb',
+            'install.login.breadcrumb'
         ),
         'admin-user' => array(
             array(
@@ -48,7 +48,7 @@ class Install extends CI_Controller {
                 'url' => '/install/admin-user',
                 'i18n' => 'install.administrator.breadcrumb',
             ),
-            'i18n' => 'install.dashboard.breadcrumb',
+            'install.dashboard.breadcrumb',
         )
     );
 

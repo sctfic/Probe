@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: probe\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-16 15:37+0100\n"
-"PO-Revision-Date: 2013-05-16 15:38+0100\n"
+"POT-Creation-Date: 2013-05-16 16:29+0100\n"
+"PO-Revision-Date: 2013-05-16 16:30+0100\n"
 "Last-Translator: Édouard Lopez <dev+i18n@edouard-lopez.com>\n"
 "Language-Team: probe <dev+probe@edouard-lopez.com>\n"
 "Language: \n"
@@ -251,6 +251,18 @@ msgstr "Port"
 msgid "configuration-dbms.port.placeholder"
 msgstr "défaut: 3306"
 
+#: application/language/i18n-collected-keys.php:67
+msgid "install-dbms.title.metadata"
+msgstr "Installation › Configuration de la base de données"
+
+#: application/language/i18n-collected-keys.php:68
+msgid "install-dbms.description.metadata"
+msgstr "Paramétrage de la base de données d'administration des utilisateurs et des stations"
+
+#: application/language/i18n-collected-keys.php:69
+msgid "install.dbms.breadcrumb"
+msgstr "Base de données"
+
 #: application/language/i18n-weather-conditions.php:2
 msgid "weather.clear.label"
 msgstr "ciel dégagé"
@@ -480,10 +492,6 @@ msgstr "L'adresse e-mail est mal-formée."
 #: application/views/logout.php:2
 msgid "logout.success.label"
 msgstr "Vous êtes déconnecté."
-
-#: application/views/login.php:3
-msgid "install.dbms.breadcrumb"
-msgstr "Base de données"
 
 #: application/views/login.php:4
 msgid "install.administrator.breadcrumb"
@@ -830,14 +838,6 @@ msgstr "Erreur lors de la création du fichier : %s."
 #, fuzzy
 #~ msgid "configuration-station.network._type.placeholder"
 #~ msgstr "VP2, VP"
-
-#~ msgid "install-dbms.title.metadata"
-#~ msgstr "Installation › Configuration de la base de données"
-
-#~ msgid "install-dbms.description.metadata"
-#~ msgstr ""
-#~ "Paramétrage de la base de données d'administration des utilisateurs et "
-#~ "des stations"
 
 #~ msgid "install-admin-user.title.metadata"
 #~ msgstr "Installation › Configuration du compte administrateur"

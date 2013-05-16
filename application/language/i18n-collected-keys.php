@@ -64,3 +64,6 @@ i18n('configuration-dbms.host.label');
 i18n('configuration-dbms.host.placeholder');
 i18n('configuration-dbms.port.label');
 i18n('configuration-dbms.port.placeholder');
+i18n('install-dbms.title.metadata');
+i18n('install-dbms.description.metadata');
+i18n('install.dbms.breadcrumb');
