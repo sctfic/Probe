@@ -75,7 +75,7 @@ class Configuration extends CI_Controller {
         $page = new Page_manager();
         $data = $page->fetchConfig('configuration-add-station'); // fetch information to build the HTML header
         $data['breadcrumb'] = $this->_breadcrumb['add-station'];
-        $data['form'] = $this->config->item('form.add-station');
+        $data['form'] = $this->config->item('add-station.form.structure');
 
         $data['dbmsUsername'] = null;
         $data['dbmsPassword'] = null;

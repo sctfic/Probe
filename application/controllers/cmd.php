@@ -190,7 +190,7 @@ index() recupere toutes les donnees recuperable sur la station
 		$this->load->helper(array('form', 'url'));
 		$this->load->library('form_validation');
 
-		$formFields = $this->config->item('form.add-station');
+		$formFields = $this->config->item('add-station.form.structure');
 		foreach ($formFields as $section => $fields) {
 			foreach ($fields as $field => $value) {
 				if ($field != 'port') {
@@ -207,7 +207,7 @@ index() recupere toutes les donnees recuperable sur la station
 		if ($this->form_validation->run() == FALSE) {
             $page = new Page_manager();
             $data = $page->fetchConfig('configuration-add-station'); // fetch information to build the HTML header
-            $data['form'] = $this->config->item('form.add-station');
+            $data['form'] = $this->config->item('add-station.form.structure');
 
 			$this->load->view('configuration/add-station');
 		} else {

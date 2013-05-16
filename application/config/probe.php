@@ -23,7 +23,7 @@ $config['page-station-list']	= "configuration/stations";
 $config['require_directories']	= array("entity", "exceptions");
 $config['require_blacklist'] = array( "Address");
 
-$config['form.add-station'] = array(
+$config['add-station.form.structure'] = array(
             'dbms' => array(
                 'engine' => array(
                     'type' => 'radio',

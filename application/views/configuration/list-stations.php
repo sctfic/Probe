@@ -38,6 +38,7 @@
                 $i = 0;
                 foreach ($stationsConf as $_name => $conf) {
                     $data['confs'] = $conf;
+                    $data['form'] = $this->config->item('add-station.form.structure');
                     $data['active'] = ($i == 0 ? 'active': null);
                     $this->load->view('configuration/stations-form', $data);
                     $i++;
