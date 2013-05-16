@@ -165,6 +165,10 @@ footer {
   input[type="radio"] {
     margin-top: 0;
   }
+  #dbms-engine div.controls label {
+    margin-right: 1em;
+    width: auto;
+  }
   #dbms-path {
     display: none;
   }

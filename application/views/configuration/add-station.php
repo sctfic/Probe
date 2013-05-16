@@ -13,7 +13,7 @@
 			foreach ($form as $tabLabel => $type):
 		?>
 			<li class="<?=$active; $active=null; ?>">
-				<a href="#settings-<?=$tabLabel?>" data-toggle="tab">
+				<a href="#<?=$tabLabel?>" data-toggle="tab">
 					<?=$i++.'. '.i18n(sprintf('configuration-station.%s.label', $tabLabel), true)?>
 				</a>
 			</li>
@@ -25,13 +25,13 @@
 	<!-- <article class="tab-content"> -->
 		<?=validation_errors()?>
 
-		<fieldset id="settings-dbms" class="tab-pane active">
+		<fieldset id="dbms" class="tab-pane active">
 			<p class="alert alert-info">
 				<?=i18n('configuration-add-station.main-content:dbms.tip')?>
 			</p>
 			<?php foreach ($form['dbms'] as $input => $type): ?>
 				<!-- <?=$input?> <?=$type?> -->
-				<div class="control-group">
+				<div id="dbms-engine" class="control-group">
 					<?php if (is_array($type) && ($type['type'] == 'radio' || $type['type'] == 'select')): ?>
 						<label class="control-label">
 							<?=sprintf('%s <span class="hidden">(%s)</span>%s',
@@ -77,7 +77,7 @@
 			<?php endforeach; ?>
 		</fieldset>
 
-		<fieldset id="settings-network" class="tab-pane">
+		<fieldset id="network" class="tab-pane">
 			<p class="alert alert-info">
 				<?=i18n('configuration-add-station.main-content:network.tip')?>
 			</p>
