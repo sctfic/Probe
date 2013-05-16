@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: probe\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-16 17:10+0100\n"
-"PO-Revision-Date: 2013-05-16 17:11+0100\n"
+"POT-Creation-Date: 2013-05-16 19:52+0100\n"
+"PO-Revision-Date: 2013-05-16 19:54+0100\n"
 "Last-Translator: Édouard Lopez <dev+i18n@edouard-lopez.com>\n"
 "Language-Team: probe <dev+probe@edouard-lopez.com>\n"
 "Language: \n"
@@ -722,7 +722,19 @@ msgstr "Moteur de la Base"
 msgid "configuration-add-station.main-content:network.tip"
 msgstr "Configuration réseaux permettant de contacter la station."
 
-#: application/views/configuration/add-station.php:119
+#: application/views/configuration/add-station.php:120
+msgid "configuration-station.list.button"
+msgstr "← Lister les stations"
+
+#: application/views/configuration/add-station.php:123
+msgid "configuration-station.configure:dbms.button"
+msgstr "← Paramètre base de données"
+
+#: application/views/configuration/add-station.php:126
+msgid "configuration-station.configure:network.button"
+msgstr "Paramètres réseau →"
+
+#: application/views/configuration/add-station.php:128
 msgid "configuration-station.add-new.label"
 msgstr "Ajouter la station"
 
@@ -730,7 +742,7 @@ msgstr "Ajouter la station"
 msgid "configuration-stations.list.header"
 msgstr "Liste des stations"
 
-#: application/views/configuration/list-stations.php:24
+#: application/views/configuration/list-stations.php:25
 msgid "configuration-stations.add-new.station"
 msgstr "Ajouter une station"
 
