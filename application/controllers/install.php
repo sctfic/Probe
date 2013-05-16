@@ -48,7 +48,7 @@ class Install extends CI_Controller {
                 'url' => '/install/admin-user',
                 'i18n' => 'install.administrator.breadcrumb',
             ),
-            'install.dashboard.breadcrumb',
+            'install.login.breadcrumb'
         )
     );
 
