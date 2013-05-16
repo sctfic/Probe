@@ -13,12 +13,16 @@
                     i18n(sprintf('configuration-station.%s.label', $confName), true),
                     i18n('required'),
                     i18n('&nbsp;:')
+                )
+                ?>
 			</label>
 			<div class="controls">
 				<input id="station-<?=$confName?>"
 					type="text" required
 					name="station-<?=$confName?>" value="<?=$value?>"
-					class="input-large" placeholder="<?=i18n(sprintf('configuration-station.%s.placeholder', $confName))?>"
+					class="input-large" placeholder="<?=i18n(
+                        sprintf('configuration-station.%s.placeholder', $confName), true
+                    )?>"
 				>
 			</div>
 		</div>
