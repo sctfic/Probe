@@ -35,10 +35,10 @@ require_once '../config/stations.conf.php';
         <article id="<?=$stationId?>" class="station-config">
             <h3><?=$stationId?>
                 <a href='/admin/edit/station:<?=$stationId?>'>
-                    [<?=sprintf(_('edit %s properties'), sprintf('<i class="hidden">%s</i>', $stationId))?>]
+                    [<?=sprintf(i18n('edit %s properties'), sprintf('<i class="hidden">%s</i>', $stationId))?>]
                 </a>
             </h3>
-            <summary><b><?=sprintf('%s: ', _('Model'));?></b><i><?=$stationInfos['config:type']?></i></summary>
+            <summary><b><?=sprintf('%s: ', i18n('Model'));?></b><i><?=$stationInfos['config:type']?></i></summary>
             <details open="open">
                 <form action="edit.php" method="get">
                     <fieldset>
@@ -46,7 +46,7 @@ require_once '../config/stations.conf.php';
                         <input type="hidden" name="stationId" value="<?=$stationId?>" />
                         <dl>
                             <?php foreach ($stationInfos as $infoKey => $infoVal): ?>
-                                <dt><label for="<?=strtolower($infoKey)?>"><?=_($infoKey)?></label></dt>
+                                <dt><label for="<?=strtolower($infoKey)?>"><?=i18n($infoKey)?></label></dt>
                                 <dd><input disabled
                                     id="<?=$infoKey?>"
                                     name="<?=$infoKey?>"
