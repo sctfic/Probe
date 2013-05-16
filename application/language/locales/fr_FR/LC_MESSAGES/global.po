@@ -598,13 +598,11 @@ msgid "install-dbms.engine"
 msgstr "Moteur de la Base"
 
 #: application/views/install/dbms.php:39
-#, fuzzy
-msgid "install-dbms.engine-mysql"
+msgid "install-dbms.engine:mysql.label"
 msgstr "MySQL 5+"
 
 #: application/views/install/dbms.php:46
-#, fuzzy
-msgid "install-dbms.engine-sqlite"
+msgid "install-dbms.engine:sqlite.label"
 msgstr "SQLite 3+"
 
 #: application/views/install/dbms.php:65

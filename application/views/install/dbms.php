@@ -36,14 +36,14 @@
                            type="radio" checked
                            name="dbms-engine" value="mysql"
                     >
-                    <?=sprintf('%s', i18n('install-dbms.engine-mysql')) ?>
+                    <?=sprintf('%s', i18n('install-dbms.engine:mysql.label')) ?>
                 </label>
                 <label class="control-label inline" for="dbms-engine-sqlite">
                     <input id="dbms-engine-sqlite"
                            type="radio"
                            name="dbms-engine" value="sqlite"
                     >
-                    <?=sprintf('%s', i18n('install-dbms.engine-sqlite')) ?>
+                    <?=sprintf('%s', i18n('install-dbms.engine:sqlite.label')) ?>
                 </label>
                 <?
                 /*
