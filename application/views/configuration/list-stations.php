@@ -37,6 +37,7 @@
             if (!empty($stationsConf)) {
                 $i = 0;
                 foreach ($stationsConf as $_name => $conf) {
+                    krsort($conf); // categorize fields
                     $data['confs'] = $conf;
                     $data['form'] = $this->config->item('add-station.form.structure');
                     $data['active'] = ($i == 0 ? 'active': null);
