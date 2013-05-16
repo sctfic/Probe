@@ -270,6 +270,9 @@ footer {
   }
   #stations-form {
     float: right;
+    .btn {
+      display: block;
+    }
     > .btn {
       clear: both;
     }
