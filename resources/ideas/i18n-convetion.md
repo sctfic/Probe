@@ -17,7 +17,7 @@ Each i18n key should be composed of 3 segments:
 * `ui`:
   * <abbr title="UI">UI</abbr> holding the string.
   Should help understand how the string will appear. For instance, a _header_ would not be rendered in the same way as a text's _label_ (the former should be shorter than the latter).
-  * e.g.: _header_, _label_, _text_, _footer_, _placeholder_, etc.
+  * e.g.: _header_, _label_, _description_, _placeholder_, etc.
 
 ## Complexity and Granularity
 
