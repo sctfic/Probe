@@ -20,6 +20,7 @@ $oddRow: #729fcf;
 $overRow: #8ae234;
 $thinDotted: thin dotted $borderColor;
 
+
 body {
   padding-top: 60px;
   padding-bottom: 40px;
@@ -341,13 +342,31 @@ footer {
 #list-stations {
   #stations-list {
     min-width: $ui-sidebarSize;
+    border: thin solid $grayLighter;
+    border-right: none;
+    border-radius: $baseBorderRadius 0 0 $baseBorderRadius;
+    > .tabs-left > .nav-tabs {
+      border-right: medium none;
+      float: none;
+      margin-bottom: 0;
+      margin-right: 0;
+    }
   }
   #stations-form {
-    float: right;
-    .btn {
-      display: block;
+    background: none repeat scroll 0 0 $graySuperLight;
+    border: thin solid $grayLighter;
+    margin-left: 0;
+    min-height: 7em;
+    text-align: center;
+    position : relative;
+    > div {
+      bottom: 2em;
+      position: absolute;
+      width: 100%;
     }
-    > .btn {
+    .btn {
+      display: inline-block;
+      text-align: center;
       clear: both;
     }
   }
