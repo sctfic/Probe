@@ -152,6 +152,7 @@
 
 	</fieldset>
 	<div class="modal-footer">
+        <!-- TODO replace arrow by icon -->
 		<?=form_submit('configure', i18n('install-dbms.configure.label'), 'class="btn btn-primary pull-right"')?>
 	</div>
 <?=form_close()?>

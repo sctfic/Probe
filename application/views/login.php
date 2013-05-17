@@ -74,7 +74,8 @@
     </aside>
 
     <div class="modal-footer">
-      <?=form_submit('authentificate', i18n('login.authentificate'), 'class="btn btn-primary pull-right"')?>
+        <!-- TODO replace arrow by icon -->
+        <?=form_submit('authentificate', i18n('login.authentificate'), 'class="btn btn-primary pull-right"')?>
     </div>
   <?=form_close()?>
 </div>

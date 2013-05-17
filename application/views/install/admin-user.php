@@ -78,6 +78,8 @@
                 <i class="icon-arrow-left"></i>
                 <?=i18n('form.action.back');?>
             </a>
+
+            <!-- TODO replace arrow by icon -->
             <?=form_submit('configure', i18n('install-administrator.configure.label'), 'class="btn btn-primary pull-right"')?>
         </div>
     <?=form_close()?>
