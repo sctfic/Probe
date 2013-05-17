@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: probe\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-16 19:52+0100\n"
-"PO-Revision-Date: 2013-05-16 19:54+0100\n"
+"POT-Creation-Date: 2013-05-17 11:54+0100\n"
+"PO-Revision-Date: 2013-05-17 12:06+0100\n"
 "Last-Translator: Édouard Lopez <dev+i18n@edouard-lopez.com>\n"
 "Language-Team: probe <dev+probe@edouard-lopez.com>\n"
 "Language: \n"
@@ -724,15 +724,15 @@ msgstr "Configuration réseaux permettant de contacter la station."
 
 #: application/views/configuration/add-station.php:120
 msgid "configuration-station.list.button"
-msgstr "← Lister les stations"
+msgstr "Lister les stations"
 
 #: application/views/configuration/add-station.php:123
 msgid "configuration-station.configure:dbms.button"
-msgstr "← Paramètre base de données"
+msgstr "Paramétrer la base de données"
 
 #: application/views/configuration/add-station.php:126
 msgid "configuration-station.configure:network.button"
-msgstr "Paramètres réseau →"
+msgstr "Paramétrer le réseau"
 
 #: application/views/configuration/add-station.php:128
 msgid "configuration-station.add-new.label"
@@ -768,26 +768,38 @@ msgstr "Déconnexion"
 #: application/views/d3/windrose.php:29
 #: application/views/d3/currents.php:21
 #: application/views/d3/curves.php:20
-#: application/views/templates/footer.php:28
+#: application/views/templates/footer.php:47
 msgid "warning.javascript.disable"
 msgstr "Pour consulter cette page au maximum de son potentiel veuillez activer Javascript sur votre navigateur."
 
-#: application/views/templates/footer.php:20
+#: application/views/templates/footer.php:22
 #, php-format
 msgid "project.license.by%s,%s,%s"
 msgstr "est licensié par <a \thref=\"https://twitter.com/ProbeMeteo\"\txmlns:cc=\"http://creativecommons.org/ns#\" \tproperty=\"cc:attributionName\" \trel=\"cc:attributionURL\"\t>%s</a>, <!-- Legal: http://creativecommons.org/licenses/by-nc-sa/3.0/legalcode -->sous licence <a \thref=\"http://creativecommons.org/licenses/by-nc-sa/3.0/\"\trel=\"license\" ><img alt=\"%s\" title=\"%s\" src=\"/resources/License/CC-by-nc-sa_80px.png\"/></a>"
 
-#: application/views/templates/footer.php:21
+#: application/views/templates/footer.php:23
 msgid "project.team-name"
 msgstr "l'équipe ProbeMeteo"
 
-#: application/views/templates/footer.php:22
+#: application/views/templates/footer.php:24
 msgid "project.license.logo-alt"
 msgstr "Licence Creative Commons CC-by-nc-sa"
 
-#: application/views/templates/footer.php:23
+#: application/views/templates/footer.php:25
 msgid "project.license.logo-title"
 msgstr "Licence Creative Commons CC-by-nc-sa"
+
+#: application/views/templates/footer.php:35
+msgid "footer.docs.label"
+msgstr "Documentation"
+
+#: application/views/templates/footer.php:39
+msgid "footer.twitter.label"
+msgstr "@ProbeMeteo"
+
+#: application/views/templates/footer.php:43
+msgid "footer.github.label"
+msgstr "Github"
 
 #: application/controllers/install.php:73
 msgid "error.database.unreachable.title"
