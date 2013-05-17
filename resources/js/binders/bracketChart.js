@@ -67,7 +67,13 @@ function timeSeriesChart() {
             // Draw box block
             var box = g.selectAll(".box")
                 .data(data).enter().append("g")
-                .attr("class", "box");
+                .attr("class", "box")
+                .attr("opacity", "0");
+                
+                box.transition()
+                    .delay(function(d,i) { return i*5;})
+                    .duration(500)
+                    .attr("opacity", "1");
 
                 //Draw the line
                 box.append("line")
