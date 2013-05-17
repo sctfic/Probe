@@ -116,14 +116,17 @@
 
 	</article>
     <div class="modal-footer form-actions">
-        <a href="/configuration/" class="btn btn-small pull-left">
+        <a href="/configuration/" class="btn pull-left">
+            <i class="icon-arrow-left"></i>
             <?=i18n('configuration-station.list.button');?>
         </a>
-        <a href="#dbms" class="btn btn-small btn-primary pull-right hidden">
+        <a href="#dbms" class="btn btn-primary pull-right hidden">
+            <i class="icon-white icon-arrow-right"></i>
             <?=i18n('configuration-station.configure:dbms.button');?>
         </a>
-        <a href="#network" class="btn btn-small btn-primary pull-right">
+        <a href="#network" class="btn btn-primary pull-right">
             <?=i18n('configuration-station.configure:network.button');?>
+            <i class="icon-white icon-arrow-right"></i>
         </a>
 		<?=form_submit('configure', i18n('configuration-station.add-new.label'), 'class="btn btn-primary pull-right hidden"')?>
 	</div>
@@ -131,7 +134,7 @@
 
 <script>
 	$('#tabs-step a').click(function (e) {
-    e.preventDefault();
-    $(this).tab('show');
+        e.preventDefault();
+        $(this).tab('show');
   })
 </script>
