@@ -5,7 +5,9 @@
                  data-spy="affix" data-offset-top="100">
             <nav class="tabbable tabs-left">
                 <ul class="nav nav-tabs">
-                    <li class="nav-header"><?=i18n('configuration-stations.list.header')?></li>
+                    <li>
+                        <h3 class="nav-header"><?=i18n('configuration-stations.list.header')?></h3>
+                    </li>
                     <?php
                     if (!empty($stationsConf)) {
                         foreach ($stationsConf as $_name => $conf) {
