@@ -10,6 +10,7 @@
 $smallPadding: .25em;
 $borderGrey: #DDD;
 $borderColor: #ccc;
+$breadcrumbPadding: 15px;
 $contentBeforeAfter: #999;
 $contentBeforeAfter-properties: #729fcf;
 $backgroundColorForm: #FFF;
@@ -50,9 +51,21 @@ circle:hover+.petals {
 .breadcrumb {
     @include border-radius(0);
     border-bottom: thin solid $navbarBorder;
+  padding-right : 0;
+  width : 75%;
+  float: left;
 }
 .breadcrumb .active {
     font-weight: bold;
+}
+#access-profile {
+  //display: none;
+  float: right;
+  width: 25%;
+  padding-left : 0;
+  margin-left : -$breadcrumbPadding*2;
+  padding-right : $breadcrumbPadding;
+  text-align: right;
 }
 abbr {
     text-transform: lowercase;
