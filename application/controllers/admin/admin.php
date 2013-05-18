@@ -23,7 +23,29 @@ class admin extends Authentification
     */
     protected $urlWhenLogged = null; // when user is authentified go to this URL
 
-    /**
+    /*
+     * data for the breadcrumbs related to installation
+     */
+    protected  $_breadcrumb = array(
+        'login' =>  array(
+            array(
+                'url' => '/install/dbms',
+                'i18n' => 'install.dbms.breadcrumb'
+            ),
+            array(
+                'url' => '/install/admin-user',
+                'i18n' => 'install.administrator.breadcrumb',
+            ),
+            array(
+                'status' => 'active',
+                'url' => '/login',
+                'i18n' => 'install.login.breadcrumb',
+            ),
+        )
+    );
+
+
+/**
      * entry point
      */
     public function __construct()

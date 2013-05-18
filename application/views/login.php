@@ -1,11 +1,3 @@
-<div class="navbar navbar-inverse navbar-fixed-top">
-  <ul class="breadcrumb">
-      <li class="disabled"><a href="/install/dbms"><?=i18n("install.dbms.breadcrumb")?></a> <span class="divider">/</span></li>
-      <li class="disabled"><a href="/install/admin-user"><?=i18n("install.administrator.breadcrumb")?></a> <span class="divider">/</span></li>
-      <li class="active"><?=i18n("install.login.breadcrumb")?> <span class="divider">/</span></li>
-  </ul>
-</div>
-
 <?php $username = null; $administratorPassword = null; ?>
 <div class="container">
   <?=form_open('admin/admin/connect', array(
