@@ -43,6 +43,8 @@ $route['default_controller'] = "install";
 $route['404_override'] = '';
 
 $route['admin'] = "admin/admin";
+$route['login'] = "admin/admin/connexion";
+$route['logout'] = "admin/admin/logout";
 $route['install/admin-user'] = "install/adminUser";
 $route['install/setup-administrator'] = "install/setupAdministrator";
 // $route['configuration'] = 'configuration/listStations';
