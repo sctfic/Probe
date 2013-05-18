@@ -70,3 +70,4 @@ i18n('install.dbms.breadcrumb');
 i18n('install-admin-user.title.metadata');
 i18n('install-admin-user.description.metadata');
 i18n('install.administrator.breadcrumb');
+i18n('install.login.breadcrumb');

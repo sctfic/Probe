@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: probe\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-17 11:54+0100\n"
-"PO-Revision-Date: 2013-05-17 12:06+0100\n"
+"POT-Creation-Date: 2013-05-18 12:49+0100\n"
+"PO-Revision-Date: 2013-05-18 12:49+0100\n"
 "Last-Translator: Édouard Lopez <dev+i18n@edouard-lopez.com>\n"
 "Language-Team: probe <dev+probe@edouard-lopez.com>\n"
 "Language: \n"
@@ -107,7 +107,7 @@ msgid "windrose.description.metadata"
 msgstr "Visualisation de la direction et de la vitesse des vents"
 
 #: application/language/i18n-collected-keys.php:32
-#: application/libraries/Page_manager.php:87
+#: application/libraries/Page_manager.php:88
 msgid "probe.authors.metadata"
 msgstr "Équipe Probe"
 
@@ -598,7 +598,7 @@ msgstr "pour éviter les erreurs de saisie"
 msgid "weather.sunny.label"
 msgstr "Ensoleillé"
 
-#: application/views/login.php:77
+#: application/views/login.php:78
 msgid "login.authentificate"
 msgstr "S'authentifier →"
 
@@ -634,11 +634,11 @@ msgstr "Confirmer"
 msgid "install-administrator.password-confirmation.placeholder"
 msgstr "pour éviter les erreurs de saisie"
 
-#: application/views/install/admin-user.php:77
+#: application/views/install/admin-user.php:79
 msgid "form.action.back"
 msgstr "Retour"
 
-#: application/views/install/admin-user.php:78
+#: application/views/install/admin-user.php:83
 msgid "install-administrator.configure.label"
 msgstr "Configurer →"
 
@@ -706,7 +706,7 @@ msgstr "Fichier"
 msgid "install-dbms.path.placeholder"
 msgstr "fichier de stockage"
 
-#: application/views/install/dbms.php:155
+#: application/views/install/dbms.php:156
 msgid "install-dbms.configure.label"
 msgstr "Configurer →"
 
@@ -722,27 +722,27 @@ msgstr "Moteur de la Base"
 msgid "configuration-add-station.main-content:network.tip"
 msgstr "Configuration réseaux permettant de contacter la station."
 
-#: application/views/configuration/add-station.php:120
+#: application/views/configuration/add-station.php:121
 msgid "configuration-station.list.button"
 msgstr "Lister les stations"
 
-#: application/views/configuration/add-station.php:123
+#: application/views/configuration/add-station.php:125
 msgid "configuration-station.configure:dbms.button"
 msgstr "Paramétrer la base de données"
 
-#: application/views/configuration/add-station.php:126
+#: application/views/configuration/add-station.php:128
 msgid "configuration-station.configure:network.button"
 msgstr "Paramétrer le réseau"
 
-#: application/views/configuration/add-station.php:128
+#: application/views/configuration/add-station.php:131
 msgid "configuration-station.add-new.label"
 msgstr "Ajouter la station"
 
-#: application/views/configuration/list-stations.php:8
+#: application/views/configuration/list-stations.php:9
 msgid "configuration-stations.list.header"
 msgstr "Liste des stations"
 
-#: application/views/configuration/list-stations.php:25
+#: application/views/configuration/list-stations.php:27
 msgid "configuration-stations.add-new.station"
 msgstr "Ajouter une station"
 
@@ -762,15 +762,27 @@ msgstr "Modèle"
 
 #: application/views/admin/dashboard.php:65
 #: application/views/admin/dashboard.php:66
+#: application/views/templates/breadcrumb.php:49
 msgid "logout.request.label"
 msgstr "Déconnexion"
 
 #: application/views/d3/windrose.php:29
 #: application/views/d3/currents.php:21
 #: application/views/d3/curves.php:20
-#: application/views/templates/footer.php:47
 msgid "warning.javascript.disable"
 msgstr "Pour consulter cette page au maximum de son potentiel veuillez activer Javascript sur votre navigateur."
+
+#: application/views/templates/breadcrumb.php:40
+msgid "profile.request.label"
+msgstr "Mon compte"
+
+#: application/views/templates/breadcrumb.php:44
+msgid "profile.request:settings.label"
+msgstr "Paramètres"
+
+#: application/views/templates/breadcrumb.php:51
+msgid "login.request.label"
+msgstr "Connexion"
 
 #: application/views/templates/footer.php:22
 #, php-format
