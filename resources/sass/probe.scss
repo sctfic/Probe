@@ -45,7 +45,6 @@ circle:hover+.petals {
 }
 .petals {
     position:absolute;
-    /*display:none;*/
 }
 
 .breadcrumb {
@@ -59,7 +58,6 @@ circle:hover+.petals {
     font-weight: bold;
 }
 #access-profile {
-  //display: none;
   float: right;
   width: 25%;
   padding-left : 0;
@@ -104,7 +102,6 @@ article {
   height: 14px;
   width: 14px;
 }
-// .form-actions
 .form-horizontal .modal-footer {
   padding-left : 15px;
 }
@@ -119,7 +116,6 @@ article {
 }
 
 .setup, .login, #logout {
-      // .modal;
     @extend .modal;
     position: relative;
     top: auto;
@@ -132,9 +128,7 @@ article {
         , aside {
         }
         > fieldset {
-            width: 70%;
             float: left;
-            //border-right: thin dotted $borderGrey;
             padding-top: 35px;
             padding-right : 0;
         }
@@ -168,7 +162,6 @@ article {
         }
     }
     .btn {
-        //display: block;
     }
 
 footer {
@@ -183,7 +176,6 @@ footer {
   padding    : 1em;
   > #copyright, #links {
     float: left;
-    //margin  : 0 auto;
     padding : 0.5em 0;
     width   : $footerWidth/2;
   }
@@ -202,9 +194,7 @@ footer {
   }
 
   > #links {
-    //list-style-type : circle;
     text-align      : left;
-    //margin-right : $footerWidth/2;
     margin-left: $footerChildrenMargin;
     margin-right : $footerWidth/2-$footerChildrenMargin;
     > li {
