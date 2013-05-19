@@ -34,4 +34,22 @@
     <?php endforeach ?>
     </ul>
     <?php endif ?>
+
+    <ul id="access-profile" class="breadcrumb">
+        <li>
+            <a href="/profile/me"><?=i18n('profile.request.label')?></a>
+            <span class="divider">|</span>
+        </li>
+        <li>
+            <a href="/profile/settings"><?=i18n('profile.request:settings.label')?></a>
+            <span class="divider">|</span>
+        </li>
+        <li>
+            <?php if ($isAuthentified):?>
+                <a href="/logout"><?=i18n('logout.request.label')?></a>
+            <?php else:?>
+                <a href="/login"><?=i18n('login.request.label')?></a>
+            <?php endif;?>
+        </li>
+    </ul>
 </div>
