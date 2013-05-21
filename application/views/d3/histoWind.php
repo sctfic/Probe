@@ -54,6 +54,7 @@ svg {
 </style>
 <script>
 	function probeViewer(){
+
 		var station='<?=$station?>';
 	    var url = "/data/histoWind?station="+station+"&Granularity=30";
 
