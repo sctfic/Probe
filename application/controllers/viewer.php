@@ -73,11 +73,11 @@ class viewer extends CI_Controller
         $data['sensor'] = $sensor;
 
         $data['breadcrumb'] = array(
-            'viewer.list',
+            'list-viewer',
             array(
                 'status'  =>  'active',
-                'url'     =>  '/viewer/'.$dataBinder,
-                'i18n'    =>  'viewer.'.$dataBinder
+                'url'     =>  sprintf('/viewer/%s', $dataBinder),
+                'i18n'    =>  sprintf('%s.view.label', $dataBinder)
             )
         );
 // var_dump($data);
@@ -104,11 +104,11 @@ class viewer extends CI_Controller
             array(
                 'status'  =>  'active',
                 'url'     =>  '/viewer',
-                'i18n'    =>  'viewer.list'
+                'i18n'    =>  'list-viewer'
             )
         );
         // display the view
-        $page->view('templates/viewer-list', $data);
+        $page->view('templates/list-viewer', $data);
     }
 
     /**

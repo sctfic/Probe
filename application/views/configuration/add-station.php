@@ -10,11 +10,11 @@
 		<?php 
 			$active = 'active';
 			$i = 1;
-			foreach ($form as $label => $type):
+			foreach ($form as $tabLabel => $type):
 		?>
 			<li class="<?=$active; $active=null; ?>">
-				<a href="#settings-<?=$label?>" data-toggle="tab">
-					<?=$i++.'. '.i18n('configuration.station.tab.'.$label, true)?>
+				<a href="#<?=$tabLabel?>" data-toggle="tab">
+					<?=$i++.'. '.i18n(sprintf('configuration-station.%s.label', $tabLabel), true)?>
 				</a>
 			</li>
 		<?php endforeach; ?>
@@ -25,16 +25,20 @@
 	<!-- <article class="tab-content"> -->
 		<?=validation_errors()?>
 
-		<fieldset id="settings-dbms" class="tab-pane active">
+		<fieldset id="dbms" class="tab-pane active">
 			<p class="alert alert-info">
-				<?=i18n('configuration.station.settings.dbms.info')?>
+				<?=i18n('configuration-add-station.main-content:dbms.tip')?>
 			</p>
 			<?php foreach ($form['dbms'] as $input => $type): ?>
 				<!-- <?=$input?> <?=$type?> -->
-				<div class="control-group">
+				<div id="dbms-engine" class="control-group">
 					<?php if (is_array($type) && ($type['type'] == 'radio' || $type['type'] == 'select')): ?>
 						<label class="control-label">
-							<?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('install.dbms.engine'), i18n('required'), i18n('&nbsp;:')) ?>
+							<?=sprintf('%s <span class="hidden">(%s)</span>%s',
+                                i18n('configuration-dbms.engine.label'),
+                                i18n('required'),
+                                i18n('&nbsp;:')
+                            ) ?>
 						</label>
 						<div class="controls">
 						<?php foreach ($type['values'] as $value): ?>
@@ -44,28 +48,28 @@
 									name="dbms-<?=$input?>" value="<?=$value?>"
 								>
 								<?=sprintf('%s <span class="hidden">(%s)</span>', 
-									i18n(sprintf('install.dbms.%s-%s', $input, $value)), i18n('required'));
-								?>
-							</label>
+									i18n(sprintf('configuration-dbms.%s:%s.label', $input, $value), true),
+                                    i18n('required')
+                                ) ?>
+                            </label>
 						<?php endforeach; ?>
 					</div>
 					<?php else: ?>
 						<label class="control-label" for="dbms-<?=$input?>">
 							<?=sprintf('%s <span class="hidden">(%s)</span>%s', 
-								i18n('install.dbms.'.$input), 
+								i18n(sprintf('configuration-dbms.%s.label', $input), true),
 								i18n('required'), 
-								i18n('&nbsp;:')) 
-						?>
-						</label>
+								i18n('&nbsp;:')
+                            ) ?>
+                        </label>
 						<div class="controls">
-							<?=var_dump($input, $type);?>
 							<input id="dbms-<?=$input?>"
 								required
 								type="<?=$type?>" 
 								name="dbms-<?=$input?>" 
 								value="<?=set_value('dbms-'.$input)?>"
 								class="input-large" 
-								placeholder="<?=i18n('install.dbms.'.$input.'.placeholder')?>"
+								placeholder="<?=i18n(sprintf('configuration-dbms.%s.placeholder', $input), true)?>"
 							>
 						</div>
 					<?php endif; ?>
@@ -73,9 +77,9 @@
 			<?php endforeach; ?>
 		</fieldset>
 
-		<fieldset id="settings-network" class="tab-pane">
+		<fieldset id="network" class="tab-pane">
 			<p class="alert alert-info">
-				<?=i18n('configuration.station.settings.network.info')?>
+				<?=i18n('configuration-add-station.main-content:network.tip')?>
 			</p>
 			<?php foreach ($form['network'] as $input => $type): ?>
 				<!-- <?=$input?> <?=$type?> -->
@@ -88,22 +92,20 @@
 					<?php else: ?>
 						<label class="control-label" for="network-<?=$input?>">
 							<?=sprintf('%s <span class="hidden">(%s)</span>%s', 
-								i18n(sprintf('configuration.station.network.%s', $input), true), 
+								i18n(sprintf('configuration-station.network-%s.label', $input), true),
 								i18n('required'), 
 								i18n('&nbsp;:')) 
 						?>
 						</label>
 						<div class="controls">
 							<input id="network-<?=$input?>"
-								<?php 
-									if (strpos($type, 'pattern') === FALSE) { echo sprintf('type="%s"', $type); }
-									else { echo $type; }
-							 	?>
+								<?= printf("%s", strpos($type, 'pattern')===false? null: $type); ?>
+                                type="text"
 								required
 								name="network-<?=$input?>" 
 								value="<?=set_value('network-'.$input)?>"
 								class="input-large" 
-								placeholder="<?=i18n(sprintf('configuration.station.network.%s.placeholder', $input), true)?>"
+								placeholder="<?=i18n(sprintf('configuration-station.network-%s.placeholder', $input), true)?>"
 							>
 						</div>
 					<?php endif; ?>
@@ -113,14 +115,26 @@
 
 
 	</article>
-	<div class="modal-footer">
-		<?=form_submit('configure', i18n('configuration.station.add-new.valid'), 'class="btn btn-primary pull-right"')?>
+    <div class="modal-footer form-actions">
+        <a href="/configuration/" class="btn pull-left">
+            <i class="icon-arrow-left"></i>
+            <?=i18n('configuration-station.list.button');?>
+        </a>
+        <a href="#dbms" class="btn btn-primary pull-right hidden">
+            <i class="icon-white icon-arrow-right"></i>
+            <?=i18n('configuration-station.configure:dbms.button');?>
+        </a>
+        <a href="#network" class="btn btn-primary pull-right">
+            <?=i18n('configuration-station.configure:network.button');?>
+            <i class="icon-white icon-arrow-right"></i>
+        </a>
+		<?=form_submit('configure', i18n('configuration-station.add-new.label'), 'class="btn btn-primary pull-right hidden"')?>
 	</div>
 <?=form_close()?>
 
 <script>
 	$('#tabs-step a').click(function (e) {
-    e.preventDefault();
-    $(this).tab('show');
+        e.preventDefault();
+        $(this).tab('show');
   })
 </script>

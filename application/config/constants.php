@@ -1,5 +1,11 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+/**
+ * @description Condition some behaviors (e.g. use of Google API only in production)
+ * @param value as return by $_SERVER["HTTP_HOST"]
+ */
+define('DEV_HOST', 'probe.dev');
+
 /*
 |--------------------------------------------------------------------------
 | File and Directory Modes

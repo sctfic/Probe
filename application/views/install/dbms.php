@@ -19,7 +19,7 @@
 
 	<div class="modal-header">
 		<!-- <legend> -->
-			<h3><?=i18n("install.dbms.legend")?></h3>
+			<h3><?=i18n("install-dbms.main-content.header")?></h3>
 		<!-- </legend>	 -->
 	</div>
 	<fieldset class="modal-body">
@@ -28,7 +28,7 @@
         <!-- Engine: MySQL vs. SQLite  -->
         <div id="dbms-engine" class="control-group">
             <label class="control-label">
-                <?=sprintf('%s%s', i18n('install.dbms.engine'), i18n('&nbsp;:')) ?>
+                <?=sprintf('%s%s', i18n('install-dbms.engine.label'), i18n('&nbsp;:')) ?>
             </label>
             <div class="controls">
                 <label class="control-label inline" for="dbms-engine-mysql">
@@ -36,14 +36,14 @@
                            type="radio" checked
                            name="dbms-engine" value="mysql"
                     >
-                    <?=sprintf('%s', i18n('install.dbms.engine-mysql')) ?>
+                    <?=sprintf('%s', i18n('install-dbms.engine:mysql.label')) ?>
                 </label>
                 <label class="control-label inline" for="dbms-engine-sqlite">
                     <input id="dbms-engine-sqlite"
                            type="radio"
                            name="dbms-engine" value="sqlite"
                     >
-                    <?=sprintf('%s', i18n('install.dbms.engine-sqlite')) ?>
+                    <?=sprintf('%s', i18n('install-dbms.engine:sqlite.label')) ?>
                 </label>
                 <?
                 /*
@@ -52,7 +52,7 @@
                            type="radio"
                            name="dbms-engine" value="postgresql"
                             >
-                    <?=sprintf('%s', i18n('install.dbms.engine-postgresql')) ?>
+                    <?=sprintf('%s', i18n('install-dbms.engine:postgresql.label')) ?>
                 </label>
                 */
                 ?>
@@ -62,14 +62,14 @@
         <!-- MySQL Server host/IP -->
 		<div id="dbms-host" class="control-group mysql">
 			<label class="control-label" for="dbms-host">
-				<?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('install.dbms.host'), i18n('required'), i18n('&nbsp;:')) ?>
+				<?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('install-dbms.host.label'), i18n('required'), i18n('&nbsp;:')) ?>
 			</label>
 			<div class="controls">
                 <input name="dbms-host"
                     value="<?=$dbmsHost?>"
                     type="text" required
 					class="input-large"
-                    placeholder="<?=i18n('install.dbms.host.placeholder')?>"
+                    placeholder="<?=i18n('install-dbms.host.placeholder')?>"
 				>
 			</div>
 		</div>
@@ -77,13 +77,13 @@
 		<!-- Server port (range between: 1-65535) -->
 		<div class="control-group mysql">
 			<label class="control-label" for="dbms-port">
-				<?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('install.dbms.port'), i18n('required'), i18n('&nbsp;:')) ?>
+				<?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('install-dbms.port.label'), i18n('required'), i18n('&nbsp;:')) ?>
 			</label>
 			<div class="controls">
 				<input id="dbms-port"
                    type="number" min="1" max="65535"
                    name="dbms-port" value="<?=$dbmsPort?>"
-                   class="input-mini" placeholder="<?=i18n('install.dbms.port.placeholder')?>"
+                   class="input-mini" placeholder="<?=i18n('install-dbms.port.placeholder')?>"
 				>
 			</div>
 		</div>
@@ -91,7 +91,7 @@
 		<div class="control-group mysql">
 		<!-- Server database name -->
 			<label class="control-label" for="dbms-database-name">
-				<?=sprintf('%s %s', i18n('install.dbms.database-name'), i18n('&nbsp;:'))?>
+				<?=sprintf('%s %s', i18n('install-dbms.database-name.label'), i18n('&nbsp;:'))?>
 			</label>
 			<div class="controls">
 				<input id="dbms-database-name"
@@ -105,19 +105,19 @@
 		</div>
 
         <div class="alert mysql">
-            <?=i18n('install.dbms.advanced-user.management')?>
+            <?=i18n('install-dbms.advanced-user-management.label')?>
         </div>
 
 		<!-- Database's manager's username -->
 		<div class="control-group mysql">
 			<label class="control-label" for="dbms-username">
-				<?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('install.dbms.username'), i18n('required'), i18n('&nbsp;:'))?>
+				<?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('install-dbms.username.label'), i18n('required'), i18n('&nbsp;:'))?>
 			</label>
 			<div class="controls">
 				<input id="dbms-username"
 					type="text" required
 					name="dbms-username" value="<?=$dbmsUsername?>" 
-					class="input-large" placeholder="<?=i18n('install.dbms.username.placeholder')?>"
+					class="input-large" placeholder="<?=i18n('install-dbms.username.placeholder')?>"
 				>
 			</div>
 		</div>
@@ -125,13 +125,13 @@
 		<!-- Database's manager's password -->
 		<div class="control-group mysql">
 			<label class="control-label" for="dbms-password">
-				<?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('install.dbms.password'), i18n('required'), i18n('&nbsp;:'))?>
+				<?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('install-dbms.password.label'), i18n('required'), i18n('&nbsp;:'))?>
 			</label>
 			<div class="controls">
 				<input id="dbms-password"
 					type="password" required
 					name="dbms-password" value="<?=$dbmsPassword?>"
-					class="input-large" placeholder="<?=i18n('install.dbms.password.placeholder')?>"
+					class="input-large" placeholder="<?=i18n('install-dbms.password.placeholder')?>"
 				>
 			</div>
 		</div>
@@ -139,20 +139,21 @@
         <!-- SQLite file Path (disable by default) -->
         <div id="dbms-path" class="control-group sqlite">
             <label class="control-label" for="dbms-path">
-                <?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('install.dbms.path'), i18n('required'), i18n('&nbsp;:')) ?>
+                <?=sprintf('%s <span class="hidden">(%s)</span>%s', i18n('install-dbms.path.label'), i18n('required'), i18n('&nbsp;:')) ?>
             </label>
             <div class="controls">
                 <input name="dbms-path"
                        value="./<?=SQLITE_PATH?>"
                        type="text" disabled
-                       class="input-xlarge" placeholder="<?=i18n('install.dbms.path.placeholder')?>"
+                       class="input-xlarge" placeholder="<?=i18n('install-dbms.path.placeholder')?>"
                 >
             </div>
         </div>
 
 	</fieldset>
 	<div class="modal-footer">
-		<?=form_submit('configure', i18n('install.dbms.configure'), 'class="btn btn-primary pull-right"')?>
+        <!-- TODO replace arrow by icon -->
+		<?=form_submit('configure', i18n('install-dbms.configure.label'), 'class="btn btn-primary pull-right"')?>
 	</div>
 <?=form_close()?>
 <?
