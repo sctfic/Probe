@@ -80,3 +80,8 @@ i18n('windRose:description');
 i18n('WindRose:title');
 i18n('WindRose:description');
 i18n('viewer.windrose');
+i18n('histoRose:title');
+i18n('histoRose:description');
+i18n('viewer.histoRose');
+i18n('viewer.dotShart');
+i18n('viewer.exemple');

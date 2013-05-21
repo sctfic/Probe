@@ -65,36 +65,19 @@ function timeSeriesChart() {
             // Draw arrow block
             var arrow = g.selectAll(".arrow")
                 .data(data).enter().append("g")
-                .attr("class", "arrow")
-                .attr("opacity", "0");
-
-                arrow.transition()
-                    .delay(function(d,i) { return i*5;})
-                    .duration(500)
-                    .attr("opacity", "1");
+                .attr("class", "arrow");
 
                 //Draw the line
                 arrow.append("line")
                     .attr("class", "hair")
                     .attr("x1", function(d) { return xScale(d.date); })
                     .attr("y1", function(d) { return yScale(0); })
-                    //.attr("x2", function(d) { return xScale(d.date); })
-                    //.attr("y2", function(d) { return yScale(0); })
-                    //.transition()
-                    //.delay(function(d,i) { return i*5;})
-                    //.duration(500)
                     .attr("x2", function(d) { return xScale(d.date) + d.xSpeed*coef; })
                     .attr("y2", function(d) { return yScale(d.ySpeed); });
 
                 arrow.append("polygon")
                     .attr("class", "marker")
                     .attr("points","-1.5,2 0,-2 1.5,2")
-                    //.attr("transform", function(d) {
-                    //        return "translate("+(xScale(d.date) + 0)+","+yScale(0)+") rotate("+(d.angle)+")";
-                    //    })
-                    //.transition()
-                    //.delay(function(d,i) { return i*5;})
-                    //.duration(500)
                     .attr("transform", function(d) {
                             return "translate("+(xScale(d.date) + d.xSpeed*coef)+","+(yScale(d.ySpeed))+") rotate("+(d.angle)+")";
                         });
@@ -103,8 +86,6 @@ function timeSeriesChart() {
                     .text(function(d) {
                             return "Speed Avg: "+ d.Speed+"m/s\nAngle Avg: "+d.angle+"°\nAverage on: "+d.date ;
                         });
-
-
 
             // chose the possition of x-Axis
             if (0<yScale.domain()[0])

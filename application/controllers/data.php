@@ -192,7 +192,7 @@ make and download json wind data
 	* @param since is the start date of result needed
 	* @param lenght is the number of day
 	*/
-	function wind(){
+	function windRose(){
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,array($this->Station['_name'], $this->Since,	$this->To,	$this->Granularity));
 
 		$this->Granularity = empty($this->Granularity) ? 360 : $this->Granularity ; // in minutes
@@ -282,17 +282,6 @@ Download after convert data structure to json object
 		force_download('data.json', $json);
 	}
 
-/**
-Download tsv file
-	* @
-	* @param data structure array()
-	*/
-	private function dl_tsv ($data) {
-		// ob_clean();
-		@ob_end_clean();
-		header_remove();
-		force_download('data.tsv', $data);
-	}
 /**
 Download tsv file
 	* @

@@ -1,15 +1,15 @@
 function timeSeriesChart() {
-  var margin = {top: 5, right: 5, bottom: 20, left: 30},
-      width = 1800,
+  var margin = {top: 50, right: 50, bottom: 20, left: 30},
+      width = 640,
       height = 160,
       meanDate = function(d) { return d.date; },
-      Speed = function(d) { return d.speed; },
+      rose = function(d) { return d.rose; },
       angle = function(d) { return d.angle; },
       xSpeed = function(d) { return d.x; },
       ySpeed = function(d) { return d.y; },
       xScale = d3.time.scale().range([0, width]),
       yScale = d3.scale.linear().range([height, 0]),
-      xAxis = d3.svg.axis().scale(xScale).orient("bottom").tickSize(4,0),
+      xAxis = d3.svg.axis().scale(xScale).orient("bottom").tickSize(8,0),
       yAxis = d3.svg.axis().scale(yScale).orient("left").ticks(4).tickSize(3,0);
       // line = d3.svg.line().x(X).y(Y);
 
@@ -22,10 +22,7 @@ function timeSeriesChart() {
             data = data.map(function(d, i) {
                 return {
                     date:meanDate.call(data, d, i),
-                    Speed:Speed.call(data, d, i),
-                    angle:angle.call(data, d, i),
-                    xSpeed:xSpeed.call(data, d, i),
-                    ySpeed:ySpeed.call(data, d, i)
+                    rose:rose.call(data, d, i)
                 };
             });
 
@@ -57,52 +54,59 @@ function timeSeriesChart() {
             var g = svg.select("g")
                 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-            // Update the line path.
-            // g.select(".line")
-            //     .attr("d", line);
-            var coef = (yScale.range()[0]-yScale.range()[1])/(yScale.domain()[1]-yScale.domain()[0]);
-
             // Draw arrow block
             var arrow = g.selectAll(".arrow")
                 .data(data).enter().append("g")
                 .attr("class", "arrow")
-                .attr("opacity", "0");
+                .attr("display", "none");
 
                 arrow.transition()
                     .delay(function(d,i) { return i*5;})
                     .duration(500)
-                    .attr("opacity", "1");
+                    .attr("display", "block");
 
-                //Draw the line
-                arrow.append("line")
-                    .attr("class", "hair")
-                    .attr("x1", function(d) { return xScale(d.date); })
-                    .attr("y1", function(d) { return yScale(0); })
-                    //.attr("x2", function(d) { return xScale(d.date); })
-                    //.attr("y2", function(d) { return yScale(0); })
-                    //.transition()
-                    //.delay(function(d,i) { return i*5;})
-                    //.duration(500)
-                    .attr("x2", function(d) { return xScale(d.date) + d.xSpeed*coef; })
-                    .attr("y2", function(d) { return yScale(d.ySpeed); });
-
-                arrow.append("polygon")
-                    .attr("class", "marker")
-                    .attr("points","-1.5,2 0,-2 1.5,2")
-                    //.attr("transform", function(d) {
-                    //        return "translate("+(xScale(d.date) + 0)+","+yScale(0)+") rotate("+(d.angle)+")";
-                    //    })
-                    //.transition()
-                    //.delay(function(d,i) { return i*5;})
-                    //.duration(500)
-                    .attr("transform", function(d) {
-                            return "translate("+(xScale(d.date) + d.xSpeed*coef)+","+(yScale(d.ySpeed))+") rotate("+(d.angle)+")";
-                        });
-
-                arrow.append("title")
+                //Draw the center
+                arrow.append("circle")
+                    .attr("class", "circle")
+                    .attr("cx", function(d) { return xScale(d.date); })
+                    .attr("cy", 0) // function(d) { return yScale(0); })
+                    .attr("r", 5)
+                    .append("title")
                     .text(function(d) {
-                            return "Speed Avg: "+ d.Speed+"m/s\nAngle Avg: "+d.angle+"°\nAverage on: "+d.date ;
+                            return ""+d.date ;
                         });
+                    
+                //Add conteiner for include petals
+                arrow.append("g")
+                    .attr("id", "petals");
+
+				// add events circle on forground with opacity 0%
+				arrow.append("circle")
+			        .attr("class", "hidden")
+			        .attr("cx", function(d) { return xScale(d.date); })
+			        .attr("cy", 0)
+			        .attr("r", 5)
+			        .on("mouseover",function (d){
+			            $('#petals')
+							.empty()
+			            d3.select('#petals')
+			            	;
+			            plotSmallRose(d.step, d.subdata, '#petals');
+			        // plotProbabilityRose(d.subdata, '#windrose', 120);
+			        // plotSpeedRose(d.subdata, '#windspeed',120);
+					})
+			        .on("click",function (d){
+			            plotProbabilityRose(d.subdata, '#windrose', 120);
+			            plotSpeedRose(d.subdata, '#windspeed',120);
+			        })
+			        .append("svg:title")
+			        .text(function(d) { return d.datestr });
+
+
+                // arrow.append("title")
+                //     .text(function(d) {
+                //             return "Speed Avg: "+ d.Speed+"m/s\nAngle Avg: "+d.angle+"°\nAverage on: "+d.date ;
+                //         });
 
 
 
@@ -128,61 +132,57 @@ function timeSeriesChart() {
 
 
 
-  // The x-accessor for the path generator; xScale ∘ meanDate.
-  function X(d) {
-    return xScale(d.date);
-  }
+    // The x-accessor for the path generator; xScale ∘ meanDate.
+    function X(d) {
+        return xScale(d.date);
+    }
 
-  // The x-accessor for the path generator; yScale ∘ Speed.
-  function Y(d) {
-    return yScale(d.ySpeed);
-  }
+    // The x-accessor for the path generator; yScale ∘ Speed.
+    function Y(d) {
+        return yScale(d.ySpeed);
+    }
 
-  chart.margin = function(_) {
-    if (!arguments.length) return margin;
-    margin = _;
-    return chart;
-  };
+    chart.margin = function(_) {
+        if (!arguments.length) return margin;
+        margin = _;
+        return chart;
+    };
 
-  chart.width = function(_) {
-    if (!arguments.length) return width;
-    width = _;
-    return chart;
-  };
+    chart.width = function(_) {
+        if (!arguments.length) return width;
+        width = _;
+        return chart;
+    };
 
-  chart.height = function(_) {
-    if (!arguments.length) return height;
-    height = _;
-    return chart;
-  };
+    chart.height = function(_) {
+        if (!arguments.length) return height;
+        height = _;
+        return chart;
+    };
 
 
-  chart.date = function(_) {
-    if (!arguments.length) return meanDate;
-    meanDate = _;
-    return chart;
-  };
+    chart.date = function(_) {
+        if (!arguments.length) return meanDate;
+        meanDate = _;
+        return chart;
+    };
+    chart.rose = function(_) {
+        if (!arguments.length) return rose;
+        rose = _;
+        return chart;
+    };
 
-  chart.speed = function(_) {
-    if (!arguments.length) return Speed;
-    Speed = _;
-    return chart;
-  };
-  chart.angle = function(_) {
-    if (!arguments.length) return angle;
-    angle = _;
-    return chart;
-  };
-  chart.xSpeed = function(_) {
-    if (!arguments.length) return xSpeed;
-    xSpeed = _;
-    return chart;
-  };
-  chart.ySpeed = function(_) {
-    if (!arguments.length) return ySpeed;
-    ySpeed = _;
-    return chart;
-  };
+    chart.speed = function(_) {
+        if (!arguments.length) return Speed;
+        Speed = _;
+        return chart;
+    };
+    chart.angle = function(_) {
+        if (!arguments.length) return angle;
+        angle = _;
+        return chart;
+    };
 
-  return chart;
+
+    return chart;
 }

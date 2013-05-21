@@ -23,6 +23,20 @@
 svg {
 	font-size: 10px;
 }
+.circle{
+	fill: #fff;
+	stroke: #000;
+	stroke-width: 0.5px;
+}
+.hidden{
+	/*visibility: hidden;*/
+	fill-opacity: 0;
+}
+.petal{
+	fill: #58e;
+	stroke: #000;
+	stroke-width: 0.5px;
+}
 .line {
   fill: none;
   stroke: #000;
@@ -31,7 +45,7 @@ svg {
 
 .axis line,.axis path {
   fill: none;
-  stroke: #000;
+  stroke: #AAA;
   stroke-width: 1px;
   shape-rendering: crispEdges;
 }
@@ -55,18 +69,16 @@ svg {
 <script>
 	function probeViewer(){
 		var station='<?=$station?>';
-	    var url = "/data/histoWind?station="+station+"&Granularity=30";
+	    var url = "/data/windRose?station="+station+"&Granularity=360";
 
-		d3.tsv(url, function(data) {
-		  var formatDate = d3.time.format("%Y-%m-%d %H:%M");
+		d3.json(url, function(data) {
+		  var formatDate = d3.time.format("%Y-%m-%d %H:%M:%S");
+		  // console.log(d3.entries(data.data));
 		  d3.select("#svgArea")
-		      .datum(data)
+		      .datum(d3.entries(data.data))
 		    .call(timeSeriesChart()
-				.date(function(d) { return formatDate.parse(d.date); })
-				.speed(function(d) { return +d.speed; })
-				.angle(function(d) { return +d.angle; })
-				.xSpeed(function(d) { return +d.x; })
-				.ySpeed(function(d) { return +d.y; })
+				.date(function(d) { return formatDate.parse(d.key); })
+				.rose(function(d) { return +d.value; })
 		    );
 		});
 	}
