@@ -65,6 +65,7 @@ class dao_data extends CI_Model {
         list($first,$last,$count) = array_values( end($qurey_result->result_array($qurey_result)) );
 
         $GranularityForNbrValue = round((strtotime($last)-strtotime($first)) / $count * ($count/$nbr) / 60 , 1);
+        where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,array((strtotime($last)-strtotime($first)), $count, $nbr));
 
         return $GranularityForNbrValue<5 ? 5 : $GranularityForNbrValue;
     }

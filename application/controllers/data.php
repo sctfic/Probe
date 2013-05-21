@@ -9,9 +9,8 @@ class Data extends CI_Controller {
 	protected $sensor=NULL; // name or ID nbr of station
 	protected $Since=NULL; // start date of data
 	protected $To=NULL;
-	protected $Granularity=NULL;
+	protected $XdisplaySizePxl=NULL;
 	public $dataReader=NULL;
-	protected $force=NULL;
 
 /**
 
@@ -26,7 +25,7 @@ class Data extends CI_Controller {
 		include_once(BASEPATH.'core/Model.php'); // need for load models manualy
 		include_once(APPPATH.'models/station.php');
 		include_once(APPPATH.'models/dao/dao_data.php');
-		include_once(APPPATH.'models/dao/dao_data_summary.php');
+		// include_once(APPPATH.'models/dao/dao_data_summary.php');
 
 		$this->load->helper('download');
 
@@ -42,14 +41,12 @@ class Data extends CI_Controller {
 		$this->To = $this->input->get('To');
 	        $this->To = empty($this->To) ? '2099-12-31T23:59':date('c', strtotime($this->To));
 
-		$this->force = $this->input->get('Force');
-	        $this->force = empty($this->force) ? false : true;
-
-		$this->Granularity = $this->input->get('Granularity'); // Granularity in minutes
-			$this->Granularity = is_integer($this->Granularity*1) ? $this->Granularity : 0; // in minutes
-
-		$this->displaySize = $this->input->get('displaySize'); // displaySize in pixels
-			$this->displaySize = is_integer($this->displaySize*1) ? $this->displaySize : 0; // in pixels
+		$this->XdisplaySizePxl = $this->input->get('XdisplaySizePxl'); // XdisplaySizePxl in pixels
+			$this->XdisplaySizePxl = 
+				(is_integer($this->XdisplaySizePxl*1) 
+					&& $this->XdisplaySizePxl>=64 
+					&& $this->XdisplaySizePxl<=2560
+				) ? $this->XdisplaySizePxl : 640; // in pixels
 
 		$this->Station = end($this->station->config($station));
 		// print_r($this->Station);
@@ -60,14 +57,7 @@ class Data extends CI_Controller {
 			"name"=>$this->Station['_name'],
 			"id"=>$this->Station['_name']));
 
-		if ($this->Since or $this->To or $this->Granularity) {
-			$this->dataReader = new dao_data($this->Station, $this->sensor);
-			// $this->load->model('dao/dao_data', 'dataReader'); // return $this->dataReader object
-		}
-		else {
-			$this->dataReader = new dao_data_summary($this->Station);
-			// $this->load->model('dao/dao_data_summary', 'dataReader'); // return $this->dataReader object
-		}
+		$this->dataReader = new dao_data($this->Station, $this->sensor);
 	}
 
 
@@ -78,8 +68,7 @@ class Data extends CI_Controller {
 	* @param 
 	*/
 	function setSensor($str) {
-		$this->sensor =  rawurldecode($str);
-		// if (isset($this->sensors[16])) unset($this->sensors[16]);
+		$this->sensor = empty($str) ? 'TA:Arch:Temp:Out:Average' : rawurldecode($str);
 		return $this->sensor;
 	}
 
@@ -95,8 +84,8 @@ class Data extends CI_Controller {
 
 	}
 
-	/**
-
+/**
+return an Json Obj of all currents value LOOP, LOOP2, HILOW
 	* @
 	* @param 
 	* @param 
@@ -107,7 +96,7 @@ class Data extends CI_Controller {
 		$itemConf = end($this->station->config($this->Station['_name'])); // $station est le ID ou le nom
 		$currents = $this->rebuild ($this->station->CurrentsCollector ($itemConf), 'Current');
 
-//		echo uksort($currents['Current'], "strnatcasecmp");
+		// echo uksort($currents['Current'], "strnatcasecmp");
 		deep_ksort($currents);
 
 		$this->dl_json ($currents);
@@ -123,23 +112,12 @@ make and download json curve of a sensor
 	* @param is the sensor name (one or more)
 	*/
 	function curve(){
-		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,array($this->Station['_name'], $this->Since,	$this->To,	$this->Granularity));
+		$Granularity = $this->dataReader->estimate ( $this->Since, $this->To, $this->XdisplaySizePxl/2 );
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,array($this->Station['_name'], $this->Since,	$this->To,	$this->XdisplaySizePxl, $Granularity));
 
-		if (!$this->force) {
-			$recomandGranularity = $this->dataReader->estimate (
-                $this->Since,
-                $this->To,
-                2000
-            );
-			if ($this->Granularity >= $recomandGranularity*4 || $this->Granularity <= $recomandGranularity/2 )
-				$this->Granularity = $recomandGranularity;
-		}
 
-		$data = $this->dataReader->curve (
-			$this->Since,
-			$this->To,
-			$this->Granularity
-		);
+		$data = $this->dataReader->curve ($this->Since, $this->To, $Granularity );
+
 		$j = count($data);
 	    $tsv = '';
 	    for ($i=0;$i<$j;$i++) {
@@ -165,13 +143,11 @@ make and download json bracketCurve of a sensor
 	*			last period value]
 	*/
 	function bracketCurve(){
-		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,array($this->Station['_name'], $this->Since,	$this->To,	$this->Granularity));
+		$Granularity = $this->dataReader->estimate ( $this->Since, $this->To, $this->XdisplaySizePxl/8 );
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,array($this->Station['_name'], $this->Since,	$this->To,	$this->XdisplaySizePxl, $Granularity));
 
-		$data = $this->dataReader->bracketCurve (
-			$this->Since,
-			$this->To,
-			$this->Granularity
-		);
+
+		$data = $this->dataReader->bracketCurve (	$this->Since,	$this->To,	$Granularity );
 
 		$j = count($data);
 	    $tsv = '';
@@ -193,35 +169,27 @@ make and download json wind data
 	* @param lenght is the number of day
 	*/
 	function windRose(){
-		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,array($this->Station['_name'], $this->Since,	$this->To,	$this->Granularity));
+		$Granularity = $this->dataReader->estimate ( $this->Since, $this->To, $this->XdisplaySizePxl/12 );
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,array($this->Station['_name'], $this->Since,	$this->To,	$this->XdisplaySizePxl, $Granularity));
 
-		$this->Granularity = empty($this->Granularity) ? 360 : $this->Granularity ; // in minutes
-		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,array($this->Station['_name'], $this->Since,	$this->To,	$this->Granularity));
+		
+		$data = $this->dataReader->wind (	$this->Since,	$this->To,	$Granularity );
 
-		$data = $this->dataReader->wind (
-			$this->Since,
-			$this->To,
-			$this->Granularity
-		);
 		$this->dl_json ($data);
 	}
 /**
-make and download json wind data
+make and download json wind data for vectorial HairChart
 	* @
 	* @param since is the start date of result needed
 	* @param lenght is the number of day
 	*/
 	function histoWind(){
-		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,array($this->Station['_name'], $this->Since,	$this->To,	$this->Granularity));
+		$Granularity = $this->dataReader->estimate ( $this->Since, $this->To, $this->XdisplaySizePxl/3 );
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,array($this->Station['_name'], $this->Since,	$this->To,	$this->XdisplaySizePxl, $Granularity));
 
-		$this->Granularity = empty($this->Granularity) ? 360 : $this->Granularity ; // in minutes
-		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,array($this->Station['_name'], $this->Since,	$this->To,	$this->Granularity));
+		
+		$data = $this->dataReader->histoWind (	$this->Since,	$this->To,	$Granularity);
 
-		$data = $this->dataReader->histoWind (
-			$this->Since,
-			$this->To,
-			$this->Granularity
-		);
 		$j = count($data);
 	    $tsv = '';
 	    for ($i=0;$i<$j;$i++) {
@@ -236,7 +204,7 @@ make and download json wind data
 	}
 
 /**
-rebuild array
+rebuild array of currents values to made an arborescence.
 	* @
 	* @param data structure array()
 	*/

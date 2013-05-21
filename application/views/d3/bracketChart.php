@@ -59,7 +59,7 @@ svg {
 	function probeViewer(){
 		var station='<?=$station?>';
 		var sensor='<?=$sensor?>';
-	    var url = "/data/bracketCurve?station="+station+"&sensor="+sensor+"&Granularity=120";
+	    var url = "/data/bracketCurve?station="+station+"&sensor="+sensor+"&XdisplaySizePxl="+1600;
 
 		d3.tsv(url, function(data) {
 		  var formatDate = d3.time.format("%Y-%m-%d %H:%M");

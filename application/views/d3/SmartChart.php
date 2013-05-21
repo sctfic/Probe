@@ -72,7 +72,7 @@ svg {
 	function probeViewer(){
 		var station='<?=$station?>';
 		var sensor='<?=$sensor?>';
-	    var url = "/data/curve?station="+station+"&sensor="+sensor+"&Since=2012-01-01&_To=2099-01-01&_Granularity=120";
+	    var url = "/data/curve?station="+station+"&sensor="+sensor+"&Since=2012-01-01&_To=2099-01-01&XdisplaySizePxl="+1600;
 
 		d3.tsv(url, function(data) {
 			var formatDate = d3.time.format("%Y-%m-%d %H:%M");

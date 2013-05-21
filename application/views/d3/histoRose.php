@@ -69,7 +69,7 @@ svg {
 <script>
 	function probeViewer(){
 		var station='<?=$station?>';
-	    var url = "/data/windRose?station="+station+"&Granularity=360";
+	    var url = "/data/windRose?station="+station+"&XdisplaySizePxl="+640;
 
 		d3.json(url, function(data) {
 		  var formatDate = d3.time.format("%Y-%m-%d %H:%M:%S");
