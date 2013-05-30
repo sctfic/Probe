@@ -42,6 +42,8 @@ svg {
 .box:hover>text{
 	display: block;
 }
+
+
 /*Blue:#1F77B4 #3182bd #6baed6*/
 /*Red:#E6550D*/
 .rect, .line {

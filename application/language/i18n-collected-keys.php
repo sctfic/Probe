@@ -79,3 +79,7 @@ i18n('windrose.view.label');
 i18n('histoRose.title.metadata');
 i18n('histoRose.description.metadata');
 i18n('histoRose.view.label');
+i18n('SmartCurves.view.label');
+i18n('list-view.title.metadata');
+i18n('list-view.description.metadata');
+i18n('list-viewer');

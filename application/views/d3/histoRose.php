@@ -23,19 +23,38 @@
 svg {
 	font-size: 10px;
 }
-.circle{
+.calm{
 	fill: #fff;
 	stroke: #000;
 	stroke-width: 0.5px;
 }
-.hidden{
+
+.stepPointBox g {
+	/*display: none;*/
+	/*fill-opacity: .0;*/
 	/*visibility: hidden;*/
-	fill-opacity: 0;
 }
-.petal{
+
+.stepPetalsBox {
+	/*display: none;*/
+	/*fill-opacity: .0;*/
+	/*visibility: hidden;*/
+}
+.sensitive {
+	/*display: none;*/
+	fill-opacity: .0;
+	/*visibility: hidden;*/
+	}
+
+.stepPetalsBox .sensitive:hover + .petals {
+	visibility: visible;
+}
+
+.petals{
 	fill: #58e;
 	stroke: #000;
 	stroke-width: 0.5px;
+	visibility: hidden;
 }
 .line {
   fill: none;
@@ -49,22 +68,9 @@ svg {
   stroke-width: 1px;
   shape-rendering: crispEdges;
 }
-.arrow:hover>.hair, .arrow:hover>.marker {
-  stroke: #E6550D;
-  stroke-width: 2px;
-}
+
 /*Blue:#1F77B4 #3182bd #6baed6*/
 /*Red:#E6550D*/
-.hair {
-  fill: none;
-  stroke: #3182bd;
-  stroke-width: 1px;
-}
-.marker {
-  fill: #FFF;
-  stroke: #3182bd;
-  stroke-width: .7px;
-}
 </style>
 <script>
 	function probeViewer(){
@@ -78,12 +84,12 @@ svg {
 		      .datum(d3.entries(data.data))
 		    .call(timeSeriesChart()
 				.date(function(d) { return formatDate.parse(d.key); })
-				.rose(function(d) { return +d.value; })
+				.rose(function(d) { return d.value; })
 		    );
 		});
 	}
 </script>
 <script src="/resources/js/ProbeTools.js"></script>
 <script src="/resources/js/libs/base64.js"></script>
-<script src="/resources/js/libs/jquery-ui-1.10.2.custom.js"></script>
+<!-- <script src="/resources/js/libs/jquery-ui-1.10.2.custom.js"></script> -->
 
