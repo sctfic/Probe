@@ -83,3 +83,5 @@ i18n('SmartCurves.view.label');
 i18n('list-view.title.metadata');
 i18n('list-view.description.metadata');
 i18n('list-viewer');
+i18n('hitoRose.title.metadata');
+i18n('hitoRose.description.metadata');

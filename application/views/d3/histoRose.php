@@ -46,16 +46,27 @@ svg {
 	/*visibility: hidden;*/
 	}
 
+
 .stepPetalsBox .sensitive:hover + .petals {
 	visibility: visible;
-}
+	opacity: .8;
+	zoom: 2;
+	transition-delay:0s;
+	-webkit-transition-delay:0s;
+	/*-webkit-transform: scale(2);¿*/
+	}
 
 .petals{
 	fill: #58e;
 	stroke: #000;
 	stroke-width: 0.5px;
 	visibility: hidden;
+	opacity: 0.1;
+	transition:visibility 0s linear .5s, opacity .2s linear;
+	-webkit-transition:visibility 0s linear .5s, opacity .2s linear;
+
 }
+
 .line {
   fill: none;
   stroke: #000;
@@ -74,19 +85,7 @@ svg {
 </style>
 <script>
 	function probeViewer(){
-		var station='<?=$station?>';
-	    var url = "/data/windRose?station="+station+"&XdisplaySizePxl="+640;
-
-		d3.json(url, function(data) {
-		  var formatDate = d3.time.format("%Y-%m-%d %H:%M:%S");
-		  // console.log(d3.entries(data.data));
-		  d3.select("#svgArea")
-		      .datum(d3.entries(data.data))
-		    .call(timeSeriesChart()
-				.date(function(d) { return formatDate.parse(d.key); })
-				.rose(function(d) { return d.value; })
-		    );
-		});
+		call_histoRose("#svgArea", '<?=$station?>', 1640);
 	}
 </script>
 <script src="/resources/js/ProbeTools.js"></script>

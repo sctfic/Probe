@@ -1,4 +1,33 @@
-function timeSeriesChart() {
+
+function call_histoRose(container, station, XdisplaySizePxl) {
+    var histoRose = timeSeriesChart_histoRose()
+                        .width(XdisplaySizePxl)
+                        .ajaxUrl("/data/windRose")
+                        .station(station)
+                        ;
+
+
+    d3.json( histoRose.ajaxUrl() + "?station="+ histoRose.station() +"&XdisplaySizePxl="+histoRose.width(), function(data) {
+        var formatDate = d3.time.format("%Y-%m-%d %H:%M:%S");
+        d3.select(container)
+            .datum(d3.entries(data.data))
+            .call(histoRose
+                .date(function(d) { return formatDate.parse(d.key); })
+                .rose(function(d) { return d.value; })
+                .onClickAction(function(d) { console.error (d); })
+                );
+    });
+}
+
+
+
+
+
+
+
+// ================= Engine build chart of rose by period ====================
+
+function timeSeriesChart_histoRose() {
     var margin = {top: 50, right: 50, bottom: 20, left: 30},
         width = 640,
         height = 160,
@@ -10,7 +39,11 @@ function timeSeriesChart() {
         xScale = d3.time.scale().range([0, width]),
         yScale = d3.scale.linear().range([height, 0]),
         xAxis = d3.svg.axis().scale(xScale).orient("bottom").tickSize(8,0),
-        yAxis = d3.svg.axis().scale(yScale).orient("left").ticks(4).tickSize(3,0);
+        yAxis = d3.svg.axis().scale(yScale).orient("left").ticks(4).tickSize(3,0),
+        onClickAction = function(d) { console.log(d); },
+        ajaxUrl = ""
+        ;
+
         // line = d3.svg.line().x(X).y(Y);
 
 
@@ -61,11 +94,6 @@ function timeSeriesChart() {
                 .data(data).enter().append("g")
                 .attr("class", "stepPointBox");
 
-                // stepPointBox.transition()
-                //     .delay(function(d,i) { return i*2;})
-                //     // .duration(500)
-                //     .attr("display", "block");
-
             var speedScale = d3.scale.linear().domain(d3.extent(data.map(function(d, i){return d.rose.length;}))).range([0, 18]);
             //Draw the center Calm
             stepPointBox.append("circle")
@@ -83,7 +111,8 @@ function timeSeriesChart() {
                 .attr("class", "sensitive")
                 .attr("cx", function(d) { return xScale(d.date); })
                 .attr("cy", 0) // function(d) { return yScale(0); })
-                .attr("r", 5)
+                .attr("r", 6)
+                .on("click", function(d) { return onClickAction(d); })
                 .append("title")
                 .text(function(d) {
                         return ""+d.date ;
@@ -91,7 +120,7 @@ function timeSeriesChart() {
                 
 
             var visWidth = 30;
-            smallArcScale = d3.scale.linear().domain([0, 10]).range([5, visWidth]).clamp(true);
+            smallArcScale = d3.scale.linear().domain([0, 25]).range([5, visWidth]).clamp(true);
             // // var small = d3.select(container)
 
             // var winds = [];
@@ -112,16 +141,27 @@ function timeSeriesChart() {
             stepPetalsBox.append("svg:g")
                 .attr("class", "petals")
                 .attr("transform", function(d) { return "translate(" + xScale(d.date) + ", 0)"; })
-                // .attr("id", "petals_")
-                // .append("circle")
-                //     .attr("cx", function(d) { return xScale(d.date); })
-                //     .attr("cy", 0)
-                //     .attr("r", function(d, i){console.log(d.rose); return speedScale(d.rose.length);})
                 .selectAll("path")
-                .data(function(d){return d.rose;})
+                .data(
+                    // parse each rose
+                    function(d){ return d.rose; }
+                )
                 .enter()
                 .append("svg:path")
-                    .attr("d", arc( {width: 11, from: 5, to: function(d) { return smallArcScale(d.Spl); }}));
+                    .attr("d",
+                        // build each petal of each rose
+                        function(d){
+                            if (d.Spd>0)
+                            { // if a real petal, not the center (calm:no wind, no direction)
+                                var obj={ width: 11, from: 5, to: smallArcScale(d.Spl) };
+                                return d3.svg.arc()
+                                    .startAngle((d.Dir - obj.width) * Math.PI/180)
+                                    .endAngle((d.Dir + obj.width) * Math.PI/180)
+                                    .innerRadius(obj.from)
+                                    .outerRadius(obj.to)();
+                            }
+                        }
+                    );
 
 
             // chose the possition of x-Axis
@@ -136,9 +176,6 @@ function timeSeriesChart() {
             g.select(".x.axis")
                 .attr("transform", "translate(0," + xPos + ")") // axe tjrs en bas : yScale.range()[0] + ")")
                 .call(xAxis);
-            // g.select(".y.axis")
-            //     .attr("transform", "translate(0,0)")
-            //     .call(yAxis);
         });
     }
 
@@ -146,13 +183,13 @@ function timeSeriesChart() {
 // Max: 3.576
 // Spd: 0.447
 // Spl: 4
-function arc(o) {
-    return d3.svg.arc()
-        .startAngle(function(d) {console.log((d.Dir - o.width) * Math.PI/180); return (d.Dir - o.width) * Math.PI/180; })
-        .endAngle(function(d) {console.log((d.Dir + o.width) * Math.PI/180); return (d.Dir + o.width) * Math.PI/180; })
-        .innerRadius(o.from)
-        .outerRadius(function(d) {console.log(o.to(d)); return o.to(d) });
-};
+// function arc(obj) {
+//     return d3.svg.arc()
+//         .startAngle(function(d) {console.log(d , (d.Dir - obj.width) * Math.PI/180); return (d.Dir - obj.width) * Math.PI/180; })
+//         .endAngle(function(d) {console.log(d , (d.Dir + obj.width) * Math.PI/180); return (d.Dir + obj.width) * Math.PI/180; })
+//         .innerRadius(obj.from)
+//         .outerRadius(function(d) {console.log(d , obj.to(d)); return obj.to(d) });
+// };
 
 
     // The x-accessor for the path generator; xScale ∘ meanDate.
@@ -165,25 +202,24 @@ function arc(o) {
         return yScale(d.ySpeed);
     }
 
+
+// ================= Accesseurs =====================
+
     chart.margin = function(_) {
         if (!arguments.length) return margin;
         margin = _;
         return chart;
     };
-
     chart.width = function(_) {
         if (!arguments.length) return width;
         width = _;
         return chart;
     };
-
     chart.height = function(_) {
         if (!arguments.length) return height;
         height = _;
         return chart;
     };
-
-
     chart.date = function(_) {
         if (!arguments.length) return meanDate;
         meanDate = _;
@@ -194,7 +230,6 @@ function arc(o) {
         rose = _;
         return chart;
     };
-
     chart.speed = function(_) {
         if (!arguments.length) return Speed;
         Speed = _;
@@ -205,7 +240,21 @@ function arc(o) {
         angle = _;
         return chart;
     };
-
+    chart.ajaxUrl = function(_) {
+        if (!arguments.length) return ajaxUrl;
+        ajaxUrl = _;
+        return chart;
+    };
+    chart.station = function(_) {
+        if (!arguments.length) return station;
+        station = _;
+        return chart;
+    };
+    chart.onClickAction = function(_) {
+        if (!arguments.length) return onClickAction;
+        onClickAction = _;
+        return chart;
+    };
 
     return chart;
 }
