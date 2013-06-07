@@ -71,7 +71,7 @@ var speedToColorScale = d3.scale.linear()
                           .range(["hsl(220, 70%, 90%)", "hsl(220, 70%, 30%)"])
                           .interpolate(d3.interpolateHsl);
 function speedToColor(d) { return speedToColorScale(d.s); }
-// Map a wind probability to a color                     
+// Map a wind probability to a color
 var probabilityToColorScale = d3.scale.linear()
                                 .domain([0, 0.2])
                                 .range(["hsl(0, 70%, 99%)", "hsl(0, 70%, 40%)"])

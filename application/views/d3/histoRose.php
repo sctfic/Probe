@@ -42,7 +42,7 @@ svg {
 }
 .sensitive {
 	/*display: none;*/
-	fill-opacity: .0;
+	opacity: 0;
 	/*visibility: hidden;*/
 	}
 

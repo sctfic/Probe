@@ -107,11 +107,12 @@ function timeSeriesChart_histoRose() {
                 .data(data).enter().append("g")
                 .attr("class", "stepPetalsBox");
             
-            stepPetalsBox.append("circle")
+            stepPetalsBox.append("rect")
                 .attr("class", "sensitive")
-                .attr("cx", function(d) { return xScale(d.date); })
-                .attr("cy", 0) // function(d) { return yScale(0); })
-                .attr("r", 6)
+                .attr("x", function(d) { return xScale(d.date)-6; })
+                .attr("y", -40) // function(d) { return yScale(0); })
+                .attr("width", 12)
+                .attr("height", 80)
                 .on("click", function(d) { return onClickAction(d); })
                 .append("title")
                 .text(function(d) {
@@ -120,7 +121,7 @@ function timeSeriesChart_histoRose() {
                 
 
             var visWidth = 30;
-            smallArcScale = d3.scale.linear().domain([0, 25]).range([5, visWidth]).clamp(true);
+            smallArcScale = d3.scale.linear().domain([0, 4]).range([5, visWidth]).clamp(true);
             // // var small = d3.select(container)
 
             // var winds = [];
@@ -144,16 +145,21 @@ function timeSeriesChart_histoRose() {
                 .selectAll("path")
                 .data(
                     // parse each rose
-                    function(d){ return d.rose; }
+                    function(d){
+			var sum = d3.sum(d.rose, function(item){return item.Spl;});
+			d.rose.forEach(function (item,index,array){array[index].tSpl=sum; return array;})
+			// console.log (d3.sum(d.rose, function(item){return item.Spl;}),d.rose);
+			return d.rose; }
                 )
                 .enter()
                 .append("svg:path")
+                	.attr("fill", function(d){ return colorScale(d.Spl/d.tSpl); } ) // 
                     .attr("d",
                         // build each petal of each rose
                         function(d){
                             if (d.Spd>0)
                             { // if a real petal, not the center (calm:no wind, no direction)
-                                var obj={ width: 11, from: 5, to: smallArcScale(d.Spl) };
+                                var obj={ width: 11, from: 5, to: smallArcScale(d.Spd) };
                                 return d3.svg.arc()
                                     .startAngle((d.Dir - obj.width) * Math.PI/180)
                                     .endAngle((d.Dir + obj.width) * Math.PI/180)
@@ -201,7 +207,10 @@ function timeSeriesChart_histoRose() {
     function Y(d) {
         return yScale(d.ySpeed);
     }
-
+	var colorScale = d3.scale.linear()
+                                .domain([0,.5,.8,1])
+                                .range(["#AEC7E8","#1F77B4","#D62728","#2C3539"])// ["hsl(0, 70%, 99%)", "hsl(0, 70%, 40%)"])
+                                .interpolate(d3.interpolateHsl);
 
 // ================= Accesseurs =====================
 

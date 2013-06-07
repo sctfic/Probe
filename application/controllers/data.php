@@ -10,6 +10,7 @@ class Data extends CI_Controller {
 	protected $Since=NULL; // start date of data
 	protected $To=NULL;
 	protected $XdisplaySizePxl=NULL;
+	protected $infos=FALSE;
 	public $dataReader=NULL;
 
 /**
@@ -40,6 +41,9 @@ class Data extends CI_Controller {
 
 		$this->To = $this->input->get('To');
 	        $this->To = empty($this->To) ? '2099-12-31T23:59':date('c', strtotime($this->To));
+
+		$this->infos = $this->input->get('infos');
+	        $this->infos = empty($this->infos) ? FALSE:TRUE;
 
 		$this->XdisplaySizePxl = $this->input->get('XdisplaySizePxl'); // XdisplaySizePxl in pixels
 			$this->XdisplaySizePxl = 
@@ -93,13 +97,19 @@ return an Json Obj of all currents value LOOP, LOOP2, HILOW
 	function currents() {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		
-		$itemConf = end($this->station->config($this->Station['_name'])); // $station est le ID ou le nom
-		$currents = $this->rebuild ($this->station->CurrentsCollector ($itemConf), 'Current');
+		if (!$this->infos) {
+			$itemConf = end($this->station->config($this->Station['_name'])); // $station est le ID ou le nom
+			$currents = $this->rebuild ($this->station->CurrentsCollector ($itemConf), 'Current');
 
-		// echo uksort($currents['Current'], "strnatcasecmp");
-		deep_ksort($currents);
+			// echo uksort($currents['Current'], "strnatcasecmp");
+			deep_ksort($currents);
 
-		$this->dl_json ($currents);
+			$this->dl_json ($currents);
+		}
+		else {
+
+			$this->dl_json ($dataHeader);
+		}
 	}
 
 
@@ -112,21 +122,27 @@ make and download json curve of a sensor
 	* @param is the sensor name (one or more)
 	*/
 	function curve(){
-		$Granularity = $this->dataReader->estimate ( $this->Since, $this->To, $this->XdisplaySizePxl/2 );
-		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,array($this->Station['_name'], $this->Since,	$this->To,	$this->XdisplaySizePxl, $Granularity));
+		$dataHeader = $this->dataReader->estimate ( $this->Since, $this->To, $this->XdisplaySizePxl/2 );
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,array($this->Station['_name'], $this->Since,	$this->To,	$this->XdisplaySizePxl, $dataHeader));
 
 
-		$data = $this->dataReader->curve ($this->Since, $this->To, $Granularity );
+		if (!$this->infos) {
+			$data = $this->dataReader->curve ($this->Since, $this->To, $dataHeader['step'] );
 
-		$j = count($data);
-	    $tsv = '';
-	    for ($i=0;$i<$j;$i++) {
-			$tsv .= substr(	$data[$i]['UTC_grp'],0,-3)."\t".
-							$data[$i]['value']."\n";
+			$j = count($data);
+		    $tsv = '';
+		    for ($i=0;$i<$j;$i++) {
+				$tsv .= substr(	$data[$i]['UTC_grp'],0,-3)."\t".
+								$data[$i]['value']."\n";
+			}
+
+			$this->dl_tsv ("date\tval\n".trim($tsv,"\n"));
+	        $this->dl_tsv ($data);
 		}
+		else {
 
-		$this->dl_tsv ("date\tval\n".trim($tsv,"\n"));
-        $this->dl_tsv ($data);
+			$this->dl_json ($dataHeader);
+		}
 
 	}
 /**
@@ -143,24 +159,29 @@ make and download json bracketCurve of a sensor
 	*			last period value]
 	*/
 	function bracketCurve(){
-		$Granularity = $this->dataReader->estimate ( $this->Since, $this->To, $this->XdisplaySizePxl/8 );
-		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,array($this->Station['_name'], $this->Since,	$this->To,	$this->XdisplaySizePxl, $Granularity));
+		$dataHeader = $this->dataReader->estimate ( $this->Since, $this->To, $this->XdisplaySizePxl/8 );
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,array($this->Station['_name'], $this->Since,	$this->To,	$this->XdisplaySizePxl, $dataHeader));
 
 
-		$data = $this->dataReader->bracketCurve (	$this->Since,	$this->To,	$Granularity );
+		if (!$this->infos) {
+			$data = $this->dataReader->bracketCurve (	$this->Since,	$this->To,	$dataHeader['step'] );
 
-		$j = count($data);
-	    $tsv = '';
-	    for ($i=0;$i<$j;$i++) {
-			$tsv .= substr(	$data[$i]['UTC_grp'],0,-3)."\t".
-							$data[$i]['min']."\t".
-							$data[$i]['first']."\t".
-							$data[$i]['val']."\t".
-							$data[$i]['last']."\t".
-							$data[$i]['max']."\n";
+			$j = count($data);
+		    $tsv = '';
+		    for ($i=0;$i<$j;$i++) {
+				$tsv .= substr(	$data[$i]['UTC_grp'],0,-3)."\t".
+								$data[$i]['min']."\t".
+								$data[$i]['first']."\t".
+								$data[$i]['val']."\t".
+								$data[$i]['last']."\t".
+								$data[$i]['max']."\n";
+			}
+
+			$this->dl_tsv ("date\tmin\tfirst\tavg\tlast\tmax\n".trim($tsv,"\n"));
 		}
-
-		$this->dl_tsv ("date\tmin\tfirst\tavg\tlast\tmax\n".trim($tsv,"\n"));
+		else {
+			$this->dl_json ($dataHeader);
+		}
 	}
 /**
 make and download json wind data
@@ -169,13 +190,19 @@ make and download json wind data
 	* @param lenght is the number of day
 	*/
 	function windRose(){
-		$Granularity = $this->dataReader->estimate ( $this->Since, $this->To, $this->XdisplaySizePxl/12 );
-		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,array($this->Station['_name'], $this->Since,	$this->To,	$this->XdisplaySizePxl, $Granularity));
+		$dataHeader = $this->dataReader->estimate ( $this->Since, $this->To, $this->XdisplaySizePxl/12 );
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,array($this->Station['_name'], $this->Since,	$this->To,	$this->XdisplaySizePxl, $dataHeader));
 
 		
-		$data = $this->dataReader->wind (	$this->Since,	$this->To,	$Granularity );
+		if (!$this->infos) {
+			$data = $this->dataReader->wind (	$this->Since,	$this->To,	$dataHeader['step'] );
 
-		$this->dl_json ($data);
+			$this->dl_json ($data);
+		}
+		else {
+
+			$this->dl_json ($dataHeader);
+		}
 	}
 /**
 make and download json wind data for vectorial HairChart
@@ -184,27 +211,32 @@ make and download json wind data for vectorial HairChart
 	* @param lenght is the number of day
 	*/
 	function histoWind(){
-		$Granularity = $this->dataReader->estimate ( $this->Since, $this->To, $this->XdisplaySizePxl/3 );
-		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,array($this->Station['_name'], $this->Since,	$this->To,	$this->XdisplaySizePxl, $Granularity));
+		$dataHeader = $this->dataReader->estimate ( $this->Since, $this->To, $this->XdisplaySizePxl/3 );
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,array($this->Station['_name'], $this->Since,	$this->To,	$this->XdisplaySizePxl, $dataHeader));
 
+		if (!$this->infos) {
+			$data = $this->dataReader->histoWind (	$this->Since,	$this->To,	$dataHeader['step']);
 		
-		$data = $this->dataReader->histoWind (	$this->Since,	$this->To,	$Granularity);
+			$j = count($data);
+		    $tsv = '';
+		    for ($i=0;$i<$j;$i++) {
+				$tsv .= substr(	$data[$i]['UTC_grp'],0,-3)."\t".
+								$data[$i]['AvgSpeed']."\t".
+								$data[$i]['AvgDirection']."\t".
+								$data[$i]['x']."\t".
+								$data[$i]['y']."\n";
+			}
 
-		$j = count($data);
-	    $tsv = '';
-	    for ($i=0;$i<$j;$i++) {
-			$tsv .= substr(	$data[$i]['UTC_grp'],0,-3)."\t".
-							$data[$i]['AvgSpeed']."\t".
-							$data[$i]['AvgDirection']."\t".
-							$data[$i]['x']."\t".
-							$data[$i]['y']."\n";
+			$this->dl_tsv ("date\tspeed\tangle\tx\ty\n".trim($tsv,"\n"));
 		}
+		else {
 
-		$this->dl_tsv ("date\tspeed\tangle\tx\ty\n".trim($tsv,"\n"));
+			$this->dl_json ($dataHeader);
+		}
 	}
 
 /**
-rebuild array of currents values to made an arborescence.
+rebuild array of EEPROM currents values to made an arborescence.
 	* @
 	* @param data structure array()
 	*/
