@@ -38,8 +38,9 @@
 <?php if ($_SERVER["HTTP_HOST"]	!= DEV_HOST): ?>
     <script type="text/javascript">
       var _gaq = _gaq || [];
+      var pluginUrl = '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+      _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
       _gaq.push(['_setAccount', 'UA-39489032-1']);
-      _gaq.push(['_setDomainName', 'no-ip.org']);
       _gaq.push(['_trackPageview']);
 
       (function() {
@@ -48,4 +49,4 @@
         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
       })();
     </script>
-<?php endif; ?>
+<?php endif;
