@@ -26,6 +26,12 @@ class Page_manager {
      */
     private $_CI;
 
+    /**
+     * @var array   data to pass to the view(s)
+     */
+    private $data = array();
+
+
     public function __construct() {
         where_I_Am(__FILE__, __CLASS__, __FUNCTION__, __LINE__, func_get_args());
         $this->_CI =& get_instance();
@@ -35,11 +41,10 @@ class Page_manager {
      * Passes data to the view and wrap it in header/footer and necessary HTML code
      *
      * @param string $page relative path to the view (from APPPATH/view directory)
-     * @param array  $data parameters needed by the view
      *
      * @return view the requested view
      */
-    public function view($page, $data = null)
+    public function view($page)
     {
         where_I_Am(__FILE__, __CLASS__, __FUNCTION__, __LINE__);
 
@@ -53,39 +58,84 @@ class Page_manager {
                     'error-solution' => sprintf(
                             i18n('solution.file:missing[%s].description'),
                             $page.'.php'
-                        ).':'.$view.var_dump($data)
+                        ).':'.$view.var_dump($this->data)
                     ),
                 404,
                 i18n('error.file:missing.header')
             );
         }
 
-        if (!isset($data['viewer'])) {
-            $data['viewer'] = false;
+        $this->setStatus();
+
+        $this->_CI->load->view('templates/header', $this->data);
+        $this->_CI->load->view('templates/breadcrumb', $this->data);
+        $this->_CI->load->view($page, $this->data);
+        $this->_CI->load->view('templates/footer', $this->data);
+        $this->_CI->load->view('templates/js-libs', $this->data);
+    }
+
+    public function setStatus(){
+        if (!isset($this->data['viewer'])) {
+            $this->addData('viewer', false );
         }
 
-        $this->_CI->load->view('templates/header', $data);
-        $this->_CI->load->view('templates/breadcrumb', $data);
-        $this->_CI->load->view($page, $data);
-        $this->_CI->load->view('templates/footer', $data);
-        $this->_CI->load->view('templates/js-libs', $data);
+        $this->addData('isAuthentified', $this->isAuthentified() );
     }
+
 
     /**
      * Fetch common page data (title, description, author, etc.)
      *  this allow to use i18n string for the page date.
+     *
      * @param $page
-     * @return array
+     * @return void
      */
-    public function fetchConfig($page)
+    public function addMetadata($page)
     { //
         where_I_Am(__FILE__, __CLASS__, __FUNCTION__, __LINE__, func_get_args());
-        $data = array();
-        $data['page'] = $page;
-        $data['title'] = i18n(sprintf('%s.title.metadata', $page), true);
-        $data['description'] = i18n(sprintf('%s.description.metadata', $page), true);
-        $data['author'] = i18n('probe.authors.metadata', true);
+        $this->addData('page', $page );
+        $this->addData('title', i18n(sprintf('%s.title.metadata', $page), true) );
+        $this->addData('description', i18n(sprintf('%s.description.metadata', $page), true) );
+        $this->addData('author', i18n('probe.authors.metadata', true) );
+    }
 
-        return $data;
+
+    /**
+     * Check if user is already authentified
+     * @return boolean
+     */
+    private function isAuthentified() {
+        try {
+            if (isset($this->session)) {
+                $status = unserialize($this->session->userdata("user"));
+                return $status['Authentified'];
+            } else {
+                return false;
+            }
+        } catch (SessionException $e) {
+            log_message('error',  $e->getMessage());
+        }
+    }
+
+
+    /**
+     * Add datum to the data to pass to the view(s).
+     *
+     * @param $k    string
+     * @param $v    string
+    */
+    public function addData($k, $v)
+    {
+        $this->data[$k] = $v;
+    }
+
+
+    /**
+     * Remove datum from the data to pass to the view(s).
+     *
+     * @param $k string
+    */
+    public function removeData($k){
+        unset($this->data[$k]);
     }
 }

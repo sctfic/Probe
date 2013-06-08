@@ -87,14 +87,15 @@ class admin extends Authentification
     {
         where_I_Am(__FILE__, __CLASS__, __FUNCTION__, __LINE__, func_get_args());
         // requirements
-        $this->load->helper(array('form', 'url'));
+        $this->load->helper(array('form', 'url', 'array'));
         $this->load->library('form_validation');
         $page = new Page_manager();
 
         // build view data
-        $data = $page->fetchConfig('login'); // fetch information to build the HTML header
-        $data['msg'] = $this->session->userdata("msg"); // message to display in the page
-        $data['userName'] = null;
+        $page->addData('breadcrumb', $this->_breadcrumb['login']);
+        $page->addData('msg', $this->session->userdata("msg")); // message to display in the page
+        $page->addData('userName', null);
+        $page->addMetadata('login'); // fetch information to build the HTML header
 
         $this->session->set_userdata("msg", null); // reset session message
 
@@ -104,7 +105,7 @@ class admin extends Authentification
         $this->form_validation->set_rules('confirm', i18n('Password Confirmation'), 'required');
 
         // display the view
-        $page->view('login', $data);
+        $page->view('login');
     }
 
     /**

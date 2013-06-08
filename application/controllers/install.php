@@ -131,16 +131,16 @@ class Install extends CI_Controller {
         $page = new Page_manager();
 
         // build view data
-        $data = $page->fetchConfig('install-dbms'); // fetch information to build the HTML header
-        $data['breadcrumb'] = $this->_breadcrumb['dbms'];
-        $data['dbmsUsername'] = null;
-        $data['dbmsPassword'] = null;
-        $data['dbmsHost'] = null;
-        $data['dbmsPort'] = 3306;
-        $data['dbmsDatabaseName'] = $this->config->item('mainDb');
+        $page->addData('breadcrumb', $this->_breadcrumb['dbms'] );
+        $page->addData('dbmsUsername', null );
+        $page->addData('dbmsPassword', null );
+        $page->addData('dbmsHost', null );
+        $page->addData('dbmsPort', 3306 );
+        $page->addData('dbmsDatabaseName', $this->config->item('mainDb') );
+        $page->addMetadata('install-dbms'); // fetch information to build the HTML header
 
         // display the view
-        $page->view('install/dbms', $data);
+        $page->view('install/dbms');
     }
 
     /**
@@ -226,15 +226,14 @@ class Install extends CI_Controller {
         $page = new Page_manager();
 
         // build view data
-        $data = $page->fetchConfig('install-admin-user'); // fetch information to build the HTML header
-        $data['breadcrumb'] = $this->_breadcrumb['admin-user'];
-
-        $data['adminUsername'] = null;
-        $data['adminPassword'] = null;
-        $data['adminConfirm'] = null;
+        $page->addData('breadcrumb', $this->_breadcrumb['admin-user'] );
+        $page->addData('adminUsername', null );
+        $page->addData('adminPassword', null );
+        $page->addData('adminConfirm', null );
+        $page->addMetadata('install-admin-user'); // fetch information to build the HTML header
 
         // display the view
-        $page->view('install/admin-user', $data);
+        $page->view('install/admin-user');
     }
 
     /**

@@ -65,7 +65,7 @@ class viewer extends CI_Controller
         where_I_Am(__FILE__, __CLASS__, __FUNCTION__, __LINE__, func_get_args());
         $page = new Page_manager();
 
-        $data = $page->fetchConfig($dataBinder);
+        $data = $page->addMetadata($dataBinder);
         $data['viewer'] = true;
         // remove the controller name
         $data['dataBinder'] = $dataBinder;
@@ -95,7 +95,7 @@ class viewer extends CI_Controller
         where_I_Am(__FILE__, __CLASS__, __FUNCTION__, __LINE__, func_get_args());
         $page = new Page_manager();
 
-        $data = $page->fetchConfig('list-view');
+        $data = $page->addMetadata('list-view');
         // remove the controller name
         $scannedDir = array_diff(scandir(BINDER_PATH), array('..', '.'));
         $data['list'] = array_map(array($this, 'prepareViewList'), $scannedDir);
