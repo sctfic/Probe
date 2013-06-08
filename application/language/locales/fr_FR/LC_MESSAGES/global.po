@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: probe\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-18 12:49+0100\n"
-"PO-Revision-Date: 2013-05-18 12:49+0100\n"
+"POT-Creation-Date: 2013-06-08 23:15+0100\n"
+"PO-Revision-Date: 2013-06-08 23:18+0100\n"
 "Last-Translator: Édouard Lopez <dev+i18n@edouard-lopez.com>\n"
 "Language-Team: probe <dev+probe@edouard-lopez.com>\n"
 "Language: \n"
@@ -107,7 +107,7 @@ msgid "windrose.description.metadata"
 msgstr "Visualisation de la direction et de la vitesse des vents"
 
 #: application/language/i18n-collected-keys.php:32
-#: application/libraries/Page_manager.php:88
+#: application/libraries/Page_manager.php:99
 msgid "probe.authors.metadata"
 msgstr "Équipe Probe"
 
@@ -275,6 +275,26 @@ msgstr "Paramétrage du compte administrateur responsable de l'application et de
 msgid "install.administrator.breadcrumb"
 msgstr "Compte administrateur"
 
+#: application/language/i18n-collected-keys.php:73
+msgid "install.login.breadcrumb"
+msgstr "Authentification"
+
+#: application/language/i18n-collected-keys.php:74
+msgid "list-view.title.metadata"
+msgstr "Liste des visualisations"
+
+#: application/language/i18n-collected-keys.php:75
+msgid "list-view.description.metadata"
+msgstr "Liste des visualisations de données disponibles (conditions actuelles, rose des vents, variations des températures)"
+
+#: application/language/i18n-collected-keys.php:76
+msgid "configuration-dashboard.title.metadata"
+msgstr "Tableau de bord des configurations"
+
+#: application/language/i18n-collected-keys.php:77
+msgid "configuration-dashboard.description.metadata"
+msgstr "Tableau de bord des configurations de l'application et des stations"
+
 #: application/language/i18n-weather-conditions.php:2
 msgid "weather.clear.label"
 msgstr "ciel dégagé"
@@ -375,20 +395,20 @@ msgstr "journée orageuse"
 msgid "weather.storm-night.label"
 msgstr "nuit orageuse"
 
-#: application/libraries/Page_manager.php:51
+#: application/libraries/Page_manager.php:56
 msgid "error.file:missing.title"
 msgstr "Fichier manquant ou non valable"
 
-#: application/libraries/Page_manager.php:52
+#: application/libraries/Page_manager.php:57
 msgid "error.file:missing.description"
 msgstr "Erreur à l'ouverture du fichier"
 
-#: application/libraries/Page_manager.php:54
+#: application/libraries/Page_manager.php:59
 #, php-format
 msgid "solution.file:missing[%s].description"
 msgstr "Vérifier que le fichier <var>%s</var> existe bien et que vous avez les droits suffisants pour le lire"
 
-#: application/libraries/Page_manager.php:59
+#: application/libraries/Page_manager.php:64
 msgid "error.file:missing.header"
 msgstr "Fichier manquant ou non valable."
 
@@ -505,27 +525,23 @@ msgstr "L'adresse e-mail est mal-formée."
 msgid "logout.success.label"
 msgstr "Vous êtes déconnecté."
 
-#: application/views/login.php:5
-msgid "install.login.breadcrumb"
-msgstr "Authentification"
-
-#: application/views/login.php:18
+#: application/views/login.php:10
 msgid "login.legend"
 msgstr "Authentification à l'application"
 
-#: application/views/login.php:26
+#: application/views/login.php:18
 msgid "login.description"
 msgstr "Connexion à l'interface d'administration"
 
-#: application/views/login.php:32
+#: application/views/login.php:24
 msgid "login.username"
 msgstr "Utilisateur"
 
-#: application/views/login.php:32
-#: application/views/login.php:45
+#: application/views/login.php:24
+#: application/views/login.php:37
+#: application/views/login.php:47
+#: application/views/login.php:50
 #: application/views/login.php:55
-#: application/views/login.php:58
-#: application/views/login.php:63
 #: application/views/install/admin-user.php:39
 #: application/views/install/admin-user.php:52
 #: application/views/install/admin-user.php:65
@@ -542,11 +558,11 @@ msgstr "Utilisateur"
 msgid "required"
 msgstr "nécessaire"
 
-#: application/views/login.php:32
-#: application/views/login.php:45
+#: application/views/login.php:24
+#: application/views/login.php:37
+#: application/views/login.php:47
+#: application/views/login.php:50
 #: application/views/login.php:55
-#: application/views/login.php:58
-#: application/views/login.php:63
 #: application/views/install/admin-user.php:39
 #: application/views/install/admin-user.php:52
 #: application/views/install/admin-user.php:65
@@ -564,41 +580,41 @@ msgstr "nécessaire"
 msgid "&nbsp;:"
 msgstr "&nbsp;:"
 
-#: application/views/login.php:38
-#: application/views/login.php:56
+#: application/views/login.php:30
+#: application/views/login.php:48
 msgid "login.username.placeholder"
 msgstr "gestionnaire ou exploitant"
 
-#: application/views/login.php:45
+#: application/views/login.php:37
 msgid "login.password"
 msgstr "Mot de passe"
 
-#: application/views/login.php:51
-#: application/views/login.php:60
+#: application/views/login.php:43
+#: application/views/login.php:52
 msgid "login.password.placeholder"
 msgstr "mot de passe du gestionnaire ou de l'exploitant"
 
-#: application/views/login.php:55
+#: application/views/login.php:47
 msgid "userName"
 msgstr "Nom d'utilisateur"
 
-#: application/views/login.php:58
+#: application/views/login.php:50
 msgid "password"
 msgstr "Mot de passe"
 
-#: application/views/login.php:63
+#: application/views/login.php:55
 msgid "login.password-confirmation"
 msgstr "Confirmer"
 
-#: application/views/login.php:65
+#: application/views/login.php:57
 msgid "login.password-confirmation.placeholder"
 msgstr "pour éviter les erreurs de saisie"
 
-#: application/views/login.php:72
+#: application/views/login.php:64
 msgid "weather.sunny.label"
 msgstr "Ensoleillé"
 
-#: application/views/login.php:78
+#: application/views/login.php:70
 msgid "login.authentificate"
 msgstr "S'authentifier →"
 
@@ -738,6 +754,14 @@ msgstr "Paramétrer le réseau"
 msgid "configuration-station.add-new.label"
 msgstr "Ajouter la station"
 
+#: application/views/configuration/dashboard.php:19
+msgid "configuration-stations.list.label"
+msgstr "Liste des stations"
+
+#: application/views/configuration/dashboard.php:24
+msgid "configuration-stations.add.label"
+msgstr "Ajouter une station"
+
 #: application/views/configuration/list-stations.php:9
 msgid "configuration-stations.list.header"
 msgstr "Liste des stations"
@@ -746,23 +770,19 @@ msgstr "Liste des stations"
 msgid "configuration-stations.add-new.station"
 msgstr "Ajouter une station"
 
-#: application/views/admin/dashboard.php:5
-msgid "install.dashboard.breadcrumb"
-msgstr "Tableau de bord"
-
-#: application/views/admin/dashboard.php:38
+#: application/views/admin/dashboard.php:24
 #, fuzzy, php-format
 msgid "edit %s properties"
 msgstr "Modifier les propriétés de l'image"
 
-#: application/views/admin/dashboard.php:41
+#: application/views/admin/dashboard.php:27
 #, fuzzy
 msgid "Model"
 msgstr "Modèle"
 
-#: application/views/admin/dashboard.php:65
-#: application/views/admin/dashboard.php:66
-#: application/views/templates/breadcrumb.php:49
+#: application/views/admin/dashboard.php:51
+#: application/views/admin/dashboard.php:52
+#: application/views/templates/breadcrumb.php:50
 msgid "logout.request.label"
 msgstr "Déconnexion"
 
@@ -772,15 +792,15 @@ msgstr "Déconnexion"
 msgid "warning.javascript.disable"
 msgstr "Pour consulter cette page au maximum de son potentiel veuillez activer Javascript sur votre navigateur."
 
-#: application/views/templates/breadcrumb.php:40
+#: application/views/templates/breadcrumb.php:41
 msgid "profile.request.label"
 msgstr "Mon compte"
 
-#: application/views/templates/breadcrumb.php:44
+#: application/views/templates/breadcrumb.php:45
 msgid "profile.request:settings.label"
 msgstr "Paramètres"
 
-#: application/views/templates/breadcrumb.php:51
+#: application/views/templates/breadcrumb.php:52
 msgid "login.request.label"
 msgstr "Connexion"
 
@@ -849,15 +869,15 @@ msgstr "Accès à la base refusé"
 msgid "error.install.admin.exists"
 msgstr "Un utilisateur «&nbsp;admin&nbsp;» est déjà présent dans la base."
 
-#: application/controllers/admin/admin.php:80
+#: application/controllers/admin/admin.php:105
 msgid "Username"
 msgstr "Nom d'utilisateur"
 
-#: application/controllers/admin/admin.php:81
+#: application/controllers/admin/admin.php:106
 msgid "Password"
 msgstr "Mot de passe"
 
-#: application/controllers/admin/admin.php:82
+#: application/controllers/admin/admin.php:107
 msgid "Password Confirmation"
 msgstr "Confirmation du mot de passe"
 
@@ -867,6 +887,9 @@ msgstr "Confirmation du mot de passe"
 #, php-format
 msgid "error.file[%s].creation"
 msgstr "Erreur lors de la création du fichier : %s."
+
+#~ msgid "install.dashboard.breadcrumb"
+#~ msgstr "Tableau de bord"
 
 #~ msgid "configuration-station.network._ip.placeholder"
 #~ msgstr "exemple : 127.0.0.1"

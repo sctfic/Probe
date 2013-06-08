@@ -71,3 +71,7 @@ i18n('install-admin-user.title.metadata');
 i18n('install-admin-user.description.metadata');
 i18n('install.administrator.breadcrumb');
 i18n('install.login.breadcrumb');
+i18n('list-view.title.metadata');
+i18n('list-view.description.metadata');
+i18n('configuration-dashboard.title.metadata');
+i18n('configuration-dashboard.description.metadata');
