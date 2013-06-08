@@ -45,7 +45,7 @@ class admin extends Authentification
     );
 
 
-/**
+    /**
      * entry point
      */
     public function __construct()
@@ -66,6 +66,7 @@ class admin extends Authentification
         $this->checkConnexionStatus();
     }
 
+
     /**
      * CI entry point
      *
@@ -76,6 +77,7 @@ class admin extends Authentification
         where_I_Am(__FILE__, __CLASS__, __FUNCTION__, __LINE__, func_get_args());
         $this->connexion();
     }
+
 
     /**
     * Login interface for unknown/authentified user
@@ -108,6 +110,7 @@ class admin extends Authentification
         $page->view('login');
     }
 
+
     /**
     * Redirect user depending on its credentials validation
     *
@@ -124,8 +127,6 @@ class admin extends Authentification
         try {
             //Chercher l'user correspondant au couple login/pwd
             $user = $this->Service_User->authentify($userName, $userPassword);
-            // var_dump($user);
-            // exit;
             $this->session->set_userdata("user", serialize($user));
             redirect($this->urlWhenLogged);
         } catch (BusinessException $be) {
