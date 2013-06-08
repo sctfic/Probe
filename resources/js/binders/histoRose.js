@@ -1,22 +1,50 @@
+/** histoRose.js
+* D3 binder to visualize <dataset> data
+*
+* @category D3Binder
+* @package  Probe
+* @author   alban lopez <alban.lopez+probe@gmail.com>
+* @license  http://creativecommons.org/licenses/by-nc-sa/3.0/legalcode CC-by-nc-sa-3.0
+* @link     http://probe.com/doc
+*/
 
 function call_histoRose(container, station, XdisplaySizePxl) {
+    // on defini la fonction de convertion de nos dates (string) en Objet
+    var formatDate = d3.time.format("%Y-%m-%d %H:%M:%S");
+
     var histoRose = timeSeriesChart_histoRose()
                         .width(XdisplaySizePxl)
                         .ajaxUrl("/data/windRose")
                         .station(station)
-                        ;
+                        .date(function(d) { return formatDate.parse (d.key); })
+                        .rose(function(d) { return d.value; })
+                        .onClickAction(function(d) { console.error (d); })
+                        .toHumanSpeed(formulaConverter ('WindSpeed', 'km/h'))
+                        .toHumanAngle(formulaConverter ('angle', '°'))
+                        .toHumanDate(formulaConverter ('strDate', 'ISO'));
 
+// on demande les infos importante au sujet de notre futur tracé
+    // ces infos permettent de finir le parametrage de notre "Chart"
+    d3.json( histoRose.ajaxUrl() + "?station="+ histoRose.station() +"&XdisplaySizePxl="+histoRose.width()+"&infos=dataheader",
+        function(data) {
+            console.TimeStep('header');
+            console.log(data); //, histoRose);
+            histoRose
+                .yDomain([data.min, data.max])
+                .dataheader(data);
+        }
+    );
 
-    d3.json( histoRose.ajaxUrl() + "?station="+ histoRose.station() +"&XdisplaySizePxl="+histoRose.width(), function(data) {
-        var formatDate = d3.time.format("%Y-%m-%d %H:%M:%S");
-        d3.select(container)
-            .datum(d3.entries(data.data))
-            .call(histoRose
-                .date(function(d) { return formatDate.parse(d.key); })
-                .rose(function(d) { return d.value; })
-                .onClickAction(function(d) { console.error (d); })
-                );
-    });
+// on charge les données et on lance le tracage
+    d3.json( histoRose.ajaxUrl() + "?station="+ histoRose.station() +"&XdisplaySizePxl="+histoRose.width(),
+        function(data) {
+            console.TimeStep('data');
+            d3.select(container)
+                .datum(d3.entries(data.data))
+                .call( histoRose );
+        }
+    );
+
 }
 
 
@@ -31,6 +59,7 @@ function timeSeriesChart_histoRose() {
     var margin = {top: 50, right: 50, bottom: 20, left: 30},
         width = 640,
         height = 160,
+        dataheader = null,
         meanDate = function(d) { return d.date; },
         rose = function(d) { return d.rose; },
         angle = function(d) { return d.angle; },
@@ -38,9 +67,13 @@ function timeSeriesChart_histoRose() {
         ySpeed = function(d) { return d.y; },
         xScale = d3.time.scale().range([0, width]),
         yScale = d3.scale.linear().range([height, 0]),
+        yDomain = [0, 1],
         xAxis = d3.svg.axis().scale(xScale).orient("bottom").tickSize(8,0),
         yAxis = d3.svg.axis().scale(yScale).orient("left").ticks(4).tickSize(3,0),
         onClickAction = function(d) { console.log(d); },
+        toHumanSpeed = function(d) { return +d; },
+        toHumanAngle = function(d) { return +d; },
+        toHumanDate = function(d) { return d; },
         ajaxUrl = ""
         ;
 
@@ -116,27 +149,12 @@ function timeSeriesChart_histoRose() {
                 .on("click", function(d) { return onClickAction(d); })
                 .append("title")
                 .text(function(d) {
-                        return ""+d.date ;
+                        return toHumanDate(d.date)+"\nEach item for "+dataheader.step+" min";
                     });
                 
 
             var visWidth = 30;
             smallArcScale = d3.scale.linear().domain([0, 4]).range([5, visWidth]).clamp(true);
-            // // var small = d3.select(container)
-
-            // var winds = [];
-            // var t = totalSpl(Data);
-
-            // for (var key in Data) {
-            //     if (Data[key]['Dir']!='null')
-            //         winds.push(
-            //             {
-            //                 d: Data[key]['Dir']*1,
-            //                 p: Data [key]['Spl'] / t,
-            //                 s: Data [key]['Spd']*SpeedFactor,
-            //                 m: Data [key]['Max']*SpeedFactor
-            //             });
-            // }
 
             //Add conteiner for include petals
             stepPetalsBox.append("svg:g")
@@ -264,6 +282,34 @@ function timeSeriesChart_histoRose() {
         onClickAction = _;
         return chart;
     };
+    chart.yDomain = function(_) {
+        if (!arguments.length) return yDomain;
+        yDomain = _;
+        yScale.domain(yDomain);
+        return chart;
+    };
+    chart.dataheader = function(_) {
+        if (!arguments.length) return dataheader;
+        dataheader = _;
+        return chart;
+    };
+    chart.toHumanSpeed = function(_) {
+        if (!arguments.length) return toHumanSpeed;
+        toHumanSpeed = _;
+        return chart;
+    };
+    chart.toHumanAngle = function(_) {
+        if (!arguments.length) return toHumanAngle;
+        toHumanAngle = _;
+        return chart;
+    };
+    chart.toHumanDate = function(_) {
+        if (!arguments.length) return toHumanDate;
+        toHumanDate = _;
+        return chart;
+    };
+
+
 
     return chart;
 }

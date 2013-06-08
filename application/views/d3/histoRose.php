@@ -51,9 +51,8 @@ svg {
 	visibility: visible;
 	opacity: .8;
 	zoom: 2;
-	transition-delay:0s;
-	-webkit-transition-delay:0s;
-	/*-webkit-transform: scale(2);¿*/
+	transition:visibility 0s linear;
+	-webkit-transition:visibility 0s linear;
 	}
 
 .petals{
@@ -62,8 +61,8 @@ svg {
 	stroke-width: 0.5px;
 	visibility: hidden;
 	opacity: 0.1;
-	transition:visibility 0s linear .5s, opacity .2s linear;
-	-webkit-transition:visibility 0s linear .5s, opacity .2s linear;
+	transition:visibility 0s linear .7s, opacity .6s linear;
+	-webkit-transition:visibility 0s linear .7s, opacity .6s linear;
 
 }
 

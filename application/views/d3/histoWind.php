@@ -62,7 +62,7 @@ svg {
 		  var formatDate = d3.time.format("%Y-%m-%d %H:%M");
 		  d3.select("#svgArea")
 		      .datum(data)
-		    .call(timeSeriesChart()
+		    .call(timeSeriesChart_histoWind()
 				.date(function(d) { return formatDate.parse(d.date); })
 				.speed(function(d) { return +d.speed; })
 				.angle(function(d) { return +d.angle; })

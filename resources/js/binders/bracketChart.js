@@ -1,3 +1,13 @@
+/** bracketChart.js
+* D3 binder to visualize <dataset> data
+*
+* @category D3Binder
+* @package  Probe
+* @author   alban lopez <alban.lopez+probe@gmail.com>
+* @license  http://creativecommons.org/licenses/by-nc-sa/3.0/legalcode CC-by-nc-sa-3.0
+* @link     http://probe.com/doc
+*/
+
 function timeSeriesChart() {
   var margin = {top: 5, right: 5, bottom: 20, left: 30},
       width = 1800,

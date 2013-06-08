@@ -79,7 +79,7 @@ svg {
 
 			d3.select("#SvgZone")
 				.datum(data)
-				.call(timeSeriesChart()
+				.call(timeSeriesChart_smart()
 					.x(function(d) { return formatDate.parse(d.date); })
 					.y(function(d) { return +d.val; }));
 		});

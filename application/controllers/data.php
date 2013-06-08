@@ -106,10 +106,7 @@ return an Json Obj of all currents value LOOP, LOOP2, HILOW
 
 			$this->dl_json ($currents);
 		}
-		else {
-
-			$this->dl_json ($dataHeader);
-		}
+		else $this->dl_dataHeader($dataHeader);
 	}
 
 
@@ -139,11 +136,7 @@ make and download json curve of a sensor
 			$this->dl_tsv ("date\tval\n".trim($tsv,"\n"));
 	        $this->dl_tsv ($data);
 		}
-		else {
-
-			$this->dl_json ($dataHeader);
-		}
-
+		else $this->dl_dataHeader($dataHeader);
 	}
 /**
 make and download json bracketCurve of a sensor
@@ -179,9 +172,7 @@ make and download json bracketCurve of a sensor
 
 			$this->dl_tsv ("date\tmin\tfirst\tavg\tlast\tmax\n".trim($tsv,"\n"));
 		}
-		else {
-			$this->dl_json ($dataHeader);
-		}
+		else $this->dl_dataHeader($dataHeader);
 	}
 /**
 make and download json wind data
@@ -199,10 +190,7 @@ make and download json wind data
 
 			$this->dl_json ($data);
 		}
-		else {
-
-			$this->dl_json ($dataHeader);
-		}
+		else $this->dl_dataHeader($dataHeader);
 	}
 /**
 make and download json wind data for vectorial HairChart
@@ -229,10 +217,7 @@ make and download json wind data for vectorial HairChart
 
 			$this->dl_tsv ("date\tspeed\tangle\tx\ty\n".trim($tsv,"\n"));
 		}
-		else {
-
-			$this->dl_json ($dataHeader);
-		}
+		else $this->dl_dataHeader($dataHeader);
 	}
 
 /**
@@ -281,6 +266,19 @@ Download after convert data structure to json object
 		header_remove();
 		force_download('data.json', $json);
 	}
+
+
+/**
+Download after convert data structure to json object
+	* @
+	* @param data structure array()
+	*/
+	private function dl_dataHeader ($dataHeader) {
+		$json = json_encode(array_merge($this->info, $dataHeader), JSON_NUMERIC_CHECK);
+		// ob_clean();
+		@ob_end_clean();
+		header_remove();
+		force_download('data.json', $json);		}
 
 /**
 Download tsv file

@@ -1,3 +1,13 @@
+/** ProbeTools.js
+* D3 binder to visualize <dataset> data
+*
+* @category Tools
+* @package  Probe
+* @author   alban lopez <alban.lopez+probe@gmail.com>
+* @license  http://creativecommons.org/licenses/by-nc-sa/3.0/legalcode CC-by-nc-sa-3.0
+* @link     http://probe.com/doc
+*/
+
 function formatDate(value, separator)
 {
     //toDateString()
@@ -107,7 +117,11 @@ function formulaConverter (grandeur, outputUnit)
             'Idx': { name: 'UV index',     symbol: '',		formula: function(SI){return +SI;}},	// ok
         },
         Solar: {
-            'w/m²':    { name: 'Solar radiation',     symbol: 'w/m²',	formula: function(SI){return +SI;}},	// ok
+            'w/m²':    { name: 'Solar radiation',     symbol: 'w/m²',   formula: function(SI){return +SI;}},    // ok
+        },
+        strDate: {
+            'Auto':    { name: 'Auto',     symbol: 'Browser display',   formula: function(d){return d;}},    // ok
+            'ISO':    { name: 'ISO-8601',     symbol: 'yyyy-mm-dd hh:mm:ss',   formula: function(d){return formatDate(d, ' ');} },    // ok
         }
     };
 

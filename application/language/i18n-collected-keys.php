@@ -85,3 +85,6 @@ i18n('list-view.description.metadata');
 i18n('list-viewer');
 i18n('hitoRose.title.metadata');
 i18n('hitoRose.description.metadata');
+i18n('dotShart.title.metadata');
+i18n('dotShart.description.metadata');
+i18n('dotShart.view.label');

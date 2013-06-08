@@ -67,7 +67,7 @@ svg {
 		  var formatDate = d3.time.format("%Y-%m-%d %H:%M");
 		  d3.select("#svgArea")
 		      .datum(data)
-		    .call(timeSeriesChart()
+		    .call(timeSeriesChart_backet()
 				.date(function(d) { return formatDate.parse(d.date); })
 				.min(function(d) { return +d.min; })
 				.first(function(d) { return +d.first; })
