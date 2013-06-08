@@ -12,6 +12,7 @@ function call_histoRose(container, station, XdisplaySizePxl) {
     // on defini la fonction de convertion de nos dates (string) en Objet
     var formatDate = d3.time.format("%Y-%m-%d %H:%M:%S");
 
+    // on definie notre objet au plus pres de notre besoin.
     var histoRose = timeSeriesChart_histoRose()
                         .width(XdisplaySizePxl)
                         .ajaxUrl("/data/windRose")
@@ -28,7 +29,7 @@ function call_histoRose(container, station, XdisplaySizePxl) {
     d3.json( histoRose.ajaxUrl() + "?station="+ histoRose.station() +"&XdisplaySizePxl="+histoRose.width()+"&infos=dataheader",
         function(data) {
             console.TimeStep('header');
-            console.log(data); //, histoRose);
+            // console.log(data); //, histoRose);
             histoRose
                 .yDomain([data.min, data.max])
                 .dataheader(data);

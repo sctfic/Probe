@@ -54,14 +54,61 @@ class Data extends CI_Controller {
 
 		$this->Station = end($this->station->config($station));
 		// print_r($this->Station);
+			// [_id]=>0
+			// [Bar:Calibration:Cal]=>0.004
+			// [Bar:Calibration:Gain]=>0
+			// [Bar:Calibration:Offset]=>-36
+			// [Bar:Display:Unit]=>2
+			// [database]=>probe_Weather0
+			// [Daylight:Savings:Enable]=>0
+			// [Daylight:Savings:Manual]=>1
+			// [dbdriver]=>pdo
+			// [Geo:Elevation:Ocean]=>73.15
+			// [Geo:Elevation:Unit]=>0
+			// [Geo:Latitude:directionNorth]=>1
+			// [Geo:Latitude:NordValue]=>44.5
+			// [Geo:Longitude:directionEast]=>1
+			// [Geo:Longitude:EstValue]=>0.3
+			// [Geo:Time:Zone]=>21
+			// [hostname]=>mysql:host=localhost
+			// [Hum:Calibration:@33%]=>-1
+			// [Hum:Calibration:@80%]=>-1
+			// [password]=>MIZMF93Ehx
+			// [port]=>3306
+			// [Rain::SeasonStart]=>1
+			// [Rain:Collector:Size]=>1
+			// [Rain:Display:Unit]=>1
+			// [Temp:Display:Unit]=>2
+			// [Temp:Log:Average]=>1
+			// [Time:Archive:Period]=>5
+			// [Time:Format:Day/Month]=>0
+			// [Time:Gmt:Enable]=>1
+			// [Time:Gmt:Offset]=>+02:00
+			// [Time:Mode:AM/PM]=>0
+			// [Time:Mode:isAM]=>1
+			// [username]=>ProbeUsr0
+			// [Wind:Cup:Large]=>1
+			// [Wind:Display:Unit]=>2
+			// [_ip]=>VP2
+			// [_name]=>VP2_GTD
+			// [_port]=>22222
+			// [_type]=>vp2
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,$this->SEN_DTL);
+		$this->dataReader = new dao_data($this->Station, $this->sensor);
 		$this->info = array("info"=>array(
 			"lat"=>$this->Station['Geo:Latitude:NordValue'],
 			"lon"=>$this->Station['Geo:Longitude:EstValue'],
 			"alt"=>$this->Station['Geo:Elevation:Ocean'],
 			"name"=>$this->Station['_name'],
-			"id"=>$this->Station['_name']));
+			"id"=>$this->Station['_id'],
+			"x"=>$this->Station['_id'],
+			"c"=>$this->Station['_id'],
+			"v"=>$this->Station['_id'],
+			"n"=>$this->Station['_id'],
+			"m"=>$this->Station['_id'],
+			"g"=>$this->Station['_id']),
+		"sensor"=>$this->dataReader->SEN_DTL);
 
-		$this->dataReader = new dao_data($this->Station, $this->sensor);
 	}
 
 
