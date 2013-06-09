@@ -106,6 +106,27 @@ article {
   padding-left : 15px;
 }
 
+input[class*=" icon-"]::before {
+  background-image: url($iconSpritePath);
+  content: "";
+  float: left;
+  margin: 0 20px 0 0;
+  width: 14px;
+  height: 14px;
+  margin-top: 1px;
+  @include ie7-restore-right-whitespace();
+}
+input[type='submit'].icon-arrow-right::before {
+  //background-repeat: no-repeat;
+  background-position: -264px -96px;
+}
+input[type='submit'].icon-arrow-right {
+  height: auto;
+  display: block;
+  //padding: 10px 20px;
+  //width: 50%;
+}
+
 
 /* ===== Primary Styles ========================================================
    Author:
