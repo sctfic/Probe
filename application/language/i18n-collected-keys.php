@@ -75,3 +75,5 @@ i18n('list-view.title.metadata');
 i18n('list-view.description.metadata');
 i18n('configuration-dashboard.title.metadata');
 i18n('configuration-dashboard.description.metadata');
+i18n('viewer.dashboard.breadcrumb');
+i18n('viewer.list.breadcrumb');

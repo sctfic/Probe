@@ -26,6 +26,31 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 class viewer extends CI_Controller
 {
     /**
+     * @var array data for the breadcrumbs related to installation
+     */
+    protected  $_breadcrumb = array(
+        'dashboard' => array(// in case list-station isn't the home anymore
+            array(
+                'status' => 'active',
+                'url' => '/dashboard',
+                'i18n' => 'viewer.dashboard.breadcrumb'
+            )
+        ),
+        'list-viewer' => array(
+            array(
+                'url' => '/dashboard',
+                'i18n' => 'viewer.dashboard.breadcrumb'
+            ),
+            array(
+                'status' => 'active',
+                'url' => '/viewer/list',
+                'i18n' => 'viewer.list.breadcrumb'
+            ),
+        ),
+    );
+
+
+    /**
      * entry point
      */
     public function __construct()
@@ -54,6 +79,7 @@ class viewer extends CI_Controller
             $this->binderView($dataBinder, $station, $sensor);
         }
     }
+
 
     /**
      * Prepare the view to display data and visualizer
