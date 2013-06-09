@@ -95,25 +95,26 @@ class viewer extends CI_Controller
         where_I_Am(__FILE__, __CLASS__, __FUNCTION__, __LINE__, func_get_args());
         $page = new Page_manager();
 
-        $data = $page->addMetadata($dataBinder);
-        $data['viewer'] = true;
-        // remove the controller name
-        $data['dataBinder'] = $dataBinder;
-        $data['station'] = $station;
-        $data['sensor'] = $sensor;
-
-        $data['breadcrumb'] = array(
-            'list-viewer',
+        // build view data
+        $page->addMetadata($dataBinder);
+        $page->addData('breadcrumb',
+            $this->_breadcrumb['dashboard']
+            +
             array(
                 'status'  =>  'active',
                 'url'     =>  sprintf('/viewer/%s', $dataBinder),
                 'i18n'    =>  sprintf('%s.view.label', $dataBinder)
             )
         );
-// var_dump($data);
+        $page->addData('viewer', true);
+        $page->addData('dataBinder', $dataBinder);
+        $page->addData('station', $station);
+        $page->addData('sensor', $sensor);
+
         // display the view
-        $page->view(BINDER_DIR.$dataBinder, $data);
+        $page->view(BINDER_DIR.$dataBinder);
     }
+
 
     /**
      * create a clickable list of available views
@@ -123,23 +124,19 @@ class viewer extends CI_Controller
     public function listView()
     {
         where_I_Am(__FILE__, __CLASS__, __FUNCTION__, __LINE__, func_get_args());
-        $page = new Page_manager();
-
-        $data = $page->addMetadata('list-view');
         // remove the controller name
         $scannedDir = array_diff(scandir(BINDER_PATH), array('..', '.'));
-        $data['list'] = array_map(array($this, 'prepareViewList'), $scannedDir);
 
-        $data['breadcrumb'] = array(
-            array(
-                'status'  =>  'active',
-                'url'     =>  '/viewer',
-                'i18n'    =>  'list-viewer'
-            )
-        );
+        $page = new Page_manager();
+
+        $page->addMetadata('list-view');
+        $page->addData('breadcrumb', $this->_breadcrumb['list-viewer']);
+        $page->addData('list', array_map(array($this, 'prepareViewList'), $scannedDir));
+
         // display the view
-        $page->view('templates/list-viewer', $data);
+        $page->view('templates/list-viewer');
     }
+
 
     /**
      * Display the list of data binder available in BINDER_PATH directory
