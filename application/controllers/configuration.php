@@ -3,29 +3,33 @@
 // require_once APPPATH."/controllers/checkSetup.php";
 
 class Configuration extends CI_Controller {
-    /*
-     * data for the breadcrumbs related to installation
+    /**
+     * @var array data for the breadcrumbs related to installation
      */
     protected  $_breadcrumb = array(
         'dashboard' => array(// in case list-station isn't the home anymore
             array(
                 'status' => 'active',
-                'url' => '/configuration/list-stations',
+                'url' => '/configuration',
                 'i18n' => 'configuration-station.dashboard.breadcrumb'
             )
         ),
         'list-stations' => array(
             array(
+                'url' => '/configuration',
+                'i18n' => 'configuration-station.dashboard.breadcrumb'
+            ),
+            array(
+                'status' => 'active',
                 'url' => '/configuration/list-stations',
                 'i18n' => 'configuration-station.list.breadcrumb'
             ),
-        array(
-            'status' => 'active',
-            'url' => '/configuration/list-stations',
-            'i18n' => 'configuration-station.list.breadcrumb'
-        )
         ),
         'add-station' => array(
+            array(
+                'url' => '/configuration',
+                'i18n' => 'configuration-station.dashboard.breadcrumb'
+            ),
             array(
                 'url' => '/configuration/',
                 'i18n' => 'configuration-station.list.breadcrumb'
@@ -51,7 +55,12 @@ class Configuration extends CI_Controller {
 	public function index() {
 		$this->load->model('station');
 
-		$this->listStations();
+        $page = new Page_manager();
+        $page->addData('breadcrumb', $this->_breadcrumb['dashboard'] );
+        $page->addMetadata('configuration-dashboard'); // fetch information to build the HTML header
+
+        // display the view
+        $page->view('configuration/dashboard');
 	}
 
 	public function listStations() {
@@ -60,11 +69,11 @@ class Configuration extends CI_Controller {
 
         // build view data
         foreach ($this->station->stationsList as $id => $station) {
-//            $data['stationsConf'][] = current($this->station->config($id));
             $page->addData('stationsConf', array($station => $this->_breadcrumb['dashboard']) );
         }
         $page->addData('breadcrumb', $this->_breadcrumb['list-stations'] );
         $page->addMetadata('configuration-list-station'); // fetch information to build the HTML header
+
         // display the view
 		$page->view('configuration/list-stations');
 	}
@@ -72,7 +81,6 @@ class Configuration extends CI_Controller {
 
 	public function addStation() {
         $this->load->library('form_validation');
-
         $page = new Page_manager();
 
         // build view data
