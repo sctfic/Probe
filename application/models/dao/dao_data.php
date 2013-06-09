@@ -6,6 +6,7 @@ class dao_data extends CI_Model {
     */
     protected $dataDB = NULL;
     public $SEN_LST = array();
+    public $SEN_DTL = array();
     protected $STEP = array('HOUR'=>'HOUR', 'DAY'=>'DAY', 'WEEK'=>'WEEK', 'MONTH'=>'MONTH');
     function __construct($station, $sensor) {
         parent::__construct();
@@ -15,6 +16,7 @@ class dao_data extends CI_Model {
         if (!empty($sensor)) {
             $this->SEN_ID = $this->SEN_LST[$sensor];
             $this->SEN_TABLE = tableOfSensor($sensor);
+            $this->SEN_DTL = $this->sensor_detail($this->SEN_ID);
         }
     }
 
@@ -28,7 +30,7 @@ class dao_data extends CI_Model {
 
     }
 /**
-
+construit la liste des capteur et de leur ID
     * @
     * @param 
     * @param 
@@ -36,37 +38,51 @@ class dao_data extends CI_Model {
     function sensor_list(){
         where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
         $query = "SELECT `SEN_ID` AS  `value`, `SEN_NAME` AS `key` FROM `TR_SENSOR` LIMIT 0 , 100";
-        $qurey_result = $this->dataDB->query($query);
-        $brut = $qurey_result->result_array($qurey_result);
+        $query_result = $this->dataDB->query($query);
+        $brut = $query_result->result_array($query_result);
         $reformated = null;
         foreach ($brut as $Sensor) {
             $reformated [$Sensor['key']] = $Sensor['value'];
         }
         return $reformated;
     }
+/**
+construit la liste des detail sur un capteur
+    * @
+    * @param 
+    * @param 
+    */
+    function sensor_detail($SEN_ID){
+        where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
+        $query = "SELECT * FROM  `TR_SENSOR` WHERE  `SEN_ID` = $SEN_ID LIMIT 0 , 30";
+        $query_result = $this->dataDB->query($query);
+        $brut = $query_result->result_array($query_result);
+        return end($brut);
+    }
 
 
 /**
-
-    * @ this functione estimate the recommanded granularity between 2 date for retunr 1000 value
+this functione estimate the recommanded granularity between 2 date for retunr 1000 value
+    * @
     * @param $since is the start date of result needed
     * @param $to is the end date of result needed
     */
     function estimate($since='2013-01-01T00:00', $to='2099-12-31T23:59', $nbr = 1000) {
         where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
         $queryString = 
-        "SELECT MIN(  `UTC` ) AS first, MAX(  `UTC` ) AS last, COUNT(  `UTC` ) AS count
+        "SELECT MIN(  `UTC` ) AS first, MAX(  `UTC` ) AS last, COUNT(  `UTC` ) AS count, MIN(  `VALUE` ) AS min, MAX(  `VALUE` ) AS max, AVG(  `VALUE` ) AS avg, SUM(  `VALUE` ) AS sum
             FROM  `".$this->SEN_TABLE."` 
             WHERE SEN_ID = ".$this->SEN_ID."
                 AND utc >= '$since'
                 AND utc < '$to'";
 
-        $qurey_result = $this->dataDB->query($queryString);
-        list($first,$last,$count) = array_values( end($qurey_result->result_array($qurey_result)) );
+        $query_result = $this->dataDB->query($queryString);
+        list($first,$last,$count, $min, $max, $avg, $sum) = array_values( end($query_result->result_array($query_result)) );
 
         $GranularityForNbrValue = round((strtotime($last)-strtotime($first)) / $count * ($count/$nbr) / 60 , 1);
 
-        return $GranularityForNbrValue<5 ? 5 : $GranularityForNbrValue;
+
+        return array ('step'=>$GranularityForNbrValue<5 ? 5 : $GranularityForNbrValue, 'min'=>$min, 'max'=>$max, 'avg'=>$avg, 'sum'=>$sum);
     }
 
 
@@ -90,9 +106,9 @@ class dao_data extends CI_Model {
         ORDER BY UTC_grp asc
         LIMIT 0 , 100000";
 
-        $qurey_result = $this->dataDB->query($queryString);
+        $query_result = $this->dataDB->query($queryString);
 
-        $brut = $qurey_result->result_array($qurey_result);
+        $brut = $query_result->result_array($query_result);
         return $brut;
     }
 
@@ -132,9 +148,9 @@ class dao_data extends CI_Model {
         ORDER BY UTC_grp asc
         LIMIT 0 , 10000";
 var_export($queryString);
-        $qurey_result = $this->dataDB->query($queryString);
-        var_export($qurey_result);
-        $brut = $qurey_result->result_array($qurey_result);
+        $query_result = $this->dataDB->query($queryString);
+        var_export($query_result);
+        $brut = $query_result->result_array($query_result);
         return $brut;
     }
 
@@ -166,9 +182,9 @@ requete pour la rose des vent
             $to
         );
 
-            $qurey_result = $this->dataDB->query($queryString);// ,
+            $query_result = $this->dataDB->query($queryString);// ,
 
-            $brut = $qurey_result->result_array($qurey_result);
+            $brut = $query_result->result_array($query_result);
             $reformated = null;
             foreach ($brut as $key => $value) {
                 if (isset($reformated[$value['UTC_grp']]))
@@ -208,8 +224,8 @@ requete pour le l'histogramme des vents
             $since,
             $to
         );
-        $qurey_result = $this->dataDB->query($queryString);
-        $brut = $qurey_result->result_array($qurey_result);
+        $query_result = $this->dataDB->query($queryString);
+        $brut = $query_result->result_array($query_result);
         return $brut;
     }
 

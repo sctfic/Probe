@@ -54,14 +54,15 @@ svg {
 </style>
 <script>
 	function probeViewer(){
+
 		var station='<?=$station?>';
-	    var url = "/data/histoWind?station="+station+"&Granularity=30";
+	    var url = "/data/histoWind?station="+station+"&XdisplaySizePxl="+1800;
 
 		d3.tsv(url, function(data) {
 		  var formatDate = d3.time.format("%Y-%m-%d %H:%M");
 		  d3.select("#svgArea")
 		      .datum(data)
-		    .call(timeSeriesChart()
+		    .call(timeSeriesChart_histoWind()
 				.date(function(d) { return formatDate.parse(d.date); })
 				.speed(function(d) { return +d.speed; })
 				.angle(function(d) { return +d.angle; })

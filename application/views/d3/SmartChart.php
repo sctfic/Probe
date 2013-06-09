@@ -72,14 +72,14 @@ svg {
 	function probeViewer(){
 		var station='<?=$station?>';
 		var sensor='<?=$sensor?>';
-	    var url = "/data/curve?station="+station+"&sensor="+sensor+"&Since=2012-01-01&_To=2099-01-01&_Granularity=120";
+	    var url = "/data/curve?station="+station+"&sensor="+sensor+"&Since=2012-01-01&_To=2099-01-01&XdisplaySizePxl="+1600;
 
 		d3.tsv(url, function(data) {
 			var formatDate = d3.time.format("%Y-%m-%d %H:%M");
 
 			d3.select("#SvgZone")
 				.datum(data)
-				.call(timeSeriesChart()
+				.call(timeSeriesChart_smart()
 					.x(function(d) { return formatDate.parse(d.date); })
 					.y(function(d) { return +d.val; }));
 		});

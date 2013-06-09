@@ -1,17 +1,84 @@
-function timeSeriesChart() {
-  var margin = {top: 5, right: 5, bottom: 20, left: 30},
-      width = 1800,
-      height = 160,
-      meanDate = function(d) { return d.date; },
-      Speed = function(d) { return d.speed; },
-      angle = function(d) { return d.angle; },
-      xSpeed = function(d) { return d.x; },
-      ySpeed = function(d) { return d.y; },
-      xScale = d3.time.scale().range([0, width]),
-      yScale = d3.scale.linear().range([height, 0]),
-      xAxis = d3.svg.axis().scale(xScale).orient("bottom").tickSize(4,0),
-      yAxis = d3.svg.axis().scale(yScale).orient("left").ticks(4).tickSize(3,0);
-      // line = d3.svg.line().x(X).y(Y);
+/** histoRose.js
+* D3 binder to visualize <dataset> data
+*
+* @category D3Binder
+* @package  Probe
+* @author   alban lopez <alban.lopez+probe@gmail.com>
+* @license  http://creativecommons.org/licenses/by-nc-sa/3.0/legalcode CC-by-nc-sa-3.0
+* @link     http://probe.com/doc
+*/
+
+function call_histoRose(container, station, XdisplaySizePxl) {
+    // on defini la fonction de convertion de nos dates (string) en Objet
+    var formatDate = d3.time.format("%Y-%m-%d %H:%M:%S");
+
+    // on definie notre objet au plus pres de notre besoin.
+    var histoRose = timeSeriesChart_histoRose()
+                        .width(XdisplaySizePxl)
+                        .ajaxUrl("/data/windRose")
+                        .station(station)
+                        .date(function(d) { return formatDate.parse (d.key); })
+                        .rose(function(d) { return d.value; })
+                        .onClickAction(function(d) { console.error (d); })
+                        .toHumanSpeed(formulaConverter ('WindSpeed', 'km/h'))
+                        .toHumanAngle(formulaConverter ('angle', '°'))
+                        .toHumanDate(formulaConverter ('strDate', 'ISO'));
+
+// on demande les infos importante au sujet de notre futur tracé
+    // ces infos permettent de finir le parametrage de notre "Chart"
+    d3.json( histoRose.ajaxUrl() + "?station="+ histoRose.station() +"&XdisplaySizePxl="+histoRose.width()+"&infos=dataheader",
+        function(data) {
+            console.TimeStep('header');
+            // console.log(data); //, histoRose);
+            histoRose
+                .yDomain([data.min, data.max])
+                .dataheader(data);
+        }
+    );
+
+// on charge les données et on lance le tracage
+    d3.json( histoRose.ajaxUrl() + "?station="+ histoRose.station() +"&XdisplaySizePxl="+histoRose.width(),
+        function(data) {
+            console.TimeStep('data');
+            d3.select(container)
+                .datum(d3.entries(data.data))
+                .call( histoRose );
+        }
+    );
+
+}
+
+
+
+
+
+
+
+// ================= Engine build chart of rose by period ====================
+
+function timeSeriesChart_histoRose() {
+    var margin = {top: 50, right: 50, bottom: 20, left: 30},
+        width = 640,
+        height = 160,
+        dataheader = null,
+        meanDate = function(d) { return d.date; },
+        rose = function(d) { return d.rose; },
+        angle = function(d) { return d.angle; },
+        xSpeed = function(d) { return d.x; },
+        ySpeed = function(d) { return d.y; },
+        xScale = d3.time.scale().range([0, width]),
+        yScale = d3.scale.linear().range([height, 0]),
+        yDomain = [0, 1],
+        xAxis = d3.svg.axis().scale(xScale).orient("bottom").tickSize(8,0),
+        yAxis = d3.svg.axis().scale(yScale).orient("left").ticks(4).tickSize(3,0),
+        onClickAction = function(d) { console.log(d); },
+        toHumanSpeed = function(d) { return +d; },
+        toHumanAngle = function(d) { return +d; },
+        toHumanDate = function(d) { return d; },
+        ajaxUrl = ""
+        ;
+
+        // line = d3.svg.line().x(X).y(Y);
 
 
     function chart(selection) {
@@ -20,12 +87,10 @@ function timeSeriesChart() {
             // Convert data to standard representation greedily;
             // this is needed for nondeterministic accessors.
             data = data.map(function(d, i) {
+                // console.log(data, d, i);
                 return {
                     date:meanDate.call(data, d, i),
-                    Speed:Speed.call(data, d, i),
-                    angle:angle.call(data, d, i),
-                    xSpeed:xSpeed.call(data, d, i),
-                    ySpeed:ySpeed.call(data, d, i)
+                    rose:rose.call(data, d, i)
                 };
             });
 
@@ -57,53 +122,71 @@ function timeSeriesChart() {
             var g = svg.select("g")
                 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-            // Update the line path.
-            // g.select(".line")
-            //     .attr("d", line);
-            var coef = (yScale.range()[0]-yScale.range()[1])/(yScale.domain()[1]-yScale.domain()[0]);
 
-            // Draw arrow block
-            var arrow = g.selectAll(".arrow")
+            // Draw stepPointBox block (default point view on chart)
+            var stepPointBox = g.selectAll(".stepPointBox")
                 .data(data).enter().append("g")
-                .attr("class", "arrow")
-                .attr("opacity", "0");
+                .attr("class", "stepPointBox");
 
-                arrow.transition()
-                    .delay(function(d,i) { return i*5;})
-                    .duration(500)
-                    .attr("opacity", "1");
+            var speedScale = d3.scale.linear().domain(d3.extent(data.map(function(d, i){return d.rose.length;}))).range([0, 18]);
+            //Draw the center Calm
+            stepPointBox.append("circle")
+                .attr("class", "calm")
+                .attr("cx", function(d) { return xScale(d.date); })
+                .attr("cy", 0) // function(d) { return yScale(0); })
+                .attr("r", 5);
+                    
+            // Draw stepPetalsBox block (on mouse hover point view foreach rose)
+            var stepPetalsBox = g.selectAll(".stepPetalsBox")
+                .data(data).enter().append("g")
+                .attr("class", "stepPetalsBox");
+            
+            stepPetalsBox.append("rect")
+                .attr("class", "sensitive")
+                .attr("x", function(d) { return xScale(d.date)-6; })
+                .attr("y", -40) // function(d) { return yScale(0); })
+                .attr("width", 12)
+                .attr("height", 80)
+                .on("click", function(d) { return onClickAction(d); })
+                .append("title")
+                .text(function(d) {
+                        return toHumanDate(d.date)+"\nEach item for "+dataheader.step+" min";
+                    });
+                
 
-                //Draw the line
-                arrow.append("line")
-                    .attr("class", "hair")
-                    .attr("x1", function(d) { return xScale(d.date); })
-                    .attr("y1", function(d) { return yScale(0); })
-                    //.attr("x2", function(d) { return xScale(d.date); })
-                    //.attr("y2", function(d) { return yScale(0); })
-                    //.transition()
-                    //.delay(function(d,i) { return i*5;})
-                    //.duration(500)
-                    .attr("x2", function(d) { return xScale(d.date) + d.xSpeed*coef; })
-                    .attr("y2", function(d) { return yScale(d.ySpeed); });
+            var visWidth = 30;
+            smallArcScale = d3.scale.linear().domain([0, 4]).range([5, visWidth]).clamp(true);
 
-                arrow.append("polygon")
-                    .attr("class", "marker")
-                    .attr("points","-1.5,2 0,-2 1.5,2")
-                    //.attr("transform", function(d) {
-                    //        return "translate("+(xScale(d.date) + 0)+","+yScale(0)+") rotate("+(d.angle)+")";
-                    //    })
-                    //.transition()
-                    //.delay(function(d,i) { return i*5;})
-                    //.duration(500)
-                    .attr("transform", function(d) {
-                            return "translate("+(xScale(d.date) + d.xSpeed*coef)+","+(yScale(d.ySpeed))+") rotate("+(d.angle)+")";
-                        });
-
-                arrow.append("title")
-                    .text(function(d) {
-                            return "Speed Avg: "+ d.Speed+"m/s\nAngle Avg: "+d.angle+"°\nAverage on: "+d.date ;
-                        });
-
+            //Add conteiner for include petals
+            stepPetalsBox.append("svg:g")
+                .attr("class", "petals")
+                .attr("transform", function(d) { return "translate(" + xScale(d.date) + ", 0)"; })
+                .selectAll("path")
+                .data(
+                    // parse each rose
+                    function(d){
+			var sum = d3.sum(d.rose, function(item){return item.Spl;});
+			d.rose.forEach(function (item,index,array){array[index].tSpl=sum; return array;})
+			// console.log (d3.sum(d.rose, function(item){return item.Spl;}),d.rose);
+			return d.rose; }
+                )
+                .enter()
+                .append("svg:path")
+                	.attr("fill", function(d){ return colorScale(d.Spl/d.tSpl); } ) // 
+                    .attr("d",
+                        // build each petal of each rose
+                        function(d){
+                            if (d.Spd>0)
+                            { // if a real petal, not the center (calm:no wind, no direction)
+                                var obj={ width: 11, from: 5, to: smallArcScale(d.Spd) };
+                                return d3.svg.arc()
+                                    .startAngle((d.Dir - obj.width) * Math.PI/180)
+                                    .endAngle((d.Dir + obj.width) * Math.PI/180)
+                                    .innerRadius(obj.from)
+                                    .outerRadius(obj.to)();
+                            }
+                        }
+                    );
 
 
             // chose the possition of x-Axis
@@ -118,71 +201,116 @@ function timeSeriesChart() {
             g.select(".x.axis")
                 .attr("transform", "translate(0," + xPos + ")") // axe tjrs en bas : yScale.range()[0] + ")")
                 .call(xAxis);
-            // g.select(".y.axis")
-            //     .attr("transform", "translate(0,0)")
-            //     .call(yAxis);
         });
     }
 
+// Dir: 0
+// Max: 3.576
+// Spd: 0.447
+// Spl: 4
+// function arc(obj) {
+//     return d3.svg.arc()
+//         .startAngle(function(d) {console.log(d , (d.Dir - obj.width) * Math.PI/180); return (d.Dir - obj.width) * Math.PI/180; })
+//         .endAngle(function(d) {console.log(d , (d.Dir + obj.width) * Math.PI/180); return (d.Dir + obj.width) * Math.PI/180; })
+//         .innerRadius(obj.from)
+//         .outerRadius(function(d) {console.log(d , obj.to(d)); return obj.to(d) });
+// };
+
+
+    // The x-accessor for the path generator; xScale ∘ meanDate.
+    function X(d) {
+        return xScale(d.date);
+    }
+
+    // The x-accessor for the path generator; yScale ∘ Speed.
+    function Y(d) {
+        return yScale(d.ySpeed);
+    }
+	var colorScale = d3.scale.linear()
+                                .domain([0,.5,.8,1])
+                                .range(["#AEC7E8","#1F77B4","#D62728","#2C3539"])// ["hsl(0, 70%, 99%)", "hsl(0, 70%, 40%)"])
+                                .interpolate(d3.interpolateHsl);
+
+// ================= Accesseurs =====================
+
+    chart.margin = function(_) {
+        if (!arguments.length) return margin;
+        margin = _;
+        return chart;
+    };
+    chart.width = function(_) {
+        if (!arguments.length) return width;
+        width = _;
+        return chart;
+    };
+    chart.height = function(_) {
+        if (!arguments.length) return height;
+        height = _;
+        return chart;
+    };
+    chart.date = function(_) {
+        if (!arguments.length) return meanDate;
+        meanDate = _;
+        return chart;
+    };
+    chart.rose = function(_) {
+        if (!arguments.length) return rose;
+        rose = _;
+        return chart;
+    };
+    chart.speed = function(_) {
+        if (!arguments.length) return Speed;
+        Speed = _;
+        return chart;
+    };
+    chart.angle = function(_) {
+        if (!arguments.length) return angle;
+        angle = _;
+        return chart;
+    };
+    chart.ajaxUrl = function(_) {
+        if (!arguments.length) return ajaxUrl;
+        ajaxUrl = _;
+        return chart;
+    };
+    chart.station = function(_) {
+        if (!arguments.length) return station;
+        station = _;
+        return chart;
+    };
+    chart.onClickAction = function(_) {
+        if (!arguments.length) return onClickAction;
+        onClickAction = _;
+        return chart;
+    };
+    chart.yDomain = function(_) {
+        if (!arguments.length) return yDomain;
+        yDomain = _;
+        yScale.domain(yDomain);
+        return chart;
+    };
+    chart.dataheader = function(_) {
+        if (!arguments.length) return dataheader;
+        dataheader = _;
+        return chart;
+    };
+    chart.toHumanSpeed = function(_) {
+        if (!arguments.length) return toHumanSpeed;
+        toHumanSpeed = _;
+        return chart;
+    };
+    chart.toHumanAngle = function(_) {
+        if (!arguments.length) return toHumanAngle;
+        toHumanAngle = _;
+        return chart;
+    };
+    chart.toHumanDate = function(_) {
+        if (!arguments.length) return toHumanDate;
+        toHumanDate = _;
+        return chart;
+    };
 
 
 
-
-  // The x-accessor for the path generator; xScale ∘ meanDate.
-  function X(d) {
-    return xScale(d.date);
-  }
-
-  // The x-accessor for the path generator; yScale ∘ Speed.
-  function Y(d) {
-    return yScale(d.ySpeed);
-  }
-
-  chart.margin = function(_) {
-    if (!arguments.length) return margin;
-    margin = _;
     return chart;
-  };
-
-  chart.width = function(_) {
-    if (!arguments.length) return width;
-    width = _;
-    return chart;
-  };
-
-  chart.height = function(_) {
-    if (!arguments.length) return height;
-    height = _;
-    return chart;
-  };
-
-
-  chart.date = function(_) {
-    if (!arguments.length) return meanDate;
-    meanDate = _;
-    return chart;
-  };
-
-  chart.speed = function(_) {
-    if (!arguments.length) return Speed;
-    Speed = _;
-    return chart;
-  };
-  chart.angle = function(_) {
-    if (!arguments.length) return angle;
-    angle = _;
-    return chart;
-  };
-  chart.xSpeed = function(_) {
-    if (!arguments.length) return xSpeed;
-    xSpeed = _;
-    return chart;
-  };
-  chart.ySpeed = function(_) {
-    if (!arguments.length) return ySpeed;
-    ySpeed = _;
-    return chart;
-  };
-
-  return chart;
 }

@@ -23,6 +23,49 @@
 svg {
 	font-size: 10px;
 }
+.calm{
+	fill: #fff;
+	stroke: #000;
+	stroke-width: 0.5px;
+}
+
+.stepPointBox g {
+	/*display: none;*/
+	/*fill-opacity: .0;*/
+	/*visibility: hidden;*/
+}
+
+.stepPetalsBox {
+	/*display: none;*/
+	/*fill-opacity: .0;*/
+	/*visibility: hidden;*/
+}
+.sensitive {
+	/*display: none;*/
+	opacity: 0;
+	/*visibility: hidden;*/
+	}
+
+
+.stepPetalsBox .sensitive:hover + .petals {
+	visibility: visible;
+	opacity: .8;
+	zoom: 2;
+	transition:visibility 0s linear;
+	-webkit-transition:visibility 0s linear;
+	}
+
+.petals{
+	fill: #58e;
+	stroke: #000;
+	stroke-width: 0.5px;
+	visibility: hidden;
+	opacity: 0.1;
+	transition:visibility 0s linear .7s, opacity .6s linear;
+	-webkit-transition:visibility 0s linear .7s, opacity .6s linear;
+
+}
+
 .line {
   fill: none;
   stroke: #000;
@@ -31,47 +74,20 @@ svg {
 
 .axis line,.axis path {
   fill: none;
-  stroke: #000;
+  stroke: #AAA;
   stroke-width: 1px;
   shape-rendering: crispEdges;
 }
-.arrow:hover>.hair, .arrow:hover>.marker {
-  stroke: #E6550D;
-  stroke-width: 2px;
-}
+
 /*Blue:#1F77B4 #3182bd #6baed6*/
 /*Red:#E6550D*/
-.hair {
-  fill: none;
-  stroke: #3182bd;
-  stroke-width: 1px;
-}
-.marker {
-  fill: #FFF;
-  stroke: #3182bd;
-  stroke-width: .7px;
-}
 </style>
 <script>
 	function probeViewer(){
-		var station='<?=$station?>';
-	    var url = "/data/histoWind?station="+station+"&Granularity=30";
-
-		d3.tsv(url, function(data) {
-		  var formatDate = d3.time.format("%Y-%m-%d %H:%M");
-		  d3.select("#svgArea")
-		      .datum(data)
-		    .call(timeSeriesChart()
-				.date(function(d) { return formatDate.parse(d.date); })
-				.speed(function(d) { return +d.speed; })
-				.angle(function(d) { return +d.angle; })
-				.xSpeed(function(d) { return +d.x; })
-				.ySpeed(function(d) { return +d.y; })
-		    );
-		});
+		call_histoRose("#svgArea", '<?=$station?>', 1640);
 	}
 </script>
 <script src="/resources/js/ProbeTools.js"></script>
 <script src="/resources/js/libs/base64.js"></script>
-<script src="/resources/js/libs/jquery-ui-1.10.2.custom.js"></script>
+<!-- <script src="/resources/js/libs/jquery-ui-1.10.2.custom.js"></script> -->
 

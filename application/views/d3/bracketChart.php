@@ -42,6 +42,8 @@ svg {
 .box:hover>text{
 	display: block;
 }
+
+
 /*Blue:#1F77B4 #3182bd #6baed6*/
 /*Red:#E6550D*/
 .rect, .line {
@@ -59,13 +61,13 @@ svg {
 	function probeViewer(){
 		var station='<?=$station?>';
 		var sensor='<?=$sensor?>';
-	    var url = "/data/bracketCurve?station="+station+"&sensor="+sensor+"&Granularity=120";
+	    var url = "/data/bracketCurve?station="+station+"&sensor="+sensor+"&XdisplaySizePxl="+1600;
 
 		d3.tsv(url, function(data) {
 		  var formatDate = d3.time.format("%Y-%m-%d %H:%M");
 		  d3.select("#svgArea")
 		      .datum(data)
-		    .call(timeSeriesChart()
+		    .call(timeSeriesChart_backet()
 				.date(function(d) { return formatDate.parse(d.date); })
 				.min(function(d) { return +d.min; })
 				.first(function(d) { return +d.first; })

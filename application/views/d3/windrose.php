@@ -42,7 +42,8 @@
     YEAR()          Return the year
 */
 function probeViewer(){
-    var url = "/data/wind?station=VP2_GTD&&Since=2013-01-01&Granularity=720";
+    var url = "/data/windRose?station=VP2_GTD&&Since=2013-01-01&XdisplaySizePxl="+1000;
+
     // $.getJSON(url, function(json) {
     d3.json(url, function(error, json) {
         if (error) return console.warn(error);
