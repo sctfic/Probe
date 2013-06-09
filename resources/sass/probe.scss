@@ -55,7 +55,10 @@ circle:hover+.petals {
   float: left;
 }
 .breadcrumb .active {
-    font-weight: bold;
+  font-weight: bold;
+  > a {
+    color: $gray;
+  }
 }
 #access-profile {
   float: right;
