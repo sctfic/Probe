@@ -25,10 +25,11 @@
         <?php if (is_array($step)): ?>
         <li class="<?=isset($step['status']) ? $step['status'] : 'disabled';?>">
             <a href="<?=$step['url']?>"><?=i18n($step['i18n'], true)?></a>
-            <?php else: ?>
+        <?php else: ?>
         <li>
             <?= i18n($step); ?>
-        <?php endif // non-dependent tag : ?>
+        <?php endif;?>
+
         <span class="divider">/</span>
         </li>
     <?php endforeach ?>

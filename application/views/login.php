@@ -67,7 +67,8 @@
 
     <div class="modal-footer">
         <!-- TODO replace arrow by icon -->
-        <?=form_submit('authentificate', i18n('login.authentificate'), 'class="btn btn-primary pull-right"')?>
+        <?=form_submit('authentificate', i18n('login.authentificate'),
+            'class="btn btn-primary pull-right icon-arrow-right"')?>
     </div>
   <?=form_close()?>
 </div>
