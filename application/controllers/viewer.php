@@ -41,8 +41,10 @@ class viewer extends CI_Controller
      * [index description]
      *
      * @param string $dataBinder D3js script to bind data to current page
+     * @param string $station    working station
+     * @param string $sensor     working sensor
      *
-     * @return [type] [description]
+     * @return void
      */
     public function index($dataBinder = null, $station=null, $sensor=null)
     {
@@ -54,9 +56,11 @@ class viewer extends CI_Controller
     }
 
     /**
-     * prepare the view to display data and visualizer
+     * Prepare the view to display data and visualizer
      *
      * @param string $dataBinder JS script name used to bind data to the view
+     * @param string $station    working station
+     * @param string $sensor     working sensor
      *
      * @return view data visualization with dataBinder
      */
