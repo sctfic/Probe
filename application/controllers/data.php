@@ -150,7 +150,7 @@ make and download tsv sum value of a sensor
 	* @param is the sensor name (one or more)
 	*/
 	function cumul(){
-		$dataHeader = $this->dataReader->estimate ( $this->Since, $this->To, $this->XdisplaySizePxl/6 );
+		$dataHeader = $this->dataReader->estimate ( $this->Since, $this->To, $this->XdisplaySizePxl/10 );
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,array($this->Station['_name'], $this->Since,	$this->To,	$this->XdisplaySizePxl, $dataHeader));
 
 

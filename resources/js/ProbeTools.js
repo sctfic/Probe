@@ -139,7 +139,6 @@ function formulaConverter (grandeur, outputUnit)
         // console.log(grandeur, outputUnit);
         return units[grandeur][outputUnit].formula;
     }
-    console.log(grandeur, outputUnit);
     return function(SI){return +SI;};
 }
 
