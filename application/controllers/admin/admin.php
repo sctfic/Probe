@@ -23,6 +23,28 @@ class admin extends Authentification
     */
     protected $urlWhenLogged = null; // when user is authentified go to this URL
 
+    /*
+     * data for the breadcrumbs related to installation
+     */
+    protected  $_breadcrumb = array(
+        'login' =>  array(
+            array(
+                'url' => '/install/dbms',
+                'i18n' => 'install.dbms.breadcrumb'
+            ),
+            array(
+                'url' => '/install/admin-user',
+                'i18n' => 'install.administrator.breadcrumb',
+            ),
+            array(
+                'status' => 'active',
+                'url' => '/login',
+                'i18n' => 'install.login.breadcrumb',
+            ),
+        )
+    );
+
+
     /**
      * entry point
      */
@@ -44,6 +66,7 @@ class admin extends Authentification
         $this->checkConnexionStatus();
     }
 
+
     /**
      * CI entry point
      *
@@ -55,6 +78,7 @@ class admin extends Authentification
         $this->connexion();
     }
 
+
     /**
     * Login interface for unknown/authentified user
     *
@@ -65,14 +89,15 @@ class admin extends Authentification
     {
         where_I_Am(__FILE__, __CLASS__, __FUNCTION__, __LINE__, func_get_args());
         // requirements
-        $this->load->helper(array('form', 'url'));
+        $this->load->helper(array('form', 'url', 'array'));
         $this->load->library('form_validation');
         $page = new Page_manager();
 
         // build view data
-        $data = $page->fetchConfig('login'); // fetch information to build the HTML header
-        $data['msg'] = $this->session->userdata("msg"); // message to display in the page
-        $data['userName'] = null;
+        $page->addData('breadcrumb', $this->_breadcrumb['login']);
+        $page->addData('msg', $this->session->userdata("msg")); // message to display in the page
+        $page->addData('userName', null);
+        $page->addMetadata('login'); // fetch information to build the HTML header
 
         $this->session->set_userdata("msg", null); // reset session message
 
@@ -82,8 +107,9 @@ class admin extends Authentification
         $this->form_validation->set_rules('confirm', i18n('Password Confirmation'), 'required');
 
         // display the view
-        $page->view('login', $data);
+        $page->view('login');
     }
+
 
     /**
     * Redirect user depending on its credentials validation
@@ -101,8 +127,6 @@ class admin extends Authentification
         try {
             //Chercher l'user correspondant au couple login/pwd
             $user = $this->Service_User->authentify($userName, $userPassword);
-            // var_dump($user);
-            // exit;
             $this->session->set_userdata("user", serialize($user));
             redirect($this->urlWhenLogged);
         } catch (BusinessException $be) {

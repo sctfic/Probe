@@ -26,6 +26,31 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 class viewer extends CI_Controller
 {
     /**
+     * @var array data for the breadcrumbs related to installation
+     */
+    protected  $_breadcrumb = array(
+        'dashboard' => array(// in case list-station isn't the home anymore
+            array(
+                'status' => 'active',
+                'url' => '/dashboard',
+                'i18n' => 'viewer.dashboard.breadcrumb'
+            )
+        ),
+        'list-viewer' => array(
+            array(
+                'url' => '/dashboard',
+                'i18n' => 'viewer.dashboard.breadcrumb'
+            ),
+            array(
+                'status' => 'active',
+                'url' => '/viewer/list',
+                'i18n' => 'viewer.list.breadcrumb'
+            ),
+        ),
+    );
+
+
+    /**
      * entry point
      */
     public function __construct()
@@ -41,8 +66,10 @@ class viewer extends CI_Controller
      * [index description]
      *
      * @param string $dataBinder D3js script to bind data to current page
+     * @param string $station    working station
+     * @param string $sensor     working sensor
      *
-     * @return [type] [description]
+     * @return void
      */
     public function index($dataBinder = null, $station=null, $sensor=null)
     {
@@ -53,10 +80,13 @@ class viewer extends CI_Controller
         }
     }
 
+
     /**
-     * prepare the view to display data and visualizer
+     * Prepare the view to display data and visualizer
      *
      * @param string $dataBinder JS script name used to bind data to the view
+     * @param string $station    working station
+     * @param string $sensor     working sensor
      *
      * @return view data visualization with dataBinder
      */
@@ -65,25 +95,26 @@ class viewer extends CI_Controller
         where_I_Am(__FILE__, __CLASS__, __FUNCTION__, __LINE__, func_get_args());
         $page = new Page_manager();
 
-        $data = $page->fetchConfig($dataBinder);
-        $data['viewer'] = true;
-        // remove the controller name
-        $data['dataBinder'] = $dataBinder;
-        $data['station'] = $station;
-        $data['sensor'] = $sensor;
-
-        $data['breadcrumb'] = array(
-            'list-viewer',
+        // build view data
+        $page->addMetadata($dataBinder);
+        $page->addData('breadcrumb',
+            $this->_breadcrumb['dashboard']
+            +
             array(
                 'status'  =>  'active',
                 'url'     =>  sprintf('/viewer/%s', $dataBinder),
                 'i18n'    =>  sprintf('%s.view.label', $dataBinder)
             )
         );
-// var_dump($data);
+        $page->addData('viewer', true);
+        $page->addData('dataBinder', $dataBinder);
+        $page->addData('station', $station);
+        $page->addData('sensor', $sensor);
+
         // display the view
-        $page->view(BINDER_DIR.$dataBinder, $data);
+        $page->view(BINDER_DIR.$dataBinder);
     }
+
 
     /**
      * create a clickable list of available views
@@ -93,23 +124,19 @@ class viewer extends CI_Controller
     public function listView()
     {
         where_I_Am(__FILE__, __CLASS__, __FUNCTION__, __LINE__, func_get_args());
-        $page = new Page_manager();
-
-        $data = $page->fetchConfig('list-view');
         // remove the controller name
         $scannedDir = array_diff(scandir(BINDER_PATH), array('..', '.'));
-        $data['list'] = array_map(array($this, 'prepareViewList'), $scannedDir);
 
-        $data['breadcrumb'] = array(
-            array(
-                'status'  =>  'active',
-                'url'     =>  '/viewer',
-                'i18n'    =>  'list-viewer'
-            )
-        );
+        $page = new Page_manager();
+
+        $page->addMetadata('list-view');
+        $page->addData('breadcrumb', $this->_breadcrumb['list-viewer']);
+        $page->addData('list', array_map(array($this, 'prepareViewList'), $scannedDir));
+
         // display the view
-        $page->view('templates/list-viewer', $data);
+        $page->view('templates/list-viewer');
     }
+
 
     /**
      * Display the list of data binder available in BINDER_PATH directory

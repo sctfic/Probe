@@ -98,9 +98,18 @@ abstract class Authentification extends CI_Controller
     *
     * @abstract
     */
-    public function deconnecter()
-    {
+//    abstract public function logout();
+
+    /**
+     * Permet de déconnecter l'user du système et redirige vers l'url
+     * d'accueil du site "base_url"
+     *
+     * @return void
+     */
+    public function logout() {
         $this->session->unset_userdata("user");
         redirect($this->config->item('base_url'));
     }
+
+
 }

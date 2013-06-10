@@ -1,18 +1,4 @@
-<div class="navbar navbar-inverse navbar-fixed-top">
-    <ul class="breadcrumb">
-        <li><a href="/install/dbms"><?=i18n("install.dbms.breadcrumb")?></a> <span class="divider">/</span></li>
-        <li class="active"><a href="/install/admin-user"><?=i18n("install.administrator.breadcrumb")?></a> <span class="divider">/</span></li>
-        <li class="disabled"><?=i18n("install.dashboard.breadcrumb")?> <span class="divider">/</span></li>
-    </ul>
-</div>
-
 <?php
-//     require_once($GLOBALS['workingFolder'].'../resources/php/toolbox.phpc');
-//     require_once($GLOBALS['workingFolder'].'../resources/php/configManager.phpc');
-//     $stationConf = configManager::getConfig('station');
-
-// echo getcwd();
-// just for prototyping
 require_once '../config/stations.conf.php';
 ?>
 <article id="admin-station">

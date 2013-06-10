@@ -25,13 +25,32 @@
         <?php if (is_array($step)): ?>
         <li class="<?=isset($step['status']) ? $step['status'] : 'disabled';?>">
             <a href="<?=$step['url']?>"><?=i18n($step['i18n'], true)?></a>
-            <?php else: ?>
+        <?php else: ?>
         <li>
             <?= i18n($step); ?>
-        <?php endif // non-dependent tag : ?>
+        <?php endif;?>
+
         <span class="divider">/</span>
         </li>
     <?php endforeach ?>
     </ul>
     <?php endif ?>
+
+    <ul id="access-profile" class="breadcrumb">
+        <li>
+            <a href="/profile/me"><?=i18n('profile.request.label')?></a>
+            <span class="divider">|</span>
+        </li>
+        <li>
+            <a href="/profile/settings"><?=i18n('profile.request:settings.label')?></a>
+            <span class="divider">|</span>
+        </li>
+        <li>
+            <?php if ($isAuthentified):?>
+                <a href="/logout"><?=i18n('logout.request.label')?></a>
+            <?php else:?>
+                <a href="/login"><?=i18n('login.request.label')?></a>
+            <?php endif;?>
+        </li>
+    </ul>
 </div>

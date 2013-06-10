@@ -15,8 +15,8 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.48.3.1 r9886"
-   sodipodi:docname="probe-logo.svg"
-   inkscape:export-filename="/home/ed8/projects/Probe/resources/probe-logo.png"
+   sodipodi:docname="probe-logo-marker.svg"
+   inkscape:export-filename="./probe-logo7.png"
    inkscape:export-xdpi="90"
    inkscape:export-ydpi="90">
   <defs
@@ -681,6 +681,17 @@
        fx="12.071323"
        fy="12.493138"
        r="6.7175145" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4825-6"
+       id="radialGradient4139"
+       cx="227.28842"
+       cy="126.42487"
+       fx="227.28842"
+       fy="126.42487"
+       r="42.575073"
+       gradientUnits="userSpaceOnUse"
+       spreadMethod="pad" />
     <filter
        inkscape:collect="always"
        id="filter4165"
@@ -701,19 +712,30 @@
        fx="227.28842"
        fy="126.42487"
        r="42.575073" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4825-6"
+       id="radialGradient3890"
+       gradientUnits="userSpaceOnUse"
+       spreadMethod="pad"
+       cx="227.28842"
+       cy="126.42487"
+       fx="227.28842"
+       fy="126.42487"
+       r="42.575073" />
   </defs>
   <sodipodi:namedview
      id="base"
      pagecolor="#ffffff"
      bordercolor="#666666"
      borderopacity="1.0"
-     inkscape:pageopacity="0"
+     inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.0235371"
-     inkscape:cx="413.77109"
-     inkscape:cy="200"
+     inkscape:cx="261.84693"
+     inkscape:cy="121.83966"
      inkscape:document-units="px"
-     inkscape:current-layer="svg2"
+     inkscape:current-layer="g4202"
      showgrid="false"
      showguides="true"
      inkscape:guide-bbox="true"

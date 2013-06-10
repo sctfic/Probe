@@ -10,6 +10,7 @@
 $smallPadding: .25em;
 $borderGrey: #DDD;
 $borderColor: #ccc;
+$breadcrumbPadding: 15px;
 $contentBeforeAfter: #999;
 $contentBeforeAfter-properties: #729fcf;
 $backgroundColorForm: #FFF;
@@ -44,15 +45,28 @@ circle:hover+.petals {
 }
 .petals {
     position:absolute;
-    /*display:none;*/
 }
 
 .breadcrumb {
     @include border-radius(0);
     border-bottom: thin solid $navbarBorder;
+  padding-right : 0;
+  width : 75%;
+  float: left;
 }
 .breadcrumb .active {
-    font-weight: bold;
+  font-weight: bold;
+  > a {
+    color: $gray;
+  }
+}
+#access-profile {
+  float: right;
+  width: 25%;
+  padding-left : 0;
+  margin-left : -$breadcrumbPadding*2;
+  padding-right : $breadcrumbPadding;
+  text-align: right;
 }
 abbr {
     text-transform: lowercase;
@@ -91,9 +105,29 @@ article {
   height: 14px;
   width: 14px;
 }
-// .form-actions
 .form-horizontal .modal-footer {
   padding-left : 15px;
+}
+
+input[class*=" icon-"]::before {
+  background-image: url($iconSpritePath);
+  content: "";
+  float: left;
+  margin: 0 20px 0 0;
+  width: 14px;
+  height: 14px;
+  margin-top: 1px;
+  @include ie7-restore-right-whitespace();
+}
+input[type='submit'].icon-arrow-right::before {
+  //background-repeat: no-repeat;
+  background-position: -264px -96px;
+}
+input[type='submit'].icon-arrow-right {
+  height: auto;
+  display: block;
+  //padding: 10px 20px;
+  //width: 50%;
 }
 
 
@@ -101,8 +135,11 @@ article {
    Author:
    ========================================================================== */
 
+.container {
+  margin-top: 3em;
+}
+
 .setup, .login, #logout {
-      // .modal;
     @extend .modal;
     position: relative;
     top: auto;
@@ -115,9 +152,7 @@ article {
         , aside {
         }
         > fieldset {
-            width: 70%;
             float: left;
-            //border-right: thin dotted $borderGrey;
             padding-top: 35px;
             padding-right : 0;
         }
@@ -151,7 +186,6 @@ article {
         }
     }
     .btn {
-        //display: block;
     }
 
 footer {
@@ -166,7 +200,6 @@ footer {
   padding    : 1em;
   > #copyright, #links {
     float: left;
-    //margin  : 0 auto;
     padding : 0.5em 0;
     width   : $footerWidth/2;
   }
@@ -185,9 +218,7 @@ footer {
   }
 
   > #links {
-    //list-style-type : circle;
     text-align      : left;
-    //margin-right : $footerWidth/2;
     margin-left: $footerChildrenMargin;
     margin-right : $footerWidth/2-$footerChildrenMargin;
     > li {

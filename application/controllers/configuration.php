@@ -3,29 +3,33 @@
 // require_once APPPATH."/controllers/checkSetup.php";
 
 class Configuration extends CI_Controller {
-    /*
-     * data for the breadcrumbs related to installation
+    /**
+     * @var array data for the breadcrumbs related to installation
      */
     protected  $_breadcrumb = array(
         'dashboard' => array(// in case list-station isn't the home anymore
             array(
                 'status' => 'active',
-                'url' => '/configuration/list-stations',
+                'url' => '/configuration',
                 'i18n' => 'configuration-station.dashboard.breadcrumb'
             )
         ),
         'list-stations' => array(
             array(
+                'url' => '/configuration',
+                'i18n' => 'configuration-station.dashboard.breadcrumb'
+            ),
+            array(
+                'status' => 'active',
                 'url' => '/configuration/list-stations',
                 'i18n' => 'configuration-station.list.breadcrumb'
             ),
-        array(
-            'status' => 'active',
-            'url' => '/configuration/list-stations',
-            'i18n' => 'configuration-station.list.breadcrumb'
-        )
         ),
         'add-station' => array(
+            array(
+                'url' => '/configuration',
+                'i18n' => 'configuration-station.dashboard.breadcrumb'
+            ),
             array(
                 'url' => '/configuration/',
                 'i18n' => 'configuration-station.list.breadcrumb'
@@ -51,7 +55,12 @@ class Configuration extends CI_Controller {
 	public function index() {
 		$this->load->model('station');
 
-		$this->listStations();
+        $page = new Page_manager();
+        $page->addData('breadcrumb', $this->_breadcrumb['dashboard'] );
+        $page->addMetadata('configuration-dashboard'); // fetch information to build the HTML header
+
+        // display the view
+        $page->view('configuration/dashboard');
 	}
 
 	public function listStations() {
@@ -59,32 +68,33 @@ class Configuration extends CI_Controller {
         $page = new Page_manager();
 
         // build view data
-        $data = $page->fetchConfig('configuration-list-station'); // fetch information to build the HTML header
         foreach ($this->station->stationsList as $id => $station) {
-            $data['stationsConf'][$station] = current($this->station->config($id));
+            $page->addData('stationsConf', array($station => $this->_breadcrumb['dashboard']) );
         }
-        $data['breadcrumb'] = $this->_breadcrumb['dashboard'];
+        $page->addData('breadcrumb', $this->_breadcrumb['list-stations'] );
+        $page->addMetadata('configuration-list-station'); // fetch information to build the HTML header
+
         // display the view
-		$page->view('configuration/list-stations', $data);
+		$page->view('configuration/list-stations');
 	}
 
 
 	public function addStation() {
         $this->load->library('form_validation');
-
         $page = new Page_manager();
-        $data = $page->fetchConfig('configuration-add-station'); // fetch information to build the HTML header
-        $data['breadcrumb'] = $this->_breadcrumb['add-station'];
-        $data['form'] = $this->config->item('add-station.form.structure');
 
-        $data['dbmsUsername'] = null;
-        $data['dbmsPassword'] = null;
-        $data['dbmsHost'] = null;
-        $data['dbmsPort'] = 3306;
-        $data['dbmsDatabaseName'] = null;
+        // build view data
+        $page->addData('breadcrumb', $this->_breadcrumb['add-station'] );
+        $page->addData('dbmsUsername', null );
+        $page->addData('dbmsPassword', null );
+        $page->addData('dbmsHost', null );
+        $page->addData('dbmsPort', 3306 );
+        $page->addData('dbmsDatabaseName', null );
+        $page->addData('form', $this->config->item('add-station.form.structure') );
+        $page->addMetadata('configuration-add-station'); // fetch information to build the HTML header
 
         // display the view
-		$page->view('configuration/add-station', $data);
+		$page->view('configuration/add-station');
 	}
 	public function removeStation() {
 
