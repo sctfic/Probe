@@ -29,10 +29,20 @@
 		//		http://www.sensorsone.co.uk/pressure-measurement-glossary/inhg-inch-of-mercury-0-deg-c-pressure-unit.html#factors
 		return round(3386.39*$val, 0)	;
 	}
-	function RainSample2mm($Sample) {
-		global $auge;
+	function RainSample2mm($Sample, $auge) {
+		// global $auge;
+        where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,array($Sample, $auge));
+    //     CURRENT	- 2013/Jun/10 14:21:03 -> s.i.converter_helper.php [34]:/RainSample2mm(
+				// > Array( [0]=> [1]=>))
+
+// UPDATE  `TA_VARIOUS` SET  `VALUE` =  `VALUE` /5,
+// UTC = UTC WHERE (
+// 		`SEN_ID` =5 OR  `SEN_ID` =6
+// ) AND (
+// 		`VALUE` =1 OR  `VALUE` =2 OR  `VALUE` =3 OR  `VALUE` =4 OR  `VALUE` =5 OR  `VALUE` =6
+// )
 		switch ($auge){
-			case 0: // Inche
+			case 0: // 0.1 Inche to mm
 			return $Sample/10*2.54;
 				break;
 			case 1: // 0.2 Millimettre

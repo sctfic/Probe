@@ -77,12 +77,12 @@ this functione estimate the recommanded granularity between 2 date for retunr 10
                 AND utc < '$to'";
 
         $query_result = $this->dataDB->query($queryString);
-        list($first,$last,$count, $min, $max, $avg, $sum) = array_values( end($query_result->result_array($query_result)) );
+        list($first, $last, $count, $min, $max, $avg, $sum) = array_values( end($query_result->result_array($query_result)) );
 
         $GranularityForNbrValue = round((strtotime($last)-strtotime($first)) / $count * ($count/$nbr) / 60 , 1);
 
 
-        return array ('step'=>$GranularityForNbrValue<5 ? 5 : $GranularityForNbrValue, 'min'=>$min, 'max'=>$max, 'avg'=>$avg, 'sum'=>$sum);
+        return array ('step'=>$GranularityForNbrValue<5 ? 5 : $GranularityForNbrValue, 'count'=>$count, 'min'=>$min, 'max'=>$max, 'avg'=>$avg, 'sum'=>$sum);
     }
 
 
@@ -98,6 +98,32 @@ this functione estimate the recommanded granularity between 2 date for retunr 10
 
         $queryString = 
         "SELECT FROM_UNIXTIME( TRUNCATE( UNIX_TIMESTAMP(`UTC`) / ".($Granularity*60).", 0)*".($Granularity*60)."+".($Granularity*60/2)." ) as UTC_grp , round(avg(value), 2) as `value`
+            FROM  `".$this->SEN_TABLE."` 
+            WHERE SEN_ID = ".$this->SEN_ID."
+                AND utc >= '$since'
+                AND utc < '$to'
+        GROUP BY UTC_grp
+        ORDER BY UTC_grp asc
+        LIMIT 0 , 100000";
+
+        $query_result = $this->dataDB->query($queryString);
+
+        $brut = $query_result->result_array($query_result);
+        return $brut;
+    }
+
+/**
+
+    * @
+    * @param $since is the start date of result needed
+    * @param $to is the end date of result needed
+    * @param $Granularity
+    */
+    function cumul($since='2013-01-01T00:00', $to='2099-12-31T23:59', $Granularity=180) {
+        where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
+
+        $queryString = 
+        "SELECT FROM_UNIXTIME( TRUNCATE( UNIX_TIMESTAMP(`UTC`) / ".($Granularity*60).", 0)*".($Granularity*60)."+".($Granularity*60/2)." ) as UTC_grp , round(sum(value),3) as `value`
             FROM  `".$this->SEN_TABLE."` 
             WHERE SEN_ID = ".$this->SEN_ID."
                 AND utc >= '$since'

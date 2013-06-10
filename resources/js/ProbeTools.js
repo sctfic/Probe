@@ -72,13 +72,18 @@ function formulaConverter (grandeur, outputUnit)
             '°Ré':     { name: 'Réaumur',				symbol: '°Ré',	formula: function(SI){return (SI-273.15)*4/5;}},	// ok
             '°Rø':     { name: 'Rømer',				    symbol: '°Rø',	formula: function(SI){return (SI-273.15)*21/40+7.5;}},	// ok
         },
+        Rain:{
+            'mm':    { name: 'Millimeters per hour',              symbol: 'mm',     formula: function(Sample){return Sample;}},    // ok
+            'l/m²':  { name: 'Litre per square metre per hour',   symbol: 'l/m²',   formula: function(Sample){return Sample;}},    // ok
+            'in':    { name: 'inch per hour',                     symbol: 'in',     formula: function(Sample){return Sample/25.4;}},    // ok
+        },
         RainSpeed:{
-            'mm/h':    { name: 'Millimeters per hour', 				symbol: 'mm/h',		formula: function(SI){return +SI;}},	// ok
-            'l/m²/h':  { name: 'Litre per square metre per hour',   symbol: 'l/m²/h',	formula: function(SI){return +SI;}},	// ok
-            'l/m²/min':{ name: 'Litre per square metre per minute',	symbol: 'l/m²/min',	formula: function(SI){return SI/60;}},	// ok
-            'mm/min':  { name: 'Millimeters per ', 					symbol: 'mm/min',	formula: function(SI){return SI/60;}},	// ok
-            'in/h':    { name: 'inch per hour', 				    symbol: 'in/h',		formula: function(SI){return SI/25.4;}},	// ok
-            'in/min':  { name: 'inch per minut', 				    symbol: 'in/min',	formula: function(SI){return SI/25.4/60;}},	// ok
+            'mm/h':    { name: 'Millimeters per hour',              symbol: 'mm/h',     formula: function(SI){return +SI;}},    // ok
+            'l/m²/h':  { name: 'Litre per square metre per hour',   symbol: 'l/m²/h',   formula: function(SI){return +SI;}},    // ok
+            'l/m²/min':{ name: 'Litre per square metre per minute', symbol: 'l/m²/min', formula: function(SI){return SI/60;}},  // ok
+            'mm/min':  { name: 'Millimeters per ',                  symbol: 'mm/min',   formula: function(SI){return SI/60;}},  // ok
+            'in/h':    { name: 'inch per hour',                     symbol: 'in/h',     formula: function(SI){return SI/25.4;}},    // ok
+            'in/min':  { name: 'inch per minut',                    symbol: 'in/min',   formula: function(SI){return SI/25.4/60;}}, // ok
         },
         Humidity:{
             '%':   { name: 'amount of water vapor',         symbol: '%',		formula: function(SI){return +SI;}},	// ok
@@ -130,7 +135,12 @@ function formulaConverter (grandeur, outputUnit)
     // si on demande une grandeur sans lunite de conversion
     if (arguments.length==1) return d3.keys( units[grandeur] ); // return units[grandeur]
     // units.foreach(logArrayElements);
-    return units[grandeur][outputUnit].formula; 
+    if (units[grandeur] && units[grandeur][outputUnit]) {
+        // console.log(grandeur, outputUnit);
+        return units[grandeur][outputUnit].formula;
+    }
+    console.log(grandeur, outputUnit);
+    return function(SI){return +SI;};
 }
 
 function logArrayElements(element, index, array) {

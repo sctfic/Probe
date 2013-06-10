@@ -65,6 +65,7 @@ const DBL_NULL	=	"\x00\x00";	// valeur de confirmation d'un CRC
 
 // 	var $WinDir = array('N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSW','SW','WSW','W','WNW','NW','NNW');
 
+    $RAIN_COLLECTOR = array(0=>0.01, 1=>0.2, 2=>0.1);
     $TREND = array(196=>-2, 236=>-1, 0=>0, 20=>1, 60=>2, 80=>'Rev A');
     $TIME_ZONE = array(
         0 	=>	array( 'GMToffset' =>-1200, 'name' => '(GMT-12:00) Eniwetok, Kwajalein'),

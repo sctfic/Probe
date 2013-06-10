@@ -26,7 +26,7 @@ function timeSeriesChart_smart() {
 
 
 
-	function surve(selection) {
+	function curve(selection) {
 		selection.each(function(data) {
 			// Convert data to standard representation greedily;
 			// this is needed for nondeterministic accessors.
@@ -36,49 +36,48 @@ function timeSeriesChart_smart() {
 
 		// Update the y-scale.
 		yScale
-		  .domain(d3.extent(data, function(d) { return d[1]; })])
+		  .domain(d3.extent(data, function(d) { return d[1]; }))
 		  .range([height - margin.top - margin.bottom, 0]);
-	}
+		};
 
-	function chart(selection) {
+		function chart(selection) {
+
+			// Update the x-scale.
+			xScale
+			  .domain(d3.extent(data.map(function(d) { return d.date; })))
+			  .range([0, width - margin.left - margin.right]);
 
 
-		// Update the x-scale.
-		xScale
-		  .domain(d3.extent(data.map(function(d) { return d.date; })))
-		  .range([0, width - margin.left - margin.right]);
+			// Select the svg element, if it exists.
+			var svg = d3.select(this).selectAll("svg").data([data]);
 
+			// Otherwise, create the skeletal chart.
+			var gEnter = svg.enter().append("svg").append("g");
+			// gEnter.append("path").attr("class", "area");
+			gEnter.append("path").attr("class", "line");
+			gEnter.append("g").attr("class", "x axis");
 
-		// Select the svg element, if it exists.
-		var svg = d3.select(this).selectAll("svg").data([data]);
+			// Update the outer dimensions.
+			svg .attr("width", width)
+			  .attr("height", height);
 
-		// Otherwise, create the skeletal chart.
-		var gEnter = svg.enter().append("svg").append("g");
-		// gEnter.append("path").attr("class", "area");
-		gEnter.append("path").attr("class", "line");
-		gEnter.append("g").attr("class", "x axis");
+			// Update the inner dimensions.
+			var g = svg.select("g")
+			  .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-		// Update the outer dimensions.
-		svg .attr("width", width)
-		  .attr("height", height);
+			// Update the area path.
+			// g.select(".area")
+			  // .attr("d", area.y0(yScale.range()[0]));
 
-		// Update the inner dimensions.
-		var g = svg.select("g")
-		  .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+			// Update the line path.
+			g.select(".line")
+			  .attr("d", line);
 
-		// Update the area path.
-		// g.select(".area")
-		  // .attr("d", area.y0(yScale.range()[0]));
-
-		// Update the line path.
-		g.select(".line")
-		  .attr("d", line);
-
-		// Update the x-axis.
-		g.select(".x.axis")
-		  .attr("transform", "translate(0," + yScale.range()[0] + ")")
-		  .call(xAxis);
-		});
+			// Update the x-axis.
+			g.select(".x.axis")
+			  .attr("transform", "translate(0," + yScale.range()[0] + ")")
+			  .call(xAxis);
+			});
 	}
 
 

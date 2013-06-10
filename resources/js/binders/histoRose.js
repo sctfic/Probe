@@ -8,7 +8,7 @@
 * @link     http://probe.com/doc
 */
 
-function call_histoRose(container, station, XdisplaySizePxl) {
+function include_histoRose(container, station, XdisplaySizePxl) {
     // on defini la fonction de convertion de nos dates (string) en Objet
     var formatDate = d3.time.format("%Y-%m-%d %H:%M:%S");
 
@@ -24,28 +24,7 @@ function call_histoRose(container, station, XdisplaySizePxl) {
                         .toHumanAngle(formulaConverter ('angle', '°'))
                         .toHumanDate(formulaConverter ('strDate', 'ISO'));
 
-// on demande les infos importante au sujet de notre futur tracé
-    // ces infos permettent de finir le parametrage de notre "Chart"
-    d3.json( histoRose.ajaxUrl() + "?station="+ histoRose.station() +"&XdisplaySizePxl="+histoRose.width()+"&infos=dataheader",
-        function(data) {
-            console.TimeStep('header');
-            // console.log(data); //, histoRose);
-            histoRose
-                .yDomain([data.min, data.max])
-                .dataheader(data);
-        }
-    );
-
-// on charge les données et on lance le tracage
-    d3.json( histoRose.ajaxUrl() + "?station="+ histoRose.station() +"&XdisplaySizePxl="+histoRose.width(),
-        function(data) {
-            console.TimeStep('data');
-            d3.select(container)
-                .datum(d3.entries(data.data))
-                .call( histoRose );
-        }
-    );
-
+    histoRose.loader(container);
 }
 
 
@@ -61,6 +40,7 @@ function timeSeriesChart_histoRose() {
         width = 640,
         height = 160,
         dataheader = null,
+        station = null,
         meanDate = function(d) { return d.date; },
         rose = function(d) { return d.rose; },
         angle = function(d) { return d.angle; },
@@ -75,8 +55,7 @@ function timeSeriesChart_histoRose() {
         toHumanSpeed = function(d) { return +d; },
         toHumanAngle = function(d) { return +d; },
         toHumanDate = function(d) { return d; },
-        ajaxUrl = ""
-        ;
+        ajaxUrl = "";
 
         // line = d3.svg.line().x(X).y(Y);
 
@@ -204,19 +183,6 @@ function timeSeriesChart_histoRose() {
         });
     }
 
-// Dir: 0
-// Max: 3.576
-// Spd: 0.447
-// Spl: 4
-// function arc(obj) {
-//     return d3.svg.arc()
-//         .startAngle(function(d) {console.log(d , (d.Dir - obj.width) * Math.PI/180); return (d.Dir - obj.width) * Math.PI/180; })
-//         .endAngle(function(d) {console.log(d , (d.Dir + obj.width) * Math.PI/180); return (d.Dir + obj.width) * Math.PI/180; })
-//         .innerRadius(obj.from)
-//         .outerRadius(function(d) {console.log(d , obj.to(d)); return obj.to(d) });
-// };
-
-
     // The x-accessor for the path generator; xScale ∘ meanDate.
     function X(d) {
         return xScale(d.date);
@@ -227,9 +193,35 @@ function timeSeriesChart_histoRose() {
         return yScale(d.ySpeed);
     }
 	var colorScale = d3.scale.linear()
-                                .domain([0,.5,.8,1])
+                                .domain([0, .5, .8, 1])
                                 .range(["#AEC7E8","#1F77B4","#D62728","#2C3539"])// ["hsl(0, 70%, 99%)", "hsl(0, 70%, 40%)"])
                                 .interpolate(d3.interpolateHsl);
+
+// ================= Property of chart =================
+
+    chart.loader = function(container) {
+        // on demande les infos importante au sujet de notre futur tracé
+        // ces infos permettent de finir le parametrage de notre "Chart"
+        d3.json( ajaxUrl + "?station="+ station +"&XdisplaySizePxl="+width+"&infos=dataheader",
+            function(data) {
+                console.TimeStep('load Header');
+                // console.log(data); //, ;
+                    chart.yDomain([data.min, data.max])
+                    .dataheader(data);
+            }
+        );
+
+        // on charge les données et on lance le tracage
+        d3.json( ajaxUrl + "?station="+ station +"&XdisplaySizePxl="+width,
+            function(data) {
+                console.TimeStep('load Data');
+                d3.select(container)
+                    .datum(d3.entries(data.data))
+                    .call( chart );
+            }
+        );
+        return chart;
+    }
 
 // ================= Accesseurs =====================
 
