@@ -95,3 +95,5 @@ i18n('dotChart.title.metadata');
 i18n('dotChart.description.metadata');
 i18n('dotChart.view.label');
 i18n('viewer.dashboard.breadcrumb');
+i18n('dorChart.title.metadata');
+i18n('dorChart.description.metadata');

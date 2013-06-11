@@ -27,6 +27,7 @@ svg {
   fill: none;
   stroke: #000;
   stroke-width: 1px;
+          shape-rendering: crispEdges;
 }
 
 .axis line,.axis path {
@@ -45,11 +46,13 @@ svg {
   fill: none;
   stroke: #3182bd;
   stroke-width: 1px;
+        /*shape-rendering: crispEdges;*/
 }
 .marker {
   fill: #FFF;
   stroke: #3182bd;
   stroke-width: .7px;
+        /*shape-rendering: crispEdges;*/
 }
 </style>
 <script>

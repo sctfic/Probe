@@ -53,6 +53,7 @@
 		zoom: 2;
 		transition:visibility 0s linear;
 		-webkit-transition:visibility 0s linear;
+        /*shape-rendering: crispEdges;*/
 		}
 
 	.petals{
@@ -63,13 +64,14 @@
 		opacity: 0.1;
 		transition:visibility 0s linear .7s, opacity .6s linear;
 		-webkit-transition:visibility 0s linear .7s, opacity .6s linear;
-
+        /*shape-rendering: crispEdges;*/
 	}
 
 	.line {
 	  fill: none;
 	  stroke: #000;
 	  stroke-width: 1px;
+        shape-rendering: crispEdges;
 	}
 
 	.axis line,.axis path {

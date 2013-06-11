@@ -35,22 +35,26 @@ svg {
 
 .axis {
 	shape-rendering: crispEdges;
+        shape-rendering: crispEdges;
 }
 
 .axis path, .axis line {
 	stroke: #000;
 	fill: none;
 	stroke-width: 1px;
+        shape-rendering: crispEdges;
 }
 
 .x.axis path, .x.axis line {
 	stroke: #555;
 	/*stroke-opacity: .5;*/
+        shape-rendering: crispEdges;
 }
 
 .y.axis path, .y.axis line {
 	stroke: #555;
 	/*stroke-opacity: .5;*/
+        shape-rendering: crispEdges;
 }
 .Legend {
 	/*font-family: Arial;*/
