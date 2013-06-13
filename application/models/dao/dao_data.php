@@ -70,17 +70,21 @@ this functione estimate the recommanded granularity between 2 date for retunr 10
     function estimate($since='2013-01-01T00:00', $to='2099-12-31T23:59', $nbr = 1000) {
         where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
         $queryString = 
-        "SELECT MIN(  `UTC` ) AS first, MAX(  `UTC` ) AS last, COUNT(  `UTC` ) AS count, MIN(  `VALUE` ) AS min, MAX(  `VALUE` ) AS max, AVG(  `VALUE` ) AS avg, SUM(  `VALUE` ) AS sum
+        "SELECT MIN(`UTC`) AS first, MAX(`UTC`) AS last, COUNT(`UTC`) AS count, MIN(value) AS min, MAX(value) AS max, AVG(value) AS avg, SUM(value) AS sum
             FROM  `".$this->SEN_TABLE."` 
             WHERE SEN_ID = ".$this->SEN_ID."
                 AND utc >= '$since'
                 AND utc < '$to'";
 
         $query_result = $this->dataDB->query($queryString);
+
+    where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__, array_values( end($query_result->result_array($query_result)) ));
+   
         list($first, $last, $count, $min, $max, $avg, $sum) = array_values( end($query_result->result_array($query_result)) );
 
         $GranularityForNbrValue = round((strtotime($last)-strtotime($first)) / $count * ($count/$nbr) / 60 , 1);
 
+    where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__, array ('step'=>$GranularityForNbrValue<5 ? 5 : $GranularityForNbrValue, 'count'=>$count, 'min'=>$min, 'max'=>$max, 'avg'=>$avg, 'sum'=>$sum));
 
         return array ('step'=>$GranularityForNbrValue<5 ? 5 : $GranularityForNbrValue, 'count'=>$count, 'min'=>$min, 'max'=>$max, 'avg'=>$avg, 'sum'=>$sum);
     }
