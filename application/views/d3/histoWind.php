@@ -57,25 +57,10 @@ svg {
 </style>
 <script>
 	function probeViewer(){
-
-		var station='<?=$station?>';
-	    var url = "/data/histoWind?station="+station+"&XdisplaySizePxl="+1800;
-
-		d3.tsv(url, function(data) {
-		  var formatDate = d3.time.format("%Y-%m-%d %H:%M");
-		  d3.select("#svgArea")
-		      .datum(data)
-		    .call(timeSeriesChart_histoWind()
-				.date(function(d) { return formatDate.parse(d.date); })
-				.speed(function(d) { return +d.speed; })
-				.angle(function(d) { return +d.angle; })
-				.xSpeed(function(d) { return +d.x; })
-				.ySpeed(function(d) { return +d.y; })
-		    );
-		});
+    include_histoWind("#svgArea", '<?=$station?>', 1640);
 	}
 </script>
 <script src="/resources/js/ProbeTools.js"></script>
 <script src="/resources/js/libs/base64.js"></script>
-<script src="/resources/js/libs/jquery-ui-1.10.2.custom.js"></script>
+<!-- <script src="/resources/js/libs/jquery-ui-1.10.2.custom.js"></script> -->
 

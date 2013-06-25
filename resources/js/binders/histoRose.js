@@ -200,26 +200,44 @@ function timeSeriesChart_histoRose() {
 // ================= Property of chart =================
 
     chart.loader = function(container) {
+        var ready = false,
+            dataTsv = false;
         // on demande les infos importante au sujet de notre futur tracé
         // ces infos permettent de finir le parametrage de notre "Chart"
-        d3.json( ajaxUrl + "?station="+ station +"&XdisplaySizePxl="+width+"&infos=dataheader",
-            function(data) {
-                console.TimeStep('load Header');
-                // console.log(data); //, ;
-                    chart.yDomain([data.min, data.max])
-                    .dataheader(data);
-            }
-        );
-
         // on charge les données et on lance le tracage
         d3.json( ajaxUrl + "?station="+ station +"&XdisplaySizePxl="+width,
             function(data) {
                 console.TimeStep('load Data');
-                d3.select(container)
-                    .datum(d3.entries(data.data))
-                    .call( chart );
+                console.log(data.data);
+
+                if (ready) {
+                    d3.select(container)
+                        .datum(d3.entries(data.data))
+                        .call( chart );
+                }
+                ready = true;
+                dataTsv = data;
             }
         );
+
+        d3.json( ajaxUrl + "?station="+ station +"&XdisplaySizePxl="+width+"&infos=dataheader",
+            function(data) {
+                console.TimeStep('load Header');
+                console.log(data);
+
+                chart.yDomain([data.min, data.max])
+                    .dataheader(data);
+                
+                if (ready) {
+                    // console.log(data);
+                    d3.select(container)
+                        .datum(dataTsv)
+                        .call(chart);
+                }
+                ready = true;
+            }
+        );
+
         return chart;
     }
 
