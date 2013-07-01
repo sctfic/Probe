@@ -14,7 +14,7 @@
 ?>
 <div id="resizable" class="ui-widget-content">
     <h4 class="ui-widget-header">Resizable</h4>
-    <div id="dotsvgArea" style='border:solid red 1px;height:160px;'>
+    <div id="barSvgArea" style='border:solid red 1px;height:160px;'>
         <!-- d3 content should be -dynamically- placed here -->
     </div>
 </div>
@@ -60,7 +60,7 @@
 
 <script>
   function probeViewer(){
-    include_dotChart("#dotsvgArea", '<?=$station?>', '<?=$sensor?>', 1900);
+    include_barChart("#barSvgArea", '<?=$station?>', '<?=$sensor?>', 1900);
   }
   </script>
 <script src="/resources/js/ProbeTools.js"></script>

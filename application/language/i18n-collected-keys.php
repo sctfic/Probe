@@ -99,3 +99,6 @@ i18n('dorChart.title.metadata');
 i18n('dorChart.description.metadata');
 i18n('windRose.title.metadata');
 i18n('windRose.description.metadata');
+i18n('barChart.title.metadata');
+i18n('barChart.description.metadata');
+i18n('install.login.breadcrumb');

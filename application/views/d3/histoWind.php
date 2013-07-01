@@ -6,10 +6,9 @@
 * @package  Probe
 * @author   alban lopez <alban.lopez+probe@gmail.com>
 * @license  http://creativecommons.org/licenses/by-nc-sa/3.0/legalcode CC-by-nc-sa-3.0
-* @link     http://probe.com/doc
+* @link     http://probe-meteo.com/doc
  */
 
-//http://probe.dev/viewer/histoWind/VP2_GTD
 
 ?>
 <div id="resizable" class="ui-widget-content">
@@ -24,40 +23,40 @@ svg {
 	font-size: 10px;
 }
 .line {
-  fill: none;
-  stroke: #000;
-  stroke-width: 1px;
-          shape-rendering: crispEdges;
+    fill: none;
+    stroke: #000;
+    stroke-width: 1px;
+    shape-rendering: crispEdges;
 }
 
 .axis line,.axis path {
-  fill: none;
-  stroke: #000;
-  stroke-width: 1px;
-  shape-rendering: crispEdges;
+    fill: none;
+    stroke: #000;
+    stroke-width: 1px;
+    shape-rendering: crispEdges;
 }
 .arrow:hover>.hair, .arrow:hover>.marker {
-  stroke: #E6550D;
-  stroke-width: 2px;
+    stroke: #E6550D;
+    stroke-width: 2px;
 }
 /*Blue:#1F77B4 #3182bd #6baed6*/
 /*Red:#E6550D*/
 .hair {
-  fill: none;
-  stroke: #3182bd;
-  stroke-width: 1px;
-        /*shape-rendering: crispEdges;*/
+    fill: none;
+    stroke: #3182bd;
+    stroke-width: 1px;
+    /*shape-rendering: crispEdges;*/
 }
 .marker {
-  fill: #FFF;
-  stroke: #3182bd;
-  stroke-width: .7px;
-        /*shape-rendering: crispEdges;*/
+    fill: #FFF;
+    stroke: #3182bd;
+    stroke-width: .7px;
+    /*shape-rendering: crispEdges;*/
 }
 </style>
 <script>
 	function probeViewer(){
-    include_histoWind("#svgArea", '<?=$station?>', 1640);
+        include_histoWind("#svgArea", '<?=$station?>', 1900);
 	}
 </script>
 <script src="/resources/js/ProbeTools.js"></script>

@@ -5,7 +5,7 @@
 * @package  Probe
 * @author   alban lopez <alban.lopez+probe@gmail.com>
 * @license  http://creativecommons.org/licenses/by-nc-sa/3.0/legalcode CC-by-nc-sa-3.0
-* @link     http://probe.com/doc
+* @link     http://probe-meteo.com/doc
 */
 function include_histoWind(container, station, XdisplaySizePxl) {
     // on defini la fonction de convertion de nos dates (string) en Objet
@@ -66,11 +66,6 @@ function timeSeriesChart_histoWind() {
             // this is needed for nondeterministic accessors.
             data = data.map(function(d, i) {
                 return {
-                    // date:meanDate(d.date),
-                    // Speed:Speed(d.speed),
-                    // angle:angle(d.angle),
-                    // xSpeed:xSpeed(d.x),
-                    // ySpeed:ySpeed(d.y)
                     date:meanDate.call(data, d, i),
                     Speed:Speed.call(data, d, i),
                     angle:angle.call(data, d, i),
@@ -106,9 +101,6 @@ function timeSeriesChart_histoWind() {
             var g = svg.select("g")
                 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-            // Update the line path.
-            // g.select(".line")
-            //     .attr("d", line);
             var coef = (yScale.range()[0]-yScale.range()[1])/(yScale.domain()[1]-yScale.domain()[0]);
 
             // Draw arrow block

@@ -1,9 +1,18 @@
-function include_dotChart(container, station, sensor, XdisplaySizePxl)
+/** barChart.js
+* D3 binder to visualize <dataset> data
+*
+* @category D3Binder
+* @package  Probe
+* @author   alban lopez <alban.lopez+probe@gmail.com>
+* @license  http://creativecommons.org/licenses/by-nc-sa/3.0/legalcode CC-by-nc-sa-3.0
+* @link     http://probe-meteo.com/doc
+*/
+function include_barChart(container, station, sensor, XdisplaySizePxl)
 {
     var formatDate = d3.time.format("%Y-%m-%d %H:%M");
 
     // on definie notre objet au plus pres de notre besoin.
-    var dotChart = timeSeriesChart_dotChart()
+    var barChart = timeSeriesChart_barChart()
                         .width(XdisplaySizePxl)
                         .ajaxUrl("/data/cumul")
                         .date(function(d) { return formatDate.parse (d.date); })
@@ -12,11 +21,11 @@ function include_dotChart(container, station, sensor, XdisplaySizePxl)
                         .onClickAction(function(d, i) { console.error (d, i); })
                         .toHumanDate(formulaConverter ('strDate', 'ISO'));
 
-    dotChart.loader(container);
+    barChart.loader(container);
 }
 
 
-function timeSeriesChart_dotChart() {
+function timeSeriesChart_barChart() {
   var   margin = {top: 5, right: 5, bottom: 20, left: 40},
         width = 600,
         height = 160,
@@ -60,6 +69,7 @@ function timeSeriesChart_dotChart() {
             yScale
                 .domain(d3.extent(data, function(d) {return +d.val; }))
                 .range([height - margin.top - margin.bottom, 0]);
+            // console.log(toHumanUnit, [toHumanUnit(dataheader.min),toHumanUnit(dataheader.max)]);
 
             // Select the svg element, if it exists.
             var svg = d3.select(this).selectAll("svg").data([data]);
@@ -146,7 +156,7 @@ function timeSeriesChart_dotChart() {
 
     function formatVal(v) {
         //console.log(v, (+v).toPrecision(5));
-        return (+v).toFixed(2) + unit;
+        return (+v).toFixed(2) + toHumanUnit();
     }
 
 // ================= Property of chart =================
@@ -160,8 +170,7 @@ function timeSeriesChart_dotChart() {
         d3.tsv( ajaxUrl + "?station="+ station +"&sensor="+ sensor +"&XdisplaySizePxl="+width, //+"&Since=2013-05-30T10:00"+"&To=2013-05-31T06:00",
             function(data) {
                 console.TimeStep('load Data');
-                // console.log(data);
-
+                console.log(data);
                 if (ready) {
                     d3.select(container)
                         .datum(data)
@@ -178,8 +187,7 @@ function timeSeriesChart_dotChart() {
                 console.log(data);
                 chart
                     .dataheader(data)
-                    .unit(data.sensor.SEN_USER_UNIT)
-                    .toHumanUnit(formulaConverter (data.sensor.SEN_MAGNITUDE, unit));
+                    .toHumanUnit(formulaConverter (data.sensor.SEN_MAGNITUDE, data.sensor.SEN_USER_UNIT));
 
                 if (ready) {
                     // console.log(data);
@@ -241,12 +249,6 @@ function timeSeriesChart_dotChart() {
         onClickAction = _;
         return chart;
     };
-    // chart.yDomain = function(_) {
-    //     if (!arguments.length) return yDomain;
-    //     yDomain = _;
-    //     yScale.domain(yDomain);
-    //     return chart;
-    // };
     chart.dataheader = function(_) {
         if (!arguments.length) return dataheader;
         dataheader = _;
@@ -255,11 +257,6 @@ function timeSeriesChart_dotChart() {
     chart.sensor = function(_) {
         if (!arguments.length) return sensor;
         sensor = _;
-        return chart;
-    };
-    chart.unit = function(_) {
-        if (!arguments.length) return unit;
-        unit = _;
         return chart;
     };
     chart.toHumanUnit = function(_) {
