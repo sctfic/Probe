@@ -20,6 +20,7 @@ function include_histoRose(container, station, XdisplaySizePxl) {
                         .date(function(d) { return formatDate.parse (d.key); })
                         .rose(function(d) { return d.value; })
                         .onClickAction(function(d) { console.error (d); })
+                        // .withAxis(false)
                         .toHumanSpeed(formulaConverter ('WindSpeed', 'km/h'))
                         .toHumanAngle(formulaConverter ('angle', '°'))
                         .toHumanDate(formulaConverter ('strDate', 'ISO'));
@@ -176,10 +177,12 @@ function timeSeriesChart_histoRose() {
             else
               xPos = yScale(0);
 
-            // Update the x-axis.
-            g.select(".x.axis")
-                .attr("transform", "translate(0," + xPos + ")") // axe tjrs en bas : yScale.range()[0] + ")")
-                .call(xAxis);
+            if (withAxis) {
+                // Update the x-axis.
+                g.select(".x.axis")
+                    .attr("transform", "translate(0," + xPos + ")") // axe tjrs en bas : yScale.range()[0] + ")")
+                    .call(xAxis);
+            }
         });
     }
 
@@ -243,6 +246,11 @@ function timeSeriesChart_histoRose() {
 
 // ================= Accesseurs =====================
 
+    chart.withAxis = function(_) {
+        if (!arguments.length) return withAxis;
+        withAxis = _;
+        return chart;
+    };
     chart.margin = function(_) {
         if (!arguments.length) return margin;
         margin = _;

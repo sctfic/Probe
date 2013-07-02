@@ -22,6 +22,7 @@ function include_histoWind(container, station, XdisplaySizePxl) {
                         .xSpeed(function(d) { return +d.x; })
                         .ySpeed(function(d) { return +d.y; })
                         .onClickAction(function(d) { console.error (d); })
+                        // .withAxis(false)
                         .toHumanSpeed(formulaConverter ('WindSpeed', 'km/h'))
                         .toHumanAngle(formulaConverter ('angle', '°'))
                         .toHumanDate(formulaConverter ('strDate', 'ISO'));
@@ -139,13 +140,15 @@ function timeSeriesChart_histoWind() {
             else
               xPos = yScale(0);
 
-            // Update the x-axis.
-            g.select(".x.axis")
-                .attr("transform", "translate(0," + xPos + ")") // axe tjrs en bas : yScale.range()[0] + ")")
-                .call(xAxis);
-            // g.select(".y.axis")
-            //     .attr("transform", "translate(0,0)")
-            //     .call(yAxis);
+            if (withAxis) {
+                // Update the x-axis.
+                g.select(".x.axis")
+                    .attr("transform", "translate(0," + xPos + ")") // axe tjrs en bas : yScale.range()[0] + ")")
+                    .call(xAxis);
+                // g.select(".y.axis")
+                //     .attr("transform", "translate(0,0)")
+                //     .call(yAxis);
+            }
         });
     }
 
@@ -209,6 +212,11 @@ function timeSeriesChart_histoWind() {
 
 // ================= Accesseurs =====================
 
+    chart.withAxis = function(_) {
+        if (!arguments.length) return withAxis;
+        withAxis = _;
+        return chart;
+    };
     chart.margin = function(_) {
         if (!arguments.length) return margin;
         margin = _;

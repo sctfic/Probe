@@ -47,10 +47,7 @@ class Data extends CI_Controller {
 
 		$this->XdisplaySizePxl = $this->input->get('XdisplaySizePxl'); // XdisplaySizePxl in pixels
 			$this->XdisplaySizePxl = 
-				(is_integer($this->XdisplaySizePxl*1) 
-					&& $this->XdisplaySizePxl>=64 
-					&& $this->XdisplaySizePxl<=2560
-				) ? $this->XdisplaySizePxl : 640; // in pixels
+				(is_integer($this->XdisplaySizePxl*1)) ? $this->XdisplaySizePxl : 640; // in pixels
 
 		$this->Station = end($this->station->config($station));
 		// where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,array($this->SEN_DTL,$RAIN_COLLECTOR));
