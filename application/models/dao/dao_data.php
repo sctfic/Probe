@@ -67,7 +67,7 @@ this functione estimate the recommanded granularity between 2 date for retunr 10
     * @param $since is the start date of result needed
     * @param $to is the end date of result needed
     */
-    function estimate($since='2013-01-01T00:00', $to='2099-12-31T23:59', $nbr = 1000) {
+    function estimate($since='2013-01-01T00:00', $to='2037-12-31T23:59', $nbr = 1000) {
         where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
         $queryString = 
         "SELECT MIN(`UTC`) AS first, MAX(`UTC`) AS last, COUNT(`UTC`) AS count, MIN(value) AS min, MAX(value) AS max, AVG(value) AS avg, SUM(value) AS sum
@@ -93,7 +93,7 @@ this functione estimate the recommanded granularity between 2 date for retunr 10
     * @param $to is the end date of result needed
     * @param $Granularity
     */
-    function curve($since='2013-01-01T00:00', $to='2099-12-31T23:59', $Granularity=180) {
+    function curve($since='2013-01-01T00:00', $to='2037-12-31T23:59', $Granularity=180) {
         where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 
         $queryString = 
@@ -119,7 +119,7 @@ this functione estimate the recommanded granularity between 2 date for retunr 10
     * @param $to is the end date of result needed
     * @param $Granularity
     */
-    function cumul($since='2013-01-01T00:00', $to='2099-12-31T23:59', $Granularity=180) {
+    function cumul($since='2013-01-01T00:00', $to='2037-12-31T23:59', $Granularity=180) {
         where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 
         $queryString = 
@@ -154,7 +154,7 @@ this functione estimate the recommanded granularity between 2 date for retunr 10
     *           max period value,
     *           last period value]
     */
-    function bracketCurve($since='2013-01-01T00:00', $to='2099-12-31T23:59', $Granularity=180) {
+    function bracketCurve($since='2013-01-01T00:00', $to='2037-12-31T23:59', $Granularity=180) {
         where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 
         $queryString = 
@@ -190,7 +190,7 @@ requete pour la rose des vent
     * @return 
     * 
     */
-    function wind($since='2013-01-01T00:00', $to='2099-12-31T23:59', $Granularity=360){
+    function wind($since='2013-01-01T00:00', $to='2037-12-31T23:59', $Granularity=360){
 
         where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
         try {
@@ -237,7 +237,7 @@ requete pour le l'histogramme des vents
     * @return 
     * 
     */
-    function histoWind($since='2013-01-01T00:00', $to='2099-12-31T23:59', $Granularity=360){
+    function histoWind($since='2013-01-01T00:00', $to='2037-12-31T23:59', $Granularity=360){
 
         where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 
@@ -265,7 +265,7 @@ requete pour le l'histogramme des vents
     * @return 
     * 
     */
-    function windrose_allInOne($since='2013-01-01', $to='2099-12-31T23:59', $Granularity=180){
+    function windrose_allInOne($since='2013-01-01', $to='2037-12-31T23:59', $Granularity=180){
         where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 
     }

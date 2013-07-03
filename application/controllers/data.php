@@ -40,7 +40,7 @@ class Data extends CI_Controller {
 	        $this->Since = empty($this->Since) ? '2013-01-01T00:00':date('c', strtotime($this->Since));
 
 		$this->To = $this->input->get('To');
-	        $this->To = empty($this->To) ? '2099-12-31T23:59':date('c', strtotime($this->To));
+	        $this->To = empty($this->To) ? '2037-12-31T23:59':date('c', strtotime($this->To));
 
 		$this->infos = $this->input->get('infos');
 	        $this->infos = empty($this->infos) ? FALSE:TRUE;

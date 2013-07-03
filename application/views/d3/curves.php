@@ -13,6 +13,17 @@
 
 ?>
 <div id="resizable" class="ui-widget-content">
+    <p>teste de truc a raconter au sujet de cette courbe
+        <span id="curveSvgArea01">
+            <!-- d3 content should be -dynamically- placed here -->
+        </span> y a aussi d'autre infos
+        <span id="curveSvgArea02">
+            <!-- d3 content should be -dynamically- placed here -->
+        </span> et des donnees suplementaire
+        <span id="curveSvgArea03">
+            <!-- d3 content should be -dynamically- placed here -->
+        </span>
+    </p>
     <span id="curveSvgArea1">
         <!-- d3 content should be -dynamically- placed here -->
     </span>
@@ -39,42 +50,36 @@ svg {
 }
 .spot {
     fill: none;
-    /*fill-opacity: .2;*/
-    /*stroke: #1F77B4;*/
     stroke-width: 1px;
 }
 .Dot {
     fill: none;
-    /*fill-opacity: .2;*/
-    /*stroke: #1F77B4;*/
     stroke-width: 1px;
 }
 .spotCircle {
     fill: none;
-    /*fill-opacity: .2;*/
-    /*stroke: #aec7e8;*/
-    stroke-opacity: .2;
+    stroke-opacity: .3;
     stroke-width: 6px;
 }
 .legend text {
     /*fill: #1F77B4;*/
     /*fill-width: 5px;*/
-    text-anchor:end;
-    font-weight:bold;
+    /*font-weight:bold;*/
     /*fill-opacity: .2;*/
-    stroke: #fff;
-    stroke-width: .5px;
+    /*stroke: #fff;*/
+    /*stroke-width: .5px;*/
     /*stroke-position:2;*/
-    stroke-opacity: .8;
+    /*stroke-opacity: .8;*/
+}
+.legend .val, .legend .date {
+    text-anchor:end;
 }
 .sensitive {
     opacity: 0;
 }
 .line {
     fill: none;
-    /*stroke: #1F77B4;*/
     stroke-width: 1px;
-    /*clip-path:url(#pathArea);*/
 }
 
 .axis line,.axis path {
@@ -87,12 +92,18 @@ svg {
 </style>
 <script>
     function probeViewer(){
-        include_curves("#curveSvgArea1", '<?=$station?>', '<?=$sensor?>', 300);
+        include_smallcurves("#curveSvgArea01", '<?=$station?>', 'TA:Arch:Hum:In:Current', 60);
+        include_smallcurves("#curveSvgArea02", '<?=$station?>', 'TA:Arch:Various:Bar:Current', 50);
+        include_smallcurves("#curveSvgArea03", '<?=$station?>', 'TA:Arch:Various:Wind:SpeedAvg', 300);
+        include_curves("#curveSvgArea1", '<?=$station?>', '<?=$sensor?>', 500);
         include_curves("#curveSvgArea2", '<?=$station?>', 'TA:Arch:Temp:In:Average', 600);
-        include_curves("#curveSvgArea3", '<?=$station?>', 'TA:Arch:Various:Solar:HighRadiation', 900);
+        include_curves("#curveSvgArea3", '<?=$station?>', 'TA:Arch:Various:Solar:HighRadiation', 700);
         include_curves("#curveSvgArea4", '<?=$station?>', 'TA:Arch:Various:UV:IndexAvg', 1900);
-        include_curves("#curveSvgArea5", '<?=$station?>', 'TA:Arch:Various:Bar:Current', 1900);
+        include_curves("#curveSvgArea5", '<?=$station?>', 'TA:Arch:Hum:Out:Current', 1900);
+
     }
+
+
 </script>
 <script src="/resources/js/ProbeTools.js"></script>
 <script src="/resources/js/libs/base64.js"></script>
