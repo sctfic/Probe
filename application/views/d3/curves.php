@@ -39,6 +39,9 @@
     <span id="curveSvgArea5">
         <!-- d3 content should be -dynamically- placed here -->
     </span>
+    <span id="curveSvgArea6">
+        <!-- d3 content should be -dynamically- placed here -->
+    </span>
 </div>
 
 <style>
@@ -100,6 +103,7 @@ svg {
         include_curves("#curveSvgArea3", '<?=$station?>', 'TA:Arch:Various:Solar:HighRadiation', 700);
         include_curves("#curveSvgArea4", '<?=$station?>', 'TA:Arch:Various:UV:IndexAvg', 1900);
         include_curves("#curveSvgArea5", '<?=$station?>', 'TA:Arch:Hum:Out:Current', 1900);
+        include_curves("#curveSvgArea6", '<?=$station?>', 'TA:Arch:Various:Bar:Current', 1900);
 
     }
 
