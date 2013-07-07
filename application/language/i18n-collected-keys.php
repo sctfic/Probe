@@ -88,3 +88,6 @@ i18n('hitoRose.description.metadata');
 i18n('dotShart.title.metadata');
 i18n('dotShart.description.metadata');
 i18n('dotShart.view.label');
+i18n('viewer.dashboard.breadcrumb');
+i18n('viewer.list.breadcrumb');
+i18n('install.login.breadcrumb');
