@@ -1,3 +1,13 @@
+> par contre chaque segment se raporte au passé ou au futur ?
+Comme la convention pour les commits d'AngularJS, présent de l'impératif, i.e. ce que fait/décrit l'objet decrit (requête, efface, liste, etc.)
+
+> view : c'est la ou se trouve le i18n parmis les source, OU la page "Vue" qui s'affichera ?
+C'est la vue/écran ou sous-partie de celle-ci. Ça permet d'avoir des clés génériques et réutilisables (error, profile, cli-error. footer, etc.)
+
+> action : l'action qui nous amene ici OU celle qui se produira ?
+
+Celle qui se produira lors de l'activation de l'élément (soumettre, valider, etc.)
+
 # Namimg Convention
 
 i18n should be build as follow: `[view].[action|property[:state]].[ui]`
