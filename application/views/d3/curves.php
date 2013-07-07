@@ -95,9 +95,9 @@ svg {
 </style>
 <script>
     function probeViewer(){
-        include_smallcurves("#curveSvgArea01", '<?=$station?>', 'TA:Arch:Hum:In:Current', 60);
-        include_smallcurves("#curveSvgArea02", '<?=$station?>', 'TA:Arch:Various:Bar:Current', 50);
-        include_smallcurves("#curveSvgArea03", '<?=$station?>', 'TA:Arch:Various:Wind:SpeedAvg', 300);
+        include_nudecurves("#curveSvgArea01", '<?=$station?>', 'TA:Arch:Hum:In:Current', 60);
+        include_nudecurves("#curveSvgArea02", '<?=$station?>', 'TA:Arch:Various:Bar:Current', 50);
+        include_nudecurves("#curveSvgArea03", '<?=$station?>', 'TA:Arch:Various:Wind:SpeedAvg', 300);
         include_curves("#curveSvgArea1", '<?=$station?>', '<?=$sensor?>', 500);
         include_curves("#curveSvgArea2", '<?=$station?>', 'TA:Arch:Temp:In:Average', 600);
         include_curves("#curveSvgArea3", '<?=$station?>', 'TA:Arch:Various:Solar:HighRadiation', 700);
