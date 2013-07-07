@@ -9,10 +9,10 @@
 * @link     http://probe.com/doc
  */
 ?>
-    <footer>
-        <div id="copyright">
+    <footer class="span12">
+        <div id="copyright" class="span6">
             <p>
-                © <?=date('Y')?> –
+                ©&nbsp;<?=date('Y')?> –
                 <span
                     xmlns:dct="http://purl.org/dc/terms/"
                     property="dct:title"
@@ -29,7 +29,7 @@
             </p>
         </div>
 
-        <ul id="links">
+        <ul id="links" class="span6 unstyled">
             <li><a id="docs" href="https://probe-meteo.com/docs/">
                     <i class="icon-question-sign"></i>
                     <?=i18n('footer.docs.label')?></a>

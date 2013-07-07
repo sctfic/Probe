@@ -205,11 +205,13 @@ footer {
   }
   #copyright {
     display    : inline-block;
-    text-align : left;
+    direction: rtl;
+    text-align : right;
     margin-left : $footerWidth/2-$footerChildrenMargin;
     margin-right : $footerChildrenMargin;
     > p {
       width : 13em;
+      direction: ltr;
     }
     > a > img {
       vertical-align : middle;

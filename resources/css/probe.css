@@ -5995,11 +5995,13 @@ footer {
     width: 25%; }
   footer #copyright {
     display: inline-block;
-    text-align: left;
+    direction: rtl;
+    text-align: right;
     margin-left: 20%;
     margin-right: 5%; }
     footer #copyright > p {
-      width: 13em; }
+      width: 13em;
+      direction: ltr; }
     footer #copyright > a > img {
       vertical-align: middle;
       width: 80px; }
