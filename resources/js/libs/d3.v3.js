@@ -3789,7 +3789,7 @@
       if (!arguments.length) return x1;
       x1 = z;
       x0 = z.copy();
- console.error('domain x0 = ', x0.domain(),'domain x1 = ', x1.domain());
+ // console.error('domain x0 = ', x0.domain(),'domain x1 = ', x1.domain());
       translate = [ 0, 0 ];
       scale = 1;
       return zoom;
@@ -3818,7 +3818,7 @@
       translate[1] += p[1] - l[1];
     }
     function rescale() {
- console.error('domain x0 = ', x0.domain(),'domain x1 = ', x1.domain());
+ // console.error('domain x0 = ', x0.domain(),'domain x1 = ', x1.domain());
  // console.error(    'pxl = ', x0.range().map(function(x) { return (x - translate[0]) / scale; }));
  // console.error(    'time = ', x0.range().map(function(x) { return (x - translate[0]) / scale; }).map(x0.invert));
 

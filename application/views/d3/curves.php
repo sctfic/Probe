@@ -1,49 +1,114 @@
 <?php
-/**
+/** histoWind.php
 * D3 binder to visualize <dataset> data
 *
 * @category D3Binder
 * @package  Probe
-* @author   Édouard Lopez <dev+probe@edouard-lopez.com>
+* @author   alban lopez <alban.lopez+probe@gmail.com>
 * @license  http://creativecommons.org/licenses/by-nc-sa/3.0/legalcode CC-by-nc-sa-3.0
 * @link     http://probe.com/doc
  */
-// data getter
+
+//http://probe.dev/viewer/histoWind/VP2_GTD
+
 ?>
+<div id="resizable" class="ui-widget-content">
+    <p>teste de truc a raconter au sujet de cette courbe
+        <span id="curveSvgArea01">
+            <!-- d3 content should be -dynamically- placed here -->
+        </span> y a aussi d'autre infos
+        <span id="curveSvgArea02">
+            <!-- d3 content should be -dynamically- placed here -->
+        </span> et des donnees suplementaire
+        <span id="curveSvgArea03">
+            <!-- d3 content should be -dynamically- placed here -->
+        </span>
+    </p>
+    <span id="curveSvgArea1">
+        <!-- d3 content should be -dynamically- placed here -->
+    </span>
+    <span id="curveSvgArea2">
+        <!-- d3 content should be -dynamically- placed here -->
+    </span>
+    <span id="curveSvgArea3">
+        <!-- d3 content should be -dynamically- placed here -->
+    </span>
+    <span id="curveSvgArea4">
+        <!-- d3 content should be -dynamically- placed here -->
+    </span>
+    <span id="curveSvgArea5">
+        <!-- d3 content should be -dynamically- placed here -->
+    </span>
+    <span id="curveSvgArea6">
+        <!-- d3 content should be -dynamically- placed here -->
+    </span>
+</div>
+
 <style>
+svg {
+    font-size: 10px;
+}
+#spot {
+    
+}
+.spot {
+    fill: none;
+    stroke-width: 1px;
+}
+.Dot {
+    fill: none;
+    stroke-width: 1px;
+}
+.spotCircle {
+    fill: none;
+    stroke-opacity: .3;
+    stroke-width: 6px;
+}
+.legend text {
+    /*fill: #1F77B4;*/
+    /*fill-width: 5px;*/
+    /*font-weight:bold;*/
+    /*fill-opacity: .2;*/
+    /*stroke: #fff;*/
+    /*stroke-width: .5px;*/
+    /*stroke-position:2;*/
+    /*stroke-opacity: .8;*/
+}
+.legend .val, .legend .date {
+    text-anchor:end;
+}
+.sensitive {
+    opacity: 0;
+}
+.line {
+    fill: none;
+    stroke-width: 1px;
+}
+
+.axis line,.axis path {
+    fill: none;
+    stroke: #000;
+    stroke-width: 1px;
+    shape-rendering: crispEdges;
+}
 
 </style>
-<div id="filename" class="canvas" style="clear:both;">
-    <div id="display0" style="clear:both; _width: 1600px;">
-        <!-- d3 content should be -dynamically- placed here -->
-    </div>
-    <noscript><?=i18n('warning.javascript.disable');?></noscript>
-</div>
-<script src="http://d3js.org/d3.v3.js"></script>
 <script>
-/*
-    TA:Arch:Hum:In:Current
-    TA:Arch:Hum:Out:Current
-    TA:Arch:none:Time:UTC
-    TA:Arch:Temp:Out:Average
-    TA:Arch:Temp:Out:High
-    TA:Arch:Temp:Out:Low
-    TA:Arch:Various::ForecastRule
-    TA:Arch:Various:Bar:Current
-    TA:Arch:Various:ET:Hour
-    TA:Arch:Various:RainFall:Sample
-    TA:Arch:Various:RainRate:HighSample
-    TA:Arch:Various:Solar:HighRadiation
-    TA:Arch:Various:Solar:Radiation
-    TA:Arch:Various:UV:HighIndex
-    TA:Arch:Various:UV:IndexAvg
-    TA:Arch:Various:Wind:DominantDirection
-    TA:Arch:Various:Wind:HighSpeed
-    TA:Arch:Various:Wind:HighSpeedDirection
-    TA:Arch:Various:Wind:SpeedAvg
-*/
+    function probeViewer(){
+        include_smallcurves("#curveSvgArea01", '<?=$station?>', 'TA:Arch:Hum:In:Current', 60);
+        include_smallcurves("#curveSvgArea02", '<?=$station?>', 'TA:Arch:Various:Bar:Current', 50);
+        include_smallcurves("#curveSvgArea03", '<?=$station?>', 'TA:Arch:Various:Wind:SpeedAvg', 300);
+        include_curves("#curveSvgArea1", '<?=$station?>', '<?=$sensor?>', 500);
+        include_curves("#curveSvgArea2", '<?=$station?>', 'TA:Arch:Temp:In:Average', 600);
+        include_curves("#curveSvgArea3", '<?=$station?>', 'TA:Arch:Various:Solar:HighRadiation', 700);
+        include_curves("#curveSvgArea4", '<?=$station?>', 'TA:Arch:Various:UV:IndexAvg', 1900);
+        include_curves("#curveSvgArea5", '<?=$station?>', 'TA:Arch:Hum:Out:Current', 1900);
+        include_curves("#curveSvgArea6", '<?=$station?>', 'TA:Arch:Various:Bar:Current', 1900);
 
-function probeViewer(){
-    (tsv, '#display0', 1600, 480);
-}
+    }
+
+
 </script>
+<script src="/resources/js/ProbeTools.js"></script>
+<script src="/resources/js/libs/base64.js"></script>
+

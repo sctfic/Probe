@@ -8,7 +8,7 @@
 * @link     http://probe.com/doc
 */
 
-function timeSeriesChart() {
+function timeSeriesChart_backet() {
   var margin = {top: 5, right: 5, bottom: 20, left: 30},
       width = 1800,
       height = 480,

@@ -38,9 +38,11 @@ svg {
 .box:hover>.rect, .box:hover>.line {
   stroke: #E6550D;
   stroke-width: 2px;
+        shape-rendering: crispEdges;
 }
 .box:hover>text{
 	display: block;
+        shape-rendering: crispEdges;
 }
 
 
@@ -50,10 +52,12 @@ svg {
   fill: #FFF;
   stroke: #1F77B4;
   stroke-width: 1px;
+        /*shape-rendering: crispEdges;*/
 }
 .box text {
 	display:none;
 	font-size: 10px;
+        /*shape-rendering: crispEdges;*/
 }
 </style>
 

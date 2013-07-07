@@ -127,36 +127,10 @@ class Station extends CI_Model {
 		}
 		// on decode le password.
 		$confs[$item]['password'] = $this->encrypt->decode($confs[$item]['password']);
+
 		return $confs;
 	}
 
-
-
-/**
-
-	* @param
-	* @var 
-	* @return 
-	*/
-	// function HilowsCollector($conf = null) {
-	// 	where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__);
-	// 	if (!isset($conf['_type']))
-	// 		throw new Exception(i18n('error.parameter:type-exception.label'));
-	// 	$type = strtolower($conf['_type']);
-	// 	include_once(APPPATH.'models/'.$type.'.php');
-	// 	$Current_WS = new $type($conf);
-	// 	try {
-	// 		if ( !$Current_WS->initConnection() )
-	// 			throw new Exception( sprintf( i18n('station[%s].open-connexion[%s%s]:fail.label'), $conf['_name'], $conf['_ip'], $conf['_port']));
-	// 		$this->data = $Current_WS->GetHiLows ( );
-	// 		if ( !$Current_WS->closeConnection() )
-	// 			throw new Exception( sprintf( i18n('station.close-connexion[%s]:fail.label'), $conf['_name']) );
-	// 	}
-	// 	catch (Exception $e) {
-	// 		throw new Exception($e->getMessage());
-	// 	}
-	// 	return true;
-	// }
 
 /**
 
@@ -267,100 +241,6 @@ class Station extends CI_Model {
 		}
 		return $this->data;
 	}
-
-/**
-
-	* @param
-	* @var 
-	* @return 
-	*/
-	// function LpsCollector($conf) {
-	// 	where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__);
-	// 	if (!isset($conf['_type']))
-	// 		throw new Exception(i18n('error.parameter:type-exception.label'));
-	// 	$type = strtolower($conf['_type']);
-	// 	include_once(APPPATH.'models/'.$type.'.php');
-	// 	$Current_WS = new $type($conf);
-	// 	try {
-	// 		if ( !$Current_WS->initConnection() )
-	// 			throw new Exception( sprintf( i18n('station[%s].open-connexion[%s%s]:fail.label'), $conf['_name'], $conf['_ip'], $conf['_port']));
-	// 		$this->data = $Current_WS->GetLPS ( );
-	// 		if ( !$Current_WS->closeConnection() )
-	// 			throw new Exception( sprintf( i18n('station.close-connexion[%s]:fail.label'), $conf['_name']) );
-	// 	}
-	// 	catch (Exception $e) {
-	// 		throw new Exception($e->getMessage());
-	// 	}
-	// 	return true;
-	// }
-
-/**
-
-	* @
-	* recupere sous forme de table l'ensemble des configs d'une ou de toutes les station
-	* @var item
-	* 	item peut etre le Numero db_ID ou le nom de la station dont on veut les confs
-	* 	si item est homis alors toutes les conf de toutes les stations sont retourné
-	* @return array ('name' => array (configs))
-	*/
-	// function ArchCollector($conf) {
-	// 	where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__);
-	// 	if (!isset($conf['_type']))
-	// 		throw new Exception(i18n('error.parameter:type-exception.label'));
-	// 	$type = strtolower($conf['_type']);
-	// 	include_once(APPPATH.'models/'.$type.'.php');
-	// 	$Current_WS = new $type($conf);
-	// 	$Last_Arch = $Current_WS->get_Last_Date();
-
-	// 	if (!isset($conf['time:archive:period'])
-	// 		|| strtotime(date ("Y/m/d H:i:s")) > strtotime($Last_Arch) + $conf['time:archive:period']*60*10) {
-	// 		try {
-	// 			if ( !$Current_WS->initConnection() )
-	// 				throw new Exception( sprintf( i18n('station[%s].open-connexion[%s%s]:fail.label'), $conf['_name'], $conf['_ip'], $conf['_port']));
-	// 			$clock = $Current_WS->clockSync(5);
-	// 			$this->data = $Current_WS->GetDmpAft ( $Last_Arch );
-	// 			if ( !$Current_WS->closeConnection() )
-	// 				throw new Exception( sprintf( i18n('station.close-connexion[%s]:fail.label'), $conf['_name']) );
-	// 		}
-	// 		catch (Exception $e) {
-	// 			throw new Exception($e->getMessage());
-	// 		}
-	// 		return true;
-	// 	}
-	// 	else log_message('wayting', sprintf(i18n( 'The latest collection of archives is only on %s'), date ("Y/m/d H:i:s")));
-	// 	return true;
-	// }
-
-/**
-
-	* @param
-	* @var 
-	* @return 
-	*/
-	// function ConfCollector($conf) {
-	// 	where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__);
-	// 	if (!isset($conf['_type']))
-	// 		throw new Exception(i18n('error.parameter:type-exception.label'));
-	// 	$type = strtolower($conf['_type']);
-	// 	include_once(APPPATH.'models/'.$type.'.php');
-	// 	$Current_WS = new $type($conf);
-	// 	try {
-	// 		if ( !$Current_WS->initConnection() )
-	// 			throw new Exception( sprintf( i18n('station[%s].open-connexion[%s%s]:fail.label'), $conf['_name'], $conf['_ip'], $conf['_port']));
-	// 		$clock = $Current_WS->clockSync(2);
-	// 		if (!($realconf = end($Current_WS->GetConfig())))
-	// 			throw new Exception( sprintf( i18n('Lecture des config de %s impossible'),$conf['_name']));
-	// 		// conf est un array('2012/08/04 15:30:00'=>array(...))
-	// 		// qui ne contiend qu'une seule valeur de niveau 1 mais dont la clef est variable
-	// 		// end() permet de recupere cette valeur quelque soit ca clef.
-	// 		if ( !$Current_WS->closeConnection() )
-	// 			throw new Exception( sprintf( i18n('station.close-connexion[%s]:fail.label'), $conf['_name']) );
-	// 	}
-	// 	catch (Exception $e) {
-	// 		throw new Exception( $e->getMessage() );
-	// 	}
-	// 	return $realconf;
-	// }
 	
 
 /**

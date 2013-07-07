@@ -577,6 +577,9 @@ decoupe la chaine de donne VP2 en segment pour chaque item de donnee
 			// where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,array($Value , $limits['min'] , $limits['max']));
 				return FALSE;
 			}
+			elseif ($limits['SI']=='RainSample2mm') {
+				return $limits['SI']($Value, $this->conf['Rain:Collector:Size']);
+			}
 			return $limits['SI']($Value);
 		}
 		return $Value;
@@ -624,7 +627,7 @@ Enregistre les archives dans la base de donnée
 				}
 
 			}
-			else log_message('data', 'No save in DB : '.$name.'	=	'.var_export($val, true));
+			// else log_message('data', 'No save in DB : '.$name.'	=	'.var_export($val, true));
 		}
 	}
 

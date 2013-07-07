@@ -8,7 +8,7 @@
 * @link     http://probe.com/doc
 */
 
-function call_histoRose(container, station, XdisplaySizePxl) {
+function include_histoRose(container, station, XdisplaySizePxl) {
     // on defini la fonction de convertion de nos dates (string) en Objet
     var formatDate = d3.time.format("%Y-%m-%d %H:%M:%S");
 
@@ -20,32 +20,12 @@ function call_histoRose(container, station, XdisplaySizePxl) {
                         .date(function(d) { return formatDate.parse (d.key); })
                         .rose(function(d) { return d.value; })
                         .onClickAction(function(d) { console.error (d); })
+                        // .withAxis(false)
                         .toHumanSpeed(formulaConverter ('WindSpeed', 'km/h'))
                         .toHumanAngle(formulaConverter ('angle', '°'))
                         .toHumanDate(formulaConverter ('strDate', 'ISO'));
 
-// on demande les infos importante au sujet de notre futur tracé
-    // ces infos permettent de finir le parametrage de notre "Chart"
-    d3.json( histoRose.ajaxUrl() + "?station="+ histoRose.station() +"&XdisplaySizePxl="+histoRose.width()+"&infos=dataheader",
-        function(data) {
-            console.TimeStep('header');
-            // console.log(data); //, histoRose);
-            histoRose
-                .yDomain([data.min, data.max])
-                .dataheader(data);
-        }
-    );
-
-// on charge les données et on lance le tracage
-    d3.json( histoRose.ajaxUrl() + "?station="+ histoRose.station() +"&XdisplaySizePxl="+histoRose.width(),
-        function(data) {
-            console.TimeStep('data');
-            d3.select(container)
-                .datum(d3.entries(data.data))
-                .call( histoRose );
-        }
-    );
-
+    histoRose.loader(container);
 }
 
 
@@ -61,6 +41,7 @@ function timeSeriesChart_histoRose() {
         width = 640,
         height = 160,
         dataheader = null,
+        station = null,
         meanDate = function(d) { return d.date; },
         rose = function(d) { return d.rose; },
         angle = function(d) { return d.angle; },
@@ -69,14 +50,13 @@ function timeSeriesChart_histoRose() {
         xScale = d3.time.scale().range([0, width]),
         yScale = d3.scale.linear().range([height, 0]),
         yDomain = [0, 1],
-        xAxis = d3.svg.axis().scale(xScale).orient("bottom").tickSize(8,0),
-        yAxis = d3.svg.axis().scale(yScale).orient("left").ticks(4).tickSize(3,0),
+        xAxis = d3.svg.axis().scale(xScale).orient("bottom").tickSize(8,8),
+        yAxis = d3.svg.axis().scale(yScale).orient("left").ticks(4).tickSize(3,8),
         onClickAction = function(d) { console.log(d); },
         toHumanSpeed = function(d) { return +d; },
         toHumanAngle = function(d) { return +d; },
         toHumanDate = function(d) { return d; },
-        ajaxUrl = ""
-        ;
+        ajaxUrl = "";
 
         // line = d3.svg.line().x(X).y(Y);
 
@@ -197,25 +177,14 @@ function timeSeriesChart_histoRose() {
             else
               xPos = yScale(0);
 
-            // Update the x-axis.
-            g.select(".x.axis")
-                .attr("transform", "translate(0," + xPos + ")") // axe tjrs en bas : yScale.range()[0] + ")")
-                .call(xAxis);
+            if (withAxis) {
+                // Update the x-axis.
+                g.select(".x.axis")
+                    .attr("transform", "translate(0," + xPos + ")") // axe tjrs en bas : yScale.range()[0] + ")")
+                    .call(xAxis);
+            }
         });
     }
-
-// Dir: 0
-// Max: 3.576
-// Spd: 0.447
-// Spl: 4
-// function arc(obj) {
-//     return d3.svg.arc()
-//         .startAngle(function(d) {console.log(d , (d.Dir - obj.width) * Math.PI/180); return (d.Dir - obj.width) * Math.PI/180; })
-//         .endAngle(function(d) {console.log(d , (d.Dir + obj.width) * Math.PI/180); return (d.Dir + obj.width) * Math.PI/180; })
-//         .innerRadius(obj.from)
-//         .outerRadius(function(d) {console.log(d , obj.to(d)); return obj.to(d) });
-// };
-
 
     // The x-accessor for the path generator; xScale ∘ meanDate.
     function X(d) {
@@ -227,12 +196,61 @@ function timeSeriesChart_histoRose() {
         return yScale(d.ySpeed);
     }
 	var colorScale = d3.scale.linear()
-                                .domain([0,.5,.8,1])
+                                .domain([0, .5, .8, 1])
                                 .range(["#AEC7E8","#1F77B4","#D62728","#2C3539"])// ["hsl(0, 70%, 99%)", "hsl(0, 70%, 40%)"])
                                 .interpolate(d3.interpolateHsl);
 
+// ================= Property of chart =================
+
+    chart.loader = function(container) {
+        var ready = false,
+            dataTsv = false;
+        // on demande les infos importante au sujet de notre futur tracé
+        // ces infos permettent de finir le parametrage de notre "Chart"
+        // on charge les données et on lance le tracage
+        d3.json( ajaxUrl + "?station="+ station +"&XdisplaySizePxl="+width,
+            function(data) {
+                console.TimeStep('load Data');
+                console.log(data.data);
+
+                if (ready) {
+                    d3.select(container)
+                        .datum(d3.entries(data.data))
+                        .call( chart );
+                }
+                ready = true;
+                dataTsv = data;
+            }
+        );
+
+        d3.json( ajaxUrl + "?station="+ station +"&XdisplaySizePxl="+width+"&infos=dataheader",
+            function(data) {
+                console.TimeStep('load Header');
+                console.log(data);
+
+                chart.yDomain([data.min, data.max])
+                    .dataheader(data);
+                
+                if (ready) {
+                    // console.log(data);
+                    d3.select(container)
+                        .datum(dataTsv)
+                        .call(chart);
+                }
+                ready = true;
+            }
+        );
+
+        return chart;
+    }
+
 // ================= Accesseurs =====================
 
+    chart.withAxis = function(_) {
+        if (!arguments.length) return withAxis;
+        withAxis = _;
+        return chart;
+    };
     chart.margin = function(_) {
         if (!arguments.length) return margin;
         margin = _;

@@ -64,31 +64,6 @@ index() recupere toutes les donnees recuperable sur la station
 	* @var
 	* @return
 	*/
-	// function hilowsCollectors($station = null) {
-	// 	where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
-	// 	try {
-	// 		$item_ID = is_numeric($station) ? array_search($station, $this->station->stationsList) : $station;
-	// 		if (isset($item_ID)) {
-	// 			// on rapelle cette meme fonction mais avec de vrai paarametre : Toutes les stations
-	// 			// on recupere les confs de $station
-	// 			$itemConf = end($this->station->config($item_ID)); // $station est le ID ou le nom
-	// 			$this->station->HilowsCollector ($itemConf);
-	// 			return false;
-	// 		}
-	// 		else return false;
-	// 	}
-	// 	catch (Exception $e) {
-	// 		log_message('warning',  $e->getMessage());
-	// 	}
-	// }
-
-
-/**
-
-	* @param
-	* @var
-	* @return
-	*/
 	function currentsCollectors($station = null) {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 
@@ -104,77 +79,6 @@ index() recupere toutes les donnees recuperable sur la station
 			log_message('warning',  $e->getMessage());
 		}
 	}
-
-
-/**
-
-	* @param
-	* @var
-	* @return
-	*/
-	// function dataCollectors($station = null) {
-	// 	where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
-	// 	if (is_array($station)) {
-	// 		foreach ($station as $item) {
-	// 			// on rapelle cette meme fonction mais individuellement pour chaque station
-	// 			$this->dataCollectors($item);
-	// 		}
-	// 		return false;
-	// 	}
-	// 	elseif ($station===null && !empty($this->station->stationsList)) {
-	// 		// on rapelle cette meme fonction mais avec de vrai parametre : Toutes les stations
-	// 		$this->dataCollectors (array_keys ($this->station->stationsList));
-	// 		return false;
-	// 	}
-	// 	try {
-	// 		// on recupere les confs de $station
-	// 		$conf = end($this->station->config($station)); // $station est le ID ou le nom
-
-	// 		// on lance la recup des Archives de cette station
-	// 		$this->station->ArchCollector ($conf);
-	// 	}
-	// 	catch (Exception $e) {
-	// 		log_message('warning',  $e->getMessage());
-	// 	}
-	// }
-
-
-/**
-
-	* @param
-	* @var
-	* @return
-	*/
-	// function configCollectors($station = null, $force = false) {
-	// 	where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
-	// 	if (is_array($station)) {
-	// 		foreach ($station as $item) {
-	// 			// on rapelle cette meme fonction mais individuellement pour chaque station
-	// 			$this->configCollectors($item);
-	// 		}
-	// 		return false;
-	// 	}
-	// 	elseif ($station===null && !empty($this->station->stationsList)) {
-	// 		// on rapelle cette meme fonction mais avec de vrai parametre : les ID de toutes les stations
-	// 		$this->configCollectors (array_keys ($this->station->stationsList));
-	// 		return false;
-	// 	}
-	// 	try {
-	// 		$conf = end($this->station->config($station));
-
-	// 		if (count($conf)<30 or $force==true) {
-	// 			$readconf = $this->station->ConfCollector($conf);
-	// 			foreach ($readconf as $key => $val) {
-	// 				if (strpos($key, 'TR:Config:')!==FALSE)
-	// 					$ToStoreConfig[str_replace('TR:Config:', '', $key)] = $val;
-	// 			}
-	// 			$this->station->arrays2dbconfs($conf['_id'], $ToStoreConfig);
-	// 		}
-	// 	}
-	// 	catch (Exception $e) {
-	// 		log_message('warning',  $e->getMessage());
-	// 	}
-	// }
 
 
 /**

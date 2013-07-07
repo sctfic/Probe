@@ -5,25 +5,58 @@
 * @package  Probe
 * @author   alban lopez <alban.lopez+probe@gmail.com>
 * @license  http://creativecommons.org/licenses/by-nc-sa/3.0/legalcode CC-by-nc-sa-3.0
-* @link     http://probe.com/doc
+* @link     http://probe-meteo.com/doc
 */
+function include_histoWind(container, station, XdisplaySizePxl) {
+    // on defini la fonction de convertion de nos dates (string) en Objet
+    var formatDate = d3.time.format("%Y-%m-%d %H:%M");
+
+    // on definie notre objet au plus pres de notre besoin.
+    var histoWind = timeSeriesChart_histoWind()
+                        .width(XdisplaySizePxl)
+                        .ajaxUrl("/data/histoWind")
+                        .station(station)
+                        .date(function(d) { return formatDate.parse (d.date); })
+                        .speed(function(d) { return +d.speed; })
+                        .angle(function(d) { return +d.angle; })
+                        .xSpeed(function(d) { return +d.x; })
+                        .ySpeed(function(d) { return +d.y; })
+                        .onClickAction(function(d) { console.error (d); })
+                        // .withAxis(false)
+                        .toHumanSpeed(formulaConverter ('WindSpeed', 'km/h'))
+                        .toHumanAngle(formulaConverter ('angle', '°'))
+                        .toHumanDate(formulaConverter ('strDate', 'ISO'));
+
+    histoWind.loader(container);
+}
 
 
 
+
+
+
+// ================= Engine build chart of wind by period ====================
 
 function timeSeriesChart_histoWind() {
-  var margin = {top: 5, right: 5, bottom: 20, left: 30},
-      width = 1800,
-      height = 160,
-      meanDate = function(d) { return d.date; },
-      Speed = function(d) { return d.speed; },
-      angle = function(d) { return d.angle; },
-      xSpeed = function(d) { return d.x; },
-      ySpeed = function(d) { return d.y; },
-      xScale = d3.time.scale().range([0, width]),
-      yScale = d3.scale.linear().range([height, 0]),
-      xAxis = d3.svg.axis().scale(xScale).orient("bottom").tickSize(4,0),
-      yAxis = d3.svg.axis().scale(yScale).orient("left").ticks(4).tickSize(3,0);
+    var margin = {top: 5, right: 5, bottom: 20, left: 30},
+        width = 1800,
+        height = 160,
+        dataheader = null,
+        station = null,
+        meanDate = function(d) { return d.date; },
+        Speed = function(d) { return d.speed; },
+        angle = function(d) { return d.angle; },
+        xSpeed = function(d) { return d.x; },
+        ySpeed = function(d) { return d.y; },
+        xScale = d3.time.scale().range([0, width]),
+        yScale = d3.scale.linear().range([height, 0]),
+        xAxis = d3.svg.axis().scale(xScale).orient("bottom").tickSize(4,0),
+        yAxis = d3.svg.axis().scale(yScale).orient("left").ticks(4).tickSize(3,0),
+        onClickAction = function(d) { console.log(d); },
+        toHumanSpeed = function(d) { return +d; },
+        toHumanAngle = function(d) { return +d; },
+        toHumanDate = function(d) { return d; },
+        ajaxUrl = "";
       // line = d3.svg.line().x(X).y(Y);
 
 
@@ -41,7 +74,6 @@ function timeSeriesChart_histoWind() {
                     ySpeed:ySpeed.call(data, d, i)
                 };
             });
-
             // Update the x-scale.
             xScale
                 .domain(d3.extent(data, function(d) { return d.date; }))
@@ -70,14 +102,12 @@ function timeSeriesChart_histoWind() {
             var g = svg.select("g")
                 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-            // Update the line path.
-            // g.select(".line")
-            //     .attr("d", line);
             var coef = (yScale.range()[0]-yScale.range()[1])/(yScale.domain()[1]-yScale.domain()[0]);
 
             // Draw arrow block
             var arrow = g.selectAll(".arrow")
                 .data(data).enter().append("g")
+                .on("click", function(d) { return onClickAction(d); })
                 .attr("class", "arrow");
 
                 //Draw the line
@@ -97,7 +127,9 @@ function timeSeriesChart_histoWind() {
 
                 arrow.append("title")
                     .text(function(d) {
-                            return "Speed Avg: "+ d.Speed+"m/s\nAngle Avg: "+d.angle+"°\nAverage on: "+d.date ;
+                            return "Speed Avg: "+ toHumanSpeed(d.Speed).toFixed(1)+toHumanSpeed()+
+                                    "\nAngle Avg: "+toHumanAngle(d.angle)+toHumanAngle()+
+                                    "\nAverage on: "+toHumanDate(d.date) ;
                         });
 
             // chose the possition of x-Axis
@@ -108,13 +140,15 @@ function timeSeriesChart_histoWind() {
             else
               xPos = yScale(0);
 
-            // Update the x-axis.
-            g.select(".x.axis")
-                .attr("transform", "translate(0," + xPos + ")") // axe tjrs en bas : yScale.range()[0] + ")")
-                .call(xAxis);
-            // g.select(".y.axis")
-            //     .attr("transform", "translate(0,0)")
-            //     .call(yAxis);
+            if (withAxis) {
+                // Update the x-axis.
+                g.select(".x.axis")
+                    .attr("transform", "translate(0," + xPos + ")") // axe tjrs en bas : yScale.range()[0] + ")")
+                    .call(xAxis);
+                // g.select(".y.axis")
+                //     .attr("transform", "translate(0,0)")
+                //     .call(yAxis);
+            }
         });
     }
 
@@ -132,51 +166,139 @@ function timeSeriesChart_histoWind() {
     return yScale(d.ySpeed);
   }
 
-  chart.margin = function(_) {
-    if (!arguments.length) return margin;
-    margin = _;
-    return chart;
-  };
+// ================= Property of chart =================
 
-  chart.width = function(_) {
-    if (!arguments.length) return width;
-    width = _;
-    return chart;
-  };
+    chart.loader = function(container) {
+        var ready = false,
+            dataTsv = false;
+        // on demande les infos importante au sujet de notre futur tracé
+        // ces infos permettent de finir le parametrage de notre "Chart"
+        // on charge les données et on lance le tracage
+        d3.tsv( ajaxUrl + "?station="+ station +"&XdisplaySizePxl="+width, //+"&Since=2013-05-25T00:00"+"&To=2013-05-25T22:00",
+            function(data) {
+                console.TimeStep('load Data');
+                console.log(data);
 
-  chart.height = function(_) {
-    if (!arguments.length) return height;
-    height = _;
-    return chart;
-  };
+                if (ready) {
+                    d3.select(container)
+                        .datum(data)
+                        .call( chart );
+                }
+                ready = true;
+                dataTsv = data;
+            }
+        );
 
+        d3.json( ajaxUrl + "?station="+ station +"&XdisplaySizePxl="+width+"&infos=dataheader", //+"&Since=2013-05-25T00:00"+"&To=2013-05-25T22:00",
+            function(data) {
+                console.TimeStep('load Header');
+                console.log(data);
 
-  chart.date = function(_) {
-    if (!arguments.length) return meanDate;
-    meanDate = _;
-    return chart;
-  };
+                chart.yDomain([data.min, data.max])
+                    .dataheader(data);
+                
+                if (ready) {
+                    // console.log(data);
+                    d3.select(container)
+                        .datum(dataTsv)
+                        .call(chart);
+                }
+                ready = true;
+            }
+        );
 
-  chart.speed = function(_) {
-    if (!arguments.length) return Speed;
-    Speed = _;
-    return chart;
-  };
-  chart.angle = function(_) {
-    if (!arguments.length) return angle;
-    angle = _;
-    return chart;
-  };
-  chart.xSpeed = function(_) {
-    if (!arguments.length) return xSpeed;
-    xSpeed = _;
-    return chart;
-  };
-  chart.ySpeed = function(_) {
-    if (!arguments.length) return ySpeed;
-    ySpeed = _;
-    return chart;
-  };
+        return chart;
+    }
+
+// ================= Accesseurs =====================
+
+    chart.withAxis = function(_) {
+        if (!arguments.length) return withAxis;
+        withAxis = _;
+        return chart;
+    };
+    chart.margin = function(_) {
+        if (!arguments.length) return margin;
+        margin = _;
+        return chart;
+    };
+    chart.width = function(_) {
+        if (!arguments.length) return width;
+        width = _;
+        return chart;
+    };
+    chart.height = function(_) {
+        if (!arguments.length) return height;
+        height = _;
+        return chart;
+    };
+    chart.date = function(_) {
+        if (!arguments.length) return meanDate;
+        meanDate = _;
+        return chart;
+    };
+
+    chart.speed = function(_) {
+        if (!arguments.length) return Speed;
+        Speed = _;
+        return chart;
+    };
+    chart.angle = function(_) {
+        if (!arguments.length) return angle;
+        angle = _;
+        return chart;
+    };
+    chart.ajaxUrl = function(_) {
+        if (!arguments.length) return ajaxUrl;
+        ajaxUrl = _;
+        return chart;
+    };
+    chart.station = function(_) {
+        if (!arguments.length) return station;
+        station = _;
+        return chart;
+    };
+    chart.onClickAction = function(_) {
+        if (!arguments.length) return onClickAction;
+        onClickAction = _;
+        return chart;
+    };
+    chart.yDomain = function(_) {
+        if (!arguments.length) return yDomain;
+        yDomain = _;
+        yScale.domain(yDomain);
+        return chart;
+    };
+    chart.dataheader = function(_) {
+        if (!arguments.length) return dataheader;
+        dataheader = _;
+        return chart;
+    };
+    chart.toHumanSpeed = function(_) {
+        if (!arguments.length) return toHumanSpeed;
+        toHumanSpeed = _;
+        return chart;
+    };
+    chart.toHumanAngle = function(_) {
+        if (!arguments.length) return toHumanAngle;
+        toHumanAngle = _;
+        return chart;
+    };
+    chart.toHumanDate = function(_) {
+        if (!arguments.length) return toHumanDate;
+        toHumanDate = _;
+        return chart;
+    };
+    chart.xSpeed = function(_) {
+        if (!arguments.length) return xSpeed;
+        xSpeed = _;
+        return chart;
+    };
+    chart.ySpeed = function(_) {
+        if (!arguments.length) return ySpeed;
+        ySpeed = _;
+        return chart;
+    };
 
   return chart;
 }
