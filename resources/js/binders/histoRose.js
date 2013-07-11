@@ -10,14 +10,15 @@
 
 function include_histoRose(container, station, XdisplaySizePxl) {
     // on defini la fonction de convertion de nos dates (string) en Objet
-    var formatDate = d3.time.format("%Y-%m-%d %H:%M:%S");
+    // var timeFormat = d3.time.format("%Y-%m-%d %H:%M:%S");
 
     // on definie notre objet au plus pres de notre besoin.
     var histoRose = timeSeriesChart_histoRose()
                         .width(XdisplaySizePxl)
-                        .ajaxUrl("/data/windRose")
+                        // .ajaxUrl("/data/windRose")
                         .station(station)
-                        .date(function(d) { return formatDate.parse (d.key); })
+                        .dateParser("%Y-%m-%d %H:%M:%S")
+                        .dateDomain(["2013-06-31T06:00:00", formatDate(new Date(), ' ')])
                         .rose(function(d) { return d.value; })
                         .onClickAction(function(d) { console.error (d); })
                         // .withAxis(false)
@@ -42,7 +43,10 @@ function timeSeriesChart_histoRose() {
         height = 160,
         dataheader = null,
         station = null,
-        meanDate = function(d) { return d.date; },
+        withAxis = true,
+        timeFormat = d3.time.format("%Y-%m-%dT%H:%M:%S"),
+        dateParser = function(d) { return timeFormat.parse (d.date); },
+        dateDomain = [formatDate(new Date(0)), formatDate(new Date())],
         rose = function(d) { return d.rose; },
         angle = function(d) { return d.angle; },
         xSpeed = function(d) { return d.x; },
@@ -56,7 +60,7 @@ function timeSeriesChart_histoRose() {
         toHumanSpeed = function(d) { return +d; },
         toHumanAngle = function(d) { return +d; },
         toHumanDate = function(d) { return d; },
-        ajaxUrl = "";
+        ajaxUrl = "/data/windRose";
 
         // line = d3.svg.line().x(X).y(Y);
 
@@ -67,13 +71,13 @@ function timeSeriesChart_histoRose() {
             // Convert data to standard representation greedily;
             // this is needed for nondeterministic accessors.
             data = data.map(function(d, i) {
-                // console.log(data, d, i);
+// console.log(data, d, i);
+// console.log(data, d, i, dateParser, timeFormat);
                 return {
-                    date:meanDate.call(data, d, i),
+                    date:dateParser.call(data, d, i),
                     rose:rose.call(data, d, i)
                 };
             });
-
             // Update the x-scale.
             xScale
                 .domain(d3.extent(data, function(d) { return d.date; }))
@@ -186,7 +190,7 @@ function timeSeriesChart_histoRose() {
         });
     }
 
-    // The x-accessor for the path generator; xScale ∘ meanDate.
+    // The x-accessor for the path generator; xScale ∘ dateParser.
     function X(d) {
         return xScale(d.date);
     }
@@ -208,7 +212,7 @@ function timeSeriesChart_histoRose() {
         // on demande les infos importante au sujet de notre futur tracé
         // ces infos permettent de finir le parametrage de notre "Chart"
         // on charge les données et on lance le tracage
-        d3.json( ajaxUrl + "?station="+ station +"&XdisplaySizePxl="+width,
+        d3.json( ajaxUrl + "?station="+ station +"&XdisplaySizePxl="+width+"&Since="+dateDomain[0]+"&To="+dateDomain[1],
             function(data) {
                 console.TimeStep('load Data');
                 console.log(data.data);
@@ -223,7 +227,7 @@ function timeSeriesChart_histoRose() {
             }
         );
 
-        d3.json( ajaxUrl + "?station="+ station +"&XdisplaySizePxl="+width+"&infos=dataheader",
+        d3.json( ajaxUrl + "?station="+ station +"&XdisplaySizePxl="+width+"&infos=dataheader"+"&Since="+dateDomain[0]+"&To="+dateDomain[1],
             function(data) {
                 console.TimeStep('load Header');
                 console.log(data);
@@ -246,6 +250,20 @@ function timeSeriesChart_histoRose() {
 
 // ================= Accesseurs =====================
 
+    chart.dateParser = function(_) { // genere la fonction de conversion du champ [string]:date en [date]:date
+        if (!arguments.length) return dateParser;
+        if (typeof _ === "string") {
+            timeFormat = d3.time.format(_);
+            dateParser = function(d) { return timeFormat.parse (d.key); };
+        } else dateParser = _;
+        return chart;
+    };
+
+    chart.dateDomain = function(_) {
+        if (!arguments.length) return dateDomain;
+        dateDomain = _;
+        return chart;
+    };
     chart.withAxis = function(_) {
         if (!arguments.length) return withAxis;
         withAxis = _;
@@ -266,11 +284,7 @@ function timeSeriesChart_histoRose() {
         height = _;
         return chart;
     };
-    chart.date = function(_) {
-        if (!arguments.length) return meanDate;
-        meanDate = _;
-        return chart;
-    };
+
     chart.rose = function(_) {
         if (!arguments.length) return rose;
         rose = _;

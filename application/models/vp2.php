@@ -124,6 +124,8 @@ class vp2 extends CI_Model {
 				}
 			}
 		}
+		if (!unlink($this->lockFile))
+			rename($this->lockFile, ".trash");
 		return FALSE;
 	}
 
