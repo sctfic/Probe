@@ -58,9 +58,10 @@ $route['configuration/update-station'] = "configuration/updateStation";
 $route['configuration/update-station/(:any)'] = "configuration/updateStation/$1";
 // $route['viewer/(:any)/(:any)/(:any)'] = "viewer/index/$1?station=$2&sensor=$3";
 
-$route['dasboard'] = "viewer";
+$route['dashboard'] = "viewer";
 $route['list-viewer'] = "viewer";
 $route['viewer/(:any)'] = "viewer/index/$1";
+$route['dashboard/(:any)'] = "viewer/index/$1";
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

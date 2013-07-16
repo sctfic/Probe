@@ -39,7 +39,7 @@ function include_histoWind(container, station, XdisplaySizePxl) {
 // ================= Engine build chart of wind by period ====================
 
 function timeSeriesChart_histoWind() {
-    var margin = {top: 5, right: 5, bottom: 20, left: 30},
+    var margin = {top: 5, right: 30, bottom: 0, left: 30},
         width = 1800,
         height = 160,
         dataheader = null,
@@ -50,6 +50,8 @@ function timeSeriesChart_histoWind() {
         dateDomain = [formatDate(new Date(0)), formatDate(new Date())],
         Speed = function(d) { return +d.speed; },
         angle = function(d) { return +d.angle; },
+        xPos=0,
+        yPos=0,
         xSpeed = function(d) { return +d.x; },
         ySpeed = function(d) { return +d.y; },
         xScale = d3.time.scale().range([0, width]),

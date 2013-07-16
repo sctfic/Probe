@@ -38,7 +38,7 @@ function include_histoRose(container, station, XdisplaySizePxl) {
 // ================= Engine build chart of rose by period ====================
 
 function timeSeriesChart_histoRose() {
-    var margin = {top: 50, right: 50, bottom: 20, left: 30},
+    var margin = {top: 30, right: 30, bottom: 20, left: 30},
         width = 640,
         height = 160,
         dataheader = null,
@@ -51,6 +51,8 @@ function timeSeriesChart_histoRose() {
         angle = function(d) { return d.angle; },
         xSpeed = function(d) { return d.x; },
         ySpeed = function(d) { return d.y; },
+        xPos=0,
+        yPos=0,
         xScale = d3.time.scale().range([0, width]),
         yScale = d3.scale.linear().range([height, 0]),
         yDomain = [0, 1],

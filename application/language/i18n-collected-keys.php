@@ -91,3 +91,7 @@ i18n('dotShart.view.label');
 i18n('viewer.dashboard.breadcrumb');
 i18n('viewer.list.breadcrumb');
 i18n('install.login.breadcrumb');
+i18n('barChart.title.metadata');
+i18n('barChart.description.metadata');
+i18n('windRose.title.metadata');
+i18n('windRose.description.metadata');
