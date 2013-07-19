@@ -51,7 +51,11 @@ function probeViewer(){
                         .dateParser("%Y-%m-%d %H:%M:%S")
                         .dateDomain([0, formatDate(new Date(), ' ')])
                         .rose(function(d) { return d.value; })
-                        .onClickAction(function(d) { console.error (d); })
+                        .onClickAction(function (d){
+                            $("#detailWindRose p").text('Detail du : '+formatDate(d.date, ' '));
+                            plotProbabilityRose(d.rose, '#detailWindRoseRatio', 120);
+                            plotSpeedRose(d.rose, '#detailWindRoseSpeed',120);
+                        })
                         // .withAxis(false)
                         .toHumanSpeed(formulaConverter ('WindSpeed', 'km/h'))
                         .toHumanAngle(formulaConverter ('angle', '°'))
@@ -65,3 +69,6 @@ function probeViewer(){
 	XdisplaySizePxl = $('#middleChartsArea').width();
 	console.log(XdisplaySizePxl);
 }
+
+
+

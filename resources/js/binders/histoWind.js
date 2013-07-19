@@ -94,15 +94,17 @@ function timeSeriesChart_histoWind() {
             var svg = d3.select(this).selectAll("svg").data([data]);
 
             // Otherwise, create the skeletal chart.
-            var gEnter = svg.enter().append("svg").append("g");
+            var gEnter = svg.enter()
+                .append("svg")
+                    .attr("viewBox", "0 0 "+width+" "+height)
+                    // .attr("preserveAspectRatio", "xMinYMin")
+                    .attr("width", "100%")
+                    .attr("height", height)
+                    .append("g");
 
             gEnter.append("path").attr("class", "line");
             gEnter.append("g").attr("class", "x axis");
             // gEnter.append("g").attr("class", "y axis");
-
-            // Update the outer dimensions.
-            svg .attr("width", width)
-                .attr("height", height);
 
             // Update the inner dimensions.
             var g = svg.select("g")

@@ -38,7 +38,7 @@
     margin-left:auto !important;
 }*/
 .fixed-fixed {
-    margin: 0 240px;
+    margin-left: 240px;
 }
 </style>
 <div class="container-fluid">
@@ -57,7 +57,7 @@
                   <li><a href="#">Link</a></li>
             </ul>
         </div>
-        <div class="well sidebar-nav right">
+      <!--   <div class="well sidebar-nav right">
             <ul class="nav nav-list">
                   <li class="nav-header">Station List</li>
                   <li class="active"><a href="#"><?=$station?></a></li>
@@ -65,13 +65,19 @@
                   <li><a href="#">Link</a></li>
                   <li><a href="#">Link</a></li>
             </ul>
-        </div>
+        </div -->
         <div id="middleChartsArea" class="content fixed-fixed">
-            <span id="HistoricalRose">    </span>
-            <span id="detailWindRose">    </span>
-            <span id="HistoricalVector">    </span>
-            <span id="HistoricalSpeed">    </span>
-            <span id="HistoricalDirection">    </span>
+            <div id="HistoricalRose">    </div>
+            <div id="detailWindRose"style="text-align: center; mavrgin:0 auto;">
+                <p>Detail :</p>
+                <div>
+                    <span id="detailWindRoseSpeed">    </span>
+                    <span id="detailWindRoseRatio" class="right">    </span>
+                </div>
+            </div>
+            <div id="HistoricalVector">    </div>
+            <div id="HistoricalSpeed">    </div>
+            <div id="HistoricalDirection">    </div>
         </div>
 
     </div>
@@ -229,4 +235,4 @@
 <script src="/resources/js/binders/histoWind.js"></script>
 <script src="/resources/js/binders/histoRose.js"></script>
 <script src="/resources/js/binders/curves.js"></script>
-
+<script src="/resources/js/binders/windrose.js"></script>

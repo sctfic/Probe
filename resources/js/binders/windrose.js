@@ -67,14 +67,14 @@ function probabilityText(d) { return d.p < 0.02 ? "" : (100*d.p).toFixed(0); };
 
 // Map a wind speed to a color
 var speedToColorScale = d3.scale.linear()
-                          .domain([5, 25])
-                          .range(["hsl(220, 70%, 90%)", "hsl(220, 70%, 30%)"])
+                          .domain([2, 10, 25, 100])
+                          .range(["#fbb4ae","#b3cde3","#ccebc5","#decbe4"])
                           .interpolate(d3.interpolateHsl);
 function speedToColor(d) { return speedToColorScale(d.s); }
 // Map a wind probability to a color
 var probabilityToColorScale = d3.scale.linear()
-                                .domain([0, 0.2])
-                                .range(["hsl(0, 70%, 99%)", "hsl(0, 70%, 40%)"])
+                                .domain([0, .5, .8, 1])
+                                .range(["#AEC7E8","#1F77B4","#D62728","#2C3539"])// ["hsl(0, 70%, 99%)", "hsl(0, 70%, 40%)"])
                                 .interpolate(d3.interpolateHsl);
 function probabilityToColor(d) { return probabilityToColorScale(d.p); }
                                 

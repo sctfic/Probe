@@ -38,9 +38,9 @@ function include_histoRose(container, station, XdisplaySizePxl) {
 // ================= Engine build chart of rose by period ====================
 
 function timeSeriesChart_histoRose() {
-    var margin = {top: 30, right: 30, bottom: 20, left: 30},
-        width = 640,
-        height = 160,
+    var margin = {top: 40, right: 40, bottom: 40, left: 40},
+        width = 320,
+        height = 80,
         dataheader = null,
         station = null,
         withAxis = true,
@@ -94,15 +94,19 @@ function timeSeriesChart_histoRose() {
             var svg = d3.select(this).selectAll("svg").data([data]);
 
             // Otherwise, create the skeletal chart.
-            var gEnter = svg.enter().append("svg").append("g");
+            var gEnter = svg.enter()
+                .append("svg")
+                    .attr("xmlns", "http://www.w3.org/2000/svg")
+                    .attr("version", "1.1")
+                    .attr("viewBox", "0 0 "+width+" "+height)
+                    // .attr("preserveAspectRatio", "xMinYMin")
+                    .attr("width", "100%")
+                    .attr("height", height)
+                    .append("g");
 
             gEnter.append("path").attr("class", "line");
             gEnter.append("g").attr("class", "x axis");
             // gEnter.append("g").attr("class", "y axis");
-
-            // Update the outer dimensions.
-            svg .attr("width", width)
-                .attr("height", height);
 
             // Update the inner dimensions.
             var g = svg.select("g")
