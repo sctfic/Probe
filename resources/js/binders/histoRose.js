@@ -73,10 +73,13 @@ function timeSeriesChart_histoRose() {
             // Convert data to standard representation greedily;
             // this is needed for nondeterministic accessors.
             data = data.map(function(d, i) {
-// console.log(data, d, i);
-// console.log(data, d, i, dateParser, timeFormat);
+                var date=dateParser.call(data, d, i)
                 return {
-                    date:dateParser.call(data, d, i),
+                    date:date,
+                    period:[
+                        new Date(date.getTime()-(60*1000*dataheader.step/2)),
+                        new Date(date.getTime()+(60*1000*dataheader.step/2))
+                    ],
                     rose:rose.call(data, d, i)
                 };
             });
@@ -212,7 +215,7 @@ function timeSeriesChart_histoRose() {
 
 // ================= Property of chart =================
 
-    chart.loader = function(container) {
+    chart.loader = function(container,callback) {
         var ready = false,
             dataTsv = false;
         // on demande les infos importante au sujet de notre futur tracé
@@ -224,6 +227,7 @@ function timeSeriesChart_histoRose() {
                 console.log(data.data);
 
                 if (ready) {
+                    if (typeof callback === 'function') callback(100);
                     d3.select(container)
                         .datum(d3.entries(data.data))
                         .call( chart );
@@ -242,6 +246,7 @@ function timeSeriesChart_histoRose() {
                     .dataheader(data);
                 
                 if (ready) {
+                    if (typeof callback === 'function') callback(100);
                     // console.log(data);
                     d3.select(container)
                         .datum(dataTsv)
@@ -250,6 +255,7 @@ function timeSeriesChart_histoRose() {
                 ready = true;
             }
         );
+        if (typeof callback === 'function') callback(96);
 
         return chart;
     }

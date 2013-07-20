@@ -39,7 +39,7 @@ function include_histoWind(container, station, XdisplaySizePxl) {
 // ================= Engine build chart of wind by period ====================
 
 function timeSeriesChart_histoWind() {
-    var margin = {top: 5, right: 30, bottom: 0, left: 30},
+    var margin = {top: 5, right: 30, bottom: 5, left: 30},
         width = 1800,
         height = 160,
         dataheader = null,

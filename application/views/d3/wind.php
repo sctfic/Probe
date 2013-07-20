@@ -13,33 +13,35 @@
 
 ?>
 <style>
-/* Bootstrap style */
-.row-fluid > .sidebar-nav {
-    position: relative;
-    top: 0;
-    left:auto;
-    width: 220px;
-    padding: 9px 0;
-}
+    /* Bootstrap style */
+    .row-fluid > .sidebar-nav {
+        position: relative;
+        top: 0;
+        left:auto;
+        width: 220px;
+        padding: 9px 0;
+    }
 
-.left {
-    float:left;
-}
+    .left {
+        float:left;
+    }
 
-.right {
-    float:right;
-}
-
-/*.fixed-fluid {
-    margin-left: 240px;
-}
-.fluid-fixed {
-    margin-right: 240px;
-    margin-left:auto !important;
-}*/
-.fixed-fixed {
-    margin-left: 240px;
-}
+    .right {
+        float:right;
+    }
+    h4, hr, br {
+        width:100%;
+    }
+    /*.fixed-fluid {
+        margin-left: 240px;
+    }
+    .fluid-fixed {
+        margin-right: 240px;
+        margin-left:auto !important;
+    }*/
+    .fixed-fixed {
+        margin-left: 240px;
+    }
 </style>
 <div class="container-fluid">
     <div class="row-fluid">
@@ -67,17 +69,48 @@
             </ul>
         </div -->
         <div id="middleChartsArea" class="content fixed-fixed">
-            <div id="HistoricalRose">    </div>
-            <div id="detailWindRose"style="text-align: center; mavrgin:0 auto;">
-                <p>Detail :</p>
-                <div>
-                    <span id="detailWindRoseSpeed">    </span>
-                    <span id="detailWindRoseRatio" class="right">    </span>
+            <h3><?=i18n('dashboard.wind:rose.title')?></h3>
+            <div class="progress progress-success">
+                <div class="bar" style="float: left; width: 0%; " data-percentage=10></div>
+            </div>
+            <div id="HistoricalRose">
+            </div>
+            <div id="detailWindRose" style="display:none;text-align: center; mavrgin:0 auto;">
+                <h4><?=i18n('dashboard.wind:rose.detailtitle')?></h4>
+                <p style="margin-top:-15px;"><?=i18n('dashboard.wind:rose.detailperiod')?></p>
+                <div style="width:80%;margin-left:10%;">
+                    <div class="left">
+                        <p><?=i18n('dashboard.wind:rose.speedlabel')?></p>
+                        <div id="detailWindRoseSpeed">    </div><p>.</p>
+                    </div>
+
+                    <div class="right">
+                        <p> <?=i18n('dashboard.wind:rose.ratiolabel')?></p>
+                        <div id="detailWindRoseRatio">    </div><p>.</p>
+                    </div>
                 </div>
             </div>
-            <div id="HistoricalVector">    </div>
-            <div id="HistoricalSpeed">    </div>
-            <div id="HistoricalDirection">    </div>
+            <hr style="margin-top:15px;">
+            <div id="HistoricalVector">
+                <h4><?=i18n('dashboard.wind:vector.title')?></h4>
+<!--                 <div class="progress progress-success">
+                    <div class="bar" style="float: left; width: 0%; " data-percentage="10"></div>
+                </div> -->
+            </div>
+            <hr>
+            <div id="HistoricalSpeed">
+                <h4><?=i18n('dashboard.wind:speed.title')?></h4>
+<!--                 <div class="progress progress-success">
+                    <div class="bar" style="float: left; width: 0%; " data-percentage="10"></div>
+                </div> -->
+            </div>
+            <hr>
+            <div id="HistoricalDirection">
+                <h4><?=i18n('dashboard.wind:direction.title')?></h4>
+<!--                 <div class="progress progress-success">
+                    <div class="bar" style="float: left; width: 0%; " data-percentage="10"></div>
+                </div> -->
+            </div>
         </div>
 
     </div>
@@ -119,7 +152,7 @@
     .sensitive {
         opacity: 0;
     }
-/*    .line {
+    /*    .line {
         fill: none;
         stroke-width: 1px;
     }
@@ -133,14 +166,14 @@
 
 
 
-/*    .line {
+    /*    .line {
         fill: none;
         stroke: #000;
         stroke-width: 1px;
         shape-rendering: crispEdges;
     }*/
 
-/*    .axis line,.axis path {
+    /*    .axis line,.axis path {
         fill: none;
         stroke: #000;
         stroke-width: 1px;
@@ -228,6 +261,8 @@
 </style>
 <script type="text/javascript">
     var station = '<?=$station?>';
+
+
 </script>
     <script src="/resources/js/libs/d3.v3.js"></script>
 <script src="/resources/js/ProbeTools.js"></script>

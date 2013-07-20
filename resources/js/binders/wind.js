@@ -1,7 +1,8 @@
+
 function probeViewer(){
+	progressbar ();
 
 	var XdisplaySizePxl = $('#middleChartsArea').width();
-	console.log(XdisplaySizePxl);
 
     var HistoricalVector = timeSeriesChart_histoWind()
                         .width(XdisplaySizePxl)
@@ -52,7 +53,10 @@ function probeViewer(){
                         .dateDomain([0, formatDate(new Date(), ' ')])
                         .rose(function(d) { return d.value; })
                         .onClickAction(function (d){
-                            $("#detailWindRose p").text('Detail du : '+formatDate(d.date, ' '));
+                            $("#detailWindRose h3:first").text('Detail du : '+formatDate(d.date, ' '));
+                            $("#detailWindRose p:first").text('du : '+formatDate(d.period[0], ' ')+' au : '+formatDate(d.period[1], ' '));
+                            $("#detailWindRose").css('display', 'block');
+
                             plotProbabilityRose(d.rose, '#detailWindRoseRatio', 120);
                             plotSpeedRose(d.rose, '#detailWindRoseSpeed',120);
                         })
@@ -61,14 +65,35 @@ function probeViewer(){
                         .toHumanAngle(formulaConverter ('angle', '°'))
                         .toHumanDate(formulaConverter ('strDate', 'ISO'));
 
-    HistoricalRose.loader('#HistoricalRose');
+    HistoricalRose.loader('#HistoricalRose', function(_){ $('#middleChartsArea .bar').attr('data-percentage', _);});
     HistoricalVector.loader('#HistoricalVector');
     HistoricalSpeed.loader('#HistoricalSpeed');
     HistoricalDirection.loader('#HistoricalDirection');
 
-	XdisplaySizePxl = $('#middleChartsArea').width();
-	console.log(XdisplaySizePxl);
 }
 
 
+function progressbar () {
+    $('.progress .bar').each(function() {
+        var me = $(this);
 
+        //TODO: left and right text handling
+
+        var current_perc = 0;
+
+        var progress = setInterval(function() {
+            var perc = me.attr("data-percentage");
+            if (current_perc>=100) {
+                clearInterval(progress);
+                setTimeout( function () { me.parent().remove();} , 500);
+            } else if (current_perc < +perc) {
+                current_perc +=1;
+                me.css('width', (current_perc)+'%');
+            }
+
+            me.text((current_perc)+'%');
+
+        }, 50);
+
+    });
+}

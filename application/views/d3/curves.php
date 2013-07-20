@@ -14,13 +14,13 @@
 ?>
 <div id="resizable" class="ui-widget-content">
     <p>teste de truc a raconter au sujet de cette courbe
-        <span id="curveSvgArea01">
+        <span id="curveSvgArea01" style="width:100px">
             <!-- d3 content should be -dynamically- placed here -->
         </span> y a aussi d'autre infos
-        <span id="curveSvgArea02">
+        <span id="curveSvgArea02" width:100px>
             <!-- d3 content should be -dynamically- placed here -->
         </span> et des donnees suplementaire
-        <span id="curveSvgArea03">
+        <span id="curveSvgArea03" style="width:100px">
             <!-- d3 content should be -dynamically- placed here -->
         </span>
     </p>
