@@ -70,6 +70,7 @@ function probeViewer(){
     HistoricalSpeed.loader('#HistoricalSpeed');
     HistoricalDirection.loader('#HistoricalDirection');
 
+
 }
 
 
@@ -86,6 +87,14 @@ function progressbar () {
             if (current_perc>=100) {
                 clearInterval(progress);
                 setTimeout( function () { me.parent().remove();} , 500);
+				$('svg').each( function(){
+					var ths = $(this);
+					console.log(ths, "viewBox", "0 0 "+ths.width()+" "+ths.height());
+				// 	// ths.css("width", ths.width());
+				// 	// ths.css("height", ths.height());
+					ths.css("viewBox", "0 0 "+ths.width()+" "+ths.height());
+					// console.log(ths.css());
+				})
             } else if (current_perc < +perc) {
                 current_perc +=1;
                 me.css('width', (current_perc)+'%');

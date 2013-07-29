@@ -93,23 +93,14 @@
             <hr style="margin-top:15px;">
             <div id="HistoricalVector">
                 <h4><?=i18n('dashboard.wind:vector.title')?></h4>
-<!--                 <div class="progress progress-success">
-                    <div class="bar" style="float: left; width: 0%; " data-percentage="10"></div>
-                </div> -->
             </div>
             <hr>
             <div id="HistoricalSpeed">
                 <h4><?=i18n('dashboard.wind:speed.title')?></h4>
-<!--                 <div class="progress progress-success">
-                    <div class="bar" style="float: left; width: 0%; " data-percentage="10"></div>
-                </div> -->
             </div>
             <hr>
             <div id="HistoricalDirection">
                 <h4><?=i18n('dashboard.wind:direction.title')?></h4>
-<!--                 <div class="progress progress-success">
-                    <div class="bar" style="float: left; width: 0%; " data-percentage="10"></div>
-                </div> -->
             </div>
         </div>
 

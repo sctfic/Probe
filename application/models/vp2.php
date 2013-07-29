@@ -80,6 +80,7 @@ class vp2 extends CI_Model {
 	* @return 
 	*/
 	function chekpolitness () {
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,array($this->conf['_name']));
 		$this->lockFile = dirname(__FILE__).'/'.$this->conf['_name'].'.lock';
 		$end = @file_get_contents($this->lockFile);
 
@@ -102,7 +103,7 @@ class vp2 extends CI_Model {
 	* @return 
 	*/
 	function initConnection()	{
-		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,array($this->conf['_name']));
 		if ($this->chekpolitness()) {
 			$errno = 0;
 			$this->fp = @fsockopen (
@@ -112,10 +113,9 @@ class vp2 extends CI_Model {
 			if ($this->fp && $errno==0) {
 				stream_set_timeout ($this->fp, 0, 2500000);
 				if ($this->wakeUp()) {
-					// if ($this->config->item('verbose_threshold') > 2)
 					// 	$this->toggleBacklight (1);
 					log_message('infos', sprintf(
-                        i18n('cli-info.open-connexion[%s].label', $this->conf['_name'])
+                        i18n('cli-info.open-connexion[%s].label'), $this->conf['_name']
                     ) );
 					return TRUE;
 				}
@@ -136,15 +136,15 @@ class vp2 extends CI_Model {
 	* @return 
 	*/
 	function CloseConnection()	{
-		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,array($this->conf['_name']));
 		// $this->toggleBacklight(0);
 		if (!unlink($this->lockFile))
 			rename($this->lockFile, ".trash");
 		if (fclose($this->fp)) {
 			log_message('infos', sprintf(
-                i18n('cli-info.close-connexion[%s]:success.label'),
-                    $this->conf['_name']
-            ) );
+			    i18n('cli-info.close-connexion[%s]:success.label'),
+			        $this->conf['_name']
+			) );
             return true;
 		}
 		return FALSE;
@@ -157,11 +157,12 @@ class vp2 extends CI_Model {
 	* @return 
 	*/
 	function wakeUp()	{
-		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,array($this->conf['_name']));
 		for ($i=0;$i<=3;$i++) {
 			@fwrite ($this->fp, LF);
-			if (fread($this->fp,6)==LFCR)
+			if (fread($this->fp,6)==LFCR) {
 				return TRUE;
+			}
 			usleep(1200000);
 		}
 		return FALSE;
@@ -221,7 +222,7 @@ class vp2 extends CI_Model {
 	* @param: returnValue
 	*/
 	protected function RequestCmd($cmd) {
-		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,array($this->conf['_name'], $cmd));
 		fwrite ($this->fp, $cmd);
 		$r = fread($this->fp, 1);
 		if ($r == ACK){
@@ -250,7 +251,7 @@ Lis les config courante disponible sur la station
 	* @param: none
 	*/
 	function GetConfig() {
-		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
+		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,array($this->conf['_name']));
 		$CONFS = false;
 		 try {
 			log_message('infos', '[EEBRD] : Download the current Config');
@@ -322,7 +323,7 @@ Lis les valeurs courantes de tous les capteurs disponible sur la station
 			while ($nbr > 0) {
 				$data = fread($this->fp, 97+2);
 				$this->VerifAnswersAndCRC($data, 97+2);
-				$packet_type = current($this->RawConverter(array('LPS0:Data:Packet:Type'=>$this->Loop['LPS0:Data:Packet:Type']), $data));
+				$packet_type = current($this->RawConverter(array('LPS0:Data:Packet:Type'=>$this->Loop['LPS0:Data:Packet:Type:::']), $data));
 				log_message('infos', '[LPS] : Download the current Values LOOP'.($packet_type?'':'2'));
 				switch($packet_type) {
 					case 0:
@@ -431,25 +432,32 @@ Compare l'heure de la station a celle du serveur web et lance la synchro si beso
 	function clockSync($maxLag, $force=false) {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		$TIME = False;
-		$realLag = abs(strtotime($this->fetchStationTime()) - strtotime(date('Y/m/d H:i:s')));
-		if ($realLag > $maxLag || $force) {
-			log_message('warning', sprintf(
-                i18n('cli-warning.clock-sync[%s].label'),
-                $realLag
-            ));
-			if ($realLag < 3600+$maxLag || $realLag > 3600*12 || $force) {
-				// if ($TIME = $this->updateStationTime()) {
-				// 	log_message('infos', i18n('Clock synchronizing.'));
-				// }
-				// else log_message('warning', i18n( 'Clock synch.'));
+		// compare les date au format ISO 8601 (2004-02-12T15:19:21+00:00)
+		$realLag = ($VP2_Time = strtotime($VP2_Time_Str = $this->fetchStationTime())) - strtotime(date('c'));
+
+		log_message('warning',  "Real\t\t: ".date('c')."\n".$this->conf['_name']."\t: ".$VP2_Time_Str."\nLags\t\t: ".$realLag.' Sec');
+		
+		if (abs($realLag) > $maxLag) {
+			if ($TIME = $this->updateStationTime(strftime('%Y-%m-%dT%H:%M:%S', $VP2_Time - $realLag))) { // date('Y-m-dTH:i:s')
+				log_message('infos', i18n('Clock synchronizing.'));
 			}
-			else log_message('warning', sprintf(
-                i18n('cli-warning.clock-delay[%s]:off-limit.label'),
-                $realLag
-            ));
+			// else log_message('warning', i18n( 'Clock synch. error'));
+		}
+		else if ($force) {
+			// log_message('warning', sprintf(
+   //              i18n('cli-warning.clock-sync[force].label')
+   //          ));
+			if ($TIME = $this->updateStationTime(date('Y-m-dTH:i:s'))) {
+				log_message('infos', i18n('Clock synchronizing.'));
+			}
+			// else log_message('warning', i18n( 'Clock synch. error'));
 		}
 		else return true;
-		log_message('Step',  __FUNCTION__.'('.__CLASS__.")\n".__FILE__.' ['.__LINE__.']');
+
+		log_message('infos', sprintf(
+		    i18n('cli-infos.clock-sync[%s].label'),
+		    $TIME
+		));		
 		return $TIME;
 	}
 /**
@@ -468,14 +476,13 @@ Lis l'heure de la station
 			$TIME = fread($this->fp, 8);
 			$this->VerifAnswersAndCRC($TIME, 8);
 			$TIME = (ord($TIME[5])+1900)
-				.'/'.str_pad(ord($TIME[4]),2,'0',STR_PAD_LEFT)
-				.'/'.str_pad(ord($TIME[3]),2,'0',STR_PAD_LEFT)
+				.'-'.str_pad(ord($TIME[4]),2,'0',STR_PAD_LEFT)
+				.'-'.str_pad(ord($TIME[3]),2,'0',STR_PAD_LEFT)
 				.'T'.str_pad(ord($TIME[2]),2,'0',STR_PAD_LEFT)
 				.':'.str_pad(ord($TIME[1]),2,'0',STR_PAD_LEFT)
 				.':'.str_pad(ord($TIME[0]),2,'0',STR_PAD_LEFT);
 			$TIME = $TIME.$this->OffsetTime;
 
-			log_message('infos',  'Real : '.date('c').' vs VP2 : '.$TIME);
 			return $TIME;
 		}
 		catch (Exception $e) {
@@ -484,9 +491,8 @@ Lis l'heure de la station
 		return $TIME;
 	}
 
-
 /**
-
+retourne le decalage horaire pour le fuseau horaire actif de cette stasion
 	* @param
 	* @var 
 	* @return 
@@ -496,7 +502,7 @@ Lis l'heure de la station
 			return $this->conf['Time:Gmt:Offset'];
 		}
 		elseif ($this->conf['Time:Gmt:Enable']==0) {
-			return GetZoneOffset($this->conf['Geo:Time:zone']);
+			return GetZoneOffset($this->conf['Geo:Time:Zone']);
 		}
 		return '+00:00';
 	}
@@ -506,24 +512,25 @@ Force l´heure de la station a la meme heure que le serveur web
 	* @return: renvoi la nouvelle heure ou FALSE en cas d'echec
 	* @param: none
 	*/
-	protected function updateStationTime() {
+	protected function updateStationTime($time) {
 		where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		// 0x35 16 00 1d 0c 6f  0x7c 44  ==  2011/12/29 00:22:53
 		try {
 			$this->RequestCmd("SETTIME\n");
-			list($_date, $_clock) = explode(' ', date('Y/m/d H:i:s'));
-			list($y,$m,$d) = explode('/', $_date);
+			list($_date, $_clock) = explode('T', $time);
+			list($y,$m,$d) = explode('-', $_date);
 			list($h,$i,$s) = explode(':', $_clock);
 			$TIME = chr($s).chr($i).chr($h).chr($d).chr($m).chr($y-1900);
 			$this->RequestCmd ($TIME . CalculateCRC($TIME));
-			log_message('infos', '[SETTIME] : '.$_date.' '.$_clock);
-			return $_date.' '.$_clock;
+			// log_message('infos', '[SETTIME] : '.$_date.' '.$_clock);
+			return $_date.'T'.$_clock;
 		}
 		catch (Exception $e) {
 			log_message('warning',  $e->getMessage());
 		}
 		return False;
 	}
+
 /**
 decoupe la chaine de donne VP2 en segment pour chaque item de donnee
 	* @return: protected functionReturn

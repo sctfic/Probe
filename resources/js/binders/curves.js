@@ -51,7 +51,7 @@ function include_nudecurves(container, station, sensor, XdisplaySizePxl)
 var color=d3.scale.category20();
 function timeSeriesChart_curves() {
     var margin = {top: 5, right: 5, bottom: 28, left: 40},
-        width = 600,
+        width = null,
         height = 160,
         station = null,
         sensor = null,
@@ -86,6 +86,7 @@ function timeSeriesChart_curves() {
         if (!lightColor)  lightColor=color(md5+'1');
         //selection represente la liste de block ou ecire les donnees
         selection.each(function(data) {
+           
             // Convert data to standard representation greedily;
             // this is needed for nondeterministic accessors.
             data = data.map(function(d, i) {
@@ -114,7 +115,7 @@ function timeSeriesChart_curves() {
             var gEnter = svg.enter()
                 .append("svg")
                     .attr("viewBox", "0 0 "+width+" "+height)
-                    // .attr("preserveAspectRatio", "xMinYMin")
+                    // // .attr("preserveAspectRatio", "xMinYMin")
                     .attr("width", "100%")
                     .attr("height", height)
                     .append("g");
@@ -168,6 +169,8 @@ function timeSeriesChart_curves() {
                     .attr("class","date")
                     .attr('x', legendXleft-formatVal(dataheader.max).length*6-6)
                     .text('Scroll for Zoom');
+                   // console.log(legendDate.getComputedTextLength());
+
                 var legendVal = legend.append('text')
                     .attr("class","val")
                     .attr('x', legendXleft)
@@ -235,6 +238,7 @@ function timeSeriesChart_curves() {
                                 .attr("y2", yScale(afine.slope*(steps[steps.length-1].date.getTime()/60000)+afine.middle_intercept));
                         }
                         legendDate.text(timeFormat(X_date,' '));
+                   // console.log(legendDate.getComputedTextLength());
                         legendVal.text(formatVal(Y_val));
                     });
 
@@ -332,6 +336,7 @@ function timeSeriesChart_curves() {
     chart.loader = function(container) {
         var ready = false,
             dataTsv = false;
+
         // on demande les infos importante au sujet de notre futur tracé
         // ces infos permettent de finir le parametrage de notre "Chart"
         // on charge les données et on lance le tracage

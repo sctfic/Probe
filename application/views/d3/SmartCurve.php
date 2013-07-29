@@ -60,11 +60,11 @@
         font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif";
         /*font-size: 62.5%;*/
     }
-    #resizable { width: 620px; height: 250px; padding: 0.5em; }
+    #resizable { width: 1200px; height: 320px; padding: 0.5em; }
     #resizable h4 { text-align: center; margin: 0; }
     .ui-menu { width: 250px; }
 </style>
-<ul id='StationList'>
+<!-- <ul id='StationList'>
     <li id='VP2_GTD' class='sensor'><a href="#">VP2_GTD</a>
         <ul id='SensorList'>
         <li id='TA:Arch:Hum:In:Current' class='sensor'><a href="/viewer/SmartCurve/VP2_GTD/TA:Arch:Hum:In:Current">TA:Arch:Hum:In:Current</a></li>
@@ -93,7 +93,7 @@
         <li id='TA:Arch:Various:Wind:HighSpeedDirection' class='sensor'><a href="#">TA:Arch:Various:Wind:HighSpeedDirection</a></li>
         <li id='TA:Arch:Various:Wind:SpeedAvg' class='sensor'><a href="#">TA:Arch:Various:Wind:SpeedAvg</a></li>
     </ul></li>
-</ul>
+</ul> -->
 
 <script>
     $(function() {
@@ -121,6 +121,7 @@
 
 <script src="/resources/js/ProbeTools.js"></script>
 <script src="/resources/js/libs/base64.js"></script>
+<script src="/resources/js/libs/jquery-1.9.1.js"></script>
 <script src="/resources/js/libs/jquery-ui-1.10.2.custom.js"></script>
 <script>
 var station='<?=$station?>';
@@ -144,6 +145,9 @@ function probeViewer(){
             drawGraph (dataFullView, '#SvgZone', parentblock.width(), parentblock.height() - $('#resizable h4:first-child').height() - 10);
         }
    });
+
+
+
 }
 </script>
 

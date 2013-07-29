@@ -103,3 +103,5 @@ i18n('smartCart.title.metadata');
 i18n('smartCart.description.metadata');
 i18n('smartChart.title.metadata');
 i18n('smartChart.description.metadata');
+i18n('dotChart.title.metadata');
+i18n('dotChart.description.metadata');
