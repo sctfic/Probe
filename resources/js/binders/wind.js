@@ -2,7 +2,7 @@
 function probeViewer(){
 	progressbar ();
 
-	var XdisplaySizePxl = $('#middleChartsArea').width();
+	var XdisplaySizePxl = $('#middleChartsArea').width()-4;
 
     var HistoricalVector = timeSeriesChart_histoWind()
                         .width(XdisplaySizePxl)
@@ -19,7 +19,6 @@ function probeViewer(){
                         .toHumanSpeed(formulaConverter ('WindSpeed', 'km/h'))
                         .toHumanAngle(formulaConverter ('angle', '°'))
                         .toHumanDate(formulaConverter ('strDate', 'ISO'));
-
     // on definie notre objet au plus pres de notre besoin.
     var HistoricalSpeed = timeSeriesChart_curves()
                         .width(XdisplaySizePxl)
@@ -43,7 +42,6 @@ function probeViewer(){
                         // .trend(6)
                         // .withAxis(false)
                         .toHumanDate(formulaConverter ('strDate', 'ISO'));
-
     // on definie notre objet au plus pres de notre besoin.
     var HistoricalRose = timeSeriesChart_histoRose()
                         .width(XdisplaySizePxl)
@@ -89,9 +87,9 @@ function progressbar () {
                 setTimeout( function () { me.parent().remove();} , 500);
 				$('svg').each( function(){
 					var ths = $(this);
-					console.log(ths, "viewBox", "0 0 "+ths.width()+" "+ths.height());
-				// 	// ths.css("width", ths.width());
-				// 	// ths.css("height", ths.height());
+					// console.log(ths, "viewBox", "0 0 "+ths.width()+" "+ths.height());
+				 	// ths.css("width", ths.width());
+				 	// ths.css("height", ths.height());
 					ths.css("viewBox", "0 0 "+ths.width()+" "+ths.height());
 					// console.log(ths.css());
 				})

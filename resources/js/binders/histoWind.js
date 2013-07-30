@@ -39,7 +39,7 @@ function include_histoWind(container, station, XdisplaySizePxl) {
 // ================= Engine build chart of wind by period ====================
 
 function timeSeriesChart_histoWind() {
-    var margin = {top: 5, right: 30, bottom: 5, left: 30},
+    var margin = {top: 5, right: 25, bottom: 5, left: 25},
         width = 1800,
         height = 160,
         dataheader = null,
@@ -80,15 +80,33 @@ function timeSeriesChart_histoWind() {
                     ySpeed:ySpeed.call(data, d, i)
                 };
             });
-            // Update the x-scale.
-            xScale
-                .domain(d3.extent(data, function(d) { return d.date; }))
-                .range([0, width - margin.left - margin.right]);
 
+            domainDate=d3.extent(data, function(d) { return d.date; });
             // Update the y-scale.
             yScale
                 .domain(d3.extent(data, function(d) {return d.ySpeed; }))
                 .range([height - margin.top - margin.bottom, 0]);
+            // Update the x-scale.
+            xScale
+                .domain(domainDate)
+                .range([0, width - margin.left - margin.right]);
+
+            // Update the marge left and right
+            chart.margin({
+                top: margin.top,
+                right: d3.max(data, function(d) { // marge droite fonctione des vitesse-X compensée relative a leur propre date
+                    Offset=(yScale(0)-yScale(d.xSpeed))-(xScale(domainDate[1])-xScale(d.date));
+                    return Offset>0?Offset:0; })+1,
+                bottom: margin.bottom,
+                left: d3.max(data, function(d) { // marge droite fonctione des vitesse-X compensée relative a leur propre date
+                    Offset=(yScale(d.xSpeed)-yScale(0))-(xScale(d.date)-xScale(domainDate[0]));
+                    return Offset>0?Offset:0;  })+1,
+            });
+
+            // Update the x-scale.
+            xScale
+                .domain(domainDate)
+                .range([0, width - margin.left - margin.right]);
 
             // Select the svg element, if it exists.
             var svg = d3.select(this).selectAll("svg").data([data]);
@@ -108,7 +126,9 @@ function timeSeriesChart_histoWind() {
 
             // Update the inner dimensions.
             var g = svg.select("g")
+                .attr("left","0px")
                 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+            //     console.log("translate(" + margin.left + "," + margin.top + ")");
 
             var coef = (yScale.range()[0]-yScale.range()[1])/(yScale.domain()[1]-yScale.domain()[0]);
 
