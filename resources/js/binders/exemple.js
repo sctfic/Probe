@@ -1,3 +1,23 @@
+function include_curve(container, station, sensor, XdisplaySizePxl)
+{
+    // on definie notre objet au plus pres de notre besoin.
+    var curves = timeSeriesChart()
+                        .width(XdisplaySizePxl);
+                        // .ajaxUrl("/data/curve")
+                        // .dateParser("%Y-%m-%d %H:%M")
+                        // .dateDomain(["2013-06-31T06:00:00", formatDate(new Date(), ' ')])
+                        // .station(station)
+                        // .sensor(sensor)
+                        // .trend(6)
+                        // .withAxis(false)
+                        // .toHumanDate(formulaConverter ('strDate', 'ISO'));
+
+    curves.chart();
+    // curves.loader(container);
+}
+
+
+
 function timeSeriesChart() {
   var margin = {top: 5, right: 5, bottom: 20, left: 30},
       width = 1200,

@@ -111,88 +111,141 @@ function timeSeriesChart_histoWind() {
             // Select the svg element, if it exists.
             var svg = d3.select(this).selectAll("svg").data([data]);
 
+
             // Otherwise, create the skeletal chart.
             var gEnter = svg.enter()
-                .append("svg")
-                    .attr("viewBox", "0 0 "+width+" "+height)
-                    // .attr("preserveAspectRatio", "xMinYMin")
-                    .attr("width", "100%")
-                    .attr("height", height)
-                    .append("g");
+                            .append("svg")
+                                // .attr("viewBox", "0 0 "+width+" "+height)
+                                // .attr("preserveAspectRatio", "xMinYMin")
+                                .attr("width", "100%")
+                                .attr("height", height);
+
+            var defs = gEnter.append("defs")
+
+            defs.append("marker")
+                .attr("id", "arrowhead")
+                .attr("refX", 2)
+                .attr("refY", 0)
+                .attr("viewBox", "-5 -5 12 10")
+                .attr("markerUnits", "strokeWidth")
+                .attr("markerWidth", 6)
+                .attr("markerHeight", 12)
+                .attr("orient", "auto")
+                .append("polygon")
+                    .attr("stroke", "#3182bd")
+                    .attr("points", "0,0 -2.5,-2.5 5,0 -2.5,2.5");
+            defs.append("marker")
+                .attr("id", "arrowheadHover")
+                .attr("refX", 2)
+                .attr("refY", 0)
+                .attr("viewBox", "-5 -5 12 10")
+                .attr("markerUnits", "strokeWidth")
+                .attr("markerWidth", 6)
+                .attr("markerHeight", 12)
+                .attr("orient", "auto")
+                .append("polygon")
+                    .attr("stroke", "#E6550D")
+                    .attr("points", "0,0 -2.5,-2.5 5,0 -2.5,2.5");
+
+            var timeoutID=null;
+            var Sensitive = svg.append("rect")
+                .attr("class", "sensitive")
+                .attr('width', width - margin.left - margin.right)
+                .attr('height', height - margin.top - margin.bottom)
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+
+            gEnter=gEnter.append("g");
 
             gEnter.append("path").attr("class", "line");
             gEnter.append("g").attr("class", "x axis");
-            // gEnter.append("g").attr("class", "y axis");
 
             // Update the inner dimensions.
             var g = svg.select("g")
                 .attr("left","0px")
                 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-            //     console.log("translate(" + margin.left + "," + margin.top + ")");
 
             var coef = (yScale.range()[0]-yScale.range()[1])/(yScale.domain()[1]-yScale.domain()[0]);
 
-            // Draw arrow block
             var arrow = g.selectAll(".arrow")
-                .data(data).enter().append("g")
-                .on("click", function(d) { return onClickAction(d); })
-                .attr("class", "arrow");
+                            .data(data)
+                            .enter()
+                            .append("g")
+                                .attr("class", "arrow")
+                                .on("click", onClickAction);
 
+            arrow.append("line")
+                .attr("class", "hair");
+            arrow.append("title")
+                .text(function(d) {
+                        return "Speed Avg: "+ toHumanSpeed(d.Speed).toFixed(1)+toHumanSpeed()+
+                                "\nAngle Avg: "+toHumanAngle(d.angle)+toHumanAngle()+
+                                "\nAverage on: "+toHumanDate(d.date) ;
+                    });
+
+            g.updateCurve = function(_){
+                // Draw arrow block
+                var xExtent=xScale.domain();
                 //Draw the line
-                arrow.append("line")
-                    .attr("class", "hair")
+                this.selectAll('.hair')
+                    // on deplace en fonction du nouveau referentiel
                     .attr("x1", function(d) { return xScale(d.date); })
                     .attr("y1", function(d) { return yScale(0); })
                     .attr("x2", function(d) { return xScale(d.date) + d.xSpeed*coef; })
-                    .attr("y2", function(d) { return yScale(d.ySpeed); });
+                    .attr("y2", function(d) { return yScale(d.ySpeed); })
+                    // on cache les elements hors referentiel
+                    .attr("display", function(d) {return (d.date>xExtent[0] && d.date<xExtent[1])?'inline':'none'; });
 
-                arrow.append("polygon")
-                    .attr("class", "marker")
-                    .attr("points","-1.5,2 0,-2 1.5,2")
-                    .attr("transform", function(d) {
-                            return "translate("+(xScale(d.date) + d.xSpeed*coef)+","+(yScale(d.ySpeed))+") rotate("+(d.angle)+")";
-                        });
-
-                arrow.append("title")
-                    .text(function(d) {
-                            return "Speed Avg: "+ toHumanSpeed(d.Speed).toFixed(1)+toHumanSpeed()+
-                                    "\nAngle Avg: "+toHumanAngle(d.angle)+toHumanAngle()+
-                                    "\nAverage on: "+toHumanDate(d.date) ;
-                        });
-
-            // chose the possition of x-Axis
-            if (0<yScale.domain()[0])
-              xPos = yScale.range()[0];
-            else if (yScale.domain()[1]<0)
-              xPos = yScale.range()[1];
-            else
-              xPos = yScale(0);
-
-            if (withAxis) {
-                // Update the x-axis.
-                g.select(".x.axis")
-                    .attr("transform", "translate(0," + xPos + ")") // axe tjrs en bas : yScale.range()[0] + ")")
-                    .call(xAxis);
-                // g.select(".y.axis")
-                //     .attr("transform", "translate(0,0)")
-                //     .call(yAxis);
+                return this;
             }
+            g.drawAxis = function(){
+            // chose the possition of x-Axis
+                if (0<yScale.domain()[0])
+                    xPos = yScale.range()[0];
+                else if (yScale.domain()[1]<0)
+                    xPos = yScale.range()[1];
+                else
+                    xPos = yScale(0);
+
+                if (withAxis) {
+                    // Update the x-axis.
+                    g.select(".x.axis")
+                        .attr("transform", "translate(0," + xPos + ")") // axe tjrs en bas : yScale.range()[0] + ")")
+                        .call(xAxis);
+                }
+                return this;
+            }
+
+            Sensitive.call(zm=d3.behavior.zoom().x(xScale).scaleExtent([1,1000]).on("zoom", function(){
+                window.clearTimeout(timeoutID);
+                timeoutID = window.setTimeout(function(){zoom()}, 400);
+                g.updateCurve()
+                 .drawAxis ();
+                // console.TimeStep('Zoom');
+            }));
+
+
+            g.updateCurve()
+             .drawAxis();
+
         });
     }
 
 
 
 
+    function zoom() {
 
-  // The x-accessor for the path generator; xScale ∘ dateParser.
-  function X(d) {
+    }
+    // The x-accessor for the path generator; xScale ∘ dateParser.
+    function X(d) {
     return xScale(d.date);
-  }
+    }
 
-  // The x-accessor for the path generator; yScale ∘ Speed.
-  function Y(d) {
+    // The x-accessor for the path generator; yScale ∘ Speed.
+    function Y(d) {
     return yScale(d.ySpeed);
-  }
+    }
 
 // ================= Property of chart =================
 

@@ -205,6 +205,10 @@ function timeSeriesChart_curves() {
 
                 var Y_val=0, timeoutID=null;
                 Sensitive.on("mousemove", function() {
+                // http://bl.ocks.org/mbostock/3025699
+                    // var d = offsets[Math.round((xScale.invert(d3.mouse(this)[0]) - startDate) / step)];
+                    // focus.select("circle").attr("transform", "translate(" + xScale(d[0]) + "," + yScale(d[1]) + ")");
+
                         var X_px = d3.mouse(this)[0],
                             X_date = xScale.invert(X_px);
 
@@ -238,18 +242,8 @@ function timeSeriesChart_curves() {
                                 .attr("y2", yScale(afine.slope*(steps[steps.length-1].date.getTime()/60000)+afine.middle_intercept));
                         }
                         legendDate.text(timeFormat(X_date,' '));
-                   // console.log(legendDate.getComputedTextLength());
                         legendVal.text(formatVal(Y_val));
                     });
-
-                // Sensitive.zoom = d3.behavior.zoom().x(xScale).scaleExtent([1,1000]).on("zoom", function(){
-                //     window.clearTimeout(timeoutID);
-                //     timeoutID = window.setTimeout(function(){zoom()}, 400);
-                //     g.updateCurve(line)
-                //      .drawAxis ();
-                //     return this;
-                // });
-                // Sensitive.zoom();
 
                 Sensitive.call(zm=d3.behavior.zoom().x(xScale).scaleExtent([1,1000]).on("zoom", function(){
                     window.clearTimeout(timeoutID);
