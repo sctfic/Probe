@@ -98,12 +98,12 @@ svg {
         include_nudecurves("#curveSvgArea01", '<?=$station?>', 'TA:Arch:Hum:In:Current', 60);
         include_nudecurves("#curveSvgArea02", '<?=$station?>', 'TA:Arch:Various:Bar:Current', 50);
         include_nudecurves("#curveSvgArea03", '<?=$station?>', 'TA:Arch:Various:Wind:SpeedAvg', 300);
-        include_curves("#curveSvgArea1", '<?=$station?>', '<?=$sensor?>', 500);
-        include_curves("#curveSvgArea2", '<?=$station?>', 'TA:Arch:Temp:In:Average', 600);
-        include_curves("#curveSvgArea3", '<?=$station?>', 'TA:Arch:Various:Solar:HighRadiation', 700);
-        include_curves("#curveSvgArea4", '<?=$station?>', 'TA:Arch:Various:UV:IndexAvg', $('#resizable').width()-20);
-        include_curves("#curveSvgArea5", '<?=$station?>', 'TA:Arch:Hum:Out:Current', $('#resizable').width()-20);
-        include_curves("#curveSvgArea6", '<?=$station?>', 'TA:Arch:Various:Bar:Current', $('#resizable').width()-20);
+        // include_curves("#curveSvgArea1", '<?=$station?>', '<?=$sensor?>', 500);
+        // include_curves("#curveSvgArea2", '<?=$station?>', 'TA:Arch:Temp:In:Average', 600);
+        // include_curves("#curveSvgArea3", '<?=$station?>', 'TA:Arch:Various:Solar:HighRadiation', 700);
+        // include_curves("#curveSvgArea4", '<?=$station?>', 'TA:Arch:Various:UV:IndexAvg', $('#resizable').width()-20);
+        // include_curves("#curveSvgArea5", '<?=$station?>', 'TA:Arch:Hum:Out:Current', $('#resizable').width()-20);
+        include_curves("#curveSvgArea6", '<?=$station?>', 'TA:Arch:Various:Wind:SpeedAvg', $('#resizable').width()-20);
 
     }
 

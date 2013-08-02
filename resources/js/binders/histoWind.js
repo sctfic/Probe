@@ -218,7 +218,7 @@ function timeSeriesChart_histoWind() {
 
             Sensitive.call(zm=d3.behavior.zoom().x(xScale).scaleExtent([1,1000]).on("zoom", function(){
                 window.clearTimeout(timeoutID);
-                timeoutID = window.setTimeout(function(){zoom(g)}, 400);
+                timeoutID = window.setTimeout(function(){zoom(g)}, 400);                
                 g.updateCurve()
                  .drawAxis ();
                 // console.TimeStep('Zoom');
@@ -237,21 +237,21 @@ function timeSeriesChart_histoWind() {
         var ready = false,
             dataTsv = false,
             zmDomain=xScale.domain();
+        console.TimeStep('Zoom');
         // on demande les infos importante au sujet de notre futur tracé
         // ces infos permettent de finir le parametrage de notre "Chart"
         // on charge les données et on lance le tracage
         d3.tsv( ajaxUrl + "?station="+ station +"&XdisplaySizePxl="+width+"&Since="+formatDate(zmDomain[0],'T')+"&To="+formatDate(zmDomain[1]
 ,'T'),
             function(data2add) {
-                console.TimeStep('load Data');
+                console.TimeStep('load Data Zoom');
                 data2add = data2add.map(function(d, i) {
                     return {
                         date:dateParser.call(data2add, d, i),
                         Speed:Speed.call(data2add, d, i),
                         angle:angle.call(data2add, d, i),
                         xSpeed:xSpeed.call(data2add, d, i),
-                        ySpeed:ySpeed.call(data2add, d, i),
-                        new:'new'
+                        ySpeed:ySpeed.call(data2add, d, i)
                     };
                 });
                 
@@ -262,7 +262,7 @@ function timeSeriesChart_histoWind() {
                    .sort(function (a, b) {
                        return a.date-b.date;
                       });
-
+                yScale.domain(d3.extent(data2add, function(d) {return d.ySpeed; }));
                 var arrow = g.selectAll(".arrow")
                                 .data(mergedata, function(d) { return d.date; });
                 arrow.exit().remove();
@@ -293,7 +293,7 @@ function timeSeriesChart_histoWind() {
 
         d3.json( ajaxUrl + "?station="+ station +"&XdisplaySizePxl="+width+"&infos=dataheader"+"&Since="+formatDate(zmDomain[0],'T')+"&To="+formatDate(zmDomain[1],'T'),
             function(header) {
-                console.TimeStep('load Header');
+                console.TimeStep('load Header Zoom');
 
                 chart//.yDomain([header.min, header.max])
                     .dataheader(header);
@@ -344,8 +344,7 @@ function timeSeriesChart_histoWind() {
                 console.TimeStep('load Header');
                 console.log(data);
 
-                chart//.yDomain([data.min, data.max])
-                    .dataheader(data);
+                chart.dataheader(data);
                 
                 if (ready) {
                     // console.log(data);

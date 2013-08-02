@@ -50,7 +50,7 @@ function include_nudecurves(container, station, sensor, XdisplaySizePxl)
 
 var color=d3.scale.category20();
 function timeSeriesChart_curves() {
-    var margin = {top: 5, right: 5, bottom: 28, left: 40},
+    var data,margin = {top: 5, right: 5, bottom: 28, left: 40},
         width = null,
         height = 160,
         station = null,
@@ -85,14 +85,14 @@ function timeSeriesChart_curves() {
         if (!darkColor)  darkColor=color(md5+'0');
         if (!lightColor)  lightColor=color(md5+'1');
         //selection represente la liste de block ou ecire les donnees
-        selection.each(function(data) {
+        selection.each(function(rawdata) {
            
             // Convert data to standard representation greedily;
             // this is needed for nondeterministic accessors.
-            data = data.map(function(d, i) {
+            data = rawdata.map(function(d, i) {
                 return {
-                    date:dateParser.call(data, d, i),
-                    val:val.call(data, d, i)
+                    date:dateParser.call(rawdata, d, i),
+                    val:val.call(rawdata, d, i)
                 };
             });
 
@@ -109,14 +109,16 @@ function timeSeriesChart_curves() {
                 .range([height - margin.top - margin.bottom, 0]);
 
             // Select the svg element, if it exists.
-            var svg = d3.select(this).selectAll("svg").data([data]);
+            var svg = d3.select(this).selectAll("svg").data([{date:0,val:yScale.domain()[0]},{date:new Date(),val:yScale.domain()[0]}])
+
+            svg = svg.data([data]);
 
             // Otherwise, create the skeletal chart.
             var gEnter = svg.enter()
                 .append("svg")
                     .attr("viewBox", "0 0 "+width+" "+height)
                     // // .attr("preserveAspectRatio", "xMinYMin")
-                    .attr("width", "100%")
+                    .attr("width", function(){return nude ? width : "100%";})
                     .attr("height", height)
                     .append("g");
 
@@ -127,10 +129,10 @@ function timeSeriesChart_curves() {
             // Update the inner dimensions.
             var g = svg.select("g")
                 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-            g.updateCurve = function(_){
+            g.updateCurve = function(){
                     // Update the line path.
                     this.select(".line")
-                        .attr("d", _)
+                        .attr("d", line(data))
                         .attr("clip-path", "url(#" + md5 + ")");
                     return this;
                 };
@@ -142,11 +144,10 @@ function timeSeriesChart_curves() {
                 .attr('height', height - margin.top - margin.bottom);
 
             if (!nude) {
-
                 g.drawAxis = function(){
                         if (withAxis) {
                         // Update the x-axis.
-                            this.select(".x.axis")
+                            this.select(".x.axis")//.transition().duration(1000)
                                 .attr("transform", "translate(-1," + (xPos+12) + ")") // axe tjrs en bas : yScale.range()[0] + ")")
                                 .call(xAxis);
                             this.select(".y.axis")
@@ -247,9 +248,15 @@ function timeSeriesChart_curves() {
 
                 Sensitive.call(zm=d3.behavior.zoom().x(xScale).scaleExtent([1,1000]).on("zoom", function(){
                     window.clearTimeout(timeoutID);
-                    timeoutID = window.setTimeout(function(){zoom()}, 400);
-                    g.updateCurve(line)
-                     .drawAxis ();
+                    timeoutID = window.setTimeout(function(){zoom(g)}, 400);
+                    // Update the line path.
+                    // g.select(".line").transition().duration(1000)
+                    //     .attr("d", line(data))
+                    // g.select(".x.axis").transition().duration(1000)
+                    //             .attr("transform", "translate(-1," + (xPos+12) + ")") // axe tjrs en bas : yScale.range()[0] + ")")
+                    //             .call(xAxis);
+                     g.updateCurve()
+                      .drawAxis ();
                 }));
 
                 // chose the possition of x-Axis
@@ -263,11 +270,9 @@ function timeSeriesChart_curves() {
                 gEnter.append("g").attr("class", "x axis");
                 gEnter.append("g").attr("class", "y axis");
 
-
                 // Update the line path.
-                g.updateCurve(line)
+                g.updateCurve()
                  .drawAxis ();
-
 
             } else {
                 g.updateCurve(line);
@@ -279,8 +284,56 @@ function timeSeriesChart_curves() {
     }  
 
 
-    function zoom() {
+    function zoom(g) {
+        var ready = false,
+            dataTsv = false,
+            zmDomain=xScale.domain();
+        // on demande les infos importante au sujet de notre futur tracé
+        // ces infos permettent de finir le parametrage de notre "Chart"
+        // on charge les données et on lance le tracage
+        console.TimeStep('Zoom');
+        d3.tsv( ajaxUrl + "?station="+ station +"&sensor="+ sensor +"&XdisplaySizePxl="+width+"&Since="+formatDate(zmDomain[0],'T')+"&To="+formatDate(zmDomain[1]
+,'T'),
+            function(data2add) {
+                console.TimeStep('load Data Zoom');
+                data2add = data2add.map(function(d, i) {
+                    return {
+                        date:dateParser.call(data2add, d, i),
+                        val:val.call(data2add, d, i)
+                    };
+                });
+                
+                data = data.filter(function(element, index, array){
+                          return (element.date<data2add[0].date || element.date>data2add[data2add.length-1].date);
+                      })
+                   .concat(data2add)
+                   .sort(function (a, b) {
+                       return a.date-b.date;
+                      });
 
+                if (ready) {
+                    g.updateCurve()
+                     .drawAxis ();
+                }
+                ready = true;
+                dataTsv = data;
+            }
+        );
+
+        d3.json( ajaxUrl + "?station="+ station +"&sensor="+ sensor +"&XdisplaySizePxl="+width+"&infos=dataheader"+"&Since="+formatDate(zmDomain[0],'T')+"&To="+formatDate(zmDomain[1],'T'),
+            function(header) {
+                console.TimeStep('load Header Zoom');
+
+                chart//.yDomain([header.min, header.max])
+                    .dataheader(header);
+                
+                if (ready) {
+                    g.updateCurve()
+                     .drawAxis ();
+                }
+                ready = true;
+            }
+        );
     }
     // The x-accessor for the path generator; xScale ∘ dateParser.
     function X(d) {
