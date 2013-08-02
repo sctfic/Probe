@@ -48,7 +48,6 @@ svg {
     stroke: #3182bd;
     marker-end:url(#arrowhead);
 }
-
 marker polygon {
     fill:#FFF;
 }

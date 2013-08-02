@@ -248,7 +248,24 @@
       stroke-width: 1px;
       shape-rendering: crispEdges;
     }
+    
+    .arrow:hover>.hair {
+        stroke: #E6550D;
+        stroke-width: 2px;
+        marker-end:url(#arrowheadHover);
+    }
 
+    /*Blue:#1F77B4 #3182bd #6baed6*/
+    /*Red:#E6550D*/
+    .hair {
+        fill: none;
+        stroke: #3182bd;
+        marker-end:url(#arrowhead);
+    }
+
+    marker polygon {
+        fill:#FFF;
+    }
 </style>
 <script type="text/javascript">
     var station = '<?=$station?>';
@@ -256,9 +273,9 @@
 
 </script>
     <script src="/resources/js/libs/d3.v3.js"></script>
-<script src="/resources/js/ProbeTools.js"></script>
-<script src="/resources/js/libs/base64.js"></script>
-<script src="/resources/js/binders/histoWind.js"></script>
-<script src="/resources/js/binders/histoRose.js"></script>
-<script src="/resources/js/binders/curves.js"></script>
-<script src="/resources/js/binders/windrose.js"></script>
+    <script src="/resources/js/ProbeTools.js"></script>
+    <script src="/resources/js/libs/base64.js"></script>
+    <script src="/resources/js/binders/histoWind.js"></script>
+    <script src="/resources/js/binders/histoRose.js"></script>
+    <script src="/resources/js/binders/curves.js"></script>
+    <script src="/resources/js/binders/windrose.js"></script>

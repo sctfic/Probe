@@ -17,7 +17,7 @@ function include_histoWind(container, station, XdisplaySizePxl) {
                         // .ajaxUrl("/data/histoWind")
                         .station(station)
                         .dateParser("%Y-%m-%d %H:%M")
-                        .dateDomain(["2013-05-31T06:00:00", formatDate(new Date(), ' ')])
+                        .dateDomain(["2013-05-31T06:00:00", formatDate(new Date(), 'T')])
                         // .speed(function(d) { return +d.speed; })
                         // .angle(function(d) { return +d.angle; })
                         // .xSpeed(function(d) { return +d.x; })
@@ -68,16 +68,16 @@ function timeSeriesChart_histoWind() {
 
     function chart(selection) {
         //selection represente la liste de block ou ecire les donnees
-        selection.each(function(data) {
+        selection.each(function(rawdata) {
             // Convert data to standard representation greedily;
             // this is needed for nondeterministic accessors.
-            data = data.map(function(d, i) {
+            data = rawdata.map(function(d, i) {
                 return {
-                    date:dateParser.call(data, d, i),
-                    Speed:Speed.call(data, d, i),
-                    angle:angle.call(data, d, i),
-                    xSpeed:xSpeed.call(data, d, i),
-                    ySpeed:ySpeed.call(data, d, i)
+                    date:dateParser.call(rawdata, d, i),
+                    Speed:Speed.call(rawdata, d, i),
+                    angle:angle.call(rawdata, d, i),
+                    xSpeed:xSpeed.call(rawdata, d, i),
+                    ySpeed:ySpeed.call(rawdata, d, i)
                 };
             });
 
@@ -183,9 +183,9 @@ function timeSeriesChart_histoWind() {
                                 "\nAverage on: "+toHumanDate(d.date) ;
                     });
 
-            g.updateCurve = function(_){
+            g.updateCurve = function(){
                 // Draw arrow block
-                var xExtent=xScale.domain();
+                var xExtend=xScale.domain();
                 //Draw the line
                 this.selectAll('.hair')
                     // on deplace en fonction du nouveau referentiel
@@ -194,7 +194,7 @@ function timeSeriesChart_histoWind() {
                     .attr("x2", function(d) { return xScale(d.date) + d.xSpeed*coef; })
                     .attr("y2", function(d) { return yScale(d.ySpeed); })
                     // on cache les elements hors referentiel
-                    .attr("display", function(d) {return (d.date>xExtent[0] && d.date<xExtent[1])?'inline':'none'; });
+                    .attr("display", function(d) {return (d.date>xExtend[0] && d.date<xExtend[1])?'inline':'none'; });
 
                 return this;
             }
@@ -218,12 +218,11 @@ function timeSeriesChart_histoWind() {
 
             Sensitive.call(zm=d3.behavior.zoom().x(xScale).scaleExtent([1,1000]).on("zoom", function(){
                 window.clearTimeout(timeoutID);
-                timeoutID = window.setTimeout(function(){zoom()}, 400);
+                timeoutID = window.setTimeout(function(){zoom(g)}, 400);
                 g.updateCurve()
                  .drawAxis ();
                 // console.TimeStep('Zoom');
             }));
-
 
             g.updateCurve()
              .drawAxis();
@@ -234,8 +233,78 @@ function timeSeriesChart_histoWind() {
 
 
 
-    function zoom() {
+    function zoom(g) {
+        var ready = false,
+            dataTsv = false,
+            zmDomain=xScale.domain();
+        // on demande les infos importante au sujet de notre futur tracé
+        // ces infos permettent de finir le parametrage de notre "Chart"
+        // on charge les données et on lance le tracage
+        d3.tsv( ajaxUrl + "?station="+ station +"&XdisplaySizePxl="+width+"&Since="+formatDate(zmDomain[0],'T')+"&To="+formatDate(zmDomain[1]
+,'T'),
+            function(data2add) {
+                console.TimeStep('load Data');
+                data2add = data2add.map(function(d, i) {
+                    return {
+                        date:dateParser.call(data2add, d, i),
+                        Speed:Speed.call(data2add, d, i),
+                        angle:angle.call(data2add, d, i),
+                        xSpeed:xSpeed.call(data2add, d, i),
+                        ySpeed:ySpeed.call(data2add, d, i),
+                        new:'new'
+                    };
+                });
+                
+                mergedata = data.filter(function(element, index, array){
+                          return (element.date<data2add[0].date || element.date>data2add[data2add.length-1].date);
+                      })
+                   .concat(data2add)
+                   .sort(function (a, b) {
+                       return a.date-b.date;
+                      });
 
+                var arrow = g.selectAll(".arrow")
+                                .data(mergedata, function(d) { return d.date; });
+                arrow.exit().remove();
+                arrow = arrow
+                    .enter()
+                    .append("g")
+                        .attr("class", "arrow")
+                        .attr("new",function(d){return d.date})
+                        .on("click", onClickAction);
+
+                arrow.append("line")
+                    .attr("class", "hair");
+                arrow.append("title")
+                    .text(function(d) {
+                            return "Speed Avg: "+ toHumanSpeed(d.Speed).toFixed(1)+toHumanSpeed()+
+                                    "\nAngle Avg: "+toHumanAngle(d.angle)+toHumanAngle()+
+                                    "\nAverage on: "+toHumanDate(d.date) ;
+                        });
+
+                if (ready) {
+                    g.updateCurve()
+                     .drawAxis ();
+                }
+                ready = true;
+                dataTsv = data;
+            }
+        );
+
+        d3.json( ajaxUrl + "?station="+ station +"&XdisplaySizePxl="+width+"&infos=dataheader"+"&Since="+formatDate(zmDomain[0],'T')+"&To="+formatDate(zmDomain[1],'T'),
+            function(header) {
+                console.TimeStep('load Header');
+
+                chart//.yDomain([header.min, header.max])
+                    .dataheader(header);
+                
+                if (ready) {
+                    g.updateCurve()
+                     .drawAxis ();
+                }
+                ready = true;
+            }
+        );
     }
     // The x-accessor for the path generator; xScale ∘ dateParser.
     function X(d) {
@@ -275,7 +344,7 @@ function timeSeriesChart_histoWind() {
                 console.TimeStep('load Header');
                 console.log(data);
 
-                chart.yDomain([data.min, data.max])
+                chart//.yDomain([data.min, data.max])
                     .dataheader(data);
                 
                 if (ready) {
