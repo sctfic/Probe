@@ -86,7 +86,7 @@
 	</style>
 <script>
 	function probeViewer(){
-		include_histoRose("#svgArea", '<?=$station?>', 1640);
+		include_histoRose("#svgArea", '<?=$station?>', 1900);
 	}
 	</script>
 <script src="/resources/js/ProbeTools.js"></script>

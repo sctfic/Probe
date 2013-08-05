@@ -48,6 +48,13 @@ svg {
     stroke: #3182bd;
     marker-end:url(#arrowhead);
 }
+.hair2 {
+    fill: none;
+    stroke: #3182bd;
+    stroke-width: 5px;
+    stroke-opacity: .01;
+    /*marker-end:url(#arrowhead);*/
+}
 marker polygon {
     fill:#FFF;
 }

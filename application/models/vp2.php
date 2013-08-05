@@ -91,8 +91,7 @@ class vp2 extends CI_Model {
 			return true;
 		}
 		log_message('infos', sprintf(
-            i18n('cli-warning.available-connexion[%s]:fail.label', $this->conf['_name'])
-        ) );
+            i18n('cli-warning.available-connexion[%s]:fail.label'), $this->conf['_name'] ) );
 		return FALSE;
 	}
 

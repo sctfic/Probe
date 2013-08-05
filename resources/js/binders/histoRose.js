@@ -38,7 +38,8 @@ function include_histoRose(container, station, XdisplaySizePxl) {
 // ================= Engine build chart of rose by period ====================
 
 function timeSeriesChart_histoRose() {
-    var margin = {top: 40, right: 40, bottom: 40, left: 40},
+    var data,
+        margin = {top: 40, right: 40, bottom: 40, left: 40},
         width = 320,
         height = 80,
         dataheader = null,
@@ -69,18 +70,18 @@ function timeSeriesChart_histoRose() {
 
     function chart(selection) {
         //selection represente la liste de block ou ecire les donnees
-        selection.each(function(data) {
+        selection.each(function(rawdata) {
             // Convert data to standard representation greedily;
             // this is needed for nondeterministic accessors.
-            data = data.map(function(d, i) {
-                var date=dateParser.call(data, d, i)
+            data = rawdata.map(function(d, i) {
+                var date=dateParser.call(rawdata, d, i)
                 return {
                     date:date,
                     period:[
                         new Date(date.getTime()-(60*1000*dataheader.step/2)),
                         new Date(date.getTime()+(60*1000*dataheader.step/2))
                     ],
-                    rose:rose.call(data, d, i)
+                    rose:rose.call(rawdata, d, i)
                 };
             });
             // Update the x-scale.
@@ -99,9 +100,9 @@ function timeSeriesChart_histoRose() {
             // Otherwise, create the skeletal chart.
             var gEnter = svg.enter()
                 .append("svg")
-                    .attr("xmlns", "http://www.w3.org/2000/svg")
-                    .attr("version", "1.1")
-                    .attr("viewBox", "0 0 "+width+" "+height)
+                    // .attr("xmlns", "http://www.w3.org/2000/svg")
+                    // .attr("version", "1.1")
+                    // .attr("viewBox", "0 0 "+width+" "+height)
                     // .attr("preserveAspectRatio", "xMinYMin")
                     .attr("width", "100%")
                     .attr("height", height)
@@ -114,91 +115,176 @@ function timeSeriesChart_histoRose() {
             // Update the inner dimensions.
             var g = svg.select("g")
                 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-
             // Draw stepPointBox block (default point view on chart)
             var stepPointBox = g.selectAll(".stepPointBox")
                 .data(data).enter().append("g")
                 .attr("class", "stepPointBox");
-
             var speedScale = d3.scale.linear().domain(d3.extent(data.map(function(d, i){return d.rose.length;}))).range([0, 18]);
             //Draw the center Calm
-            stepPointBox.append("circle")
+            var calm = stepPointBox.append("circle")
                 .attr("class", "calm")
-                .attr("cx", function(d) { return xScale(d.date); })
-                .attr("cy", 0) // function(d) { return yScale(0); })
-                .attr("r", 5);
-                    
-            // Draw stepPetalsBox block (on mouse hover point view foreach rose)
+            var timeoutID=null;
+             // Draw stepPetalsBox block (on mouse hover point view foreach rose)
             var stepPetalsBox = g.selectAll(".stepPetalsBox")
                 .data(data).enter().append("g")
                 .attr("class", "stepPetalsBox");
-            
-            stepPetalsBox.append("rect")
+            var sensitive=stepPetalsBox.append("rect")
                 .attr("class", "sensitive")
-                .attr("x", function(d) { return xScale(d.date)-6; })
-                .attr("y", -40) // function(d) { return yScale(0); })
-                .attr("width", 12)
-                .attr("height", 80)
-                .on("click", function(d) { return onClickAction(d); })
-                .append("title")
+            sensitive.append("title")
                 .text(function(d) {
                         return toHumanDate(d.date)+"\nEach item for "+dataheader.step+" min";
                     });
-                
-
-            var visWidth = 30;
-            smallArcScale = d3.scale.linear().domain([0, 4]).range([5, visWidth]).clamp(true);
-
-            //Add conteiner for include petals
-            stepPetalsBox.append("svg:g")
+            sensitive.call(zm=d3.behavior.zoom().x(xScale).scaleExtent([1,1000]).on("zoom", function(){
+                window.clearTimeout(timeoutID);
+                timeoutID = window.setTimeout(function(){zoom(g)}, 400);                
+                g.updateCurve()
+                 .drawAxis ();
+                // console.TimeStep('Zoom');
+            }));
+            var petalsBox = stepPetalsBox.append("svg:g")
                 .attr("class", "petals")
-                .attr("transform", function(d) { return "translate(" + xScale(d.date) + ", 0)"; })
-                .selectAll("path")
-                .data(
-                    // parse each rose
-                    function(d){
-			var sum = d3.sum(d.rose, function(item){return item.Spl;});
-			d.rose.forEach(function (item,index,array){array[index].tSpl=sum; return array;})
-			// console.log (d3.sum(d.rose, function(item){return item.Spl;}),d.rose);
-			return d.rose; }
-                )
-                .enter()
-                .append("svg:path")
-                	.attr("fill", function(d){ return colorScale(d.Spl/d.tSpl); } ) // 
-                    .attr("d",
-                        // build each petal of each rose
+
+
+            g.updateCurve = function(){
+                calm.attr("cx", function(d) { return xScale(d.date); })
+                    .attr("cy", 0) // function(d) { return yScale(0); })
+                    .attr("r", 5);
+
+                sensitive.attr("x", function(d) {return xScale(d.period[0]); })
+                    .attr("y", -40) // function(d) { return yScale(0); })
+                    .attr("width", function(d) {return xScale(d.period[1])-xScale(d.period[0])+1; })
+                    .attr("height", 80)
+                    .on("click", function(d) { return onClickAction(d); })
+                var visWidth = 30;
+                smallArcScale = d3.scale.linear().domain([0, 4]).range([5, visWidth]).clamp(true);
+
+                //Add conteiner for include petals
+                petalsBox.attr("transform", function(d) { return "translate(" + xScale(d.date) + ", 0)"; })
+                    .selectAll("path")
+                    .data(
+                        // parse each rose
                         function(d){
-                            if (d.Spd>0)
-                            { // if a real petal, not the center (calm:no wind, no direction)
-                                var obj={ width: 11, from: 5, to: smallArcScale(d.Spd) };
-                                return d3.svg.arc()
-                                    .startAngle((d.Dir - obj.width) * Math.PI/180)
-                                    .endAngle((d.Dir + obj.width) * Math.PI/180)
-                                    .innerRadius(obj.from)
-                                    .outerRadius(obj.to)();
+                            var sum = d3.sum(d.rose, function(item){return item.Spl;});
+                            d.rose.forEach(function (item,index,array){array[index].tSpl=sum; return array;})
+                            // console.log (d3.sum(d.rose, function(item){return item.Spl;}),d.rose);
+                            return d.rose;
+                        })
+                    .enter()
+                    .append("svg:path")
+                    	.attr("fill", function(d){ return colorScale(d.Spl/d.tSpl); } ) // 
+                        .attr("d",
+                            // build each petal of each rose
+                            function(d){
+                                if (d.Spd>0)
+                                { // if a real petal, not the center (calm:no wind, no direction)
+                                    var obj={ width: 11, from: 5, to: smallArcScale(d.Spd) };
+                                    return d3.svg.arc()
+                                        .startAngle((d.Dir - obj.width) * Math.PI/180)
+                                        .endAngle((d.Dir + obj.width) * Math.PI/180)
+                                        .innerRadius(obj.from)
+                                        .outerRadius(obj.to)();
+                                }
                             }
-                        }
-                    );
+                        );
+                return this;
+            }  
+            g.drawAxis = function(){
+                // chose the possition of x-Axis
+                if (0<yScale.domain()[0])
+                  xPos = yScale.range()[0];
+                else if (yScale.domain()[1]<0)
+                  xPos = yScale.range()[1];
+                else
+                  xPos = yScale(0);
 
-
-            // chose the possition of x-Axis
-            if (0<yScale.domain()[0])
-              xPos = yScale.range()[0];
-            else if (yScale.domain()[1]<0)
-              xPos = yScale.range()[1];
-            else
-              xPos = yScale(0);
-
-            if (withAxis) {
-                // Update the x-axis.
-                g.select(".x.axis")
-                    .attr("transform", "translate(0," + xPos + ")") // axe tjrs en bas : yScale.range()[0] + ")")
-                    .call(xAxis);
+                if (withAxis) {
+                    // Update the x-axis.
+                    g.select(".x.axis")
+                        .attr("transform", "translate(0," + xPos + ")") // axe tjrs en bas : yScale.range()[0] + ")")
+                        .call(xAxis);
+                }
+                return this;
             }
+            g.updateCurve()
+             .drawAxis ();
         });
     }
 
+
+
+    function zoom(g) {
+        var ready = false,
+            dataTsv = false,
+            zmDomain=xScale.domain();
+        console.TimeStep('Zoom');
+        // on demande les infos importante au sujet de notre futur tracé
+        // ces infos permettent de finir le parametrage de notre "Chart"
+        // on charge les données et on lance le tracage
+        d3.tsv( ajaxUrl + "?station="+ station +"&XdisplaySizePxl="+width+"&Since="+formatDate(zmDomain[0],'T')+"&To="+formatDate(zmDomain[1]
+,'T'),
+            function(data2add) {
+                console.TimeStep('load Data Zoom');
+                data2add = data2add.map(function(d, i) {
+                    var date=dateParser.call(data2add, d, i)
+                    return {
+                        date:date,
+                        period:[
+                            new Date(date.getTime()-(60*1000*dataheader.step/2)),
+                            new Date(date.getTime()+(60*1000*dataheader.step/2))
+                        ],
+                        rose:rose.call(data2add, d, i)
+                    };
+                });
+
+                mergedata = data.filter(function(element, index, array){
+                          return (element.date<data2add[0].date || element.date>data2add[data2add.length-1].date);
+                      })
+                   .concat(data2add)
+                   .sort(function (a, b) {
+                       return a.date-b.date;
+                      });
+  
+
+/*
+
+
+
+
+
+
+redraw flower
+
+
+
+
+
+
+
+*/
+
+                if (ready) {
+                    g.updateCurve()
+                     .drawAxis ();
+                }
+                ready = true;
+                dataTsv = data;
+            }
+        );
+        d3.json( ajaxUrl + "?station="+ station +"&XdisplaySizePxl="+width+"&infos=dataheader"+"&Since="+formatDate(zmDomain[0],'T')+"&To="+formatDate(zmDomain[1],'T'),
+            function(header) {
+                console.TimeStep('load Header Zoom');
+
+                chart//.yDomain([header.min, header.max])
+                    .dataheader(header);
+                
+                if (ready) {
+                    g.updateCurve()
+                     .drawAxis ();
+                }
+                ready = true;
+            }
+        );
+    }
     // The x-accessor for the path generator; xScale ∘ dateParser.
     function X(d) {
         return xScale(d.date);
@@ -214,6 +300,7 @@ function timeSeriesChart_histoRose() {
                                 .interpolate(d3.interpolateHsl);
 
 // ================= Property of chart =================
+
 
     chart.loader = function(container,callback) {
         var ready = false,

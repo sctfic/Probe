@@ -39,7 +39,8 @@ function include_histoWind(container, station, XdisplaySizePxl) {
 // ================= Engine build chart of wind by period ====================
 
 function timeSeriesChart_histoWind() {
-    var margin = {top: 5, right: 25, bottom: 5, left: 25},
+    var data,
+        margin = {top: 5, right: 25, bottom: 5, left: 25},
         width = 1800,
         height = 160,
         dataheader = null,
@@ -102,11 +103,13 @@ function timeSeriesChart_histoWind() {
                     Offset=(yScale(d.xSpeed)-yScale(0))-(xScale(d.date)-xScale(domainDate[0]));
                     return Offset>0?Offset:0;  })+1,
             });
+                console.log(xScale.domain(), xScale.range(), width, margin.left, margin.right);
 
-            // Update the x-scale.
+            // Update the x-scale with new margin values
             xScale
-                .domain(domainDate)
-                .range([0, width - margin.left - margin.right]);
+                // .domain(domainDate)
+                .range([0, width - (margin.left + margin.right)]);
+                console.log(xScale.domain(), xScale.range());
 
             // Select the svg element, if it exists.
             var svg = d3.select(this).selectAll("svg").data([data]);
@@ -176,6 +179,8 @@ function timeSeriesChart_histoWind() {
 
             arrow.append("line")
                 .attr("class", "hair");
+            arrow.append("line")
+                .attr("class", "hair2");
             arrow.append("title")
                 .text(function(d) {
                         return "Speed Avg: "+ toHumanSpeed(d.Speed).toFixed(1)+toHumanSpeed()+
@@ -187,7 +192,7 @@ function timeSeriesChart_histoWind() {
                 // Draw arrow block
                 var xExtend=xScale.domain();
                 //Draw the line
-                this.selectAll('.hair')
+                this.selectAll('.hair,.hair2')
                     // on deplace en fonction du nouveau referentiel
                     .attr("x1", function(d) { return xScale(d.date); })
                     .attr("y1", function(d) { return yScale(0); })
@@ -270,11 +275,13 @@ function timeSeriesChart_histoWind() {
                     .enter()
                     .append("g")
                         .attr("class", "arrow")
-                        .attr("new",function(d){return d.date})
+                        // .attr("new",function(d){return d.date})
                         .on("click", onClickAction);
 
                 arrow.append("line")
                     .attr("class", "hair");
+                arrow.append("line")
+                    .attr("class", "hair2");
                 arrow.append("title")
                     .text(function(d) {
                             return "Speed Avg: "+ toHumanSpeed(d.Speed).toFixed(1)+toHumanSpeed()+
