@@ -42,12 +42,12 @@
 	}
 	.sensitive {
 		/*display: none;*/
-		opacity: 0;
+		opacity: 0.1;
 		/*visibility: hidden;*/
 		}
 
 
-	.stepPetalsBox .sensitive:hover + .petals {
+	.hoverBox .sensitive:hover + .petals {
 		visibility: visible;
 		opacity: .8;
 		zoom: 2;

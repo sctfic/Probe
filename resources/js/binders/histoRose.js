@@ -108,87 +108,108 @@ function timeSeriesChart_histoRose() {
                     .attr("height", height)
                     .append("g");
 
-            gEnter.append("path").attr("class", "line");
+            // gEnter.append("path").attr("class", "line");
             gEnter.append("g").attr("class", "x axis");
             // gEnter.append("g").attr("class", "y axis");
 
             // Update the inner dimensions.
             var g = svg.select("g")
                 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-            // Draw stepPointBox block (default point view on chart)
-            var stepPointBox = g.selectAll(".stepPointBox")
-                .data(data).enter().append("g")
-                .attr("class", "stepPointBox");
+            // Draw PointBox block (default point view on chart)
+            g.selectAll(".PointBox")
+                .data(data).enter()
+                .append("g")
+                    .attr("class", "PointBox");
+
             var speedScale = d3.scale.linear().domain(d3.extent(data.map(function(d, i){return d.rose.length;}))).range([0, 18]);
-            //Draw the center Calm
-            var calm = stepPointBox.append("circle")
-                .attr("class", "calm")
+
             var timeoutID=null;
-             // Draw stepPetalsBox block (on mouse hover point view foreach rose)
-            var stepPetalsBox = g.selectAll(".stepPetalsBox")
-                .data(data).enter().append("g")
-                .attr("class", "stepPetalsBox");
-            var sensitive=stepPetalsBox.append("rect")
-                .attr("class", "sensitive")
-            sensitive.append("title")
-                .text(function(d) {
-                        return toHumanDate(d.date)+"\nEach item for "+dataheader.step+" min";
-                    });
-            sensitive.call(zm=d3.behavior.zoom().x(xScale).scaleExtent([1,1000]).on("zoom", function(){
-                window.clearTimeout(timeoutID);
-                timeoutID = window.setTimeout(function(){zoom(g)}, 400);                
-                g.updateCurve()
-                 .drawAxis ();
-                // console.TimeStep('Zoom');
-            }));
-            var petalsBox = stepPetalsBox.append("svg:g")
-                .attr("class", "petals")
+            g.update = function() {
+                var pointBox=this.selectAll('.PointBox');
+                    pointBox.append("circle")  // Draw the center Calm
+                        .attr("class", "calm");
 
+                var hoverBox=pointBox
+                                .append("g")
+                                    .attr("class", "hoverBox");
 
-            g.updateCurve = function(){
-                calm.attr("cx", function(d) { return xScale(d.date); })
-                    .attr("cy", 0) // function(d) { return yScale(0); })
-                    .attr("r", 5);
+                // Draw hoverBox block (on mouse hover point view foreach rose)
+                var sensitive=hoverBox
+                                .append("rect")
+                                    .attr("class", "sensitive");
+                    
+                sensitive
+                    .append("title");
 
-                sensitive.attr("x", function(d) {return xScale(d.period[0]); })
-                    .attr("y", -40) // function(d) { return yScale(0); })
-                    .attr("width", function(d) {return xScale(d.period[1])-xScale(d.period[0])+1; })
-                    .attr("height", 80)
-                    .on("click", function(d) { return onClickAction(d); })
                 var visWidth = 30;
                 smallArcScale = d3.scale.linear().domain([0, 4]).range([5, visWidth]).clamp(true);
 
-                //Add conteiner for include petals
-                petalsBox.attr("transform", function(d) { return "translate(" + xScale(d.date) + ", 0)"; })
-                    .selectAll("path")
-                    .data(
-                        // parse each rose
-                        function(d){
-                            var sum = d3.sum(d.rose, function(item){return item.Spl;});
-                            d.rose.forEach(function (item,index,array){array[index].tSpl=sum; return array;})
-                            // console.log (d3.sum(d.rose, function(item){return item.Spl;}),d.rose);
-                            return d.rose;
-                        })
-                    .enter()
-                    .append("svg:path")
-                    	.attr("fill", function(d){ return colorScale(d.Spl/d.tSpl); } ) // 
-                        .attr("d",
-                            // build each petal of each rose
+                hoverBox
+                    .append("g")// Add conteiner for include petals
+                        .attr("class", "petals")
+                        .attr("transform", function(d) { return "translate(" + xScale(d.date) + ", 0)"; })
+                        .selectAll("path")
+                        .data(
+                            // parse each rose
                             function(d){
-                                if (d.Spd>0)
-                                { // if a real petal, not the center (calm:no wind, no direction)
-                                    var obj={ width: 11, from: 5, to: smallArcScale(d.Spd) };
-                                    return d3.svg.arc()
-                                        .startAngle((d.Dir - obj.width) * Math.PI/180)
-                                        .endAngle((d.Dir + obj.width) * Math.PI/180)
-                                        .innerRadius(obj.from)
-                                        .outerRadius(obj.to)();
+                                var sum = d3.sum(d.rose, function(item){return item.Spl;});
+                                d.rose.forEach(function (item,index,array){array[index].tSpl=sum; return array;})
+                                // console.log (d3.sum(d.rose, function(item){return item.Spl;}),d.rose);
+                                return d.rose;
+                            })
+                        .enter()
+                        .append("svg:path")
+                            .attr("fill", function(d){ return colorScale(d.Spl/d.tSpl); } ) // 
+                            .attr("d",
+                                // build each petal of each rose
+                                function(d){
+                                    if (d.Spd>0)
+                                    { // if a real petal, not the center (calm:no wind, no direction)
+                                        var obj={ width: 11, from: 5, to: smallArcScale(d.Spd) };
+                                        return d3.svg.arc()
+                                            .startAngle((d.Dir - obj.width) * Math.PI/180)
+                                            .endAngle((d.Dir + obj.width) * Math.PI/180)
+                                            .innerRadius(obj.from)
+                                            .outerRadius(obj.to)();
+                                    }
                                 }
-                            }
-                        );
+                            );
                 return this;
             }  
-            g.drawAxis = function(){
+            g.redraw = function() {
+                var xExtend=xScale.domain();
+                this.selectAll('.PointBox')
+                    .attr("display", function(d) {return (d.date>=xExtend[0] && d.date<=xExtend[1])?'inline':'none'; });
+
+                this.selectAll('.calm').attr("cx", function(d) { return xScale(d.date); })
+                    .attr("cy", 0) // function(d) { return yScale(0); })
+                    .attr("r", 5);
+                this.selectAll('.sensitive')
+                    .attr("x", function(d) {return xScale(d.period[0]); })
+                    .attr("y", -40) // function(d) { return yScale(0); })
+                    .attr("width", function(d) {return xScale(d.period[1])-xScale(d.period[0])+1; })
+                    .attr("height", 80)
+                    .on("click", function(d) { return onClickAction(d); });
+                this.selectAll('.sensitive')
+                    .call(zm=d3.behavior.zoom()
+                            .x(xScale)
+                            .scaleExtent([1,1000])
+                            .on("zoom", function(d){
+                                    console.TimeStep('Zoom');
+                                    console.log(d);
+                                    window.clearTimeout(timeoutID);
+                                    timeoutID = window.setTimeout(function(){zoom(g)}, 400);                
+                                    g.redraw()
+                                     .drawAxis ();
+                                }
+                            )
+                        );
+                this.selectAll('.sensitive title').text(function(d) {
+                                return toHumanDate(d.date)+"\nEach item for "+dataheader.step+" min";
+                            });
+                return this;
+            }  
+            g.drawAxis = function() {
                 // chose the possition of x-Axis
                 if (0<yScale.domain()[0])
                   xPos = yScale.range()[0];
@@ -205,7 +226,8 @@ function timeSeriesChart_histoRose() {
                 }
                 return this;
             }
-            g.updateCurve()
+            g.update()
+             .redraw()
              .drawAxis ();
         });
     }
@@ -220,22 +242,24 @@ function timeSeriesChart_histoRose() {
         // on demande les infos importante au sujet de notre futur tracé
         // ces infos permettent de finir le parametrage de notre "Chart"
         // on charge les données et on lance le tracage
-        d3.tsv( ajaxUrl + "?station="+ station +"&XdisplaySizePxl="+width+"&Since="+formatDate(zmDomain[0],'T')+"&To="+formatDate(zmDomain[1]
+        d3.json( ajaxUrl + "?station="+ station +"&XdisplaySizePxl="+width+"&Since="+formatDate(zmDomain[0],'T')+"&To="+formatDate(zmDomain[1]
 ,'T'),
             function(data2add) {
                 console.TimeStep('load Data Zoom');
-                data2add = data2add.map(function(d, i) {
-                    var date=dateParser.call(data2add, d, i)
+                data2add = d3.entries(data2add.data).map(function(d, i) {
+                    var date=dateParser.call(data2add, d, i);
+                    console.log('period n est pas dynamique');
                     return {
                         date:date,
                         period:[
-                            new Date(date.getTime()-(60*1000*dataheader.step/2)),
-                            new Date(date.getTime()+(60*1000*dataheader.step/2))
+                            new Date(date.getTime()-1),
+                            new Date(date.getTime()+1)
                         ],
                         rose:rose.call(data2add, d, i)
                     };
                 });
 
+                    console.log(data2add);
                 mergedata = data.filter(function(element, index, array){
                           return (element.date<data2add[0].date || element.date>data2add[data2add.length-1].date);
                       })
@@ -243,45 +267,18 @@ function timeSeriesChart_histoRose() {
                    .sort(function (a, b) {
                        return a.date-b.date;
                       });
-  
 
-/*
+                // Draw PointBox block (default point view on chart)
+                var PointBox = g.selectAll(".PointBox")
+                    .data(mergedata, function(d) { return d.date; });
+                PointBox.exit().remove();
+                PointBox.enter()
+                    .append("g")
+                    .attr("class", "PointBox");
 
-
-
-
-
-
-redraw flower
-
-
-
-
-
-
-
-*/
-
-                if (ready) {
-                    g.updateCurve()
-                     .drawAxis ();
-                }
-                ready = true;
-                dataTsv = data;
-            }
-        );
-        d3.json( ajaxUrl + "?station="+ station +"&XdisplaySizePxl="+width+"&infos=dataheader"+"&Since="+formatDate(zmDomain[0],'T')+"&To="+formatDate(zmDomain[1],'T'),
-            function(header) {
-                console.TimeStep('load Header Zoom');
-
-                chart//.yDomain([header.min, header.max])
-                    .dataheader(header);
-                
-                if (ready) {
-                    g.updateCurve()
-                     .drawAxis ();
-                }
-                ready = true;
+                g.update()
+                 .redraw()
+                 .drawAxis ();
             }
         );
     }

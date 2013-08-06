@@ -199,7 +199,7 @@ function timeSeriesChart_histoWind() {
                     .attr("x2", function(d) { return xScale(d.date) + d.xSpeed*coef; })
                     .attr("y2", function(d) { return yScale(d.ySpeed); })
                     // on cache les elements hors referentiel
-                    .attr("display", function(d) {return (d.date>xExtend[0] && d.date<xExtend[1])?'inline':'none'; });
+                    .attr("display", function(d) {return (d.date>=xExtend[0] && d.date<=xExtend[1])?'inline':'none'; });
 
                 return this;
             }
@@ -289,29 +289,29 @@ function timeSeriesChart_histoWind() {
                                     "\nAverage on: "+toHumanDate(d.date) ;
                         });
 
-                if (ready) {
+                // if (ready) {
                     g.updateCurve()
                      .drawAxis ();
-                }
-                ready = true;
-                dataTsv = data;
+                // }
+                // ready = true;
+                // dataTsv = data;
             }
         );
 
-        d3.json( ajaxUrl + "?station="+ station +"&XdisplaySizePxl="+width+"&infos=dataheader"+"&Since="+formatDate(zmDomain[0],'T')+"&To="+formatDate(zmDomain[1],'T'),
-            function(header) {
-                console.TimeStep('load Header Zoom');
+        // d3.json( ajaxUrl + "?station="+ station +"&XdisplaySizePxl="+width+"&infos=dataheader"+"&Since="+formatDate(zmDomain[0],'T')+"&To="+formatDate(zmDomain[1],'T'),
+        //     function(header) {
+        //         console.TimeStep('load Header Zoom');
 
-                chart//.yDomain([header.min, header.max])
-                    .dataheader(header);
+        //         chart//.yDomain([header.min, header.max])
+        //             .dataheader(header);
                 
-                if (ready) {
-                    g.updateCurve()
-                     .drawAxis ();
-                }
-                ready = true;
-            }
-        );
+        //         if (ready) {
+        //             g.updateCurve()
+        //              .drawAxis ();
+        //         }
+        //         ready = true;
+        //     }
+        // );
     }
     // The x-accessor for the path generator; xScale ∘ dateParser.
     function X(d) {
