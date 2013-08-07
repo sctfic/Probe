@@ -158,15 +158,15 @@ function timeSeriesChart_histoWind() {
                 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 
-            gEnter=gEnter.append("g");
-
-            gEnter.append("path").attr("class", "line");
-            gEnter.append("g").attr("class", "x axis");
 
             // Update the inner dimensions.
-            var g = svg.select("g")
-                .attr("left","0px")
-                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+            var g = gEnter.append("g")
+                        .attr("left","0px")
+                        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+            // gEnter=gEnter.append("g");
+
+            g.append("path").attr("class", "line");
+            g.append("g").attr("class", "x axis");
 
             var coef = (yScale.range()[0]-yScale.range()[1])/(yScale.domain()[1]-yScale.domain()[0]);
 

@@ -52,7 +52,7 @@ svg {
     fill: none;
     stroke: #3182bd;
     stroke-width: 5px;
-    stroke-opacity: .01;
+    stroke-opacity: 0;
     /*marker-end:url(#arrowhead);*/
 }
 marker polygon {

@@ -130,6 +130,12 @@ function timeSeriesChart_curves() {
             var g = svg.select("g")
                 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
             g.updateCurve = function(){
+                yScale.domain(
+                    d3.extent(
+                        data.filter(function(element, index, array){
+                          return (element.date>=xScale.domain()[0] && element.date<=xScale.domain()[1]);
+                      }), function(d) {return d.val; }));
+
                     // Update the line path.
                     this.select(".line")
                         .attr("d", line(data))

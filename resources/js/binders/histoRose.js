@@ -228,7 +228,7 @@ function timeSeriesChart_histoRose() {
             }
             g.update()
              .redraw()
-             .drawAxis ();
+             .drawAxis();
         });
     }
 
@@ -270,7 +270,7 @@ function timeSeriesChart_histoRose() {
 
                 // Draw PointBox block (default point view on chart)
                 var PointBox = g.selectAll(".PointBox")
-                    .data(mergedata, function(d) { return d.date; });
+                    .data(data2add, function(d) { return d.date; });
                 PointBox.exit().remove();
                 PointBox.enter()
                     .append("g")

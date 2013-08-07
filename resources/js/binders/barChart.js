@@ -26,7 +26,8 @@ function include_barChart(container, station, sensor, XdisplaySizePxl)
 
 
 function timeSeriesChart_barChart() {
-  var   margin = {top: 5, right: 5, bottom: 20, left: 40},
+  var   data,
+        margin = {top: 5, right: 5, bottom: 20, left: 40},
         width = 600,
         height = 160,
         station = null,
@@ -48,22 +49,23 @@ function timeSeriesChart_barChart() {
 
 
     function chart(selection) {
+        md5 = MD5(station+sensor+(new Date()).getMilliseconds());
         // console.log(selection);
         //selection represente la liste de block ou ecire les donnees
-        selection.each(function(data) {
+        selection.each(function(rawdata) {
             // Convert data to standard representation greedily;
             // this is needed for nondeterministic accessors.
-            data = data.map(function(d, i) {
+            data = rawdata.map(function(d, i) {
                 return {
                     date:meanDate.call(data, d, i),
                     val:val.call(data, d, i)
                 };
             });
+
             // Update the x-scale.
             xScale
                 .domain(d3.extent(data, function(d) { return d.date; }))
                 .range([0, width - margin.left - margin.right]);
-                // rangeRoundBands
 
             // Update the y-scale.
             yScale
@@ -74,8 +76,28 @@ function timeSeriesChart_barChart() {
             // Select the svg element, if it exists.
             var svg = d3.select(this).selectAll("svg").data([data]);
 
+
             // Otherwise, create the skeletal chart.
-            var gEnter = svg.enter().append("svg").append("g");
+            var gEnter = svg.enter()
+                        .append("svg")
+                            .attr("width", "100%")
+                            .attr("height", height);
+
+            gEnter.append("svg:clipPath")
+                .attr("id", "" + md5)
+                .append("svg:rect")
+                .attr('width', width - margin.left - margin.right)
+                .attr('height', height - margin.top - margin.bottom);
+
+            var timeoutID=null;
+            var Sensitive = svg.append("rect")
+                .attr("class", "sensitive")
+                .attr('width', width - margin.left - margin.right)
+                .attr('height', height - margin.top - margin.bottom)
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+            var g = gEnter.append("g")
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
             // chose the possition of x-Axis
             if (0<yScale.domain()[0])
@@ -85,64 +107,137 @@ function timeSeriesChart_barChart() {
             else
                 xPos = yScale(0);
 
-            // Draw stepPetalsBox block (on mouse hover point view foreach rose)
-            var stepBarBox = gEnter.selectAll(".stepBarBox")
-                .data(data).enter().append("g")
-                .attr("class", "stepBarBox");
-
-                stepBarBox.append("rect")
-                    .attr("class", "sensitive")
-                    .attr("x", function(d) {return X(d)-1;})
-                    .attr("width", 10)
-                    .attr("height", height)
-                    .on("click", function(d) { return onClickAction(d); })
-                    .append("title")
-                    .text(function(d) {
-                            return toHumanDate(d.date)+"\nEach item for "+dataheader.step+" min\n"+formatVal(+d.val);
-                        });
-
-                // attempt to use circle instead of line < - - - - - - -
-                stepBarBox.append("rect")
-                    .attr("class", "bar")
-                    .attr("x", X)
-                    .attr("y", Y)
-                    .attr("width", 8)
-                    .attr("height", function(d) {return Math.abs(xPos-Y(d));})
-                    .on("click", function(d) { return onClickAction(d); })
-                    .append("title")
-                    .text(function(d) {
-                            return toHumanDate(d.date)+"\nEach item for "+dataheader.step+" min\n"+formatVal(+d.val);
-                        });
-            // Update the inner dimensions.
-            var g = svg.select("g")
-                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-            // Update the line path.
-            // g.select(".line")
-            //     .attr("d", line);
-            
-
             // gEnter.append("path").attr("class", "line");
-            gEnter.append("g").attr("class", "x axis");
-            gEnter.append("g").attr("class", "y axis");
+            g.append("g").attr("class", "x axis");
+            g.append("g").attr("class", "y axis");
 
+            // Draw stepPetalsBox block (on mouse hover point view foreach rose)
+            var BarBox = g.selectAll(".BarBox")
+                .data(data)
+                .enter()
+                .append("g")
+                    .attr("class", "BarBox")
+                    .attr("clip-path", "url(#" + md5 + ")")
+                    .append("rect")
+                        .attr("class", "bar")
+                        .append("title");
+
+            g.updateCurve = function(){
+                yScale.domain(
+                    d3.extent(
+                        data.filter(function(element, index, array){
+                          return (element.date>=xScale.domain()[0] && element.date<=xScale.domain()[1]);
+                      }), function(d) {return d.val; }));
+
+                this.selectAll(".BarBox rect")
+                            .attr("x", X)
+                            .attr("y", Y)
+                            .attr("width", 8)
+                            .attr("height", function(d) {return Math.abs(xPos-Y(d));})
+                            .on("click", function(d) { return onClickAction(d); })
+                            .select('title')
+                            .text(function(d) {
+                                    return toHumanDate(d.date)+"\nEach item for "+dataheader.step+" min\n"+formatVal(+d.val);
+                                });
+
+                return this;
+            }
+
+            g.drawAxis = function(){
+                // Update the x-axis.
+                this.select(".x.axis")
+                    .attr("transform", "translate(0," + xPos + ")") // axe tjrs en bas : yScale.range()[0] + ")")
+                    .call(xAxis);
+                this.select(".y.axis")
+                    .attr("transform", "translate(0,0)")
+                    .call(yAxis);
+
+                return this;
+            }
             // Update the outer dimensions.
             svg .attr("width", width)
                 .attr("height", height);
 
-            // Update the x-axis.
-            g.select(".x.axis")
-                .attr("transform", "translate(0," + xPos + ")") // axe tjrs en bas : yScale.range()[0] + ")")
-                .call(xAxis);
-            g.select(".y.axis")
-                .attr("transform", "translate(0,0)")
-                .call(yAxis);
+            Sensitive.call(zm=d3.behavior.zoom().x(xScale).scaleExtent([1,1000]).on("zoom", function(){
+                window.clearTimeout(timeoutID);
+                timeoutID = window.setTimeout(function(){zoom(g)}, 400);                
+                g.updateCurve()
+                 .drawAxis ();
+                // console.TimeStep('Zoom');
+            }));
+
+            g.updateCurve()
+             .drawAxis();
         });
     }  
 
 
 
+    function zoom(g) {
+        var ready = false,
+            dataTsv = false,
+            zmDomain=xScale.domain();
+        console.TimeStep('Zoom');
+        // on demande les infos importante au sujet de notre futur tracé
+        // ces infos permettent de finir le parametrage de notre "Chart"
+        // on charge les données et on lance le tracage
+        d3.tsv( ajaxUrl + "?station="+ station +"&XdisplaySizePxl="+width+"&Since="+formatDate(zmDomain[0],'T')+"&To="+formatDate(zmDomain[1]
+,'T'),
+            function(data2add) {
+                console.TimeStep('load Data Zoom');
+                data2add = data2add.map(function(d, i) {
+                    return {
+                        date:meanDate.call(data, d, i),
+                        val:val.call(data, d, i)
+                    };
+                });
+                
+                mergedata = data.filter(function(element, index, array){
+                          return (element.date<data2add[0].date || element.date>data2add[data2add.length-1].date);
+                      })
+                   .concat(data2add)
+                   .sort(function (a, b) {
+                       return a.date-b.date;
+                      });
 
+                var bars = g.selectAll(".BarBox")
+                    .data(mergedata);
+
+                bars.exit().remove();
+                console.log(bars.exit(), bars.enter());
+                
+                // bars.enter()
+                //     .append("g")
+                //         .attr("class", "BarBox")
+                //         .attr("clip-path", "url(#" + md5 + ")")
+                //         .append("rect")
+                //             .attr("class", "bar")
+                //             .append("title");
+
+                // if (ready) {
+                    g.updateCurve()
+                     .drawAxis ();
+                // }
+                // ready = true;
+                // dataTsv = data;
+            }
+        );
+
+        // d3.json( ajaxUrl + "?station="+ station +"&XdisplaySizePxl="+width+"&infos=dataheader"+"&Since="+formatDate(zmDomain[0],'T')+"&To="+formatDate(zmDomain[1],'T'),
+        //     function(header) {
+        //         console.TimeStep('load Header Zoom');
+
+        //         chart//.yDomain([header.min, header.max])
+        //             .dataheader(header);
+                
+        //         if (ready) {
+        //             g.updateCurve()
+        //              .drawAxis ();
+        //         }
+        //         ready = true;
+        //     }
+        // );
+    }
 
     // The x-accessor for the path generator; xScale ∘ meanDate.
     function X(d) {

@@ -38,16 +38,13 @@
         fill: #aec7e8;
         stroke: #1F77B4;
         stroke-width: 1px;
-        /*shape-rendering: crispEdges;*/
+        shape-rendering: crispEdges;
         }
 
-    .bar:hover, .sensitive:hover + .bar {
+    .bar:hover, .sensitive:hover > .bar {
         stroke: #E6550D;
         stroke-width: 2px;
         shape-rendering: crispEdges;
-        }
-    .sensitive {
-        opacity: 0;
         }
 
     .axis line,.axis path {
@@ -55,6 +52,9 @@
         stroke: #2C3539;
         stroke-width: 1px;
         shape-rendering: crispEdges;
+    }
+    .sensitive {
+        opacity: 0;
     }
     </style>
 
