@@ -128,7 +128,6 @@ function timeSeriesChart_barChart() {
                         data.filter(function(element, index, array){
                           return (element.date>=xScale.domain()[0] && element.date<=xScale.domain()[1]);
                       }), function(d) {return d.val; }));
-
                 this.selectAll(".BarBox rect")
                             .attr("x", X)
                             .attr("y", Y)
@@ -181,7 +180,7 @@ function timeSeriesChart_barChart() {
         // on demande les infos importante au sujet de notre futur tracé
         // ces infos permettent de finir le parametrage de notre "Chart"
         // on charge les données et on lance le tracage
-        d3.tsv( ajaxUrl + "?station="+ station +"&XdisplaySizePxl="+width+"&Since="+formatDate(zmDomain[0],'T')+"&To="+formatDate(zmDomain[1]
+        d3.tsv( ajaxUrl + "?station="+ station +"&sensor=" + sensor +"&XdisplaySizePxl="+width+"&Since="+formatDate(zmDomain[0],'T')+"&To="+formatDate(zmDomain[1]
 ,'T'),
             function(data2add) {
                 console.TimeStep('load Data Zoom');
@@ -192,7 +191,7 @@ function timeSeriesChart_barChart() {
                     };
                 });
                 
-                mergedata = data.filter(function(element, index, array){
+                data = data.filter(function(element, index, array){
                           return (element.date<data2add[0].date || element.date>data2add[data2add.length-1].date);
                       })
                    .concat(data2add)
@@ -201,20 +200,19 @@ function timeSeriesChart_barChart() {
                       });
 
                 var bars = g.selectAll(".BarBox")
-                    .data(mergedata);
+                    .data(data, function(d) { return d.date; });
 
                 bars.exit().remove();
-                console.log(bars.exit(), bars.enter());
                 
-                // bars.enter()
-                //     .append("g")
-                //         .attr("class", "BarBox")
-                //         .attr("clip-path", "url(#" + md5 + ")")
-                //         .append("rect")
-                //             .attr("class", "bar")
-                //             .append("title");
+                bars.enter()
+                    .append("g")
+                        .attr("class", "BarBox")
+                        .attr("clip-path", "url(#" + md5 + ")")
+                        .append("rect")
+                            .attr("class", "bar")
+                            .append("title");
 
-                // if (ready) {
+                // if (ready) {k
                     g.updateCurve()
                      .drawAxis ();
                 // }
