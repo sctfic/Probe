@@ -35,23 +35,37 @@ svg {
     stroke-width: 1px;
     shape-rendering: crispEdges;
 }
-.arrow:hover>.hair, .arrow:hover>.marker {
+.arrow:hover>.hair {
     stroke: #E6550D;
     stroke-width: 2px;
+    marker-end:url(#arrowheadHover);
 }
+
 /*Blue:#1F77B4 #3182bd #6baed6*/
 /*Red:#E6550D*/
 .hair {
     fill: none;
     stroke: #3182bd;
-    stroke-width: 1px;
-    /*shape-rendering: crispEdges;*/
+    marker-end:url(#arrowhead);
 }
-.marker {
+.hair2 {
+    fill: none;
+    stroke: #3182bd;
+    stroke-width: 5px;
+    stroke-opacity: 0;
+    /*marker-end:url(#arrowhead);*/
+}
+marker polygon {
+    fill:#FFF;
+}
+
+/*.marker {
     fill: #FFF;
     stroke: #3182bd;
     stroke-width: .7px;
-    /*shape-rendering: crispEdges;*/
+}*/
+.sensitive {
+    opacity: 0;
 }
 </style>
 <script>

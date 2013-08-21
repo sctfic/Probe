@@ -31,7 +31,7 @@
 	}
 	function RainSample2mm($Sample, $auge) {
 		// global $auge;
-        where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,array($Sample, $auge));
+        // where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,array($Sample, $auge));
     //     CURRENT	- 2013/Jun/10 14:21:03 -> s.i.converter_helper.php [34]:/RainSample2mm(
 				// > Array( [0]=> [1]=>))
 

@@ -53,4 +53,9 @@
             <?php endif;?>
         </li>
     </ul>
+        <ul class="nav pull-right">
+        <li><a href="³" class="has_bottom_tooltip"><i class="icon-globe"></i></a></li>
+        <li><a href="#" class="has_bottom_tooltip"><i class="icon-user"></i></a></li>
+        <li><a href="#" class="has_bottom_tooltip"><i class="icon-wrench"></i></a></li>
+    </ul>
 </div>

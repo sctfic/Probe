@@ -14,13 +14,13 @@
 ?>
 <div id="resizable" class="ui-widget-content">
     <p>teste de truc a raconter au sujet de cette courbe
-        <span id="curveSvgArea01">
+        <span id="curveSvgArea01" style="width:100px">
             <!-- d3 content should be -dynamically- placed here -->
         </span> y a aussi d'autre infos
-        <span id="curveSvgArea02">
+        <span id="curveSvgArea02" width:100px>
             <!-- d3 content should be -dynamically- placed here -->
         </span> et des donnees suplementaire
-        <span id="curveSvgArea03">
+        <span id="curveSvgArea03" style="width:100px">
             <!-- d3 content should be -dynamically- placed here -->
         </span>
     </p>
@@ -95,15 +95,15 @@ svg {
 </style>
 <script>
     function probeViewer(){
-        include_smallcurves("#curveSvgArea01", '<?=$station?>', 'TA:Arch:Hum:In:Current', 60);
-        include_smallcurves("#curveSvgArea02", '<?=$station?>', 'TA:Arch:Various:Bar:Current', 50);
-        include_smallcurves("#curveSvgArea03", '<?=$station?>', 'TA:Arch:Various:Wind:SpeedAvg', 300);
-        include_curves("#curveSvgArea1", '<?=$station?>', '<?=$sensor?>', 500);
-        include_curves("#curveSvgArea2", '<?=$station?>', 'TA:Arch:Temp:In:Average', 600);
-        include_curves("#curveSvgArea3", '<?=$station?>', 'TA:Arch:Various:Solar:HighRadiation', 700);
-        include_curves("#curveSvgArea4", '<?=$station?>', 'TA:Arch:Various:UV:IndexAvg', 1900);
-        include_curves("#curveSvgArea5", '<?=$station?>', 'TA:Arch:Hum:Out:Current', 1900);
-        include_curves("#curveSvgArea6", '<?=$station?>', 'TA:Arch:Various:Bar:Current', 1900);
+        include_nudecurves("#curveSvgArea01", '<?=$station?>', 'TA:Arch:Hum:In:Current', 60);
+        include_nudecurves("#curveSvgArea02", '<?=$station?>', 'TA:Arch:Various:Bar:Current', 50);
+        include_nudecurves("#curveSvgArea03", '<?=$station?>', 'TA:Arch:Various:Wind:SpeedAvg', 300);
+        // include_curves("#curveSvgArea1", '<?=$station?>', '<?=$sensor?>', 500);
+        // include_curves("#curveSvgArea2", '<?=$station?>', 'TA:Arch:Temp:In:Average', 600);
+        // include_curves("#curveSvgArea3", '<?=$station?>', 'TA:Arch:Various:Solar:HighRadiation', 700);
+        // include_curves("#curveSvgArea4", '<?=$station?>', 'TA:Arch:Various:UV:IndexAvg', $('#resizable').width()-20);
+        // include_curves("#curveSvgArea5", '<?=$station?>', 'TA:Arch:Hum:Out:Current', $('#resizable').width()-20);
+        include_curves("#curveSvgArea6", '<?=$station?>', 'TA:Arch:Various:Wind:SpeedAvg', $('#resizable').width()-20);
 
     }
 

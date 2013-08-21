@@ -42,12 +42,12 @@
 	}
 	.sensitive {
 		/*display: none;*/
-		opacity: 0;
+		opacity: 0.1;
 		/*visibility: hidden;*/
 		}
 
 
-	.stepPetalsBox .sensitive:hover + .petals {
+	.hoverBox .sensitive:hover + .petals {
 		visibility: visible;
 		opacity: .8;
 		zoom: 2;
@@ -86,7 +86,7 @@
 	</style>
 <script>
 	function probeViewer(){
-		include_histoRose("#svgArea", '<?=$station?>', 1640);
+		include_histoRose("#svgArea", '<?=$station?>', 1900);
 	}
 	</script>
 <script src="/resources/js/ProbeTools.js"></script>

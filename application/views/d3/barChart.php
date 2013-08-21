@@ -1,5 +1,5 @@
 <?php
-/** dotChart.php
+/** barChart.php
 * D3 binder to visualize <dataset> data
 *
 * @category D3Binder
@@ -23,31 +23,21 @@
     svg {
     	font-size: 10px;
         }
-    /*.line {
-        fill: none;
-        stroke: #000;
-        stroke-width: 1px;
-        }*/
-/*    .dot {
-        fill: #fff;
-        stroke: #1F77B4;
-        stroke-width: 0.5px;
-        }
-*/
+
+    .Barbox {
+        /*clip-path:url(#8b65a37af5cb476adf3e0e0e623b1896);*/
+    }
     .bar {
         fill: #aec7e8;
         stroke: #1F77B4;
         stroke-width: 1px;
-        /*shape-rendering: crispEdges;*/
+        shape-rendering: crispEdges;
         }
 
-    .bar:hover, .sensitive:hover + .bar {
+    .bar:hover, .sensitive:hover > .bar {
         stroke: #E6550D;
         stroke-width: 2px;
         shape-rendering: crispEdges;
-        }
-    .sensitive {
-        opacity: 0;
         }
 
     .axis line,.axis path {
@@ -55,6 +45,9 @@
         stroke: #2C3539;
         stroke-width: 1px;
         shape-rendering: crispEdges;
+    }
+    .sensitive {
+        opacity: 0;
     }
     </style>
 

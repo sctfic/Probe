@@ -40,7 +40,8 @@
     include_curve("#dotsvgArea", '<?=$station?>', '<?=$sensor?>', 1900);
   }
 </script>
-<script src="/resources/js/ProbeTools.js"></script>
-<script src="/resources/js/libs/base64.js"></script>
-<script src="/resources/js/libs/jquery-ui-1.10.2.custom.js"></script>
 
+    <script src="/resources/js/libs/d3.v3.js"></script>
+    <script src="/resources/js/ProbeTools.js"></script>
+    <script src="/resources/js/libs/base64.js"></script>
+    <!-- <script src="/resources/js/libs/jquery-ui-1.10.2.custom.js"></script> -->

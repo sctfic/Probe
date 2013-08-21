@@ -95,7 +95,7 @@ class Station extends CI_Model {
 			$stationsList[array_search($item, $this->stationsList)]=$item;
 		}
 		else throw new Exception(
-            i18n('error.parameter:type-exception.label')
+            // i18n('error.parameter:type-exception.label')
         );
 		
 		$query = 'SELECT * FROM `TR_CONFIG` WHERE `CFG_STATION_ID`=? LIMIT 100';
