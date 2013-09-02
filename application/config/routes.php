@@ -38,14 +38,30 @@
 |
 */
 
-$route['default_controller'] = "setup/installer";
+$route['default_controller'] = "install";
 // $route['default_controller'] = "welcome";
 $route['404_override'] = '';
 
 $route['admin'] = "admin/admin";
-$route['setup'] = "setup/installer";
-$route['viewer/(:any)/(:any)/(:any)'] = "viewer/$1?station=$2&sensor=$3";
+$route['login'] = "admin/admin/connexion";
+$route['logout'] = "admin/admin/logout";
+$route['install/admin-user'] = "install/adminUser";
+$route['install/setup-administrator'] = "install/setupAdministrator";
+// $route['configuration'] = 'configuration/listStations';
+$route['configuration/stations'] = 'configuration/index';
+$route['configuration/list-stations'] = 'configuration/listStations';
+$route['configuration/add-station'] = "configuration/addStation";
+$route['configuration/do/add-station'] = "cmd/makeNewStation";
+$route['configuration/remove-station'] = "configuration/removeStation";
+$route['configuration/remove-station/(:any)'] = "configuration/removeStation/$1";
+$route['configuration/update-station'] = "configuration/updateStation";
+$route['configuration/update-station/(:any)'] = "configuration/updateStation/$1";
+// $route['viewer/(:any)/(:any)/(:any)'] = "viewer/index/$1?station=$2&sensor=$3";
 
+$route['dashboard'] = "viewer";
+$route['list-viewer'] = "viewer";
+$route['viewer/(:any)'] = "viewer/index/$1";
+$route['dashboard/(:any)'] = "viewer/index/$1";
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

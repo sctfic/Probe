@@ -129,7 +129,7 @@ class Bcrypt {
 	protected function gensalt_private($input)
 	{
 		$output = '$P$';
-		$output .= $this->_itoa64[min($this->iteration_count_log2 +
+		$output .= $this->_itoa64[min($this->_iteration_count +
 			((PHP_VERSION >= '5') ? 5 : 3), 30)];
 		$output .= $this->encode64($input, 6);
 
@@ -183,7 +183,7 @@ class Bcrypt {
 
 	protected function gensalt_extended($input)
 	{
-		$count_log2 = min($this->iteration_count_log2 + 8, 24);
+		$count_log2 = min($this->_iteration_count + 8, 24);
 		# This should be odd to not reveal weak DES keys, and the
 		# maximum valid value is (2**24 - 1) which is odd anyway.
 		$count = (1 << $count_log2) - 1;
@@ -212,8 +212,8 @@ class Bcrypt {
 		$itoa64 = './ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
 		$output = '$2a$';
-		$output .= chr(ord('0') + $this->iteration_count_log2 / 10);
-		$output .= chr(ord('0') + $this->iteration_count_log2 % 10);
+		$output .= chr(ord('0') + $this->_iteration_count / 10);
+		$output .= chr(ord('0') + $this->_iteration_count % 10);
 		$output .= '$';
 
 		$i = 0;
@@ -244,7 +244,7 @@ class Bcrypt {
 	{
 		$random = '';
 
-		if (CRYPT_BLOWFISH == 1 && !$this->portable_hashes) {
+		if (CRYPT_BLOWFISH == 1 && !$this->_portable_hashes) {
 			$random = $this->get_random_bytes(16);
 			$hash =
 			    crypt($password, $this->gensalt_blowfish($random));
@@ -252,7 +252,7 @@ class Bcrypt {
 				return $hash;
 		}
 
-		if (CRYPT_EXT_DES == 1 && !$this->portable_hashes) {
+		if (CRYPT_EXT_DES == 1 && !$this->_portable_hashes) {
 			if (strlen($random) < 3)
 				$random = $this->get_random_bytes(3);
 			$hash =

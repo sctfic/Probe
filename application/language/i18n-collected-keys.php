@@ -1,10 +1,107 @@
-<?
-/* 
-* This file contains the dynamic i18n key logged with i18n( $string , true );
+<?php
+/*
+* This file contains the dynamic i18n key logged with i18n( $string , true );;
 * dynamic keys can't correctly retrieved by gettext as they exists only at run time
-* so we log them and then collected them in a file using a bash script : 
-	BASEPATH="$HOME/probe"; # I host the project in my home directory
-	cd "$BASEPATH";
-	grep 'I18N' "$BASEPATH"/logs/log-*.php >> "$APPPATH"/language/i18n-collected-keys.php
+* so we log them and then collected them in a file using a bash script :
+    BASEPATH="$HOME/probe"; # I host the project in my home directory
+    cd "$BASEPATH";
+    grep 'I18N' "$BASEPATH"/logs/log-*.php >> "$APPPATH"/language/i18n-collected-keys.php
 */
-_();
+i18n('configuration-add-station.title.metadata');
+i18n('configuration-add-station.description.metadata');
+i18n('configuration-station.network-_ip.label');
+i18n('configuration-station.network-_ip.placeholder');
+i18n('configuration-station.network-_name.label');
+i18n('configuration-station.network-_name.placeholder');
+i18n('configuration-station.network-_port.label');
+i18n('configuration-station.network-_port.placeholder');
+i18n('configuration-station.network-_type.label');
+i18n('configuration-station.network-_type.placeholder');
+i18n('configuration-station-list.title.metadata');
+i18n('configuration-station-list.description.metadata');
+i18n('login.title.metadata');
+i18n('login.description.metadata');
+i18n('configuration-station.dbms.label');
+i18n('configuration-station.network.label');
+i18n('configuration-dbms.title.metadata');
+i18n('configuration-dbms.description.metadata');
+i18n('configuration-admin-user.title.metadata');
+i18n('configuration-admin-user.description.metadata');
+i18n('windrose.title.metadata');
+i18n('windrose.description.metadata');
+i18n('probe.authors.metadata');
+i18n('curve.title.metadata');
+i18n('curve.description.metadata');
+i18n('currents.title.metadata');
+i18n('currents.description.metadata');
+i18n('curves.title.metadata');
+i18n('curves.description.metadata');
+i18n('SmartCurve.title.metadata');
+i18n('SmartCurve.description.metadata');
+i18n('SmartCurves.title.metadata');
+i18n('SmartCurves.description.metadata');
+i18n('SmartChart.title.metadata');
+i18n('SmartChart.description.metadata');
+i18n('histoWind.title.metadata');
+i18n('histoWind.description.metadata');
+i18n('wind.title.metadata');
+i18n('wind.description.metadata');
+i18n('configuration-list-station.title.metadata');
+i18n('configuration-list-station.description.metadata');
+i18n('configuration-station.list.breadcrumb');
+i18n('configuration-station.dashboard.breadcrumb');
+i18n('configuration-station.add.breadcrumb');
+i18n('histoWind.view.label');
+i18n('exemple.title.metadata');
+i18n('exemple.description.metadata');
+i18n('configuration-dbms.engine:mysql.label');
+i18n('configuration-dbms.engine:sqlite.label');
+i18n('configuration-dbms.username.label');
+i18n('configuration-dbms.username.placeholder');
+i18n('configuration-dbms.password.label');
+i18n('configuration-dbms.password.placeholder');
+i18n('configuration-dbms.host.label');
+i18n('configuration-dbms.host.placeholder');
+i18n('configuration-dbms.port.label');
+i18n('configuration-dbms.port.placeholder');
+i18n('install-dbms.title.metadata');
+i18n('install-dbms.description.metadata');
+i18n('install.dbms.breadcrumb');
+i18n('install-admin-user.title.metadata');
+i18n('install-admin-user.description.metadata');
+i18n('install.administrator.breadcrumb');i18n('cli-info.open-connexion[%s].label');
+i18n('cli-warning.available-connexion[%s]:fail.label');
+i18n('SmartCurve.view.label');
+i18n('bracketChart.title.metadata');
+i18n('bracketChart.description.metadata');
+i18n('bracketChart.view.label');
+i18n('windrose.view.label');
+i18n('histoRose.title.metadata');
+i18n('histoRose.description.metadata');
+i18n('histoRose.view.label');
+i18n('SmartCurves.view.label');
+i18n('list-view.title.metadata');
+i18n('list-view.description.metadata');
+i18n('list-viewer');
+i18n('hitoRose.title.metadata');
+i18n('hitoRose.description.metadata');
+i18n('dotShart.title.metadata');
+i18n('dotShart.description.metadata');
+i18n('dotShart.view.label');
+i18n('viewer.dashboard.breadcrumb');
+i18n('viewer.list.breadcrumb');
+i18n('install.login.breadcrumb');
+i18n('barChart.title.metadata');
+i18n('barChart.description.metadata');
+i18n('windRose.title.metadata');
+i18n('windRose.description.metadata');
+i18n('smartCurve.title.metadata');
+i18n('smartCurve.description.metadata');
+i18n('smartCurves.title.metadata');
+i18n('smartCurves.description.metadata');
+i18n('smartCart.title.metadata');
+i18n('smartCart.description.metadata');
+i18n('smartChart.title.metadata');
+i18n('smartChart.description.metadata');
+i18n('dotChart.title.metadata');
+i18n('dotChart.description.metadata');

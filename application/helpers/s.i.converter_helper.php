@@ -1,5 +1,6 @@
 <?php
 // http://www.davisnet.com/support/weather/downloads/software_direct.asp?SoftCat=4&SoftwareID=172
+// http://www.periodni.com/fr/systeme_international_d_unites.html
 /**
 		#################################################################################
 		################	Function for RAW data convertion	#################
@@ -11,20 +12,37 @@
 	function F2kelvin($val){ // convert °F to Kelvin
 		return round(($val+459.67)*5/9, 2);
 	}
+
+
+	function MPH2SI($val) {
+		return mph2mBySec($val);
+	}
 	function mph2mBySec($val){ // convert milles per hour speed 
 		return round($val/2.23693629, 3); // (3600/((5280*12)*0.0254));
 	}
 	function mph2KmByh($val){ // convert milles per hour speed 
-		return round($val*1,609.345, 2); // (3600/((5280*12)*0.0254));
+		return round($val*1.609344, 2); // (3600/((5280*12)*0.0254));
 	}
-	function inHg2hPa ($val){
+
+
+	function inHg2Pa ($val){
 		//		http://www.sensorsone.co.uk/pressure-measurement-glossary/inhg-inch-of-mercury-0-deg-c-pressure-unit.html#factors
-		return round(33.8639*$val, 2)	;
+		return round(3386.39*$val, 0)	;
 	}
-	function RainSample2mm($Sample) {
-		global $auge;
+	function RainSample2mm($Sample, $auge) {
+		// global $auge;
+        // where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,array($Sample, $auge));
+    //     CURRENT	- 2013/Jun/10 14:21:03 -> s.i.converter_helper.php [34]:/RainSample2mm(
+				// > Array( [0]=> [1]=>))
+
+// UPDATE  `TA_VARIOUS` SET  `VALUE` =  `VALUE` /5,
+// UTC = UTC WHERE (
+// 		`SEN_ID` =5 OR  `SEN_ID` =6
+// ) AND (
+// 		`VALUE` =1 OR  `VALUE` =2 OR  `VALUE` =3 OR  `VALUE` =4 OR  `VALUE` =5 OR  `VALUE` =6
+// )
 		switch ($auge){
-			case 0: // Inche
+			case 0: // 0.1 Inche to mm
 			return $Sample/10*2.54;
 				break;
 			case 1: // 0.2 Millimettre
@@ -47,6 +65,10 @@
 	function ft2m($val){
 		return round($val/3.2808, 2);
 	}
+	function none($val){
+		return $val;
+	}
+
 	
 /**
 	function P_Alt_0($P_VP2, $Elevation_in_m, $Temp_in_K, $gravity = 9.80665) {
@@ -79,7 +101,14 @@
 	
 	function GMT($str) {// ...
 		$val = s2sSht($str);
-		return (int)($val/100).":".str_pad((abs($val)%100),2,"0",STR_PAD_LEFT);
+		return (abs($val)<1000 ?
+			($val<0 ?
+				'-0'.(int)(abs($val)/100):
+				'+0'.(int)($val/100))
+			:(int)($val/100))
+		.":".str_pad((abs($val)%100),2,"0",STR_PAD_LEFT);
+
+		// return (int)($val/100).":".str_pad((abs($val)%100),2,"0",STR_PAD_LEFT);
 	}
 	function Station($str) {// ...
 		return null;

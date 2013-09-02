@@ -77,7 +77,7 @@ class CI_Log {
 		if ( ! $fp = @fopen($filepath, FOPEN_WRITE_CREATE))	{
 			return FALSE;
 		}
-		$message .= $level."\t- ".date($this->_date_fmt). ' -> '.str_replace ("\n", "\n\t\t\t\t > ", $msg)."\n";
+		$message .= $level."\t- ".date($this->_date_fmt). ' -> '.str_replace ("\n", "\n\t\t\t\t> ", $msg)."\n";
 		
 		if ($this->_levels[$level] <= $this->_verbose && $this->_levels[$level] > 2)	{
 			if (RUNNER=='WEB' and $this->_levels[$level]<=3) // en web
@@ -99,7 +99,7 @@ class CI_Log {
 		fwrite($fp, $header.$message);
 		flock($fp, LOCK_UN);
 		fclose($fp);
-		@chmod($filepath, FILE_WRITE_MODE);
+		//@chmod($filepath, FILE_WRITE_MODE);
 		return TRUE;
 	}
 }

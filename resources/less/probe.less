@@ -1,6 +1,6 @@
 @import "bootstrap/bootstrap.less";
 @import "bootstrap/responsive.less";
-@import "dashboard.less";
+@import "../sass/../sass/dashboard.scss";
 
 /* 
 * Migration LESS to SASS : https://github.com/jlong/sass-twitter-bootstrap 
@@ -8,7 +8,7 @@
 
 
 @smallPadding: .25em;
-@borderGrey: #999;
+@borderGrey: #DDD;
 @borderColor: #ccc;
 @contentBeforeAfter: #999;
 @contentBeforeAfter-properties: #729fcf;
@@ -24,11 +24,37 @@ body {
   padding-bottom: 40px;
 }
 
+.smallrose {
+    float: left;
+    position: relative;
+    width: 60px;
+    height: 60px;
+    margin: -17px;
+    z-index:1;
+}
+circle {
+    position:relative;
+
+}
+circle:hover+.petals {
+    position:relative;
+    display:block;
+}
+.petals {
+    position:absolute;
+    /*display:none;*/
+}
+
 .breadcrumb {
     .border-radius(0);
 }
 .breadcrumb .active {
     font-weight: bold; 
+}
+abbr {
+    text-transform: lowercase;
+    font-size: larger;
+    font-variant: small-caps;
 }
 article {
     width: 90%;
@@ -69,7 +95,8 @@ article {
     position: relative;
     top: auto;
     left: auto;
-    margin: 0 auto;
+    margin: 1em auto 0;
+    max-height: 600px;
 }
     #authentification {
         > fieldset
@@ -77,25 +104,25 @@ article {
 /*             .debugBox; */
         }
         > fieldset {
-            width: 49.5%;
+            /*width: 70%;*/
             float: left;
-            background: @backgroundColorForm;
+            /*background: @backgroundColorForm;*/
             border-right: thin dotted @borderGrey;
-            input { width: 90%; }
-            input[type="submit"] {
+            /*input { width: 90%; }*/
+/*            input[type="submit"] {
                 margin: 1em auto 0;
                 width: 50%;
                 height: 4em;
                 line-height: 4em;
             }
-        }
+*/        }
         > aside {
-            width: 50%;
+            width: 25%;
             float: right;
-            border-left: thin solid transparent;
+            /*border-left: thin solid transparent;*/
             .now {
                 position: relative;
-                height: 225px;
+                /*height: 225px;*/
                 width: 100%;
                 background: url("/resources/icons/weather-clear.png") no-repeat scroll 0% 0% transparent;
 /*                 .debugBox; */
@@ -114,6 +141,9 @@ article {
                 .transition(@transition);
             }
         }
+        > aside + .modal-footer { 
+            clear: both;
+        }
     }
     .btn {
         display: block;
@@ -127,17 +157,34 @@ footer {
     .modal-body;
     text-align: center;
     margin-top: @loginFooterMarginTop; 
+    margin-top: 1em;
     .textShadowLight;
     width: 100%;
     .center-block();
+    padding: 1em 0;
 }
-
+footer {
+    > a > img {
+        vertical-align: middle;
+        width: 80px;
+    }
+}
 .form-errors {
     padding: @smallPadding;
     color: @errorText;
     background-color: @errorBackground;
 }
-
+/*
+  DBMS configuration
+*/
+#dbms {
+  input[type="radio"] {
+    margin-top: 0;
+  }
+  #dbms-path {
+    display: none;
+  }
+}
 #admin-station {
     section {
         width: 50%;
@@ -219,6 +266,21 @@ footer {
     }
 }
 
+#add-station {
+    .modal-header { 
+        padding-bottom: 0; 
+        border-bottom: none;
+        > .nav {
+            margin-bottom: 0;
+        }
+    }
+}
+#stations-form {
+  > .btn {
+    clear: both;
+  }
+
+}
 
 
 

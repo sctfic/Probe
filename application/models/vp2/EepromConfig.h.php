@@ -3,6 +3,7 @@
 /// XII. EEPROM configuration settings (See Docs on pages 35, 36, 37, 38)
 // ##############################################################################################
 /**
+* @param keyName
 Convention de nomage :
 > Debut de chaine '/^'
 > Type de Donnes en base :
@@ -23,6 +24,8 @@ Convention de nomage :
 > Type de donnée :
 			Hum = Humidité  
 			Temp = Temperature (<!> il en existe 3 format)
+			Rain = Pluviometrie
+			ET = evapotranspiration
 			SoilMoisture = Soil Moisture - l’humidité superficielle du sol
 			LeafWetness = Leaf wetness - l’humidité residuelle sur le feuillage
 			Various = pour les autres données, vent pression, UV, ...
@@ -33,24 +36,33 @@ Convention de nomage :
 > Descriptif valeur :
 			infos sur la valeur relevée ex : Wind:Dir, Wind:Speed, Wind:10mSpeedAvg
 >Fin de chaine '$/'
+*
+* @param pos => possition of the raw data for this sensor  in the VP2 returned RAW string
+* @param len => lenth of the raw string result for this sensor
+* @param fn => how to convert raw data to number value
+* @param SI => how to convert native UNIT to SI unit (NULL if is already in SI unit)
+* @param min => min value on the earth *in the native unit
+* @param max => max value on the earth *in the native unit
+* @param err => returned value if error on this sensor
+* @param unit => native unit
 **/
 
 	$this->EEPROM = array (
 	'TR:Config:Bar:Calibration:Gain'	=>	array( 'pos' => 1,	'len' => 2,	'w'=>false,	'fn'=>'_0001',		'SI'=>NULL,	'min'=>0,	'max'=>0xFFFF,	'err'=>255,	'unit'=> ''	),
 	'TR:Config:Bar:Calibration:Offset'	=>	array( 'pos' => 3,	'len' => 2,	'w'=>false,	'fn'=>'s2sSht',		'SI'=>NULL,	'min'=>0,	'max'=>0xFFFF,	'err'=>255,	'unit'=> ''	),
-	'TR:Config:Bar:Calibration:Cal'	=>	array( 'pos' => 5,	'len' => 2,	'w'=>false,	'fn'=>'_0001',		'SI'=>NULL,	'min'=>0,	'max'=>0xFFFF,	'err'=>255,	'unit'=> ''	),
+	'TR:Config:Bar:Calibration:Cal'		=>	array( 'pos' => 5,	'len' => 2,	'w'=>false,	'fn'=>'_0001',		'SI'=>NULL,	'min'=>0,	'max'=>0xFFFF,	'err'=>255,	'unit'=> ''	),
 	'TR:Config:Hum:Calibration:@33%'	=>	array( 'pos' => 7,	'len' => 2,	'w'=>false,	'fn'=>'s2sSht',		'SI'=>NULL,	'min'=>0,	'max'=>0xFFFF,	'err'=>255,	'unit'=> ''	),
 	'TR:Config:Hum:Calibration:@80%'	=>	array( 'pos' => 9,	'len' => 2,	'w'=>false,	'fn'=>'s2sSht',		'SI'=>NULL,	'min'=>0,	'max'=>0xFFFF,	'err'=>255,	'unit'=> ''	),
 	'TR:Config:Geo:Latitude:NordValue'	=>	array( 'pos' => 11,	'len' => 2,	'w'=>false,	'fn'=>'sSht_01',	'SI'=>NULL,	'min'=>0,	'max'=>0xFFFF,	'err'=>255,	'unit'=> '°N'	),
 	'TR:Config:Geo:Longitude:EstValue'	=>	array( 'pos' => 13,	'len' => 2,	'w'=>false,	'fn'=>'sSht_01',	'SI'=>NULL,	'min'=>0,	'max'=>0xFFFF,	'err'=>255,	'unit'=> '°E'	),
-	'TR:Config:Geo:Elevation:Ocean'	=>	array( 'pos' => 15,	'len' => 2,	'w'=>false,	'fn'=>'s2sSht',		'SI'=>'ft2m',	'min'=>0,	'max'=>0xFFFF,	'err'=>255,	'unit'=> 'feet'	),
-	'TR:Config:Geo:Time:Zone'		=>	array( 'pos' => 17,	'len' => 1,	'w'=>false,	'fn'=>'s2uc',		'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'TR:Config:Geo:Elevation:Ocean'		=>	array( 'pos' => 15,	'len' => 2,	'w'=>false,	'fn'=>'s2sSht',		'SI'=>'ft2m',	'min'=>0,	'max'=>0xFFFF,	'err'=>255,	'unit'=> 'feet'	),
+	'TR:Config:Geo:Time:Zone'			=>	array( 'pos' => 17,	'len' => 1,	'w'=>false,	'fn'=>'s2uc',		'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
 	'TR:Config:Daylight:Savings:Manual'	=>	array( 'pos' => 18,	'len' => 1,	'w'=>false,	'fn'=>'Bool',		'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
 	'TR:Config:Daylight:Savings:Enable'	=>	array( 'pos' => 19,	'len' => 1,	'w'=>false,	'fn'=>'Bool',		'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
-	'TR:Config:Time:Gmt:Offset'		=>	array( 'pos' => 20,	'len' => 2,	'w'=>false,	'fn'=>'GMT',		'SI'=>NULL,	'min'=>0,	'max'=>0xFFFF,	'err'=>255,	'unit'=> ''	),
-	'TR:Config:Time:Gmt:Enable'		=>	array( 'pos' => 22,	'len' => 1,	'w'=>false,	'fn'=>'Bool',		'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
-	'NO:Other:::UseTx'			=>	array( 'pos' => 23,	'len' => 1,	'w'=>false,	'fn'=>'s2uc',		'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
-	'NO:Other:::ReTransmitTx'		=>	array( 'pos' => 24,	'len' => 1,	'w'=>false,	'fn'=>'s2uc',		'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'TR:Config:Time:Gmt:Offset'			=>	array( 'pos' => 20,	'len' => 2,	'w'=>false,	'fn'=>'GMT',		'SI'=>NULL,	'min'=>0,	'max'=>0xFFFF,	'err'=>255,	'unit'=> ''	),
+	'TR:Config:Time:Gmt:Enable'			=>	array( 'pos' => 22,	'len' => 1,	'w'=>false,	'fn'=>'Bool',		'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'NO:Other:::UseTx'					=>	array( 'pos' => 23,	'len' => 1,	'w'=>false,	'fn'=>'s2uc',		'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'NO:Other:::ReTransmitTx'			=>	array( 'pos' => 24,	'len' => 1,	'w'=>false,	'fn'=>'s2uc',		'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
 
 /*	'Other:StationList1'		=>	array( 'pos' => 25,	'len' => 2,	'w'=>false,	'fn'=>'Station',	'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
 	'Other:StationList2'		=>	array( 'pos' => 27,	'len' => 2,	'w'=>false,	'fn'=>'Station',	'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
@@ -61,23 +73,23 @@ Convention de nomage :
 	'Other:StationList7'		=>	array( 'pos' => 37,	'len' => 2,	'w'=>false,	'fn'=>'Station',	'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
 	'Other:StationList8'		=>	array( 'pos' => 39,	'len' => 2,	'w'=>false,	'fn'=>'Station',	'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),*/
 
-	'TR:Config:Bar:Display:Unit'		=>	array( 'pos' => 41.1,	'len' => 2,	'w'=>false,	'fn'=>false,	'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
-	'TR:Config:Temp:Display:Unit'		=>	array( 'pos' => 41.3,	'len' => 2,	'w'=>false,	'fn'=>false,	'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
-	'TR:Config:Geo:Elevation:Unit'		=>	array( 'pos' => 41.5,	'len' => 1,	'w'=>false,	'fn'=>false,	'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
-	'TR:Config:Rain:Display:Unit'		=>	array( 'pos' => 41.6,	'len' => 1,	'w'=>false,	'fn'=>false,	'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
-	'TR:Config:Wind:Display:Unit'		=>	array( 'pos' => 41.7,	'len' => 2,	'w'=>false,	'fn'=>false,	'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
-// 	'Other:UnitBitsComp'			=>	array( 'pos' => 42,	'len' => 1,	'w'=>false,	'fn'=>'s2uc',		'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'TR:Config:Bar:Display:Unit'		=>	array( 'pos' => 41.1,	'len' => 2,	'w'=>false,	'fn'=>'none',	'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'TR:Config:Temp:Display:Unit'		=>	array( 'pos' => 41.3,	'len' => 2,	'w'=>false,	'fn'=>'none',	'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'TR:Config:Geo:Elevation:Unit'		=>	array( 'pos' => 41.5,	'len' => 1,	'w'=>false,	'fn'=>'none',	'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'TR:Config:Rain:Display:Unit'		=>	array( 'pos' => 41.6,	'len' => 1,	'w'=>false,	'fn'=>'none',	'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'TR:Config:Wind:Display:Unit'		=>	array( 'pos' => 41.7,	'len' => 2,	'w'=>false,	'fn'=>'none',	'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+// 	'Other:UnitBitsComp'				=>	array( 'pos' => 42,	'len' => 1,	'w'=>false,	'fn'=>'s2uc',		'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
 
-	'TR:Config:Time:Mode:AM/PM'		=>	array( 'pos' => 43.1,	'len' => 1,	'w'=>false,	'fn'=>false,	'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
-	'TR:Config:Time:Mode:isAM'		=>	array( 'pos' => 43.2,	'len' => 1,	'w'=>false,	'fn'=>false,	'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
-	'TR:Config:Time:Format:Day/Month'	=>	array( 'pos' => 43.3,	'len' => 1,	'w'=>false,	'fn'=>false,	'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
-	'TR:Config:Wind:Cup:Large'		=>	array( 'pos' => 43.4,	'len' => 1,	'w'=>false,	'fn'=>false,	'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
-	'TR:Config:Rain:Collector:Size'	=>	array( 'pos' => 43.5,	'len' => 2,	'w'=>false,	'fn'=>false,	'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
-	'TR:Config:Geo:Latitude:directionNorth'=>	array( 'pos' => 43.7,	'len' => 1,	'w'=>false,	'fn'=>false,	'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
-	'TR:Config:Geo:Longitude:directionEast'=>	array( 'pos' => 43.8,	'len' => 1,	'w'=>false,	'fn'=>false,	'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'TR:Config:Time:Mode:AM/PM'			=>	array( 'pos' => 43.1,	'len' => 1,	'w'=>false,	'fn'=>'none',	'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'TR:Config:Time:Mode:isAM'			=>	array( 'pos' => 43.2,	'len' => 1,	'w'=>false,	'fn'=>'none',	'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'TR:Config:Time:Format:Day/Month'	=>	array( 'pos' => 43.3,	'len' => 1,	'w'=>false,	'fn'=>'none',	'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'TR:Config:Wind:Cup:Large'			=>	array( 'pos' => 43.4,	'len' => 1,	'w'=>false,	'fn'=>'none',	'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'TR:Config:Rain:Collector:Size'		=>	array( 'pos' => 43.5,	'len' => 2,	'w'=>false,	'fn'=>'none',	'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'TR:Config:Geo:Latitude:directionNorth'=>	array( 'pos' => 43.7,	'len' => 1,	'w'=>false,	'fn'=>'none',	'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'TR:Config:Geo:Longitude:directionEast'=>	array( 'pos' => 43.8,	'len' => 1,	'w'=>false,	'fn'=>'none',	'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
 
 	'TR:Config:Rain::SeasonStart'		=>	array( 'pos' => 44,	'len' => 1,	'w'=>false,	'fn'=>'s2uc',		'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> 'Month'	),
-	'TR:Config:Time:Archive:Period'	=>	array( 'pos' => 45,	'len' => 1,	'w'=>false,	'fn'=>'s2uc',		'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> 'min'	),
+	'TR:Config:Time:Archive:Period'		=>	array( 'pos' => 45,	'len' => 1,	'w'=>false,	'fn'=>'s2uc',		'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> 'min'	),
 
 	'TR:Sensor:Temp:In:Offset'		=>	array( 'pos' => 50,	'len' => 1,	'w'=>false,	'fn'=>'sSht_01',	'SI'=>'F2kelvin',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
 // 	'Other:TempInComp'			=>	array( 'pos' => 51,	'len' => 1,	'w'=>false,	'fn'=>'s2uc',		'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
@@ -164,10 +176,10 @@ Convention de nomage :
 	'TR:Sensor:Temp:Leaf#3:HighAlarm'	=>	array( 'pos' => 120,	'len' => 1,	'w'=>false,	'fn'=>'SmallTemp',	'SI'=>'F2kelvin',	'min'=>-90,	'max'=>165,	'err'=>NULL,	'unit'=> ''	),
 	'TR:Sensor:Temp:Leaf#4:HighAlarm'	=>	array( 'pos' => 121,	'len' => 1,	'w'=>false,	'fn'=>'SmallTemp',	'SI'=>'F2kelvin',	'min'=>-90,	'max'=>165,	'err'=>NULL,	'unit'=> ''	),
 
-	'TR:Sensor:Hum:In:LowAlarm'		=>	array( 'pos' => 122,	'len' => 1,	'w'=>false,	'fn'=>'s2uc',	'SI'=>NULL,	'min'=>0,	'max'=>100,	'err'=>255,	'unit'=> ''	),
+	'TR:Sensor:Hum:In:LowAlarm'			=>	array( 'pos' => 122,	'len' => 1,	'w'=>false,	'fn'=>'s2uc',	'SI'=>NULL,	'min'=>0,	'max'=>100,	'err'=>255,	'unit'=> ''	),
 	'TR:Sensor:Hum:In:HighAlarm'		=>	array( 'pos' => 123,	'len' => 1,	'w'=>false,	'fn'=>'s2uc',	'SI'=>NULL,	'min'=>0,	'max'=>100,	'err'=>255,	'unit'=> ''	),
 
-	'TR:Sensor:Hum:Out:LowAlarm'		=>	array( 'pos' => 124,	'len' => 1,	'w'=>false,	'fn'=>'s2uc',	'SI'=>NULL,	'min'=>0,	'max'=>100,	'err'=>255,	'unit'=> ''	),
+	'TR:Sensor:Hum:Out:LowAlarm'	=>	array( 'pos' => 124,	'len' => 1,	'w'=>false,	'fn'=>'s2uc',	'SI'=>NULL,	'min'=>0,	'max'=>100,	'err'=>255,	'unit'=> ''	),
 	'TR:Sensor:Hum:#2:LowAlarm'		=>	array( 'pos' => 124,	'len' => 1,	'w'=>false,	'fn'=>'s2uc',	'SI'=>NULL,	'min'=>0,	'max'=>100,	'err'=>255,	'unit'=> ''	),
 	'TR:Sensor:Hum:#3:LowAlarm'		=>	array( 'pos' => 124,	'len' => 1,	'w'=>false,	'fn'=>'s2uc',	'SI'=>NULL,	'min'=>0,	'max'=>100,	'err'=>255,	'unit'=> ''	),
 	'TR:Sensor:Hum:#4:LowAlarm'		=>	array( 'pos' => 124,	'len' => 1,	'w'=>false,	'fn'=>'s2uc',	'SI'=>NULL,	'min'=>0,	'max'=>100,	'err'=>255,	'unit'=> ''	),
@@ -176,7 +188,7 @@ Convention de nomage :
 	'TR:Sensor:Hum:#7:LowAlarm'		=>	array( 'pos' => 124,	'len' => 1,	'w'=>false,	'fn'=>'s2uc',	'SI'=>NULL,	'min'=>0,	'max'=>100,	'err'=>255,	'unit'=> ''	),
 	'TR:Sensor:Hum:#8:LowAlarm'		=>	array( 'pos' => 124,	'len' => 1,	'w'=>false,	'fn'=>'s2uc',	'SI'=>NULL,	'min'=>0,	'max'=>100,	'err'=>255,	'unit'=> ''	),
 
-	'TR:Sensor:Hum:Out:LowAlarm'		=>	array( 'pos' => 132,	'len' => 1,	'w'=>false,	'fn'=>'s2uc',	'SI'=>NULL,	'min'=>0,	'max'=>100,	'err'=>255,	'unit'=> ''	),
+	'TR:Sensor:Hum:Out:LowAlarm'	=>	array( 'pos' => 132,	'len' => 1,	'w'=>false,	'fn'=>'s2uc',	'SI'=>NULL,	'min'=>0,	'max'=>100,	'err'=>255,	'unit'=> ''	),
 	'TR:Sensor:Hum:#2:LowAlarm'		=>	array( 'pos' => 132,	'len' => 1,	'w'=>false,	'fn'=>'s2uc',	'SI'=>NULL,	'min'=>0,	'max'=>100,	'err'=>255,	'unit'=> ''	),
 	'TR:Sensor:Hum:#3:LowAlarm'		=>	array( 'pos' => 132,	'len' => 1,	'w'=>false,	'fn'=>'s2uc',	'SI'=>NULL,	'min'=>0,	'max'=>100,	'err'=>255,	'unit'=> ''	),
 	'TR:Sensor:Hum:#4:LowAlarm'		=>	array( 'pos' => 132,	'len' => 1,	'w'=>false,	'fn'=>'s2uc',	'SI'=>NULL,	'min'=>0,	'max'=>100,	'err'=>255,	'unit'=> ''	),
@@ -185,14 +197,14 @@ Convention de nomage :
 	'TR:Sensor:Hum:#7:LowAlarm'		=>	array( 'pos' => 132,	'len' => 1,	'w'=>false,	'fn'=>'s2uc',	'SI'=>NULL,	'min'=>0,	'max'=>100,	'err'=>255,	'unit'=> ''	),
 	'TR:Sensor:Hum:#8:LowAlarm'		=>	array( 'pos' => 132,	'len' => 1,	'w'=>false,	'fn'=>'s2uc',	'SI'=>NULL,	'min'=>0,	'max'=>100,	'err'=>255,	'unit'=> ''	),
 
-	'TR:Sensor:Temp:DewPt:LowAlarm'	=>	array( 'pos' => 140,	'len' => 1,	'w'=>false,	'fn'=>'SmallTemp120',	'SI'=>'F2kelvin',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'TR:Sensor:Temp:DewPt:LowAlarm'		=>	array( 'pos' => 140,	'len' => 1,	'w'=>false,	'fn'=>'SmallTemp120',	'SI'=>'F2kelvin',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
 	'TR:Sensor:Temp:DewPt:HighAlarm'	=>	array( 'pos' => 141,	'len' => 1,	'w'=>false,	'fn'=>'SmallTemp120',	'SI'=>'F2kelvin',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
-	'TR:Sensor:Temp:Chill:LowAlarm'	=>	array( 'pos' => 142,	'len' => 1,	'w'=>false,	'fn'=>'SmallTemp120',	'SI'=>'F2kelvin',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
-	'TR:Sensor:Temp:Heat:HighAlarm'	=>	array( 'pos' => 143,	'len' => 1,	'w'=>false,	'fn'=>'SmallTemp',	'SI'=>'F2kelvin',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
-	'TR:Sensor:Temp:Thsw:HighAlarm'	=>	array( 'pos' => 144,	'len' => 1,	'w'=>false,	'fn'=>'SmallTemp',	'SI'=>'F2kelvin',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'TR:Sensor:Temp:Chill:LowAlarm'		=>	array( 'pos' => 142,	'len' => 1,	'w'=>false,	'fn'=>'SmallTemp120',	'SI'=>'F2kelvin',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'TR:Sensor:Temp:Heat:HighAlarm'		=>	array( 'pos' => 143,	'len' => 1,	'w'=>false,	'fn'=>'SmallTemp',	'SI'=>'F2kelvin',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'TR:Sensor:Temp:Thsw:HighAlarm'		=>	array( 'pos' => 144,	'len' => 1,	'w'=>false,	'fn'=>'SmallTemp',	'SI'=>'F2kelvin',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
 	'TR:Sensor:Wind::CurrentSpeed.HighAlarm'=>	array( 'pos' => 145,	'len' => 1,	'w'=>false,	'fn'=>'hexToDec',	'SI'=>'mBySec',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
 	'TR:Sensor:Wind::10minSpeed.HighAlarm'	=>	array( 'pos' => 146,	'len' => 1,	'w'=>false,	'fn'=>'hexToDec',	'SI'=>'mBySec',	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
-	'TR:Sensor:UV::HighAlarm'		=>	array( 'pos' => 147,	'len' => 1,	'w'=>false,	'fn'=>'UV',		'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+	'TR:Sensor:UV::HighAlarm'			=>	array( 'pos' => 147,	'len' => 1,	'w'=>false,	'fn'=>'UV',		'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
 
 ///						*********** Alarm Out Soil&Leaf ***********					///
 	'TR:Sensor:SoilMoisture:Soil#1:LowAlarm'	=>	array( 'pos' => 149,	'len' => 1,	'w'=>false,	'fn'=>'s2uc',	'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
@@ -217,13 +229,13 @@ Convention de nomage :
 
 
 	'TR:Sensor:Solar::HighAlarm'	=>	array( 'pos' => 165,	'len' => 2,	'w'=>false,	'fn'=>'s2sSht',		'SI'=>NULL,	'min'=>0,	'max'=>2000,	'err'=>0xffff,	'unit'=> ''	),
-	'TR:Sensor:Rain::RateAlarm'	=>	array( 'pos' => 167,	'len' => 2,	'w'=>false,	'fn'=>'s2uSht',		'SI'=>'RainSample2mm',	'min'=>0,	'max'=>65,	'err'=>0xffff,	'unit'=> ''	),
+	'TR:Sensor:Rain::RateAlarm'		=>	array( 'pos' => 167,	'len' => 2,	'w'=>false,	'fn'=>'s2uSht',		'SI'=>'RainSample2mm',	'min'=>0,	'max'=>65,	'err'=>0xffff,	'unit'=> ''	),
 	'TR:Sensor:Rain::15minAlarm'	=>	array( 'pos' => 169,	'len' => 2,	'w'=>false,	'fn'=>'s2uSht',		'SI'=>'RainSample2mm',	'min'=>0,	'max'=>65,	'err'=>0xffff,	'unit'=> ''	),
-	'TR:Sensor:Rain::24hAlarm'	=>	array( 'pos' => 171,	'len' => 2,	'w'=>false,	'fn'=>'s2uSht',		'SI'=>'RainSample2mm',	'min'=>0,	'max'=>650,	'err'=>0xffff,	'unit'=> ''	),
+	'TR:Sensor:Rain::24hAlarm'		=>	array( 'pos' => 171,	'len' => 2,	'w'=>false,	'fn'=>'s2uSht',		'SI'=>'RainSample2mm',	'min'=>0,	'max'=>650,	'err'=>0xffff,	'unit'=> ''	),
 	'TR:Sensor:Rain::StormAlarm'	=>	array( 'pos' => 173,	'len' => 2,	'w'=>false,	'fn'=>'s2uSht',		'SI'=>'RainSample2mm',	'min'=>0,	'max'=>650,	'err'=>0xffff,	'unit'=> ''	),
-	'TR:Sensor:Et::DayAlarm'	=>	array( 'pos' => 175,	'len' => 2,	'w'=>false,	'fn'=>'ET1000',		'SI'=>NULL,	'min'=>0,	'max'=>0xfffe,	'err'=>0xffff,	'unit'=> ''	),
+	'TR:Sensor:Et::DayAlarm'		=>	array( 'pos' => 175,	'len' => 2,	'w'=>false,	'fn'=>'ET1000',		'SI'=>NULL,	'min'=>0,	'max'=>0xfffe,	'err'=>0xffff,	'unit'=> ''	),
 // 	'Other:GraphPointer'		=>	array( 'pos' => 177,	'len' => 8,	'w'=>false,	'fn'=>'sSht_01',		'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
-// 	'Other:GraphData'		=>	array( 'pos' => 185,	'len' => 3898,	'w'=>false,	'fn'=>'sSht_01',		'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
+// 	'Other:GraphData'			=>	array( 'pos' => 185,	'len' => 3898,	'w'=>false,	'fn'=>'sSht_01',		'SI'=>NULL,	'min'=>0,	'max'=>0xFF,	'err'=>255,	'unit'=> ''	),
 	'TR:Config:Temp:Log:Average'	=>	array( 'pos' => 4092,	'len' => 1,	'w'=>true,	'fn'=>'Bool',		'SI'=>NULL,	'min'=>0,	'max'=>1,	'err'=>255,	'unit'=> ''	),
 	);
 //var_export(array_keys($EEPROM));

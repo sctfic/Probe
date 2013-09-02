@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: probe\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-25 23:58+0100\n"
-"PO-Revision-Date: 2012-10-26 00:01+0100\n"
+"POT-Creation-Date: 2013-06-08 23:15+0100\n"
+"PO-Revision-Date: 2013-07-07 16:29+0100\n"
 "Last-Translator: Édouard Lopez <dev+i18n@edouard-lopez.com>\n"
 "Language-Team: probe <dev+probe@edouard-lopez.com>\n"
 "Language: \n"
@@ -11,363 +11,987 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-KeywordsList: _;gettext;gettext_noop;i18n\n"
-"X-Poedit-Basepath: /home/ed/probe/application\n"
+"X-Poedit-Basepath: /home/ed8/Probe\n"
 "Plural-Forms: nplurals=2; plural=n>1;\n"
 "X-Poedit-Language: French\n"
 "X-Poedit-Country: FRANCE\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPath-0: ./application\n"
 
-#: helpers/other_helper.php:21
-msgid "Impossible d ecrire le fichier de config : "
+#: application/language/i18n-collected-keys.php:10
+msgid "configuration-add-station.title.metadata"
+msgstr "Ajout d'une station"
+
+#: application/language/i18n-collected-keys.php:11
+msgid "configuration-add-station.description.metadata"
+msgstr "Ajouter une nouvelle station au tableau de bord"
+
+#: application/language/i18n-collected-keys.php:12
+msgid "configuration-station.network-_ip.label"
+msgstr "Adresse <abbr title=\"format #.#.#.#\">IP</abbr>"
+
+#: application/language/i18n-collected-keys.php:13
+msgid "configuration-station.network-_ip.placeholder"
+msgstr "exemple : 127.0.0.1"
+
+#: application/language/i18n-collected-keys.php:14
+msgid "configuration-station.network-_name.label"
+msgstr "Nom de la station"
+
+#: application/language/i18n-collected-keys.php:15
+msgid "configuration-station.network-_name.placeholder"
+msgstr "p. ex. modele-station"
+
+#: application/language/i18n-collected-keys.php:16
+msgid "configuration-station.network-_port.label"
+msgstr "Port"
+
+#: application/language/i18n-collected-keys.php:17
+msgid "configuration-station.network-_port.placeholder"
+msgstr "défaut: 80"
+
+#: application/language/i18n-collected-keys.php:18
+msgid "configuration-station.network-_type.label"
+msgstr "Modèle"
+
+#: application/language/i18n-collected-keys.php:19
+msgid "configuration-station.network-_type.placeholder"
+msgstr "VP2, VP"
+
+#: application/language/i18n-collected-keys.php:20
+msgid "configuration-station-list.title.metadata"
+msgstr "Liste des stations"
+
+#: application/language/i18n-collected-keys.php:21
+msgid "configuration-station-list.description.metadata"
+msgstr "Liste des stations gérées. Permet l'ajout de nouvelle stations ou la modification des configurations des stations existantes"
+
+#: application/language/i18n-collected-keys.php:22
+msgid "login.title.metadata"
+msgstr "Connexion"
+
+#: application/language/i18n-collected-keys.php:23
+msgid "login.description.metadata"
+msgstr "Connexion à l'interface d'administration"
+
+#: application/language/i18n-collected-keys.php:24
+msgid "configuration-station.dbms.label"
+msgstr "Base de données"
+
+#: application/language/i18n-collected-keys.php:25
+msgid "configuration-station.network.label"
+msgstr "Réseau"
+
+#: application/language/i18n-collected-keys.php:26
+msgid "configuration-dbms.title.metadata"
+msgstr "Configurer la base de données"
+
+#: application/language/i18n-collected-keys.php:27
+msgid "configuration-dbms.description.metadata"
+msgstr "Configuration de la base de données permettant à probe de stocker les relevés météorologiques"
+
+#: application/language/i18n-collected-keys.php:28
+msgid "configuration-admin-user.title.metadata"
+msgstr "Configurer le compte administrateur"
+
+#: application/language/i18n-collected-keys.php:29
+msgid "configuration-admin-user.description.metadata"
+msgstr "L'administrateur est responsable de l'application et des bases de données correspondantes à chaque station météorologiques"
+
+#: application/language/i18n-collected-keys.php:30
+msgid "windrose.title.metadata"
+msgstr "Rose des vents"
+
+#: application/language/i18n-collected-keys.php:31
+msgid "windrose.description.metadata"
+msgstr "Visualisation de la direction et de la vitesse des vents"
+
+#: application/language/i18n-collected-keys.php:32
+#: application/libraries/Page_manager.php:99
+msgid "probe.authors.metadata"
+msgstr "Équipe Probe"
+
+#: application/language/i18n-collected-keys.php:33
+#, fuzzy
+msgid "curve.title.metadata"
+msgstr "Courbes"
+
+#: application/language/i18n-collected-keys.php:34
+#, fuzzy
+msgid "curve.description.metadata"
+msgstr "Visualisation par courbes"
+
+#: application/language/i18n-collected-keys.php:35
+#, fuzzy
+msgid "currents.title.metadata"
+msgstr "Conditions actuelles"
+
+#: application/language/i18n-collected-keys.php:36
+#, fuzzy
+msgid "currents.description.metadata"
+msgstr "Conditions météo actuelles"
+
+#: application/language/i18n-collected-keys.php:37
+msgid "curves.title.metadata"
+msgstr "Courbes"
+
+#: application/language/i18n-collected-keys.php:38
+msgid "curves.description.metadata"
+msgstr "Visualisation par courbes"
+
+#: application/language/i18n-collected-keys.php:39
+msgid "SmartCurve.title.metadata"
+msgstr "Courbe interactive"
+
+#: application/language/i18n-collected-keys.php:40
+msgid "SmartCurve.description.metadata"
+msgstr "Courbe interactive avec un zoom et canvas redimensionnable"
+
+#: application/language/i18n-collected-keys.php:41
+msgid "SmartCurves.title.metadata"
+msgstr "Comparateur de courbes"
+
+#: application/language/i18n-collected-keys.php:42
+msgid "SmartCurves.description.metadata"
+msgstr "Interface de comparaison de données"
+
+#: application/language/i18n-collected-keys.php:43
+msgid "SmartChart.title.metadata"
+msgstr "Graphique interactif"
+
+#: application/language/i18n-collected-keys.php:44
+msgid "SmartChart.description.metadata"
+msgstr "Graphique interactif avec zoom"
+
+#: application/language/i18n-collected-keys.php:45
+msgid "histoWind.title.metadata"
+msgstr "Historique des vents"
+
+#: application/language/i18n-collected-keys.php:46
+msgid "histoWind.description.metadata"
+msgstr "Historique de l'orientation et de la vitesse des vents"
+
+#: application/language/i18n-collected-keys.php:47
+msgid "wind.title.metadata"
+msgstr "Direction et vitesse journalière"
+
+#: application/language/i18n-collected-keys.php:48
+msgid "wind.description.metadata"
+msgstr "Visualisation de la direction et de la vitesse journalière moyenne des vents"
+
+#: application/language/i18n-collected-keys.php:49
+msgid "configuration-list-station.title.metadata"
+msgstr "Liste des stations"
+
+#: application/language/i18n-collected-keys.php:50
+msgid "configuration-list-station.description.metadata"
+msgstr "Consulter la liste des stations connectées"
+
+#: application/language/i18n-collected-keys.php:51
+msgid "configuration-station.list.breadcrumb"
+msgstr "Liste des stations"
+
+#: application/language/i18n-collected-keys.php:52
+msgid "configuration-station.dashboard.breadcrumb"
+msgstr "Tableau de bord"
+
+#: application/language/i18n-collected-keys.php:53
+msgid "configuration-station.add.breadcrumb"
+msgstr "Ajout de station"
+
+#: application/language/i18n-collected-keys.php:54
+msgid "histoWind.view.label"
+msgstr "historique des vents"
+
+#: application/language/i18n-collected-keys.php:55
+msgid "exemple.title.metadata"
+msgstr "Exemple d3 ré-utilisable"
+
+#: application/language/i18n-collected-keys.php:56
+msgid "exemple.description.metadata"
+msgstr "Exemple d3 de graphique, expose des setters/getters et permet le chaînage de méthodes"
+
+#: application/language/i18n-collected-keys.php:57
+msgid "configuration-dbms.engine:mysql.label"
+msgstr "MySQL 5+"
+
+#: application/language/i18n-collected-keys.php:58
+msgid "configuration-dbms.engine:sqlite.label"
+msgstr "SQLite 3+"
+
+#: application/language/i18n-collected-keys.php:59
+msgid "configuration-dbms.username.label"
+msgstr "Utilisateur"
+
+#: application/language/i18n-collected-keys.php:60
+msgid "configuration-dbms.username.placeholder"
+msgstr "gestionnaire de l'application"
+
+#: application/language/i18n-collected-keys.php:61
+msgid "configuration-dbms.password.label"
+msgstr "Mot de passe"
+
+#: application/language/i18n-collected-keys.php:62
+msgid "configuration-dbms.password.placeholder"
+msgstr "mot de passe du gestionnaire"
+
+#: application/language/i18n-collected-keys.php:63
+msgid "configuration-dbms.host.label"
+msgstr "Nom d'hôte"
+
+#: application/language/i18n-collected-keys.php:64
+msgid "configuration-dbms.host.placeholder"
+msgstr "exemple.fr, localhost ou 127.0.0.1"
+
+#: application/language/i18n-collected-keys.php:65
+msgid "configuration-dbms.port.label"
+msgstr "Port"
+
+#: application/language/i18n-collected-keys.php:66
+msgid "configuration-dbms.port.placeholder"
+msgstr "défaut: 3306"
+
+#: application/language/i18n-collected-keys.php:67
+msgid "install-dbms.title.metadata"
+msgstr "Installation › Configuration de la base de données"
+
+#: application/language/i18n-collected-keys.php:68
+msgid "install-dbms.description.metadata"
+msgstr "Paramétrage de la base de données d'administration des utilisateurs et des stations"
+
+#: application/language/i18n-collected-keys.php:69
+msgid "install.dbms.breadcrumb"
+msgstr "Base de données"
+
+#: application/language/i18n-collected-keys.php:70
+msgid "install-admin-user.title.metadata"
+msgstr "Installation › Configuration du compte administrateur"
+
+#: application/language/i18n-collected-keys.php:71
+msgid "install-admin-user.description.metadata"
+msgstr "Paramétrage du compte administrateur responsable de l'application et des bases de données de chaque station."
+
+#: application/language/i18n-collected-keys.php:72
+msgid "install.administrator.breadcrumb"
+msgstr "Compte administrateur"
+
+#: application/language/i18n-collected-keys.php:73
+msgid "install.login.breadcrumb"
+msgstr "Authentification"
+
+#: application/language/i18n-collected-keys.php:74
+msgid "list-view.title.metadata"
+msgstr "Liste des visualisations"
+
+#: application/language/i18n-collected-keys.php:75
+msgid "list-view.description.metadata"
+msgstr "Liste des visualisations de données disponibles (conditions actuelles, rose des vents, variations des températures)"
+
+#: application/language/i18n-collected-keys.php:76
+msgid "configuration-dashboard.title.metadata"
+msgstr "Tableau de bord des configurations"
+
+#: application/language/i18n-collected-keys.php:77
+msgid "configuration-dashboard.description.metadata"
+msgstr "Tableau de bord des configurations de l'application et des stations"
+
+#: application/language/i18n-weather-conditions.php:2
+msgid "weather.clear.label"
+msgstr "ciel dégagé"
+
+#: application/language/i18n-weather-conditions.php:3
+msgid "weather.clear-night.label"
+msgstr "nuit claire"
+
+#: application/language/i18n-weather-conditions.php:4
+msgid "weather.clouds.label"
+msgstr "nuageux"
+
+#: application/language/i18n-weather-conditions.php:5
+msgid "weather.clouds-night.label"
+msgstr "nuit nuageuse"
+
+#: application/language/i18n-weather-conditions.php:6
+msgid "weather.few-clouds.label"
+msgstr "quelques nuages"
+
+#: application/language/i18n-weather-conditions.php:7
+msgid "weather.few-clouds-night.label"
+msgstr "quelques nuages"
+
+#: application/language/i18n-weather-conditions.php:8
+msgid "weather.freezing-rain.label"
+msgstr "pluie verglasante"
+
+#: application/language/i18n-weather-conditions.php:9
+msgid "weather.hail.label"
+msgstr "Grêle"
+
+#: application/language/i18n-weather-conditions.php:10
+msgid "weather.many-clouds.label"
+msgstr "couvert"
+
+#: application/language/i18n-weather-conditions.php:11
+msgid "weather.mist.label"
+msgstr "brume"
+
+#: application/language/i18n-weather-conditions.php:12
+msgid "weather.none-available.label"
+msgstr "conditions météo indisponibles"
+
+#: application/language/i18n-weather-conditions.php:13
+msgid "weather.showers.label"
+msgstr "Averses"
+
+#: application/language/i18n-weather-conditions.php:14
+msgid "weather.showers-day.label"
+msgstr "Averses"
+
+#: application/language/i18n-weather-conditions.php:15
+msgid "weather.showers-night.label"
+msgstr "averses nocturnes"
+
+#: application/language/i18n-weather-conditions.php:16
+msgid "weather.showers-scattered.label"
+msgstr "pluie avec éclaircies"
+
+#: application/language/i18n-weather-conditions.php:17
+msgid "weather.showers-scattered-day.label"
+msgstr "pluie avec éclaircies"
+
+#: application/language/i18n-weather-conditions.php:18
+msgid "weather.showers-scattered-night.label"
+msgstr "pluie avec éclaircies"
+
+#: application/language/i18n-weather-conditions.php:19
+msgid "weather.snow.label"
+msgstr "neige"
+
+#: application/language/i18n-weather-conditions.php:20
+msgid "weather.snow-rain.label"
+msgstr "neige fondue"
+
+#: application/language/i18n-weather-conditions.php:21
+msgid "weather.snow-scattered.label"
+msgstr "neige avec éclaircies"
+
+#: application/language/i18n-weather-conditions.php:22
+msgid "weather.snow-scattered-day.label"
+msgstr "neige avec éclaircies"
+
+#: application/language/i18n-weather-conditions.php:23
+msgid "weather.snow-scattered-night.label"
+msgstr "neige avec éclaircies"
+
+#: application/language/i18n-weather-conditions.php:24
+msgid "weather.storm.label"
+msgstr "Tempête"
+
+#: application/language/i18n-weather-conditions.php:25
+msgid "weather.storm-day.label"
+msgstr "journée orageuse"
+
+#: application/language/i18n-weather-conditions.php:26
+msgid "weather.storm-night.label"
+msgstr "nuit orageuse"
+
+#: application/libraries/Page_manager.php:56
+msgid "error.file:missing.title"
+msgstr "Fichier manquant ou non valable"
+
+#: application/libraries/Page_manager.php:57
+msgid "error.file:missing.description"
+msgstr "Erreur à l'ouverture du fichier"
+
+#: application/libraries/Page_manager.php:59
+#, php-format
+msgid "solution.file:missing[%s].description"
+msgstr "Vérifier que le fichier <var>%s</var> existe bien et que vous avez les droits suffisants pour le lire"
+
+#: application/libraries/Page_manager.php:64
+msgid "error.file:missing.header"
+msgstr "Fichier manquant ou non valable."
+
+#: application/models/vp2.php:93
+#, php-format
+msgid "cli-warning.available-connexion[%s]:fail.label"
+msgstr "[~] Une connexion est déjà en cours vers : %s."
+
+#: application/models/vp2.php:118
+#, php-format
+msgid "cli-info.open-connexion[%s].label"
+msgstr "[i] Ouverture de la connexion vers : %s."
+
+#: application/models/vp2.php:143
+#, php-format
+msgid "cli-info.close-connexion[%s]:success.label"
+msgstr "[i] Fermeture correcte de la connexion à : %s."
+
+#: application/models/vp2.php:203
+#, php-format
+msgid "cli-error.transmission[%d]:incomplete[%d].label"
+msgstr "[!] Données reçues incomplètes : %d au lieu de %d."
+
+#: application/models/vp2.php:211
+#, php-format
+msgid "cli-error.checksum[%X%X]:fail[%d].label"
+msgstr "[!] Somme de controle incorrecte : crc=0x%X 0x%X, strlen=%d."
+
+#: application/models/vp2.php:231
+#, php-format
+msgid "cli-error.command[%s]:fail.label"
+msgstr "[!] Commande incorrecte: '%s'."
+
+#: application/models/vp2.php:237
+#, php-format
+msgid "cli-error.command[%s]:exception.label"
 msgstr ""
+"[!] Erreur inconnu: '%s'. \n"
+"Re-connexion."
 
-#: helpers/pages_helper.php:12
-msgid ":title"
-msgstr "Titre"
+#: application/models/vp2.php:388
+msgid "cli-error.download:fail.label"
+msgstr "[!] La station est indisponible, veuillez ré-essayer ultérieurement."
 
-#: helpers/pages_helper.php:13
-msgid ":description"
-msgstr ""
+#: application/models/vp2.php:410
+#, php-format
+msgid "cli-info.block[%s%d%d]:out-of-range.label"
+msgstr "[i] Bloc %s ignoré (valeurs hors limites: #%d/%d)."
 
-#: helpers/pages_helper.php:14
-msgid ":author"
-msgstr ""
+#: application/models/vp2.php:435
+#, php-format
+msgid "cli-warning.clock-sync[%s].label"
+msgstr "[~] Décalage de l'horloge: %ss."
 
-#: models/db_builder.php:219
+#: application/models/vp2.php:445
+#, php-format
+msgid "cli-warning.clock-delay[%s]:off-limit.label"
+msgstr "[~] La station est désynchronisée (%ss), veuillez la synchroniser."
+
+#: application/models/station.php:98
+#: application/models/station.php:172
+#: application/models/station.php:238
+msgid "error.parameter:type-exception.label"
+msgstr "Type de paramètre non pris en charge."
+
+#: application/models/station.php:106
+#, php-format
+msgid "station[%s%s].fetch-config.label"
+msgstr "Récupération des informations de la station : %s (id: %s)."
+
+#: application/models/station.php:117
+#, php-format
+msgid "station[%s].fetch-config:fail.label"
+msgstr "La station %s a été <b>ignoré</b> (informations indisponibles)."
+
+#: application/models/station.php:125
+msgid "station.fetch-config:none.label"
+msgstr "Aucune configuration valide n'est disponible."
+
+#: application/models/station.php:184
+#: application/models/station.php:246
+#, php-format
+msgid "station[%s].open-connexion[%s%s]:fail.label"
+msgstr "Station indisponible, veuillez vérifiez les paramètres de connexion (nom: %s, adresse: %s:%s)."
+
+#: application/models/station.php:214
+#: application/models/station.php:262
+#, php-format
+msgid "station.close-connexion[%s]:fail.label"
+msgstr "[i] Fermeture impossible de la connexion à : %s."
+
+#: application/models/station.php:223
+#, php-format
+msgid "station[%s].archives:up-to-date[%s].label"
+msgstr "Les archives de la station <i>%s</i> sont à jour (%s)."
+
+#: application/models/db_builder.php:213
 msgid "database.table.role:admin.label"
 msgstr "Administrateur"
 
-#: models/weatherstation.php:97
-msgid "Aucune configuration valide n'est disponible"
-msgstr ""
-
-#: models/weatherstation.php:110
-#: models/weatherstation.php:126
-#: models/weatherstation.php:150
-#: models/weatherstation.php:169
-#, php-format
-msgid "Impossible de se connecter à %s par %s:%s"
-msgstr ""
-
-#: models/weatherstation.php:113
-#: models/weatherstation.php:129
-#: models/weatherstation.php:154
-#: models/weatherstation.php:177
-#, php-format
-msgid "Fermeture de %s impossible"
-msgstr ""
-
-#: models/weatherstation.php:172
-#, php-format
-msgid "Lecture des config de %s impossible"
-msgstr ""
-
-#: models/vp2.php:87
-#, php-format
-msgid "Fermeture de %s correcte."
-msgstr ""
-
-#: models/vp2.php:102
-#, php-format
-msgid "Default Clock synchronize : %ssec"
-msgstr ""
-
-#: models/vp2.php:105
-msgid "Clock synchronizing."
-msgstr ""
-
-#: models/vp2.php:107
-msgid "Clock synch."
-msgstr ""
-
-#: models/vp2.php:109
-#, php-format
-msgid "So mutch Default : %ssec. Please change it manualy"
-msgstr ""
-
-#: models/vp2.php:150
-#, php-format
-msgid "Incomplete Data strlen = %d insted of : %d"
-msgstr ""
-
-#: models/vp2.php:155
-#, php-format
-msgid "Wrong CRC, on good data : crc=0x%X 0x%X , strlen=%d"
-msgstr ""
-
-#: models/vp2.php:174
-#, php-format
-msgid "Command [%s] not understand"
-msgstr ""
-
-#: models/vp2.php:177
-msgid "Unknow Error, Reconnection"
-msgstr ""
-
-#: models/vp2.php:357
-msgid "Please retry later to finish, Data sensors must be checked in few second."
-msgstr ""
-
-#: models/vp2.php:372
-#, php-format
-msgid "Page #%d-%d of %s archived Ok."
-msgstr ""
-
-#: models/vp2.php:377
-#, php-format
-msgid "Page #%d-%d of %s Ignored (Out of Range)."
-msgstr ""
-
-#: models/service/service_user.php:22
+#: application/models/service/service_user.php:44
 msgid "login.fail.username.password.incorrect"
 msgstr "Le mot de passe ne correspond à celui associé à l'utilisateur."
 
-#: models/service/service_user.php:42
+#: application/models/service/service_user.php:77
 msgid "register.fail.username.password.incorrect"
 msgstr "Le mot de passe est invalide pour créer un compte"
 
-#: views/login.php:16
-msgid "username"
-msgstr ""
+#: application/models/dao/dao_user.php:87
+msgid "error.user-creation.invalid.email"
+msgstr "L'adresse e-mail est mal-formée."
 
-#: views/login.php:16
-#: views/login.php:19
-#: views/login.php:25
-#: views/setup/admin-user.php:22
-#: views/setup/admin-user.php:35
-#: views/setup/admin-user.php:48
-#: views/setup/dbms.php:22
-#: views/setup/dbms.php:36
-#: views/setup/dbms.php:50
-#: views/setup/dbms.php:59
-#: views/setup/dbms.php:67
-#: views/setup/dbms.php:76
-#: views/setup/dbms.php:81
-#: views/setup/dbms.php:85
-#: views/setup/dbms.php:109
-#: views/setup/dbms.php:123
-msgid "required"
-msgstr ""
+#: application/views/logout.php:2
+msgid "logout.success.label"
+msgstr "Vous êtes déconnecté."
 
-#: views/login.php:16
-#: views/login.php:19
-#: views/login.php:25
-#: views/setup/admin-user.php:22
-#: views/setup/admin-user.php:35
-#: views/setup/admin-user.php:48
-#: views/setup/dbms.php:22
-#: views/setup/dbms.php:36
-#: views/setup/dbms.php:50
-#: views/setup/dbms.php:76
-#: views/setup/dbms.php:93
-#: views/setup/dbms.php:109
-#: views/setup/dbms.php:123
-msgid "&nbsp;:"
-msgstr ""
+#: application/views/login.php:10
+msgid "login.legend"
+msgstr "Authentification à l'application"
 
-#: views/login.php:17
-msgid "fill in your username"
-msgstr ""
+#: application/views/login.php:18
+msgid "login.description"
+msgstr "Connexion à l'interface d'administration"
 
-#: views/login.php:19
-msgid "password"
-msgstr ""
-
-#: views/login.php:21
-msgid "longer is better"
-msgstr ""
-
-#: views/login.php:25
-msgid "password confirmation"
-msgstr ""
-
-#: views/login.php:27
-msgid "so we can prevent mistakes"
-msgstr ""
-
-#: views/login.php:30
-msgid "login"
-msgstr ""
-
-#: views/login.php:35
-msgid "sunny weather"
-msgstr ""
-
-#: views/logout.php:2
-msgid "You're now logged out."
-msgstr ""
-
-#: views/setup/admin-user.php:3
-#: views/setup/dbms.php:3
-msgid "setup.breadcrumb.dbms"
-msgstr "Base de données"
-
-#: views/setup/admin-user.php:4
-#: views/setup/dbms.php:4
-msgid "setup.breadcrumb.administrator"
-msgstr "Compte administrateur"
-
-#: views/setup/admin-user.php:5
-#: views/setup/dbms.php:5
-msgid "setup.breadcrumb.dashboard"
-msgstr "Tableau de bord"
-
-#: views/setup/admin-user.php:13
-msgid "setup.administrator.legend"
-msgstr "Configuration du compte administrateur"
-
-#: views/setup/admin-user.php:22
-msgid "setup.administrator.username"
-msgstr "Utilisateur «&nbsp;admin&nbsp;»"
-
-#: views/setup/admin-user.php:28
-msgid "setup.administrator.username.placeholder"
-msgstr "gestionnaire de l'application"
-
-#: views/setup/admin-user.php:35
-msgid "setup.administrator.password"
-msgstr "Mot de passe"
-
-#: views/setup/admin-user.php:41
-msgid "setup.administrator.password.placeholder"
-msgstr "plus long c'est mieux"
-
-#: views/setup/admin-user.php:48
-msgid "setup.administrator.password-confirmation"
-msgstr "Confirmer"
-
-#: views/setup/admin-user.php:54
-msgid "setup.administrator.password-confirmation.placeholder"
-msgstr "pour éviter les erreurs de saisi"
-
-#: views/setup/admin-user.php:60
-msgid "setup.administrator.configure"
-msgstr "Configurer →"
-
-#: views/setup/dbms.php:13
-msgid "setup.dbms.legend"
-msgstr "Configuration de la base de données"
-
-#: views/setup/dbms.php:22
-msgid "setup.dbms.host"
-msgstr "Nom d'hôte"
-
-#: views/setup/dbms.php:28
-msgid "setup.dbms.host.placeholder"
-msgstr "exemple.fr, localhost ou 127.0.0.1"
-
-#: views/setup/dbms.php:36
-msgid "setup.dbms.port"
-msgstr "Port"
-
-#: views/setup/dbms.php:42
-msgid "setup.dbms.port.placeholder"
-msgstr "défault: 3306"
-
-#: views/setup/dbms.php:50
-msgid "setup.dbms.engine"
-msgstr "Moteur de la Base"
-
-#: views/setup/dbms.php:59
-msgid "setup.dbms.engine-mysql"
-msgstr "MySQL 5+"
-
-#: views/setup/dbms.php:67
-msgid "setup.dbms.engine-sqlite"
-msgstr "SQLite 3+"
-
-#: views/setup/dbms.php:76
-msgid "setup.dbms.database.selection"
-msgstr "Choix de la base"
-
-#: views/setup/dbms.php:81
-msgid "setup.dbms.database-reuse"
-msgstr "base existante"
-
-#: views/setup/dbms.php:85
-msgid "setup.dbms.database-create"
-msgstr "nouvelle base"
-
-#: views/setup/dbms.php:93
-msgid "setup.dbms.database-name"
-msgstr "Nom de la base"
-
-#: views/setup/dbms.php:109
-msgid "setup.dbms.username"
+#: application/views/login.php:24
+msgid "login.username"
 msgstr "Utilisateur"
 
-#: views/setup/dbms.php:115
-msgid "setup.dbms.username.placeholder"
-msgstr "gestionnaire de la base"
+#: application/views/login.php:24
+#: application/views/login.php:37
+#: application/views/login.php:47
+#: application/views/login.php:50
+#: application/views/login.php:55
+#: application/views/install/admin-user.php:39
+#: application/views/install/admin-user.php:52
+#: application/views/install/admin-user.php:65
+#: application/views/install/dbms.php:65
+#: application/views/install/dbms.php:80
+#: application/views/install/dbms.php:114
+#: application/views/install/dbms.php:128
+#: application/views/install/dbms.php:142
+#: application/views/configuration/add-station.php:39
+#: application/views/configuration/add-station.php:52
+#: application/views/configuration/add-station.php:61
+#: application/views/configuration/add-station.php:96
+#: application/views/configuration/stations-form.php:14
+msgid "required"
+msgstr "nécessaire"
 
-#: views/setup/dbms.php:123
-msgid "setup.dbms.password"
+#: application/views/login.php:24
+#: application/views/login.php:37
+#: application/views/login.php:47
+#: application/views/login.php:50
+#: application/views/login.php:55
+#: application/views/install/admin-user.php:39
+#: application/views/install/admin-user.php:52
+#: application/views/install/admin-user.php:65
+#: application/views/install/dbms.php:31
+#: application/views/install/dbms.php:65
+#: application/views/install/dbms.php:80
+#: application/views/install/dbms.php:94
+#: application/views/install/dbms.php:114
+#: application/views/install/dbms.php:128
+#: application/views/install/dbms.php:142
+#: application/views/configuration/add-station.php:40
+#: application/views/configuration/add-station.php:62
+#: application/views/configuration/add-station.php:97
+#: application/views/configuration/stations-form.php:15
+msgid "&nbsp;:"
+msgstr "&nbsp;:"
+
+#: application/views/login.php:30
+#: application/views/login.php:48
+msgid "login.username.placeholder"
+msgstr "gestionnaire ou exploitant"
+
+#: application/views/login.php:37
+msgid "login.password"
 msgstr "Mot de passe"
 
-#: views/setup/dbms.php:129
-msgid "setup.dbms.password.placeholder"
-msgstr "mot de passe du gestionnaire"
+#: application/views/login.php:43
+#: application/views/login.php:52
+msgid "login.password.placeholder"
+msgstr "mot de passe du gestionnaire ou de l'exploitant"
 
-#: views/setup/dbms.php:136
-msgid "setup.dbms.configure"
+#: application/views/login.php:47
+msgid "userName"
+msgstr "Nom d'utilisateur"
+
+#: application/views/login.php:50
+msgid "password"
+msgstr "Mot de passe"
+
+#: application/views/login.php:55
+msgid "login.password-confirmation"
+msgstr "Confirmer"
+
+#: application/views/login.php:57
+msgid "login.password-confirmation.placeholder"
+msgstr "pour éviter les erreurs de saisie"
+
+#: application/views/login.php:64
+msgid "weather.sunny.label"
+msgstr "Ensoleillé"
+
+#: application/views/login.php:70
+msgid "login.authentificate"
+msgstr "S'authentifier →"
+
+#: application/views/install/admin-user.php:25
+msgid "install-administrator.main-content.header"
+msgstr "Configuration du compte administrateur"
+
+#: application/views/install/admin-user.php:33
+msgid "install-administrator.main-content.description"
+msgstr "Utilisateur responsable de l'application. Il peut ajouter et supprimer des stations."
+
+#: application/views/install/admin-user.php:39
+msgid "install-administrator.username.label"
+msgstr "Utilisateur «&nbsp;admin&nbsp;»"
+
+#: application/views/install/admin-user.php:45
+msgid "install-administrator.username.placeholder"
+msgstr "gestionnaire de l'application"
+
+#: application/views/install/admin-user.php:52
+msgid "install-administrator.password.label"
+msgstr "Mot de passe"
+
+#: application/views/install/admin-user.php:58
+msgid "install-administrator.password.placeholder"
+msgstr "plus long c'est mieux"
+
+#: application/views/install/admin-user.php:65
+msgid "install-administrator.password-confirmation.label"
+msgstr "Confirmer"
+
+#: application/views/install/admin-user.php:71
+msgid "install-administrator.password-confirmation.placeholder"
+msgstr "pour éviter les erreurs de saisie"
+
+#: application/views/install/admin-user.php:79
+msgid "form.action.back"
+msgstr "Retour"
+
+#: application/views/install/admin-user.php:83
+msgid "install-administrator.configure.label"
 msgstr "Configurer →"
 
-#: views/admin/dashboard.php:30
-#, php-format
+#: application/views/install/dbms.php:22
+msgid "install-dbms.main-content.header"
+msgstr "Configuration de la base de données"
+
+#: application/views/install/dbms.php:31
+msgid "install-dbms.engine.label"
+msgstr "Moteur de la Base"
+
+#: application/views/install/dbms.php:39
+msgid "install-dbms.engine:mysql.label"
+msgstr "MySQL 5+"
+
+#: application/views/install/dbms.php:46
+msgid "install-dbms.engine:sqlite.label"
+msgstr "SQLite 3+"
+
+#: application/views/install/dbms.php:65
+msgid "install-dbms.host.label"
+msgstr "Nom d'hôte"
+
+#: application/views/install/dbms.php:72
+msgid "install-dbms.host.placeholder"
+msgstr "exemple.fr, localhost ou 127.0.0.1"
+
+#: application/views/install/dbms.php:80
+msgid "install-dbms.port.label"
+msgstr "Port"
+
+#: application/views/install/dbms.php:86
+msgid "install-dbms.port.placeholder"
+msgstr "défaut: 3306"
+
+#: application/views/install/dbms.php:94
+msgid "install-dbms.database-name.label"
+msgstr "Nom de la base"
+
+#: application/views/install/dbms.php:108
+msgid "install-dbms.advanced-user-management.label"
+msgstr "Le nom et le mot de passe sont ceux de l'administrateur de la base de données (<abbr title=\"par exemple\">p. ex.</abbr>, <var>root</var> ou <em>plus restreint</em>)."
+
+#: application/views/install/dbms.php:114
+msgid "install-dbms.username.label"
+msgstr "Utilisateur"
+
+#: application/views/install/dbms.php:120
+msgid "install-dbms.username.placeholder"
+msgstr "gestionnaire de l'application"
+
+#: application/views/install/dbms.php:128
+msgid "install-dbms.password.label"
+msgstr "Mot de passe"
+
+#: application/views/install/dbms.php:134
+msgid "install-dbms.password.placeholder"
+msgstr "mot de passe du gestionnaire"
+
+#: application/views/install/dbms.php:142
+msgid "install-dbms.path.label"
+msgstr "Fichier"
+
+#: application/views/install/dbms.php:148
+msgid "install-dbms.path.placeholder"
+msgstr "fichier de stockage"
+
+#: application/views/install/dbms.php:156
+msgid "install-dbms.configure.label"
+msgstr "Configurer →"
+
+#: application/views/configuration/add-station.php:30
+msgid "configuration-add-station.main-content:dbms.tip"
+msgstr "Configuration de la base de données pour les relevés"
+
+#: application/views/configuration/add-station.php:38
+msgid "configuration-dbms.engine.label"
+msgstr "Moteur de la Base"
+
+#: application/views/configuration/add-station.php:82
+msgid "configuration-add-station.main-content:network.tip"
+msgstr "Configuration réseaux permettant de contacter la station."
+
+#: application/views/configuration/add-station.php:121
+msgid "configuration-station.list.button"
+msgstr "Lister les stations"
+
+#: application/views/configuration/add-station.php:125
+msgid "configuration-station.configure:dbms.button"
+msgstr "Paramétrer la base de données"
+
+#: application/views/configuration/add-station.php:128
+msgid "configuration-station.configure:network.button"
+msgstr "Paramétrer le réseau"
+
+#: application/views/configuration/add-station.php:131
+msgid "configuration-station.add-new.label"
+msgstr "Ajouter la station"
+
+#: application/views/configuration/dashboard.php:19
+msgid "configuration-stations.list.label"
+msgstr "Liste des stations"
+
+#: application/views/configuration/dashboard.php:24
+msgid "configuration-stations.add.label"
+msgstr "Ajouter une station"
+
+#: application/views/configuration/list-stations.php:9
+msgid "configuration-stations.list.header"
+msgstr "Liste des stations"
+
+#: application/views/configuration/list-stations.php:27
+msgid "configuration-stations.add-new.station"
+msgstr "Ajouter une station"
+
+#: application/views/admin/dashboard.php:24
+#, fuzzy, php-format
 msgid "edit %s properties"
-msgstr ""
+msgstr "Modifier les propriétés de l'image"
 
-#: views/admin/dashboard.php:33
+#: application/views/admin/dashboard.php:27
+#, fuzzy
 msgid "Model"
-msgstr ""
+msgstr "Modèle"
 
-#: views/admin/dashboard.php:57
-#: views/admin/dashboard.php:58
-msgid "logOut"
-msgstr ""
+#: application/views/admin/dashboard.php:51
+#: application/views/admin/dashboard.php:52
+#: application/views/templates/breadcrumb.php:50
+msgid "logout.request.label"
+msgstr "Déconnexion"
 
-#: views/templates/footer.php:1
-msgid "Weather Station Web Data Share"
-msgstr ""
+#: application/views/d3/windrose.php:29
+#: application/views/d3/currents.php:21
+#: application/views/d3/curves.php:20
+msgid "warning.javascript.disable"
+msgstr "Pour consulter cette page au maximum de son potentiel veuillez activer Javascript sur votre navigateur."
 
-#: controllers/setup/installer.php:39
-msgid "error.setup.dbms.connect"
-msgstr "La connexion à la base de données n'a pas pu être établie. Veuillez vérifier les informations soumises et l'existence de la base de données."
+#: application/views/templates/breadcrumb.php:41
+msgid "profile.request.label"
+msgstr "Mon compte"
 
-#: controllers/admin/admin.php:31
-msgid "admin.welcome"
-msgstr ""
+#: application/views/templates/breadcrumb.php:45
+msgid "profile.request:settings.label"
+msgstr "Paramètres"
 
-#: controllers/admin/admin.php:52
+#: application/views/templates/breadcrumb.php:52
+msgid "login.request.label"
+msgstr "Connexion"
+
+#: application/views/templates/footer.php:22
+#, php-format
+msgid "project.license.by%s,%s,%s"
+msgstr "est licensié par <a \thref=\"https://twitter.com/ProbeMeteo\"\txmlns:cc=\"http://creativecommons.org/ns#\" \tproperty=\"cc:attributionName\" \trel=\"cc:attributionURL\"\t>%s</a>, <!-- Legal: http://creativecommons.org/licenses/by-nc-sa/3.0/legalcode -->sous licence <a \thref=\"http://creativecommons.org/licenses/by-nc-sa/3.0/\"\trel=\"license\" ><img alt=\"%s\" title=\"%s\" src=\"/resources/img/CC-by-nc-sa_80px.png\"/></a>"
+
+#: application/views/templates/footer.php:23
+msgid "project.team-name"
+msgstr "l'équipe ProbeMeteo"
+
+#: application/views/templates/footer.php:24
+msgid "project.license.logo-alt"
+msgstr "Licence Creative Commons CC-by-nc-sa"
+
+#: application/views/templates/footer.php:25
+msgid "project.license.logo-title"
+msgstr "Licence Creative Commons CC-by-nc-sa"
+
+#: application/views/templates/footer.php:35
+msgid "footer.docs.label"
+msgstr "Documentation"
+
+#: application/views/templates/footer.php:39
+msgid "footer.twitter.label"
+msgstr "@ProbeMeteo"
+
+#: application/views/templates/footer.php:43
+msgid "footer.github.label"
+msgstr "Github"
+
+#: application/controllers/install.php:73
+msgid "error.database.unreachable.title"
+msgstr "Erreur : base de données inaccessible"
+
+#: application/controllers/install.php:74
+msgid "error.database.unreachable"
+msgstr "Le fichier de configuration contient des <strong>paramètres de connexion invalides</strong>. La base de données est inaccessible."
+
+#: application/controllers/install.php:75
+msgid "solution.database.unreachable"
+msgstr "Vérifier que :<ul><li>la base est présente&nbsp;;</li><li>les configurations sont correctes&nbsp;;<br/>ou</li><li>supprimer le fichier contenant les paramètres de connexion (<var>db-default.php</var>).</li>"
+
+#: application/controllers/install.php:78
+msgid "error.database.unreachable.header"
+msgstr "Base de données inaccessible"
+
+#: application/controllers/install.php:175
+msgid "error.database.access-denied.title"
+msgstr "Erreur : Accès à la base refusé"
+
+#: application/controllers/install.php:176
+msgid "error.database.access-denied"
+msgstr "L'<strong>utilisateur et l'hôte</strong> ne permette pas de se connecter à la base de donnée."
+
+#: application/controllers/install.php:177
+msgid "solution.database.access-denied"
+msgstr "Vérifiez que le couple formé par l'hôte d'origine et l'utilisateur est bien le plus spécifique (cf. <a href=\"http://stackoverflow.com/questions/10299148/mysql-error-1045-28000-access-denied-for-user-billlocalhost-using-passw/11216911#11216911\">MySQL ERROR 1045 (28000): Access denied for user 'bill'@'localhost' (using password: YES)</a>)."
+
+#: application/controllers/install.php:180
+msgid "error.database.access-denied.header"
+msgstr "Accès à la base refusé"
+
+#: application/controllers/install.php:204
+msgid "error.install.admin.exists"
+msgstr "Un utilisateur «&nbsp;admin&nbsp;» est déjà présent dans la base."
+
+#: application/controllers/admin/admin.php:105
 msgid "Username"
-msgstr ""
+msgstr "Nom d'utilisateur"
 
-#: controllers/admin/admin.php:53
+#: application/controllers/admin/admin.php:106
 msgid "Password"
-msgstr ""
+msgstr "Mot de passe"
 
-#: controllers/admin/admin.php:54
+#: application/controllers/admin/admin.php:107
 msgid "Password Confirmation"
-msgstr ""
+msgstr "Confirmation du mot de passe"
 
-#~ msgid "setup.administrator.password-confirm.placeholder"
-#~ msgstr "pour éviter les erreurs de saisi"
+#: application/helpers/other_helper.php:93
+#: application/helpers/other_helper.php:96
+#: application/helpers/other_helper.php:97
+#, php-format
+msgid "error.file[%s].creation"
+msgstr "Erreur lors de la création du fichier : %s."
 
-#~ msgid "setup.dbms.ip"
-#~ msgstr "Hôte"
+#~ msgid "install.dashboard.breadcrumb"
+#~ msgstr "Tableau de bord"
 
-#~ msgid "setup.dbms.ip.placeholder"
-#~ msgstr "adresse IP ou nom de domaine"
+#~ msgid "configuration-station.network._ip.placeholder"
+#~ msgstr "exemple : 127.0.0.1"
 
-#~ msgid "setup.dbms.database-name.placeholder"
-#~ msgstr "base existante"
+#, fuzzy
+#~ msgid "configuration-station.network._name.placeholder"
+#~ msgstr "p. ex. modele-station"
 
-#~ msgid "setup.dbms.engine-mysql.placeholder"
-#~ msgstr "MySQL 5+"
+#, fuzzy
+#~ msgid "configuration-station.network._port.placeholder"
+#~ msgstr "défaut: 80"
 
-#~ msgid "setup.dbms.engine-sqlite.placeholder"
+#, fuzzy
+#~ msgid "configuration-station.network._type.placeholder"
+#~ msgstr "VP2, VP"
+
+#, fuzzy
+#~ msgid "install-dbms.password"
+#~ msgstr "Mot de passe"
+
+#, fuzzy
+#~ msgid "configuration-station.add-new"
+#~ msgstr "Ajouter une station"
+
+#, fuzzy
+#~ msgid "configuration-station.tab.dbms"
+#~ msgstr "Base de données"
+
+#, fuzzy
+#~ msgid "install-dbms.engine-mysql"
+#~ msgstr "Moteur de la Base"
+
+#, fuzzy
+#~ msgid "install-dbms.engine-sqlite"
 #~ msgstr "SQLite 3+"
 
-#~ msgid "setup.dbms.do-it"
-#~ msgstr "Configurer la base"
+#~ msgid "configuration-station.network._ip"
+#~ msgstr "Adresse <abbr title=\"format #.#.#.#\">IP</abbr>"
+
+#, fuzzy
+#~ msgid "configuration-station.network._name"
+#~ msgstr "Réseau"
+
+#, fuzzy
+#~ msgid "configuration-station.network._port"
+#~ msgstr "Port"
+
+#, fuzzy
+#~ msgid "configuration-station.network._type"
+#~ msgstr "Modèle"
+
+#, fuzzy
+#~ msgid "configuration-station.tab.network"
+#~ msgstr "Réseau"
+
+#, fuzzy
+#~ msgid "configuration-station.settings.dbms.info"
+#~ msgstr "Configuration de la base de données pour les relevés"
+
+#, fuzzy
+#~ msgid "install-dbms."
+#~ msgstr "Configuration de la base de données"
+
+#, fuzzy
+#~ msgid "configuration-station.settings.network.info"
+#~ msgstr "Configuration réseaux permettant de contacter la station."
+
+#, fuzzy
+#~ msgid "configuration-station."
+#~ msgstr "dynamic"
+
+#, fuzzy
+#~ msgid "configuration-station.tab."
+#~ msgstr "dynamic"
+
+#, fuzzy
+#~ msgid "install-dbms.legend"
+#~ msgstr "Configuration de la base de données"
+
+#, fuzzy
+#~ msgid "install-administrator.legend"
+#~ msgstr "Configuration du compte administrateur"
+
+#~ msgid "install.dbms.password"
+#~ msgstr "Mot de passe"
+
+#~ msgid "login:description"
+#~ msgstr "Connexion à l'interface d'administration"
+
+#~ msgid ":title"
+#~ msgstr "Titre"
+
+#, fuzzy
+#~ msgid "You're now logged out."
+#~ msgstr "Vous allez être déconnecté automatiquement dans %d seconde."
+
+#, fuzzy
+#~ msgid "sunny weather"
+#~ msgstr "Afficher la _météo"
+
+#, fuzzy
+#~ msgid "setup-dbms:title"
+#~ msgstr ""
+#~ "Probe est une application web moderne pour gérer les stations météo de la "
+#~ "marque Davis Instrument™ et archiver les relevés"

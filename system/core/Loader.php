@@ -97,7 +97,7 @@ class CI_Loader {
 	 * List of loaded models
 	 *
 	 * @var array
-	 * @access protected > public by alban.lopez
+	 * @access protected
 	 */
 	protected $_ci_models			= array();
 	/**
@@ -242,7 +242,6 @@ class CI_Loader {
 		if ($model == '')
 		{
 			return;
-			
 		}
 
 		$path = '';
