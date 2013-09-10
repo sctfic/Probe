@@ -186,64 +186,66 @@ function timeSeriesChart_barChart() {
         // on demande les infos importante au sujet de notre futur tracé
         // ces infos permettent de finir le parametrage de notre "Chart"
         // on charge les données et on lance le tracage
+        var DomBuilder = function(data2add) {
+            data2add = data2add.map(function(d, i) {
+                var date=dateParser.call(data2add, d, i)
+                return {
+                        val:val.call(data2add, d, i),
+                        // date:dateParser.call(rawdatarawdata, d, i),
+                        date:date,
+                        period:[
+                            new Date(date.getTime()-(60*1000*dataheader.step/2)),
+                            new Date(date.getTime()+(60*1000*dataheader.step/2))
+                        ]
+                    };
+            });
+            
+            data = data.filter(function(element, index, array){
+                      return (element.date<data2add[0].date || element.date>data2add[data2add.length-1].date);
+                  })
+
+            var bars = g.selectAll(".BarBox")
+                .data(data, function(d) { return d.date; });
+            bars.exit().remove();
+            
+            data = data
+               .concat(data2add)
+               .sort(function (a, b) {
+                   return a.date-b.date;
+                  });
+            bars = g.selectAll(".BarBox")
+                .data(data, function(d) { return d.date; });
+
+            bars.enter()
+                .append("g")
+                    .attr("class", "BarBox")
+                    .attr("clip-path", "url(#" + md5 + ")")
+                    .append("rect")
+                        .attr("class", "bar")
+                        .append("title");
+        };
+
         d3.tsv( ajaxUrl + "?station="+ station +"&sensor=" + sensor + "&XdisplaySizePxl="+width+"&Since="+formatDate(zmDomain[0],'T')+"&To="+formatDate(zmDomain[1]
 ,'T'),
             function(data2add) {
-                console.TimeStep('load Data Zoom');
-                data2add = data2add.map(function(d, i) {
-                    var date=dateParser.call(data2add, d, i)
-                    return {
-                            val:val.call(data2add, d, i),
-                            // date:dateParser.call(rawdatarawdata, d, i),
-                            date:date,
-                            period:[
-                                new Date(date.getTime()-(60*1000*dataheader.step/2)),
-                                new Date(date.getTime()+(60*1000*dataheader.step/2))
-                            ]
-                        };
-                });
-                
-                data = data.filter(function(element, index, array){
-                          return (element.date<data2add[0].date || element.date>data2add[data2add.length-1].date);
-                      })
-
-                var bars = g.selectAll(".BarBox")
-                    .data(data, function(d) { return d.date; });
-                bars.exit().remove();
-                
-                data = data
-                   .concat(data2add)
-                   .sort(function (a, b) {
-                       return a.date-b.date;
-                      });
-                bars = g.selectAll(".BarBox")
-                    .data(data, function(d) { return d.date; });
-
-                bars.enter()
-                    .append("g")
-                        .attr("class", "BarBox")
-                        .attr("clip-path", "url(#" + md5 + ")")
-                        .append("rect")
-                            .attr("class", "bar")
-                            .append("title");
-
                 if (ready) {
+                    DomBuilder(data2add);
                     g.updateCurve()
                      .drawAxis ();
                 }
                 ready = true;
-                dataTsv = data;
+                dataTsv = data2add;
             }
         );
 
         d3.json( ajaxUrl + "?station="+ station +"&sensor=" + sensor + "&XdisplaySizePxl="+width+"&infos=dataheader"+"&Since="+formatDate(zmDomain[0],'T')+"&To="+formatDate(zmDomain[1],'T'),
             function(header) {
-                console.TimeStep('load Header Zoom');
 
                 chart//.yDomain([header.min, header.max])
                     .dataheader(header);
                 
                 if (ready) {
+                    DomBuilder(dataTsv);
                     g.updateCurve()
                      .drawAxis ();
                 }
