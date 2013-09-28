@@ -16,7 +16,7 @@ class vp2 extends CI_Model {
 	protected $key_EAV = array(':utc', ':val', ':sensorID');
 
 	protected $prep_SENSOR = NULL;
-	protected $key_SENSOR = array(':NAME', ':HUMAN_NAME', ':DESCRIPT', ':MIN_REAL', ':MAX_REAL', ':UNITE_SIGN', ':DEF_PLOT', ':MAX_ALARM', ':MIN_ALARM', ':LAST_CALIBRATE', ':CALIBRATE_PERIOD');
+	protected $key_SENSOR = array(':NAME', ':HUMAN_NAME', ':DESCRIPT', ':MIN_REAL', ':MAX_REAL', ':ENGINE_UNIT', ':USER_UNIT', ':DEF_PLOT', ':MAX_ALARM', ':MIN_ALARM', ':LAST_CALIBRATE', ':CALIBRATE_PERIOD');
 
 	protected $prep_VARIOUS = NULL;
 	
@@ -69,7 +69,7 @@ class vp2 extends CI_Model {
 		$this->prep_SENSOR = $this->dataDB->conn_id->prepare(
 			'REPLACE 
 				INTO `TR_SENSOR` 
-					(SEN_NAME, SEN_HUMAN_NAME, SEN_DESCRIPTIF, SEN_MIN_REALISTIC, SEN_MAX_REALISTIC, SEN_UNITE_SIGN, SEN_DEF_PLOT, SEN_MAX_ALARM, SEN_MIN_ALARM, SEN_LAST_CALIBRATE, SEN_CALIBRATE_PERIOD) 
+					(SEN_NAME, SEN_HUMAN_NAME, SEN_DESCRIPTIF, SEN_MIN_REALISTIC, SEN_MAX_REALISTIC, SEN_ENGINE_UNIT, SEN_USER_UNIT, SEN_DEF_PLOT, SEN_MAX_ALARM, SEN_MIN_ALARM, SEN_LAST_CALIBRATE, SEN_CALIBRATE_PERIOD) 
 				VALUES ('.implode(', ', $this->key_SENSOR).');');
 	}
 
@@ -622,6 +622,7 @@ Enregistre les archives dans la base de donnée
 			if ($val !== NULL and $val !== FALSE  ) {
 			// si le capteur est branché ou si la valeur de retour n'est pas fausse 
 				$table = tableOfSensor($name);
+				// log_message('warning', '$table : '.print_r($table, true));
 				$Sensor = $this->get_SEN_ID($name, $table);
 				if ($table) {
 					$eav = 'prep_EAV_'.$table[3];
@@ -663,22 +664,31 @@ determine la date de la derniere archive recupérée
 	* @return 
 	*/
 	protected function get_SEN_ID($name, $table, $recursive = true) {
+		// where_I_Am(__FILE__,__CLASS__,__FUNCTION__,__LINE__,func_get_args());
 		$min = array('TA_TEMPERATURE'=>-50,'TA_HUMIDITY'=>0,'TA_WETNESSES'=>0,'TA_MOISTURE'=>0,'TA_VARIOUS'=>0);
 		$max = array('TA_TEMPERATURE'=>80,'TA_HUMIDITY'=>100,'TA_WETNESSES'=>100,'TA_MOISTURE'=>100,'TA_VARIOUS'=>65000);
 		$id = $this->dataDB->query('SELECT SEN_ID AS SENSOR_ID, SEN_MIN_REALISTIC AS MIN, SEN_MAX_REALISTIC AS MAX FROM `TR_SENSOR` WHERE SEN_NAME=\''.$name.'\' ;');
+		//log_message('probe', 'Sensor ('.$name.' , '.$table.')'. print_r($id->result_array(),true) );
+
 		if (count($id->result_array())==1) {
+
 			return $id->result_array[0];
 		}
 		else if (count($id->result_array())==0 and $recursive==TRUE) { // $id->num_rows();
-			$this->insert_SENSOR(array($name, 'HUMAN NAME is more than '.$name, 'DESCRIPT', $min[$table], $max[$table], 'unkow', 'standard', 32000, 0, date ("Y/m/d H:i:s"), 'P0Y6M0DT0H0M0S'));
+			$this->insert_SENSOR(array($name, 'HUMAN NAME is more than '.$name, 'DESCRIPT', 
+				$min[$table], 
+				$max[$table], 
+				'unknow', 
+				'unknow', 
+				'standard', 32000, 0, date ("Y/m/d H:i:s"), 'P0Y6M0DT0H0M0S'));
 /*			$this->dataDB->query('INSERT 
 				INTO `TR_SENSOR` 
 					(SEN_NAME, SEN_DEF_PLOT, SEN_MAX_ALARM, SEN_MIN_ALARM, SEN_LAST_CALIBRATE, SEN_CALIBRATE_PERIOD) 
 				VALUES 
 					(\''.$name.'\', \'Default_Plot\', 1999, -199, \'2012/01/01 00:00:01\', \'0000/06/00 00:00:00\')');*/
-			return $this->get_SEN_ID($name, false); // dataDB->insert_id(); // query('SELECT LAST_INSERT_ID();');
+			return $this->get_SEN_ID($name, $table, false); // dataDB->insert_id(); // query('SELECT LAST_INSERT_ID();');
 		}
-		log_message('warning', 'Resultat inutilisable ('.$name.')');
+		log_message('warning', 'Resultat inutilisable ('.$name.' , '.$table.')'. print_r($id->result_array(),true) );
 	}
 
 
@@ -691,8 +701,8 @@ determine la date de la derniere archive recupérée
 	*/
 	protected function insert_SENSOR($value_SENSOR) {
 		$real_SENSOR = array_combine($this->key_SENSOR, $value_SENSOR);
-// 		log_message('save', 'real_SENSOR');
-		$this->prep_SENSOR->execute($real_SENSOR);
+		//log_message('save', print_r($real_SENSOR, true));
+		return $this->prep_SENSOR->execute($real_SENSOR);
 	}
 
 }
